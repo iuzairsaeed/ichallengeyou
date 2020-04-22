@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Api'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
+        Route::post('register', 'AuthController@register');
     });
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
