@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Web\Auth\RegisterController;
 
 class AuthController extends Controller
 {
-    protected function response($user, $token)
+    protected function response($user)
     {
+        $token = $user->createToken('app-user')->plainTextToken;
         return [
             'user_name' => $user->name,
             'user_email' => $user->email,
@@ -21,7 +22,7 @@ class AuthController extends Controller
     }
     function login(Request $request)
     {
-        $user= User::where('email', $request->email)->first();
+        $user= User::where('username', $request->username)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'These credentials do not match our records.'
@@ -30,9 +31,8 @@ class AuthController extends Controller
 
         // Revoke previous tokens...
         $user->tokens()->delete();
-        $token = $user->createToken('app-user')->plainTextToken;
 
-        $response = $this->response($user, $token);
+        $response = $this->response($user);
 
         return response($response, 200);
     }
@@ -51,9 +51,7 @@ class AuthController extends Controller
         }
         $user = $register->create($data);
 
-        $token = $user->createToken('app-user')->plainTextToken;
-
-        $response = $this->response($user, $token);
+        $response = $this->response($user);
 
         return response($response, 200);
     }

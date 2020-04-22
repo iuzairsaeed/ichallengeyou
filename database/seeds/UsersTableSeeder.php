@@ -14,10 +14,12 @@ class UsersTableSeeder extends Seeder
     {
         $data = [[
             'name' => 'Admin User',
+            'username' => 'admin',
             'email' => 'admin@idu.com',
             'password' => Hash::make('secret')
         ], [
             'name' => 'Test User',
+            'username' => 'user',
             'email' => 'user@idu.com',
             'password' => Hash::make('secret')
         ]
