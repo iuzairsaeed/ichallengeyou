@@ -16,7 +16,7 @@ class AuthController extends Controller
             'user_name' => $user->name,
             'user_email' => $user->email,
             'token' => $token,
-            'expiration_minutes' => config('sanctum.expiration')
+            'expiration_minutes' => (int)config('sanctum.expiration')
         ];
     }
     function login(Request $request)
