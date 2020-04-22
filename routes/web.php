@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect('login');
-});
+Route::group(['namespace' => 'Web'], function () {
+    Auth::routes();
 
-Auth::routes();
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    });
 
-Route::group(['namespace' => 'Web', 'middleware' => 'auth'], function() {
-    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('{any}', 'PagesController@home')->where('any', '.*');
 });
