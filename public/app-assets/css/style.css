@@ -1,0 +1,57 @@
+.page-item.active .page-link {
+    background-color: #23b474 !important;
+    border-color: #23b474 !important;
+}
+.dt-buttons {
+    margin-bottom: -60px !important;
+}
+.dataTables_paginate {
+    margin-top: -32px !important;
+}
+/* SETTINGS IMAGES CSS FOR SILDER */
+.img.close-icon li {
+    position: absolute;
+    right: 14px;
+    top: 9px;
+}
+
+.img.close-icon {
+    position: relative;
+    margin-right: 8px;
+}
+
+.field-validation-error {
+    color: red !important;
+}
+
+.modal-header {
+    background: #313333 !important;
+}
+
+    .modal-header h2,
+    .modal-header h3,
+    .modal-header h4,
+    .modal-header h5,
+    .modal-header button {
+        color: white !important;
+    }
+
+.card-header,
+.card-title-wrap {
+    border-color: #23b474 !important;
+}
+
+.custom-file-label::after {
+    border-left: 1px solid #23b374;
+}
+.custom-file-label {
+    border: 1px solid #23b374;
+}
+.select2-container--bootstrap .select2-selection--single,
+.select2-container--bootstrap .select2-selection--multiple {
+    border: solid 1px #23b374;
+    /*padding: 0.25rem 0.75rem;*/
+    font-size: 1rem;
+    min-height: calc(2.25rem + 2px);
+    line-height: 32px;
+}
