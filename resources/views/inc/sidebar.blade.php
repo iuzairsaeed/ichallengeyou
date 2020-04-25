@@ -1,4 +1,4 @@
-<div class="app-sidebar" data-background-color="black">
+<div class="app-sidebar" data-background-color="white">
     <div class="sidebar-header">
         <div class="logo clearfix">
             <a href="/dashboard" class="logo-text" style="text-align: center;">

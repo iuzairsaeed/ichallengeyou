@@ -11453,10 +11453,10 @@ a.text-base:focus {
 }
 
 .gradient-timber {
-	background-image: -webkit-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -moz- oldlinear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -o-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: linear-gradient(45deg, #fc00ff, #00dbde);
+	background-image: -webkit-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -moz- oldlinear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -o-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: linear-gradient(45deg, #ab7c46, #e9b06d);
 	background-repeat: repeat-x;
 }
 
@@ -11464,10 +11464,10 @@ a.text-base:focus {
 .fc button.gradient-timber:active,
 .btn.gradient-timber.active,
 .fc button.gradient-timber.active {
-	background-image: -webkit-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -moz- oldlinear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -o-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: linear-gradient(45deg, #fc00ff, #00dbde);
+	background-image: -webkit-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -moz- oldlinear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -o-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: linear-gradient(45deg, #ab7c46, #e9b06d);
 	background-repeat: repeat-x;
 }
 
@@ -46164,12 +46164,12 @@ ul.list-inline.list-inline-pipe > li + li:before {
 	font-weight: 700;
 }
 .activity-timeline .to-time {
-    position: absolute;
-    top: 17px;
-    left: -135px;
-    text-transform: uppercase;
-    font-size: 10px;
-    font-weight: 700;
+	position: absolute;
+	top: 17px;
+	left: -135px;
+	text-transform: uppercase;
+	font-size: 10px;
+	font-weight: 700;
 }
 
 .activity-timeline li:before {
@@ -48887,10 +48887,10 @@ datetime .form-group {
 	.navigation
 	li.nav-collapsed-open
 	a {
-	background-image: -webkit-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -moz- oldlinear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -o-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: linear-gradient(45deg, #fc00ff, #00dbde);
+	background-image: -webkit-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -moz- oldlinear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -o-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: linear-gradient(45deg, #ab7c46, #e9b06d);
 	background-repeat: repeat-x;
 	color: #ffffff;
 }
@@ -48926,10 +48926,10 @@ datetime .form-group {
 	.navigation
 	li.active
 	a {
-	background-image: -webkit-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -moz- oldlinear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -o-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: linear-gradient(45deg, #fc00ff, #00dbde);
+	background-image: -webkit-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -moz- oldlinear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -o-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: linear-gradient(45deg, #ab7c46, #e9b06d);
 	background-repeat: repeat-x;
 }
 .wrapper
@@ -49461,10 +49461,10 @@ datetime .form-group {
 }
 .app-sidebar[data-background-color='white'] .navigation li.active a,
 .off-canvas-sidebar[data-background-color='white'] .navigation li.active a {
-	background-image: -webkit-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -moz- oldlinear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -o-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: linear-gradient(45deg, #fc00ff, #00dbde);
+	background-image: -webkit-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -moz- oldlinear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -o-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: linear-gradient(45deg, #ab7c46, #e9b06d);
 	background-repeat: repeat-x;
 }
 .app-sidebar[data-background-color='white'] .navigation li.active a,
@@ -49788,18 +49788,18 @@ datetime .form-group {
 }
 .app-sidebar[data-background-color='timber'],
 .off-canvas-sidebar[data-background-color='timber'] {
-	background-image: -webkit-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -moz- oldlinear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -o-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: linear-gradient(45deg, #fc00ff, #00dbde);
+	background-image: -webkit-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -moz- oldlinear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -o-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: linear-gradient(45deg, #ab7c46, #e9b06d);
 	background-repeat: repeat-x;
 }
 .app-sidebar[data-background-color='timber'] .sidebar-background:after,
 .off-canvas-sidebar[data-background-color='timber'] .sidebar-background:after {
-	background-image: -webkit-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -moz- oldlinear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: -o-linear-gradient(45deg, #fc00ff, #00dbde);
-	background-image: linear-gradient(45deg, #fc00ff, #00dbde);
+	background-image: -webkit-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -moz- oldlinear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: -o-linear-gradient(45deg, #ab7c46, #e9b06d);
+	background-image: linear-gradient(45deg, #ab7c46, #e9b06d);
 	background-repeat: repeat-x;
 	opacity: 0.9;
 }

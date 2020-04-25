@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Challenge;
 
 class UsersTableSeeder extends Seeder
 {
@@ -25,5 +26,8 @@ class UsersTableSeeder extends Seeder
         ]
         ];
         User::insert($data);
+        // factory(User::class, 2)->create()->each(function($u) {
+        //     $u->challenges()->saveMany(factory(Challenge::class, 5)->make());
+        // });
     }
 }
