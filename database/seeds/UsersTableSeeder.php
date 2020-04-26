@@ -14,11 +14,13 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $data = [[
+            'role' => Admin(),
             'name' => 'Admin User',
             'username' => 'admin',
             'email' => 'admin@idu.com',
             'password' => Hash::make('secret')
         ], [
+            'role' => Normal(),
             'name' => 'Test User',
             'username' => 'user',
             'email' => 'user@idu.com',
