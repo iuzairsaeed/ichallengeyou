@@ -1,0 +1,43 @@
+const mix = require('laravel-mix');
+
+mix
+	.scripts(
+		[
+			'public/app-assets/vendors/js/core/jquery-3.3.1.min.js',
+			'public/app-assets/vendors/js/core/jquery-ui.min.js',
+			'public/app-assets/vendors/js/core/bootstrap.min.js',
+			'public/app-assets/vendors/js/perfect-scrollbar.jquery.min.js',
+			'public/app-assets/vendors/js/jquery.matchHeight-min.js',
+			'public/app-assets/vendors/js/toastr.min.js',
+			'public/app-assets/js/app-sidebar.js',
+			'public/app-assets/js/notification-sidebar.js',
+			'public/app-assets/vendors/js/datatable/datatables.min.js',
+			'public/app-assets/vendors/js/sweetalert2.min.js',
+			'public/app-assets/js/sweet-alerts.js',
+			'public/app-assets/js/toastr.min.js',
+			'public/app-assets/js/select2.min.js',
+			'public/app-assets/js/components-modal.js',
+			'public/app-assets/vendors/js/chart.min.js',
+			'public/app-assets/vendors/js/chartist.min.js',
+			'public/app-assets/js/app.js'
+		],
+		'public/js/app.js'
+	)
+	.styles(
+		[
+			'public/app-assets/vendors/css/fonts.css',
+			'public/app-assets/fonts/feather/style.min.css',
+			'public/app-assets/fonts/simple-line-icons/style.min.css',
+			'public/app-assets/fonts/font-awesome/css/font-awesome.min.css',
+			'public/app-assets/vendors/css/perfect-scrollbar.min.css',
+			'public/app-assets/vendors/css/chartist.min.css',
+			'public/app-assets/vendors/css/tables/datatable/datatables.min.css',
+			'public/app-assets/vendors/css/sweetalert2.min.css',
+			'public/app-assets/css/select2/select2.min.css',
+			'public/app-assets/css/select2/select2-bootstrap.min.css',
+			'public/app-assets/vendors/css/toastr.css',
+			'public/app-assets/css/app.css',
+			'public/app-assets/css/custom.css'
+		],
+		'public/css/app.css'
+	);
