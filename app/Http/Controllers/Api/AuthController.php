@@ -14,8 +14,11 @@ class AuthController extends Controller
     {
         $token = $user->createToken('app-user')->plainTextToken;
         return [
-            'user_name' => $user->name,
-            'user_email' => $user->email,
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'isPremium' => $user->isPremium,
+            ],
             'token' => $token,
             'expiration_minutes' => (int)config('sanctum.expiration')
         ];
@@ -26,6 +29,10 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'These credentials do not match our records.'
+            ], 404);
+        }elseif(!$user->isActive){
+            return response([
+                'message' => 'Your account has been disabled. Please contact support.'
             ], 404);
         }
 
