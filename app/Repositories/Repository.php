@@ -112,7 +112,13 @@ class Repository implements RepositoryInterface
             return $item;
         });
 
+        $message = 'Success';
+        if($records->count() == 0){
+            $message = 'No data available.';
+        }
+
         return [
+            'message' => $message,
             'recordsFiltered' => $recordsFiltered,
             'recordsTotal' => $recordsTotal,
             'data' => $records,
