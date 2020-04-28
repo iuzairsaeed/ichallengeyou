@@ -12,7 +12,7 @@ $factory->define(Challenge::class, function (Faker $faker) {
         //     return factory(User::class)->create()->id;
         // },
         'user_id' => $faker->randomElement([1,2]),
-        'title' => $faker->unique()->word,
+        'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
         'description' => $faker->text(),
         'startTime' => now(),
         'file' => $faker->imageUrl,
