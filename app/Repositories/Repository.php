@@ -13,42 +13,6 @@ class Repository implements RepositoryInterface
         $this->model = $model;
     }
 
-    // Get data for datatable
-    public function getData($request, $with, $mustChecks, $mustVals, $searchCols, $orderableCols)
-    {
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $filter = $request->get('search');
-        $order = $request->get('order');
-        $search = (isset($filter['value']))? $filter['value'] : false;
-        $sort = (isset($order[0]['column']))? (int) $order[0]['column'] : false;
-        $dir = (isset($order[0]['dir']))? $order[0]['dir'] : false;
-
-        $records = $this->with($with);
-        if($mustChecks){
-            foreach($mustChecks as $key => $check){
-                $records = $records->where($check, $mustVals[$key]);
-            }
-        }
-        if($search){
-            $records = $records->where(function($query) use ($searchCols, $search){
-                foreach($searchCols as $col){
-                    $query->orWhere($col, 'like' , "%$search%");
-                }
-            });
-        }
-        $recordsFiltered = $records->count();
-
-        $records = $records->orderBy($orderableCols[$sort], $dir)->limit($length)->offset($start)->get();
-
-        $totalRecords = $records->count();
-        return [
-            'records' => $records,
-            'recordsFiltered' => $recordsFiltered,
-            'totalRecords' => $totalRecords
-        ];
-    }
-
     // Get all instances of model
     public function all()
     {
@@ -77,7 +41,7 @@ class Repository implements RepositoryInterface
     // show the record with the given id
     public function show($id)
     {
-        return $this->model-findOrFail($id);
+        return $this->model->findOrFail($id);
     }
 
     // Get the associated model
@@ -99,11 +63,59 @@ class Repository implements RepositoryInterface
         return $this->model->with($relations);
     }
 
+    // Sort the records by priority
     public function sort(array $order)
     {
         foreach($order as $priority => $id){
             $data = ['priority' => $priority + 1];
             $this->update($data, $id);
         }
+    }
+
+    // Get data for datatable
+    public function getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols)
+    {
+        $start = $request->start ?? 0;
+        $length = $request->length ?? 10;
+        $filter = $request->search;
+        $order = $request->order;
+        $search = optional($filter)['value'] ?? false;
+        $sort = optional($order)[0]['column'] ?? false;
+        $dir = optional($order)[0]['dir'] ?? false;
+
+        $records = $this->with($with);
+        if($whereChecks){
+            foreach($whereChecks as $key => $check){
+                $records->where($check, $whereVals[$key]);
+            }
+        }
+        $recordsTotal = $records->count();
+        if($search){
+            $records->where(function($query) use ($searchableCols, $search){
+                foreach($searchableCols as $col){
+                    $query->orWhere($col, 'like' , "%$search%");
+                }
+            });
+        }
+        $recordsFiltered = $records->count();
+
+        if($dir){
+            $records->orderBy($orderableCols[$sort], $dir);
+        }else{
+            $records->latest();
+        }
+        $records = $records->limit($length)->offset($start)->get();
+
+        $serial = $start + 1;
+        $records->map(function ($item) use (&$serial) {
+            $item['serial'] = $serial++;
+            return $item;
+        });
+
+        return [
+            'recordsFiltered' => $recordsFiltered,
+            'recordsTotal' => $recordsTotal,
+            'data' => $records,
+        ];
     }
 }

@@ -57,43 +57,4 @@ class ChallengeController extends Controller
     {
         return $this->model->delete($id);
     }
-
-    public function getRecords(Request $request)
-    {
-        $draw = $request->get('draw');
-        $start = $request->get('start');
-
-        $orderableCols = ['title'];
-        $searchCols = ['title'];
-        $mustChecks = [];
-        $mustVals = [auth()->id()];
-        $with = [];
-
-        $data = $this->model->getData($request, $with, $mustChecks, $mustVals, $searchCols, $orderableCols);
-        $records = $data['records'];
-        $recordsFiltered = $data['recordsFiltered'];
-        $totalRecords = $data['totalRecords'];
-
-        $data = [];
-        $serial = $start + 1;
-        foreach($records as $record){
-            $data[] = [
-                'serial'    =>  '<span class="drag_me">'.$serial.'</span><div data-rowid="' . $record->id . '"></div>',
-                'icon'      =>  '<i class="'. $record->icon .' danger font-medium-3"></i>',
-                'title'      =>  $record->title,
-                'actions'   =>  '<a class="success p-0 mr-2" title="Edit">
-                                    <i class="ft-edit font-medium-3"></i>
-                                </a>'
-            ];
-            $serial++;
-        };
-        $data = array(
-            'draw' => $draw,
-            'recordsTotal' => $totalRecords,
-            'recordsFiltered' => $recordsFiltered,
-            'data' => $data,
-        );
-
-        return json_encode($data);
-    }
 }

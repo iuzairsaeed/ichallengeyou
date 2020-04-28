@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::group(['namespace' => 'Api'], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:'.Admin()]], function () {
+        Route::get('challenges/getList', 'ChallengeController@getList')->name('challenges.getList');
+    });
+});
+
 Route::group(['namespace' => 'Web'], function () {
     Auth::routes(['register' => false]);
 
@@ -11,8 +17,7 @@ Route::group(['namespace' => 'Web'], function () {
         Route::post('changePassword','ProfileController@changePassword')->name('changePassword');
 
         Route::resource('challenges','ChallengeController');
-        Route::get('challenge/getRecords', 'ChallengeController@getRecords')->name('challenges.getRecords');
     });
-
-    Route::get('{any}', 'PagesController@home')->where('any', '.*');
 });
+
+Route::get('{any}', 'Web\PageController@home')->where('any', '.*');

@@ -23,6 +23,7 @@ class AuthController extends Controller
             'expiration_minutes' => (int)config('sanctum.expiration')
         ];
     }
+
     function login(Request $request)
     {
         $user= User::where('username', $request->username)->first();
@@ -61,5 +62,9 @@ class AuthController extends Controller
         $response = $this->response($user);
 
         return response($response, 200);
+    }
+    function user(Request $request)
+    {
+            return $request->user();
     }
 }

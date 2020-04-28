@@ -35,14 +35,22 @@
     var table = $('#dTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route("challenges.getRecords") }}',
+        ajax: '{{ route("challenges.getList") }}',
         columns: [
             { data: 'serial'},
             { data: 'title' },
-            { data: 'actions' }
+            { data: 'actions', render:function (data, type, full, meta) {
+                                    return `<a href="/Admin/users/${full.id}" class="showStatus info p-0 mr-2 success" title="View">
+                                                <i class="ft-eye font-medium-3"></i>
+                                            </a>
+                                            <a href="/Admin/users/${full.id}/edit/" class="edit success p-0 mr-2" title="Edit">
+                                                <i class="ft-edit font-medium-3"></i>
+                                            </a>`;
+                                }
+            }
         ],
         columnDefs: [
-            { width: "5%", "targets": [-1, 0] },
+            { width: "10%", "targets": [-1, 0] },
             { orderable: false, targets: [-1] }
         ],
     });
