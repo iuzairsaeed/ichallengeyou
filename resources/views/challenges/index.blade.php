@@ -18,6 +18,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Title</th>
+                                    <th>Created By</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -35,10 +36,19 @@
     var table = $('#dTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route("challenges.getList") }}',
+        ajax:
+        {
+            "url": '{{ route("challenges.getList") }}',
+            "type": 'GET',
+            "dataType": "JSON",
+            "error": function (reason) {
+                return true;
+            }
+        },
         columns: [
             { data: 'serial'},
             { data: 'title' },
+            { data: 'user.name' },
             { data: 'actions', render:function (data, type, full, meta) {
                                     return `<a href="/Admin/users/${full.id}" class="showStatus info p-0 mr-2 success" title="View">
                                                 <i class="ft-eye font-medium-3"></i>

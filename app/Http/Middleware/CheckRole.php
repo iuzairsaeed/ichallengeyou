@@ -18,7 +18,7 @@ class CheckRole
     {
         $user = $request->user();
         $disabledMessage = 'Your account has been disabled. Please contact support.';
-        if($user && $user->isActive)
+        if($user && $user->is_active)
         {
             if($user->role == $role){
                 return $next($request);

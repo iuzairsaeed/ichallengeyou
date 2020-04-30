@@ -18,11 +18,11 @@ class CreateChallengesTable extends Migration
             $table->foreignId('user_id');
             $table->string('title');
             $table->longText('description');
-            $table->timestamp('startTime');
+            $table->timestamp('start_time');
             $table->string('file');
             $table->string('location')->nullable();
             $table->unsignedDecimal('amount', 8, 2);
-            $table->boolean('termsAccepted')->default(false);
+            $table->boolean('terms_accepted')->default(false);
             $table->timestamps();
         });
     }

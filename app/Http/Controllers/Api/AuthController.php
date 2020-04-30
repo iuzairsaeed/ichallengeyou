@@ -16,8 +16,9 @@ class AuthController extends Controller
         return [
             'user' => [
                 'name' => $user->name,
+                'username' => $user->username,
                 'email' => $user->email,
-                'isPremium' => $user->isPremium,
+                'is_premium' => $user->is_premium,
             ],
             'token' => $token,
             'expiration_minutes' => (int)config('sanctum.expiration')
@@ -31,7 +32,7 @@ class AuthController extends Controller
             return response([
                 'message' => 'These credentials do not match our records.'
             ], 404);
-        }elseif(!$user->isActive){
+        }elseif(!$user->is_active){
             return response([
                 'message' => 'Your account has been disabled. Please contact support.'
             ], 404);

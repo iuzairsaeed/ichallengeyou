@@ -14,10 +14,10 @@ $factory->define(Challenge::class, function (Faker $faker) {
         'user_id' => $faker->randomElement([1,2]),
         'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
         'description' => $faker->text(),
-        'startTime' => now(),
+        'start_time' => now(),
         'file' => $faker->imageUrl,
         'location' => $faker->country,
         'amount' => $faker->randomDigit,
-        'termsAccepted' => $faker->boolean,
+        'terms_accepted' => $faker->boolean,
     ];
 });

@@ -18,11 +18,11 @@ class ChallengeController extends Controller
 
     public function getList(Request $request)
     {
-        $orderableCols = ['created_at', 'title'];
+        $orderableCols = ['created_at', 'title', 'user.name'];
         $searchableCols = ['title'];
         $whereChecks = [];
         $whereVals = [];
-        $with = [];
+        $with = ['user'];
 
         $data = $this->model->getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols);
 
