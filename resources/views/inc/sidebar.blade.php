@@ -27,6 +27,8 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item {{ $segment1 === 'users' ? 'active' : null }}"><a href="/users"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>
+                </li>
             </ul>
         </div>
     </div>

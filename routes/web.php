@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Api'], function () {
     Route::group(['middleware' => ['auth', 'checkRole:'.Admin()]], function () {
         Route::get('challenges/getList', 'ChallengeController@getList')->name('challenges.getList');
+        Route::get('users/getList', 'UserController@getList')->name('users.getList');
     });
 });
 
@@ -17,6 +18,7 @@ Route::group(['namespace' => 'Web'], function () {
         Route::post('changePassword','ProfileController@changePassword')->name('changePassword');
 
         Route::resource('challenges','ChallengeController');
+        Route::resource('users','UserController');
     });
 });
 

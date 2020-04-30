@@ -5,20 +5,20 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
-use App\Models\Challenge;
+use App\Models\User;
 
-class ChallengeController extends Controller
+class UserController extends Controller
 {
     protected $model;
 
-    public function __construct(Challenge $model)
+    public function __construct(User $model)
     {
         $this->model = new Repository($model);
     }
 
     public function index()
     {
-        return view('challenges.index');
+        return view('users.index');
     }
 
     public function create()

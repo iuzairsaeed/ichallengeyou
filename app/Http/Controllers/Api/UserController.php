@@ -5,24 +5,24 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
-use App\Models\Challenge;
+use App\Models\User;
 
-class ChallengeController extends Controller
+class UserController extends Controller
 {
     protected $model;
 
-    public function __construct(Challenge $model)
+    public function __construct(User $model)
     {
         $this->model = new Repository($model);
     }
 
     public function getList(Request $request)
     {
-        $orderableCols = ['created_at', 'title', 'start_time', 'user.name'];
-        $searchableCols = ['title'];
+        $orderableCols = ['created_at', 'name'];
+        $searchableCols = ['name'];
         $whereChecks = [];
         $whereVals = [];
-        $with = ['user'];
+        $with = [];
 
         $data = $this->model->getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols);
 

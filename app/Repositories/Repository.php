@@ -82,6 +82,8 @@ class Repository implements RepositoryInterface
         $search = optional($filter)['value'] ?? false;
         $sort = optional($order)[0]['column'] ?? false;
         $dir = optional($order)[0]['dir'] ?? false;
+        $from = $request->date_from;
+        $to = $request->date_to;
 
         $records = $this->with($with);
         if($whereChecks){
@@ -89,6 +91,13 @@ class Repository implements RepositoryInterface
                 $records->where($check, $whereVals[$key]);
             }
         }
+        if($from){
+            $records->whereDate('created_at' ,'>=', $from);
+        }
+        if($to){
+            $records->whereDate('created_at' ,'<=', $to);
+        }
+
         $recordsTotal = $records->count();
         if($search){
             $records->where(function($query) use ($searchableCols, $search){
