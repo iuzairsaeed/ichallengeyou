@@ -41,17 +41,4 @@ class ChangePasswordRequest extends FormRequest
             'password.regex' => 'Password must contain at least one special character.'
         ];
     }
-
-    /**
-     * Custom response
-     *
-     * @return array
-     */
-
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
-    {
-        $response = response(['message' => $validator->errors()->first()], 400);
-
-        throw new \Illuminate\Validation\ValidationException($validator, $response);
-    }
 }

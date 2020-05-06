@@ -52,4 +52,11 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
+
+    protected function invalidJson($request, \Illuminate\Validation\ValidationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response(['message' => $exception->errors()], $exception->status);
+        }
+    }
 }
