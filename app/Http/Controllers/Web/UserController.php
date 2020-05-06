@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -61,6 +61,8 @@ class UserController extends Controller
             'name' => 'required|min:2'
         ]);
         return $this->model->create($request->only($this->model->getModel()->fillable));
+
+        return redirect('users')->with('success','Product created successfully.');
     }
 
     /**
@@ -71,7 +73,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return $user;
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -82,7 +84,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -98,7 +100,8 @@ class UserController extends Controller
             'name' => 'required|min:2'
         ]);
         $this->model->update($request->only($this->model->getModel()->fillable), $user);
-        return $this->model->find($user->id);
+
+        return redirect('users')->with('success','Product updated successfully');
     }
 
     /**
@@ -109,6 +112,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        return $this->model->delete($user);
+        $this->model->delete($user);
+
+        return redirect('users')->with('success','User deleted successfully');
     }
 }

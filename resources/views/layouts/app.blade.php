@@ -16,7 +16,6 @@
                 <div class="main-content">
                     <div class="content-wrapper">
                         <div class="container-fluid">
-                            @include('inc.messages')
                             @yield('content')
                         </div>
                     </div>
@@ -28,6 +27,7 @@
     </div>
 
     @include('inc.footer')
+    @include('inc.messages')
     @yield('afterScript')
 </body>
 </html>

@@ -1,4 +1,8 @@
-<?php namespace App\Repositories;
+<?php
+
+namespace App\Repositories;
+
+use Illuminate\Database\Eloquent\Model;
 
 interface RepositoryInterface
 {
@@ -6,9 +10,9 @@ interface RepositoryInterface
 
     public function create(array $data);
 
-    public function update(array $data, $id);
+    public function update(array $data, Model $model);
 
-    public function delete($id);
+    public function delete(Model $model);
 
-    public function show($id);
+    public function show(Model $model);
 }

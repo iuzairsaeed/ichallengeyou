@@ -1,19 +1,19 @@
-<div id="toast-container" class="toast-container toast-top-right mt-2">
+<div id="toast-container" class="toast-container toast-top-right">
     @if(count($errors) > 0)
-        <div class="toast toast-error" aria-live="assertive">
-            {{$errors->first()}}
-        </div>
+        <script>
+			toastr.error('{{$errors->first()}}', 'Message', toasterAnimationObject);
+		</script>
     @endif
 
     @if(session('success'))
-        <div class="toast toast-success" aria-live="assertive">
-            {{session('success')}}
-        </div>
+        <script>
+			toastr.success('{{session('success')}}', 'Message', toasterAnimationObject);
+		</script>
     @endif
 
     @if(session('error'))
-        <div class="toast toast-error" aria-live="assertive">
-            {{session('error')}}
-        </div>
+        <script>
+			toastr.error('{{session('error')}}', 'Message', toasterAnimationObject);
+		</script>
     @endif
 </div>
