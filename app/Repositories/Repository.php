@@ -26,16 +26,15 @@ class Repository implements RepositoryInterface
     }
 
     // update record in the database
-    public function update(array $data, $id)
+    public function update(array $data, Model $model)
     {
-        $record = $this->model->find($id);
-        return $record->update($data);
+        return $model->update($data);
     }
 
     // remove record from the database
-    public function delete($id)
+    public function delete(Model $model)
     {
-        return $this->model->destroy($id);
+        return $model->destroy();
     }
 
     // show the record with the given id

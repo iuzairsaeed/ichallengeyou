@@ -16,16 +16,4 @@ class UserController extends Controller
         $this->model = new Repository($model);
     }
 
-    public function getList(Request $request)
-    {
-        $orderableCols = ['created_at', 'name'];
-        $searchableCols = ['name'];
-        $whereChecks = [];
-        $whereVals = [];
-        $with = [];
-
-        $data = $this->model->getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols);
-
-        return response($data, 200);
-    }
 }

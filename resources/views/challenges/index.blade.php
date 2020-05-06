@@ -55,7 +55,7 @@
         serverSide: true,
         ajax:
         {
-            url: '{{ route("challenges.getList") }}',
+            url: '{{ route("challengesList") }}',
             type: 'GET',
             dataType: 'JSON',
             data:function(data){

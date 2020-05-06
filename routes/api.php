@@ -15,6 +15,6 @@ Route::group(['namespace' => 'Api'], function () {
     });
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::get('challenges/getList', 'ChallengeController@getList');
+        Route::resource('challenges', 'ChallengeController');
     });
 });

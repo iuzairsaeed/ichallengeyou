@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api'], function () {
     Route::group(['middleware' => ['auth', 'checkRole:'.Admin()]], function () {
-        Route::get('challenges/getList', 'ChallengeController@getList')->name('challenges.getList');
-        Route::get('users/getList', 'UserController@getList')->name('users.getList');
+        Route::get('challengesList', 'ChallengeController@index')->name('challengesList');
     });
 });
 
@@ -19,6 +18,7 @@ Route::group(['namespace' => 'Web'], function () {
 
         Route::resource('challenges','ChallengeController');
         Route::resource('users','UserController');
+        Route::get('usersList', 'UserController@getList')->name('users.getList');
     });
 });
 
