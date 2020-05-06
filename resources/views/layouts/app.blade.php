@@ -8,7 +8,7 @@
     <div class="wrapper">
         @if(Auth::check())
             <div id="loading" class="ajax-loader">
-                <img src="{{ asset('app-assets/loading.gif') }}" class="img-responsive"/>
+                <img src="{{ asset('storage/loading.gif') }}" class="img-responsive"/>
             </div>
             @include('inc.sidebar')
             @include('inc.navbar')

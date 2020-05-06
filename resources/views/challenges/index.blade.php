@@ -89,41 +89,5 @@
     $('#date_from, #date_to').change(function(){
         $('#dTable').DataTable().ajax.reload();
     })
-
-    // window.onload = function () {
-    //     $(window).bind('pagehide', function(e){
-    //         if (!e.persisted){
-    //             // Cancel the event
-    //             e.preventDefault();
-    //             //     e=null; // i.e; if form state change show warning box, else don't show it.
-    //             //     $.ajax({
-    //             //         url:  '/enter_log/unload/' +  $('#lastid').val(),
-    //             //         type: 'GET',
-    //             //         async: false,
-    //             //         success: function(data) {
-    //             //             console.log(data);
-    //             //         },
-    //             //         error: function(data) {
-    //             //             console.log(data);
-    //             //         }
-    //             //     });
-    //             return $.ajax({
-    //                 url:  '/enter_log/unload/' +  $('#lastid').val(),
-    //                 type: 'GET',
-    //                 cache: false,
-    //                 async: false,
-	//                 headers: { "cache-control": "no-cache" },
-    //                 success: function(data) {
-    //                     console.log(data);
-    //                 },
-    //                 error: function(data) {
-    //                     console.log(data);
-    //                 }
-    //             }).then(function(data) {
-    //                 return false;
-    //             });
-    //         }
-    //     });
-    // };
 </script>
 @endsection

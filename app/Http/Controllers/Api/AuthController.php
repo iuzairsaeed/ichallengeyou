@@ -3,17 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Notifications\ForgotPasswordNotification;
+use App\Http\Requests\Auth\ChangePasswordRequest;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
-use App\Http\Controllers\Web\Auth\RegisterController;
 
 class AuthController extends Controller
 {
-    protected function response($user)
+    protected function response($user, $statusCode)
     {
+        // Revoke previous tokens...
+        $user->tokens()->delete();
+
         $token = $user->createToken('app-user')->plainTextToken;
-        return [
+
+        $data = [
             'user' => [
                 'name' => $user->name,
                 'username' => $user->username,
@@ -23,11 +31,18 @@ class AuthController extends Controller
             'token' => $token,
             'expiration_minutes' => (int)config('sanctum.expiration')
         ];
+
+        return response($data, $statusCode);
+    }
+
+    function user(Request $request)
+    {
+        return $request->user();
     }
 
     function login(Request $request)
     {
-        $user= User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'These credentials do not match our records.'
@@ -38,34 +53,44 @@ class AuthController extends Controller
             ], 404);
         }
 
-        // Revoke previous tokens...
-        $user->tokens()->delete();
-
-        $response = $this->response($user);
-
-        return response($response, 200);
+        return $this->response($user, 200);
     }
 
-    function register(Request $request)
+    function register(RegisterRequest $request, RegisterController $register)
     {
-        $data = $request->all();
+        $user = $register->create($request->all());
 
-        $register = new RegisterController;
+        return $this->response($user, 201);
+    }
 
-        $validator = $register->validator($data);
-        if ($validator->fails()) {
+    function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user->is_active){
             return response([
-                'message' => $validator->errors()->first()
-            ], 400);
+                'message' => 'Your account has been disabled. Please contact support.'
+            ], 404);
         }
-        $user = $register->create($data);
 
-        $response = $this->response($user);
+        $newPassword = substr(md5(microtime()),rand(0,26),8);
+        $user->password = Hash::make($newPassword);
+        $user->update();
 
-        return response($response, 200);
+        $user->notify(new ForgotPasswordNotification($newPassword));
+
+        return response([
+            'message' => 'An email has been sent to your account with new password. You should receive it within 5 minutes.'
+        ], 200);
     }
-    function user(Request $request)
+
+    function changePassword(ChangePasswordRequest $request)
     {
-            return $request->user();
+        $user = auth()->user();
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return $this->response($user, 200);
     }
 }

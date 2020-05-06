@@ -1,5 +1,7 @@
 <?php
-
+// echo exec("which php");
+// echo dirname(__FILE__);
+// die();
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
