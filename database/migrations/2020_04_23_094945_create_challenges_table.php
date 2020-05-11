@@ -24,6 +24,7 @@ class CreateChallengesTable extends Migration
             $table->unsignedDecimal('amount', 8, 2);
             $table->boolean('terms_accepted')->default(false);
             $table->boolean('isApproved')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

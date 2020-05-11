@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use SoftDeletes, HasApiTokens, Notifiable;
 
     protected $fillable = [
         'name', 'username', 'email', 'password',
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime:m-d-Y h:m A',
         'created_at' => 'datetime:m-d-Y h:m A',
         'updated_at' => 'datetime:m-d-Y h:m A',
+        'deleted_at' => 'datetime:m-d-Y h:m A',
     ];
 
     public function challenges()

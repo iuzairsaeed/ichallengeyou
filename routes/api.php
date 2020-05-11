@@ -16,5 +16,11 @@ Route::group(['namespace' => 'Api'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::resource('challenges', 'ChallengeController');
+        Route::group(['prefix' => 'challenges'], function () {
+            Route::post('{challenge}/comment', 'ChallengeController@comment');
+            Route::post('{challenge}/like', 'ChallengeController@like');
+            Route::post('{challenge}/unlike', 'ChallengeController@unlike');
+            Route::post('{challenge}/favourite', 'ChallengeController@favourite');
+        });
     });
 });

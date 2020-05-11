@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
 use App\Models\Challenge;
+use App\Models\Comment;
+use App\Models\Like;
+use App\Models\Favourite;
 
 class ChallengeController extends Controller
 {
@@ -66,7 +69,10 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge)
     {
-        return $challenge;
+        $data = [
+            'data' => $challenge
+        ];
+        return response($data, 200);
     }
 
     /**
@@ -105,5 +111,72 @@ class ChallengeController extends Controller
     public function destroy(Challenge $challenge)
     {
         return $this->model->delete($challenge);
+    }
+
+    /**
+     * Comment on the specified resource.
+     *
+     * @param  \App\Models\Challenge $challenge
+     * @return \Illuminate\Http\Response
+     */
+    public function comment(Challenge $challenge, Request $request)
+    {
+        $this->validate($request, [
+            'text' => 'required|min:3|max:1000'
+        ]);
+        $comment = new Comment([
+            'text' => $request->text,
+            'user_id' => auth()->id()
+        ]);
+        $challenge->comments()->save($comment);
+        return response('Success', 201);
+    }
+
+    /**
+     * Like the specified resource.
+     *
+     * @param  \App\Models\Challenge $challenge
+     * @return \Illuminate\Http\Response
+     */
+    public function like(Challenge $challenge)
+    {
+        $challenge->likes()->where('user_id', auth()->id())->delete();
+        $like = new Like([
+            'user_id' => auth()->id()
+        ]);
+        $challenge->likes()->save($like);
+        return response('Success', 201);
+    }
+
+    /**
+     * Unlike the specified resource.
+     *
+     * @param  \App\Models\Challenge $challenge
+     * @return \Illuminate\Http\Response
+     */
+    public function unlike(Challenge $challenge)
+    {
+        $challenge->likes()->where('user_id', auth()->id())->delete();
+        return response('Success', 204);
+    }
+
+    /**
+     * Favourite the specified resource.
+     *
+     * @param  \App\Models\Challenge $challenge
+     * @return \Illuminate\Http\Response
+     */
+    public function favourite(Challenge $challenge)
+    {
+        $favourite = $challenge->favourites()->where('user_id', auth()->id())->first();
+        if($favourite){
+            $favourite->delete();
+        }else{
+            $favourite = new Favourite([
+                'user_id' => auth()->id()
+            ]);
+            $challenge->favourites()->save($favourite);
+        }
+        return response('Success', 204);
     }
 }
