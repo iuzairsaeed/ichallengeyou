@@ -9,6 +9,7 @@ use App\Models\Challenge;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Favourite;
+use App\Models\Reaction;
 
 class ChallengeController extends Controller
 {
@@ -146,12 +147,25 @@ class ChallengeController extends Controller
      */
     public function like(Challenge $challenge)
     {
-        $challenge->likes()->where('user_id', auth()->id())->delete();
-        $like = new Like([
-            'user_id' => auth()->id()
-        ]);
-        $challenge->likes()->save($like);
-        return response('Success', 201);
+        $reaction = $challenge->userReaction;
+        if(!$reaction){
+            $reaction = new Reaction([
+                'user_id' => auth()->id(),
+                'like' => true,
+            ]);
+            $challenge->userReaction()->save($reaction);
+        }else{
+            if($reaction->like){
+                $like = false;
+            }else{
+                $like = true;
+            }
+            $reaction->update([
+                'like' => $like,
+                'unlike' => false
+            ]);
+        }
+        return response(['message' => 'Reaction Updated!'], 200);
     }
 
     /**
@@ -162,8 +176,25 @@ class ChallengeController extends Controller
      */
     public function unlike(Challenge $challenge)
     {
-        $challenge->likes()->where('user_id', auth()->id())->delete();
-        return response('Success', 204);
+        $reaction = $challenge->userReaction;
+        if(!$reaction){
+            $reaction = new Reaction([
+                'user_id' => auth()->id(),
+                'unlike' => true,
+            ]);
+            $challenge->userReaction()->save($reaction);
+        }else{
+            if($reaction->unlike){
+                $unlike = false;
+            }else{
+                $unlike = true;
+            }
+            $reaction->update([
+                'like' => false,
+                'unlike' => $unlike
+            ]);
+        }
+        return response(['message' => 'Reaction Updated!'], 200);
     }
 
     /**
@@ -174,15 +205,23 @@ class ChallengeController extends Controller
      */
     public function favourite(Challenge $challenge)
     {
-        $favourite = $challenge->favourites()->where('user_id', auth()->id())->first();
-        if($favourite){
-            $favourite->delete();
-        }else{
-            $favourite = new Favourite([
-                'user_id' => auth()->id()
+        $reaction = $challenge->userReaction;
+        if(!$reaction){
+            $reaction = new Reaction([
+                'user_id' => auth()->id(),
+                'favorite' => true,
             ]);
-            $challenge->favourites()->save($favourite);
+            $challenge->userReaction()->save($reaction);
+        }else{
+            if($reaction->favorite){
+                $favorite = false;
+            }else{
+                $favorite = true;
+            }
+            $reaction->update([
+                'favorite' => $favorite
+            ]);
         }
-        return response('Success', 204);
+        return response(['message' => 'Challenge Added to Favourites!'], 200);
     }
 }

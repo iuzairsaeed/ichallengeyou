@@ -33,14 +33,24 @@ class Challenge extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function userReaction()
+    {
+        return $this->hasOne(Reaction::class)->where('user_id', auth()->id());
+    }
+
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Reaction::class)->where('like', true);
+    }
+
+    public function unlikes()
+    {
+        return $this->hasMany(Reaction::class)->where('unlike', true);
     }
 
     public function favourites()
     {
-        return $this->hasMany(Favourite::class);
+        return $this->hasMany(Reaction::class)->where('favorite', true);
     }
 
     public function donations()
