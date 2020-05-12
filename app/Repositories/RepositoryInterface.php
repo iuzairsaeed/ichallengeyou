@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 interface RepositoryInterface
 {
-    public function all();
+    public function all(array $with);
 
     public function create(array $data);
 

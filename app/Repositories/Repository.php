@@ -16,9 +16,9 @@ class Repository implements RepositoryInterface
     }
 
     // Get all instances of model
-    public function all()
+    public function all($with)
     {
-        return $this->model->all();
+        return $this->model->with($with)->get();
     }
 
     // create a new record in the database

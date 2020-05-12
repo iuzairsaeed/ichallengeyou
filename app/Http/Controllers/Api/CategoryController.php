@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $data = [
-            'data' => $this->model->all()
+            'data' => $this->model->all(['childCategories', 'parentCategory'])
         ];
         return response($data, 200);
     }

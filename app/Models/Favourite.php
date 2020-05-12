@@ -13,6 +13,10 @@ class Favourite extends Model
         'updated_at' => 'datetime:m-d-Y h:m A',
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
     public function challenge()
     {
         return $this->belongsTo(Challenge::class);
