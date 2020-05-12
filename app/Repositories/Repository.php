@@ -116,12 +116,6 @@ class Repository implements RepositoryInterface
         }
         $records = $records->limit($length)->offset($start)->get();
 
-        $serial = $start + 1;
-        $records->map(function ($item) use (&$serial) {
-            $item['serial'] = $serial++;
-            return $item;
-        });
-
         $message = 'Success';
         if($records->count() == 0){
             $message = 'No data available.';

@@ -34,6 +34,11 @@ class ChallengeController extends Controller
 
         $data = $this->model->getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols);
 
+        $serial = ($request->start ?? 0) + 1;
+        collect($data['data'])->map(function ($item) use (&$serial) {
+            $item['serial'] = $serial++;
+            return $item;
+        });
         return response($data, 200);
     }
 
@@ -58,6 +63,7 @@ class ChallengeController extends Controller
         $this->validate($request, [
             'name' => 'required|min:2'
         ]);
+        $model->setStatus('status-name');
         return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 

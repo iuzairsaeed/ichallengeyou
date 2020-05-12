@@ -22,5 +22,6 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{challenge}/unlike', 'ChallengeController@unlike');
             Route::post('{challenge}/favourite', 'ChallengeController@favourite');
         });
+        Route::resource('categories', 'CategoryController');
     });
 });

@@ -4,12 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\ModelStatus\HasStatuses;
 
 class Challenge extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasStatuses;
 
     protected $guarded = [];
+
+    protected $hidden = [
+        'user_id', 'updated_at', 'deleted_at'
+    ];
 
     protected $casts = [
         'start_time' => 'datetime:m-d-Y h:m A',
@@ -36,5 +41,10 @@ class Challenge extends Model
     public function favourites()
     {
         return $this->hasMany(Favourite::class);
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
     }
 }

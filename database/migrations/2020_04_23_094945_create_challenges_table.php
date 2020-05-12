@@ -23,7 +23,7 @@ class CreateChallengesTable extends Migration
             $table->string('location')->nullable();
             $table->unsignedDecimal('amount', 8, 2);
             $table->boolean('terms_accepted')->default(false);
-            $table->boolean('isApproved')->default(false);
+            $table->boolean('is_approved')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
