@@ -10,7 +10,6 @@ Route::group(['namespace' => 'Api'], function () {
 
         Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('user', 'AuthController@user');
-            Route::put('changePassword', 'AuthController@changePassword');
         });
     });
 
@@ -24,5 +23,11 @@ Route::group(['namespace' => 'Api'], function () {
         });
         Route::resource('categories', 'CategoryController');
         Route::resource('favorites', 'FavoriteController');
+
+        Route::group(['prefix' => 'user'], function () {
+            Route::put('changePassword', 'AuthController@changePassword');
+            Route::put('updateProfile', 'UserController@updateProfile');
+            Route::put('updateAvatar', 'UserController@updateAvatar');
+        });
     });
 });
