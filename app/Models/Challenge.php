@@ -13,7 +13,7 @@ class Challenge extends Model
     protected $guarded = [];
 
     protected $hidden = [
-        'user_id', 'updated_at', 'deleted_at'
+        'user_id', 'updated_at', 'deleted_at', 'userReaction'
     ];
 
     protected $casts = [

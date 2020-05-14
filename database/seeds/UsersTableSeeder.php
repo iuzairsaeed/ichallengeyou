@@ -18,13 +18,15 @@ class UsersTableSeeder extends Seeder
             'name' => 'Admin User',
             'username' => 'admin',
             'email' => 'admin@idu.com',
-            'password' => Hash::make('secret')
+            'password' => Hash::make('secret'),
+            'created_at' => now()
         ], [
             'role' => Normal(),
             'name' => 'Test User',
             'username' => 'user',
             'email' => 'user@idu.com',
-            'password' => Hash::make('secret')
+            'password' => Hash::make('secret'),
+            'created_at' => now()
         ]
         ];
         User::insert($data);

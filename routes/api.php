@@ -7,20 +7,17 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post('login', 'AuthController@login');
         Route::post('register', 'AuthController@register');
         Route::put('forgotPassword', 'AuthController@forgotPassword');
-
-        Route::group(['middleware' => 'auth:sanctum'], function () {
-            Route::get('user', 'AuthController@user');
-        });
     });
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::resource('challenges', 'ChallengeController');
-        Route::group(['prefix' => 'challenges'], function () {
-            Route::post('{challenge}/comment', 'ChallengeController@comment');
-            Route::post('{challenge}/like', 'ChallengeController@like');
-            Route::post('{challenge}/unlike', 'ChallengeController@unlike');
-            Route::post('{challenge}/favorite', 'ChallengeController@favorite');
+        Route::group(['prefix' => 'challenges/{challenge}'], function () {
+            Route::post('comment', 'ChallengeController@comment');
+            Route::post('like', 'ChallengeController@like');
+            Route::post('unlike', 'ChallengeController@unlike');
+            Route::post('favorite', 'ChallengeController@favorite');
         });
+
         Route::resource('categories', 'CategoryController');
         Route::resource('favorites', 'FavoriteController');
 

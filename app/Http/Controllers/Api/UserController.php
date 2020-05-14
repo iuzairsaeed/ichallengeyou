@@ -24,7 +24,8 @@ class UserController extends Controller
         $user->update($request->all());
 
         return response([
-            'message' => 'Profile has been updated.'
+            'message' => 'Profile has been updated.',
+            'user' => $user
         ], 200);
     }
 

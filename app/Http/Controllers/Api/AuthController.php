@@ -36,11 +36,6 @@ class AuthController extends Controller
         return response($data, $statusCode);
     }
 
-    function user(Request $request)
-    {
-        return $request->user();
-    }
-
     function login(Request $request)
     {
         $user = User::where('username', $request->username)->first();
