@@ -29,6 +29,11 @@ class User extends Authenticatable
         'deleted_at' => 'datetime:m-d-Y h:m A',
     ];
 
+    public function getAvatarAttribute($value)
+    {
+        return avatarPath().$value;
+    }
+
     public function challenges()
     {
         return $this->hasMany(Challenge::class);

@@ -26,6 +26,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'username' => $user->username,
                 'email' => $user->email,
+                'avatar' => $user->avatar,
                 'is_premium' => $user->is_premium,
             ],
             'token' => $token,
@@ -65,7 +66,7 @@ class AuthController extends Controller
 
     function forgotPassword(ForgotPasswordRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('username', $request->username)->first();
 
         if (!$user->is_active){
             return response([

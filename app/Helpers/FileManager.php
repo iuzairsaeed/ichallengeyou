@@ -24,3 +24,8 @@ function upload(object $file, string $uploadPath,string $oldFile =null)
     }
     return $path;
 }
+
+function avatarPath()
+{
+    return 'storage/avatars/';
+}

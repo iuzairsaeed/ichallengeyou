@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Repositories\Repository;
 use App\Models\Challenge;
 use App\Models\Comment;
-use App\Models\Like;
-use App\Models\Favourite;
 use App\Models\Reaction;
 
 class ChallengeController extends Controller
@@ -38,6 +36,9 @@ class ChallengeController extends Controller
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
+            $item['like'] = $item->userReaction->like ?? false;
+            $item['unlike'] = $item->userReaction->unlike ?? false;
+            $item['favorite'] = $item->userReaction->favorite ?? false;
             return $item;
         });
         return response($data, 200);
@@ -76,8 +77,11 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge)
     {
+        $challenge['like'] = $challenge->userReaction->like ?? false;
+        $challenge['unlike'] = $challenge->userReaction->unlike ?? false;
+        $challenge['favorite'] = $challenge->userReaction->favorite ?? false;
         $data = [
-            'data' => $challenge
+            'data' => $challenge,
         ];
         return response($data, 200);
     }
@@ -155,13 +159,8 @@ class ChallengeController extends Controller
             ]);
             $challenge->userReaction()->save($reaction);
         }else{
-            if($reaction->like){
-                $like = false;
-            }else{
-                $like = true;
-            }
             $reaction->update([
-                'like' => $like,
+                'like' => $reaction->like ? false : true,
                 'unlike' => false
             ]);
         }
@@ -184,26 +183,21 @@ class ChallengeController extends Controller
             ]);
             $challenge->userReaction()->save($reaction);
         }else{
-            if($reaction->unlike){
-                $unlike = false;
-            }else{
-                $unlike = true;
-            }
             $reaction->update([
                 'like' => false,
-                'unlike' => $unlike
+                'unlike' => $reaction->unlike ? false : true
             ]);
         }
         return response(['message' => 'Reaction Updated!'], 200);
     }
 
     /**
-     * Favourite the specified resource.
+     * Favorite the specified resource.
      *
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function favourite(Challenge $challenge)
+    public function favorite(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
         if(!$reaction){
@@ -213,15 +207,10 @@ class ChallengeController extends Controller
             ]);
             $challenge->userReaction()->save($reaction);
         }else{
-            if($reaction->favorite){
-                $favorite = false;
-            }else{
-                $favorite = true;
-            }
             $reaction->update([
-                'favorite' => $favorite
+                'favorite' => $reaction->favorite ? false : true
             ]);
         }
-        return response(['message' => 'Challenge Added to Favourites!'], 200);
+        return response(['message' => 'Challenge Added to Favorites!'], 200);
     }
 }

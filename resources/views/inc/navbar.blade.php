@@ -13,7 +13,7 @@
           <li class="dropdown nav-item mr-0">
             <a id="dropdownBasic3" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-user-link dropdown-toggle">
               <span class="avatar avatar-online">
-                <img id="navbar-avatar" src="{{ asset('storage/avatar.png') }}" alt="avatar"/>
+                <img id="navbar-avatar" src="{{ asset($user->avatar) }}" alt="avatar"/>
               </span>
             </a>
             <div aria-labelledby="dropdownBasic3" class="dropdown-menu dropdown-menu-right">

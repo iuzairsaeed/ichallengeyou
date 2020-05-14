@@ -20,8 +20,9 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{challenge}/comment', 'ChallengeController@comment');
             Route::post('{challenge}/like', 'ChallengeController@like');
             Route::post('{challenge}/unlike', 'ChallengeController@unlike');
-            Route::post('{challenge}/favourite', 'ChallengeController@favourite');
+            Route::post('{challenge}/favorite', 'ChallengeController@favorite');
         });
         Route::resource('categories', 'CategoryController');
+        Route::resource('favorites', 'FavoriteController');
     });
 });

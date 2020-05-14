@@ -48,7 +48,7 @@ class Challenge extends Model
         return $this->hasMany(Reaction::class)->where('unlike', true);
     }
 
-    public function favourites()
+    public function favorites()
     {
         return $this->hasMany(Reaction::class)->where('favorite', true);
     }

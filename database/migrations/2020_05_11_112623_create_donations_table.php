@@ -17,6 +17,7 @@ class CreateDonationsTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('challenge_id');
+            $table->unsignedDecimal('amount', 8, 2);
             $table->timestamps();
         });
     }
