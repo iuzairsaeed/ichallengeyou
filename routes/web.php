@@ -15,6 +15,8 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('dashboard', 'DashboardController@index')->name('dashboard');
         Route::get('changePassword','ProfileController@showChangePasswordForm');
         Route::post('changePassword','ProfileController@changePassword')->name('changePassword');
+        Route::get('profile','ProfileController@showProfileForm');
+        Route::post('profile','ProfileController@profile')->name('profile');
 
         Route::resource('challenges','ChallengeController');
         Route::resource('users','UserController');

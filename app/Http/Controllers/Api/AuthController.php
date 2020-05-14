@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'username' => $user->username,
                 'email' => $user->email,
                 'avatar' => $user->avatar,
-                'is_premium' => $user->is_premium,
+                'is_premium' => $user->is_premium ?? false,
             ],
             'token' => $token,
             'expiration_minutes' => (int)config('sanctum.expiration')

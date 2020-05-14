@@ -56,10 +56,3 @@
     </div>
 </section>
 @endsection
-@section('afterScript')
-<script>
-    @if(session()->has('status'))
-        swal('Updated',"{{session()->get('status')}}",'success');
-    @endif
-</script>
-@endsection

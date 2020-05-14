@@ -17,3 +17,13 @@
 		</script>
     @endif
 </div>
+@if(session('success'))
+    <script>
+        swal('Message',"{{session('success')}}",'success');
+    </script>
+@endif
+@if(session('error'))
+    <script>
+        swal('Message',"{{session('error')}}",'error');
+    </script>
+@endif

@@ -17,5 +17,31 @@ $.fn.select2.defaults.set('theme', 'bootstrap');
 const toasterAnimationObject = {
 	showMethod: 'slideDown',
 	hideMethod: 'slideUp',
-	timeOut: 3000,
+	timeOut: 4000,
 };
+
+const inputs = document.querySelectorAll('input, select');
+for (const el of inputs) {
+	el.oldValue = el.value + el.checked;
+}
+
+// Declares function and call it directly
+var setEnabled;
+(setEnabled = function () {
+	var e = true;
+	for (const el of inputs) {
+		if (el.oldValue !== el.value + el.checked) {
+			e = false;
+			break;
+		}
+	}
+	if ($('button[type="submit"]').length) {
+		document.querySelector("button[type='submit']").disabled = e;
+	}
+	if ($('input[type="submit"]').length) {
+		document.querySelector("input[type='submit']").disabled = e;
+	}
+})();
+
+document.oninput = setEnabled;
+document.onchange = setEnabled;
