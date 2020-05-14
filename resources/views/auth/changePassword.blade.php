@@ -26,14 +26,14 @@
                                     </div>
                                     <div class="col-md-12  ">
                                         <div class="form-group">
-                                            <label for="new_password">New Password</label>
-                                            <input required id="new_password" name="new_password" class="form-control border-primary" type="password" placeholder="Enter new password">
+                                            <label for="password">New Password</label>
+                                            <input required id="password" name="password" class="form-control border-primary" type="password" placeholder="Enter new password">
                                         </div>
                                     </div>
                                     <div class="col-md-12  ">
                                         <div class="form-group">
-                                            <label for="new_confirm_password">Confirm New Password</label>
-                                            <input required id="new_confirm_password" name="new_confirm_password" class="form-control border-primary" type="password" placeholder="Repeat new password">
+                                            <label for="password_confirmation">Confirm New Password</label>
+                                            <input required id="password_confirmation" name="password_confirmation" class="form-control border-primary" type="password" placeholder="Repeat new password">
                                         </div>
                                     </div>
                                 </div>

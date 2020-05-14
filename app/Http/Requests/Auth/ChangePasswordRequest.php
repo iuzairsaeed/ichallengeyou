@@ -26,7 +26,7 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'old_password' => ['bail', 'required', new MatchOldPassword],
-            'password' => ['bail', 'required', 'string', 'min:8', 'regex:/[@$!%*#?&]/', 'confirmed'],
+            'password' => ['bail', 'required', 'string', 'min:8', 'regex:/[@$!%*#?&]/', 'confirmed', 'different:old_password'],
         ];
     }
 
@@ -38,7 +38,8 @@ class ChangePasswordRequest extends FormRequest
     public function messages()
     {
         return [
-            'password.regex' => 'Password must contain at least one special character.'
+            'password.regex' => 'Password must contain at least one special character.',
+            'password.different' => 'New password and current password must be different.'
         ];
     }
 }
