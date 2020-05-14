@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Challenges\CreateChallengeRequest;
 use App\Repositories\Repository;
 use App\Models\Challenge;
 use App\Models\Comment;
 use App\Models\Reaction;
+use Carbon\Carbon;
 
 class ChallengeController extends Controller
 {
@@ -60,13 +62,14 @@ class ChallengeController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateChallengeRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|min:2'
+        $request->merge([
+            'user_id' => auth()->id(),
+            'start_time' => Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString()
         ]);
-        $model->setStatus('status-name');
-        return $this->model->create($request->only($this->model->getModel()->fillable));
+        $this->model->create($request->only($this->model->getModel()->fillable));
+        return response(['message' => 'Challenge has been created.'], 200);
     }
 
     /**
@@ -109,6 +112,7 @@ class ChallengeController extends Controller
         $this->validate($request, [
             'name' => 'required|min:2'
         ]);
+        $challenge->setStatus('status-name');
         $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
         return $this->model->find($challenge->id);
     }

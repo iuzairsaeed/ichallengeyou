@@ -23,7 +23,7 @@ class ChallengesTableSeeder extends Seeder
                 'file' => $faker->imageUrl,
                 'location' => $faker->country,
                 'amount' => $faker->randomNumber(2),
-                'terms_accepted' => $faker->boolean(50),
+                'duration_minutes' => $faker->numberBetween(300, 900),
                 'is_approved' => $faker->boolean(50),
             ]);
         }
