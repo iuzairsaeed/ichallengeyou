@@ -40,7 +40,8 @@
 		"files": [
 			"app/Helpers/RoleNames.php",
 			"app/Helpers/FileManager.php",
-			"app/Helpers/Helper.php"
+			"app/Helpers/Helper.php",
+			"app/Helpers/ChallengeStatuses.php"
 		],
 		"psr-4": {
 			"App\\": "app/"

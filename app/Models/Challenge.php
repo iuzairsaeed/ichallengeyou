@@ -25,6 +25,11 @@ class Challenge extends Model
         'deleted_at' => 'datetime:m-d-Y h:m A',
     ];
 
+    public function getFileAttribute($value)
+    {
+        return challengesPath().$value;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class)->select(['id','name','username']);

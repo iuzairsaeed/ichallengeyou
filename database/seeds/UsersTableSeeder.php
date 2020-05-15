@@ -15,6 +15,7 @@ class UsersTableSeeder extends Seeder
     {
         $data = [[
             'role' => Admin(),
+            'balance' => 0.00,
             'name' => 'Admin User',
             'username' => 'admin',
             'email' => 'admin@idu.com',
@@ -22,6 +23,7 @@ class UsersTableSeeder extends Seeder
             'created_at' => now()
         ], [
             'role' => Normal(),
+            'balance' => 1000.00,
             'name' => 'Test User',
             'username' => 'user',
             'email' => 'user@idu.com',

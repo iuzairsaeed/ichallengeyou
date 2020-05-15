@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Challenges\CreateChallengeRequest;
+use App\Http\Requests\Comments\CreateCommentRequest;
+use App\Http\Requests\Donations\CreateDonationRequest;
 use App\Repositories\Repository;
 use App\Models\Challenge;
 use App\Models\Comment;
 use App\Models\Reaction;
+use App\Models\Donation;
 use Carbon\Carbon;
 
 class ChallengeController extends Controller
@@ -27,13 +30,14 @@ class ChallengeController extends Controller
      */
     public function index(Request $request)
     {
-        $orderableCols = ['created_at', 'title', 'start_time', 'user.name'];
+        $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend'];
         $searchableCols = ['title'];
         $whereChecks = [];
         $whereVals = [];
         $with = ['user'];
+        $withCount = [];
 
-        $data = $this->model->getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols);
+        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereVals, $searchableCols, $orderableCols);
 
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
@@ -73,6 +77,7 @@ class ChallengeController extends Controller
         $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
 
         $this->model->create($data);
+        $this->model->setStatus(Pending());
         return response(['message' => 'Challenge has been created.'], 200);
     }
 
@@ -116,7 +121,6 @@ class ChallengeController extends Controller
         $this->validate($request, [
             'name' => 'required|min:2'
         ]);
-        $challenge->setStatus('status-name');
         $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
         return $this->model->find($challenge->id);
     }
@@ -133,22 +137,42 @@ class ChallengeController extends Controller
     }
 
     /**
+     * Donate on the specified resource.
+     *
+     * @param  \App\Models\Challenge $challenge
+     * @return \Illuminate\Http\Response
+     */
+    public function donation(Challenge $challenge, CreateDonationRequest $request)
+    {
+        $user = auth()->user();
+        if($request->amount > $user->balance){
+            return response(['message' => 'Donation amount cannot be greater than current account balance.'], 200);
+        }
+        $donation = new Donation([
+            'user_id' => $user->id,
+            'amount' => $request->amount
+        ]);
+        $challenge->donations()->save($donation);
+        $challenge->increment('trend');
+        $user->balance -= $request->amount;
+        $user->update();
+        return response(['message' => 'Donation has been submitted.'], 200);
+    }
+
+    /**
      * Comment on the specified resource.
      *
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function comment(Challenge $challenge, Request $request)
+    public function comment(Challenge $challenge, CreateCommentRequest $request)
     {
-        $this->validate($request, [
-            'text' => 'required|min:3|max:1000'
-        ]);
         $comment = new Comment([
-            'text' => $request->text,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
+            'text' => $request->text
         ]);
         $challenge->comments()->save($comment);
-        return response('Success', 201);
+        return response(['message' => 'Comment has been submitted.'], 200);
     }
 
     /**
@@ -166,11 +190,13 @@ class ChallengeController extends Controller
                 'like' => true,
             ]);
             $challenge->userReaction()->save($reaction);
+            $challenge->increment('trend');
         }else{
             $reaction->update([
                 'like' => $reaction->like ? false : true,
                 'unlike' => false
             ]);
+            $challenge->decrement('trend');
         }
         return response(['message' => 'Reaction Updated!'], 200);
     }

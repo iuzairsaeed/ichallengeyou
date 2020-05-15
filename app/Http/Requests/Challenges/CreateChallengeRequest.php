@@ -34,7 +34,7 @@ class CreateChallengeRequest extends FormRequest
             'duration_minutes' => ['required', 'integer'],
             'file' => ['required', 'mimes:jpg,jpeg,png,mp4,webm'],
             'location' => ['required', 'string'],
-            'amount' => ['required', 'integer'],
+            'amount' => ['required', 'numeric', 'min:1'],
         ];
     }
 

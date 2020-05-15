@@ -23,8 +23,9 @@ class UserController extends Controller
         $whereChecks = [];
         $whereVals = [];
         $with = [];
+        $withCount = [];
 
-        $data = $this->model->getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols);
+        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereVals, $searchableCols, $orderableCols);
 
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {

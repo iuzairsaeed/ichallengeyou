@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('avatar')->default('no-avatar.png');
+            $table->unsignedDecimal('balance', 8, 2)->default('0.00');
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_active')->default(true);
             $table->softDeletes();

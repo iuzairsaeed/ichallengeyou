@@ -11,11 +11,13 @@ Route::group(['namespace' => 'Api'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::resource('challenges', 'ChallengeController');
-        Route::group(['prefix' => 'challenges/{challenge}'], function () {
-            Route::post('comment', 'ChallengeController@comment');
-            Route::post('like', 'ChallengeController@like');
-            Route::post('unlike', 'ChallengeController@unlike');
-            Route::post('favorite', 'ChallengeController@favorite');
+        Route::group(['prefix' => 'challenge'], function () {
+            Route::get('getTrending', 'ChallengeController@getTrending');
+            Route::post('{challenge}/donation', 'ChallengeController@donation');
+            Route::post('{challenge}/comment', 'ChallengeController@comment');
+            Route::post('{challenge}/like', 'ChallengeController@like');
+            Route::post('{challenge}/unlike', 'ChallengeController@unlike');
+            Route::post('{challenge}/favorite', 'ChallengeController@favorite');
         });
 
         Route::resource('categories', 'CategoryController');

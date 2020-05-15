@@ -74,7 +74,7 @@ class Repository implements RepositoryInterface
     }
 
     // Get data for datatable
-    public function getData($request, $with, $whereChecks, $whereVals, $searchableCols, $orderableCols)
+    public function getData($request, $with, $withCount, $whereChecks, $whereVals, $searchableCols, $orderableCols)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
@@ -86,12 +86,14 @@ class Repository implements RepositoryInterface
         $from = $request->date_from;
         $to = $request->date_to;
 
-        $records = $this->with($with);
+        $records = $this->with($with)->withCount($withCount);
         if($whereChecks){
             foreach($whereChecks as $key => $check){
                 $records->where($check, $whereVals[$key]);
             }
         }
+        $recordsTotal = $records->count();
+
         if($from){
             $records->whereDate('created_at' ,'>=', $from);
         }
@@ -99,7 +101,6 @@ class Repository implements RepositoryInterface
             $records->whereDate('created_at' ,'<=', $to);
         }
 
-        $recordsTotal = $records->count();
         if($search){
             $records->where(function($query) use ($searchableCols, $search){
                 foreach($searchableCols as $col){
@@ -110,7 +111,12 @@ class Repository implements RepositoryInterface
         $recordsFiltered = $records->count();
 
         if($dir){
-            $records->orderBy($orderableCols[$sort], $dir);
+            if(in_array($sort, $orderableCols)){
+                $orderBy = $sort;
+            }else{
+                $orderBy = $orderableCols[$sort];
+            }
+            $records->orderBy($orderBy, $dir);
         }else{
             $records->latest();
         }
