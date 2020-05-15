@@ -23,7 +23,12 @@ function uploadFile(object $file, string $uploadPath, string $oldFile = null)
     return $fileNameToStore;
 }
 
-function avatarPath()
+function avatarsPath()
 {
     return 'storage/avatars/';
+}
+
+function challengesPath()
+{
+    return 'storage/challenges/';
 }

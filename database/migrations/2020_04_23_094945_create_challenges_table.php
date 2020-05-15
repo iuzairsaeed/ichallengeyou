@@ -19,7 +19,9 @@ class CreateChallengesTable extends Migration
             $table->string('title');
             $table->longText('description');
             $table->timestamp('start_time');
-            $table->unsignedBigInteger('duration_minutes');
+            $table->unsignedInteger('duration_days');
+            $table->unsignedInteger('duration_hours');
+            $table->unsignedInteger('duration_minutes');
             $table->string('file')->default('no-image.png');
             $table->string('location')->nullable();
             $table->unsignedDecimal('amount', 8, 2);

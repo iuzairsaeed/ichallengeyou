@@ -31,7 +31,7 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value)
     {
-        return avatarPath().$value;
+        return avatarsPath().$value;
     }
 
     public function challenges()

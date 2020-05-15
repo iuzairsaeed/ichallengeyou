@@ -14,7 +14,7 @@ class ChallengesTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             Challenge::create([
                 'user_id' => $faker->randomElement([1,2]),
                 'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
@@ -23,7 +23,9 @@ class ChallengesTableSeeder extends Seeder
                 'file' => $faker->imageUrl,
                 'location' => $faker->country,
                 'amount' => $faker->randomNumber(2),
-                'duration_minutes' => $faker->numberBetween(300, 900),
+                'duration_days' => $faker->numberBetween(0, 10),
+                'duration_hours' => $faker->numberBetween(0, 24),
+                'duration_minutes' => $faker->numberBetween(0, 60),
                 'is_approved' => $faker->boolean(50),
             ]);
         }

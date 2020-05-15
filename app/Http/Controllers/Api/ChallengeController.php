@@ -64,11 +64,15 @@ class ChallengeController extends Controller
      */
     public function store(CreateChallengeRequest $request)
     {
-        $request->merge([
-            'user_id' => auth()->id(),
-            'start_time' => Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString()
-        ]);
-        $this->model->create($request->only($this->model->getModel()->fillable));
+        $data = $request->all();
+
+        if($request->hasFile('file')){
+            $data['file'] = uploadFile($request->file, challengesPath(), null);
+        }
+        $data['user_id'] = auth()->id();
+        $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+
+        $this->model->create($data);
         return response(['message' => 'Challenge has been created.'], 200);
     }
 
