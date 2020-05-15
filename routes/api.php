@@ -11,8 +11,7 @@ Route::group(['namespace' => 'Api'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::resource('challenges', 'ChallengeController');
-        Route::group(['prefix' => 'challenge'], function () {
-            Route::get('getTrending', 'ChallengeController@getTrending');
+        Route::group(['prefix' => 'challenges'], function () {
             Route::post('{challenge}/donation', 'ChallengeController@donation');
             Route::post('{challenge}/comment', 'ChallengeController@comment');
             Route::post('{challenge}/like', 'ChallengeController@like');
