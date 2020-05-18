@@ -18,14 +18,16 @@ class UserController extends Controller
 
     public function getList(Request $request)
     {
-        $orderableCols = ['created_at', 'name'];
+        $orderableCols = ['created_at', 'name', 'username', 'email'];
         $searchableCols = ['name'];
-        $whereChecks = [];
-        $whereVals = [];
+        $whereChecks = ['id'];
+        $whereOps = ['<>'];
+        $whereVals = [auth()->id()];
         $with = [];
         $withCount = [];
+        $currentStatus = [];
 
-        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereVals, $searchableCols, $orderableCols);
+        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {

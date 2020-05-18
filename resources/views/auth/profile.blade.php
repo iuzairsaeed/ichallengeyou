@@ -11,7 +11,7 @@
                 </div>
                 <div class="card-body">
                     <div class="px-3">
-                        <form action="{{route('profile')}}" method="post" enctype="multipart/form-data" onSubmit="document.getElementById('submit').disabled=true;">
+                        <form action="{{route('profile')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-body">
                                 @foreach ($errors->all() as $error)

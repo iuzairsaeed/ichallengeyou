@@ -33,11 +33,13 @@ class ChallengeController extends Controller
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend'];
         $searchableCols = ['title'];
         $whereChecks = [];
+        $whereOps = [];
         $whereVals = [];
         $with = ['user'];
         $withCount = [];
+        $currentStatus = [Approved()];
 
-        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereVals, $searchableCols, $orderableCols);
+        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {

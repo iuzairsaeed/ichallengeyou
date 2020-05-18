@@ -31,7 +31,7 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value)
     {
-        return avatarsPath().$value;
+        return file_exists(avatarsPath().$value) ? avatarsPath().$value : avatarsPath().'no-avatar.png';
     }
 
     public function challenges()

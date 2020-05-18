@@ -15,7 +15,7 @@ class ChallengesTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         for ($i = 0; $i < 15; $i++) {
-            Challenge::create([
+            $challenge = Challenge::create([
                 'user_id' => $faker->randomElement([1,2]),
                 'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
                 'description' => $faker->paragraph(),
@@ -28,6 +28,7 @@ class ChallengesTableSeeder extends Seeder
                 'duration_minutes' => $faker->numberBetween(0, 60),
                 'is_approved' => $faker->boolean(50),
             ]);
+            $challenge->setStatus(Pending());
         }
     }
 }

@@ -18,6 +18,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -37,29 +39,28 @@
         serverSide: true,
         ajax:
         {
-            "url": '{{ route("users.getList") }}',
-            "type": 'GET',
-            "dataType": "JSON",
-            "error": function (reason) {
+            url: '{{ route("users.getList") }}',
+            type: 'GET',
+            dataType: "JSON",
+            error: function (reason) {
                 return true;
             }
         },
         columns: [
             { data: 'serial'},
             { data: 'name' },
+            { data: 'username' },
+            { data: 'email' },
             { data: 'actions', render:function (data, type, full, meta) {
                                     return `<a href="/users/${full.id}" class="showStatus info p-0 mr-2 success" title="View">
                                                 <i class="ft-eye font-medium-3"></i>
-                                            </a>
-                                            <a href="/users/${full.id}/edit/" class="edit success p-0 mr-2" title="Edit">
-                                                <i class="ft-edit font-medium-3"></i>
                                             </a>`;
                                 }
             }
         ],
         columnDefs: [
             { width: "10%", "targets": [-1, 0] },
-            { orderable: false, targets: [-2, -1] }
+            { orderable: false, targets: [-1] }
         ],
     });
 </script>

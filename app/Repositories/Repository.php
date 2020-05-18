@@ -74,7 +74,7 @@ class Repository implements RepositoryInterface
     }
 
     // Get data for datatable
-    public function getData($request, $with, $withCount, $whereChecks, $whereVals, $searchableCols, $orderableCols)
+    public function getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
@@ -86,10 +86,14 @@ class Repository implements RepositoryInterface
         $from = $request->date_from;
         $to = $request->date_to;
 
-        $records = $this->with($with)->withCount($withCount);
+        $records = $this->model->with($with)->withCount($withCount);
+        if($currentStatus){
+            $records->currentStatus($currentStatus);
+        }
+
         if($whereChecks){
             foreach($whereChecks as $key => $check){
-                $records->where($check, $whereVals[$key]);
+                $records->where($check, $whereOps[$key], $whereVals[$key]);
             }
         }
         $recordsTotal = $records->count();

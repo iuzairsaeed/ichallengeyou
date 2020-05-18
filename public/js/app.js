@@ -1307,3 +1307,7 @@ var setEnabled;
 
 document.oninput = setEnabled;
 document.onchange = setEnabled;
+
+$('form').submit(function () {
+	$(this).find(':input[type=submit]').prop('disabled', true);
+});

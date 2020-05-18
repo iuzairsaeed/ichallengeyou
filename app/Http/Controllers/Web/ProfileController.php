@@ -23,7 +23,7 @@ class ProfileController extends Controller
 
         if($request->hasFile('avatar')){
             $deleteFile = $user->getAttributes()['avatar'] != 'no-avatar.png' ? $user->avatar : null;
-            $file_name = uploadFile($request->avatar, avatarPath(), $deleteFile);
+            $file_name = uploadFile($request->avatar, avatarsPath(), $deleteFile);
             $data['avatar'] = $file_name;
         }
         $user->fill($data);

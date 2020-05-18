@@ -16,6 +16,32 @@ class ChallengeController extends Controller
         $this->model = new Repository($model);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getList(Request $request)
+    {
+        $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend'];
+        $searchableCols = ['title'];
+        $whereChecks = [];
+        $whereOps = [];
+        $whereVals = [];
+        $with = ['user'];
+        $withCount = [];
+        $currentStatus = [];
+
+        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+
+        $serial = ($request->start ?? 0) + 1;
+        collect($data['data'])->map(function ($item) use (&$serial) {
+            $item['serial'] = $serial++;
+            return $item;
+        });
+        return response($data, 200);
+    }
+
     public function index()
     {
         return view('challenges.index');
