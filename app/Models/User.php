@@ -32,6 +32,11 @@ class User extends Authenticatable
         return file_exists(avatarsPath().$value) ? avatarsPath().$value : avatarsPath().'no-avatar.png';
     }
 
+    public function getBalanceAttribute($value)
+    {
+        return $value ? get_setting_option('currency').$value : null;
+    }
+
     public function challenges()
     {
         return $this->hasMany(Challenge::class);

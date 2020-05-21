@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Setting;
 use Hash;
 
 class AuthController extends Controller
