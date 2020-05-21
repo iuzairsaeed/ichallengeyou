@@ -21,4 +21,9 @@ class Amount extends Model
     {
         return $this->belongsTo(Challenge::class);
     }
+
+    public function getAmountAttribute($value)
+    {
+        return $value ? get_setting_option('currency').$value : null;
+    }
 }
