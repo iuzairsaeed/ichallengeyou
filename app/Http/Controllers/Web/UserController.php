@@ -55,7 +55,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        // return view('users.create');
     }
 
     /**
@@ -66,12 +66,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|min:2'
-        ]);
-        return $this->model->create($request->only($this->model->getModel()->fillable));
+        // $this->validate($request, [
+        //     'name' => 'required|min:2'
+        // ]);
+        // $this->model->create($request->only($this->model->getModel()->fillable));
 
-        return redirect('users')->with('success','Product created successfully.');
+        // return redirect('users')->with('success','User created successfully.');
     }
 
     /**
@@ -93,7 +93,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        // return view('users.edit', compact('user'));
     }
 
     /**
@@ -106,11 +106,12 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->validate($request, [
-            'name' => 'required|min:2'
+            'is_premium' => 'required|boolean',
+            'is_active' => 'required|boolean'
         ]);
         $this->model->update($request->only($this->model->getModel()->fillable), $user);
 
-        return redirect('users')->with('success','Product updated successfully');
+        return redirect('users')->with('success','User updated successfully');
     }
 
     /**
@@ -121,8 +122,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->model->delete($user);
+        // $this->model->delete($user);
 
-        return redirect('users')->with('success','User deleted successfully');
+        // return redirect('users')->with('success','User deleted successfully');
     }
 }

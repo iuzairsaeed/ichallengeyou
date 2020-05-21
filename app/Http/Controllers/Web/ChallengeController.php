@@ -54,10 +54,10 @@ class ChallengeController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|min:2'
-        ]);
-        return $this->model->create($request->only($this->model->getModel()->fillable));
+        // $this->validate($request, [
+        //     'name' => 'required|min:2'
+        // ]);
+        // return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 
     public function show($id)

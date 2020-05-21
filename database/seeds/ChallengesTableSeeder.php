@@ -20,15 +20,14 @@ class ChallengesTableSeeder extends Seeder
                 'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
                 'description' => $faker->paragraph(),
                 'start_time' => now(),
-                'file' => $faker->imageUrl,
+                'file' => 'no-image.jpg',
                 'location' => $faker->country,
                 'amount' => $faker->randomNumber(2),
                 'duration_days' => $faker->numberBetween(0, 10),
                 'duration_hours' => $faker->numberBetween(0, 24),
                 'duration_minutes' => $faker->numberBetween(0, 60),
-                'is_approved' => $faker->boolean(50),
             ]);
-            $challenge->setStatus(Pending());
+            $challenge->setStatus($faker->randomElement([Pending(),Approved()]));
         }
     }
 }

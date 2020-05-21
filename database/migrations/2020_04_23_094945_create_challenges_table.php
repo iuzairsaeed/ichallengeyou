@@ -22,13 +22,12 @@ class CreateChallengesTable extends Migration
             $table->unsignedInteger('duration_days');
             $table->unsignedInteger('duration_hours');
             $table->unsignedInteger('duration_minutes');
-            $table->string('file')->default('no-image.png');
+            $table->string('file')->default('no-image.jpg');
             $table->string('location')->nullable();
             $table->unsignedDecimal('amount', 8, 2);
             $table->unsignedInteger('trend')->default(0);
-            $table->boolean('is_approved')->default(false);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

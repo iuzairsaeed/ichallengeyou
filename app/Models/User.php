@@ -6,18 +6,17 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use SoftDeletes, HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $fillable = [
-        'name', 'username', 'email', 'password', 'avatar', 'balance',
+        'name', 'username', 'email', 'password', 'avatar', 'balance', 'is_premium', 'is_active',
     ];
 
     protected $hidden = [
-        'updated_at', 'email_verified_at', 'password', 'remember_token', 'deleted_at'
+        'updated_at', 'email_verified_at', 'password', 'remember_token'
     ];
 
     protected $casts = [
@@ -26,7 +25,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime:m-d-Y h:m A',
         'created_at' => 'datetime:m-d-Y h:m A',
         'updated_at' => 'datetime:m-d-Y h:m A',
-        'deleted_at' => 'datetime:m-d-Y h:m A',
     ];
 
     public function getAvatarAttribute($value)

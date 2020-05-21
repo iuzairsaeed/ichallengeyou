@@ -44,9 +44,9 @@ class ChallengeController extends Controller
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
-            $item['like'] = $item->userReaction->like ?? false;
-            $item['unlike'] = $item->userReaction->unlike ?? false;
-            $item['favorite'] = $item->userReaction->favorite ?? false;
+            $item['like'] = $item->userReaction->like ?? 0;
+            $item['unlike'] = $item->userReaction->unlike ?? 0;
+            $item['favorite'] = $item->userReaction->favorite ?? 0;
             return $item;
         });
         return response($data, 200);
@@ -91,9 +91,9 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge)
     {
-        $challenge['like'] = $challenge->userReaction->like ?? false;
-        $challenge['unlike'] = $challenge->userReaction->unlike ?? false;
-        $challenge['favorite'] = $challenge->userReaction->favorite ?? false;
+        $challenge['like'] = $challenge->userReaction->like ?? 0;
+        $challenge['unlike'] = $challenge->userReaction->unlike ?? 0;
+        $challenge['favorite'] = $challenge->userReaction->favorite ?? 0;
         $data = [
             'data' => $challenge,
         ];

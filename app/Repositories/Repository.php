@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Repository implements RepositoryInterface
 {
@@ -80,9 +81,9 @@ class Repository implements RepositoryInterface
         $length = $request->length ?? 10;
         $filter = $request->search;
         $order = $request->order;
-        $search = optional($filter)['value'] ?? false;
-        $sort = optional($order)[0]['column'] ?? false;
-        $dir = optional($order)[0]['dir'] ?? false;
+        $search = optional($filter)['value'] ?? 0;
+        $sort = optional($order)[0]['column'] ?? 0;
+        $dir = optional($order)[0]['dir'] ?? 0;
         $from = $request->date_from;
         $to = $request->date_to;
 
@@ -93,7 +94,7 @@ class Repository implements RepositoryInterface
 
         if($whereChecks){
             foreach($whereChecks as $key => $check){
-                $records->where($check, $whereOps[$key], $whereVals[$key]);
+                $records->where($check, $whereOps[$key] ?? '=', $whereVals[$key]);
             }
         }
         $recordsTotal = $records->count();
