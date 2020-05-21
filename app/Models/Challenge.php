@@ -60,8 +60,8 @@ class Challenge extends Model
         return $this->hasMany(Reaction::class)->where('favorite', true);
     }
 
-    public function donations()
+    public function amounts()
     {
-        return $this->hasMany(Donation::class);
+        return $this->hasMany(Amount::class);
     }
 }

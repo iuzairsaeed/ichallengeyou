@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Challenge;
+use App\Models\Amount;
 
 class ChallengesTableSeeder extends Seeder
 {
@@ -22,11 +23,31 @@ class ChallengesTableSeeder extends Seeder
                 'start_time' => now(),
                 'file' => 'no-image.jpg',
                 'location' => $faker->country,
-                'amount' => $faker->randomNumber(2),
                 'duration_days' => $faker->numberBetween(0, 10),
                 'duration_hours' => $faker->numberBetween(0, 24),
                 'duration_minutes' => $faker->numberBetween(0, 60),
             ]);
+
+            $donation = new Amount([
+                'user_id' => $faker->randomElement([1,2]),
+                'amount' => $faker->randomNumber(2),
+                'type' => 'initial'
+            ]);
+            $challenge->amounts()->save($donation);
+
+            $donation = new Amount([
+                'user_id' => $faker->randomElement([1,2]),
+                'amount' => $faker->randomNumber(2),
+                'type' => 'donation'
+            ]);
+            $challenge->amounts()->save($donation);
+
+            $donation = new Amount([
+                'user_id' => $faker->randomElement([1,2]),
+                'amount' => $faker->randomNumber(2),
+                'type' => 'donation'
+            ]);
+            $challenge->amounts()->save($donation);
             $challenge->setStatus($faker->randomElement([Pending(),Approved()]));
         }
     }

@@ -5,7 +5,7 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class Repository implements RepositoryInterface
+class ChallengeRepository implements RepositoryInterface
 {
     // model property on class instances
     protected $model;
@@ -75,19 +75,35 @@ class Repository implements RepositoryInterface
     }
 
     // Get data for datatable
-    public function getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
+    public function getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
         $filter = $request->search;
         $order = $request->order;
-        $search = optional($filter)['value'] ?? false;
-        $sort = optional($order)[0]['column'] ?? false;
-        $dir = optional($order)[0]['dir'] ?? false;
+        $search = optional($filter)['value'] ?? 0;
+        $sort = optional($order)[0]['column'] ?? 0;
+        $dir = optional($order)[0]['dir'] ?? 0;
         $from = $request->date_from;
         $to = $request->date_to;
 
         $records = $this->model->with($with)->withCount($withCount);
+        if($withSums){
+            foreach($withSums as $key => $withSum){
+                $records->withCount([
+                    $withSum.' AS '.$withSum.'_sum' => function ($query) use ($withSumsCol, $key) {
+                        $query->select(DB::raw('SUM('.$withSumsCol[$key].')'));
+                    }
+                ]);
+                if($addWithSums[$key]){
+                    $records->withCount([
+                        $withSum.' AS '.$withSum.'_'.$addWithSums[$key].'_sum' => function ($query) use ($withSumsCol, $key, $addWithSums) {
+                            $query->select(DB::raw('SUM('.$withSumsCol[$key].') + '.$addWithSums[$key]));
+                        }
+                    ]);
+                }
+            }
+        }
         if($currentStatus){
             $records->currentStatus($currentStatus);
         }

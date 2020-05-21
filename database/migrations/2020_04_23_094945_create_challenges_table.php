@@ -24,7 +24,6 @@ class CreateChallengesTable extends Migration
             $table->unsignedInteger('duration_minutes');
             $table->string('file')->default('no-image.jpg');
             $table->string('location')->nullable();
-            $table->unsignedDecimal('amount', 8, 2);
             $table->unsignedInteger('trend')->default(0);
             $table->timestamps();
             $table->softDeletes();

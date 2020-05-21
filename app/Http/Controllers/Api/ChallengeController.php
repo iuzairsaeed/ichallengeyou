@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Challenges\CreateChallengeRequest;
 use App\Http\Requests\Comments\CreateCommentRequest;
 use App\Http\Requests\Donations\CreateDonationRequest;
-use App\Repositories\Repository;
+use App\Repositories\ChallengeRepository;
 use App\Models\Challenge;
 use App\Models\Comment;
 use App\Models\Reaction;
-use App\Models\Donation;
+use App\Models\Amount;
 use Carbon\Carbon;
 
 class ChallengeController extends Controller
@@ -20,7 +20,7 @@ class ChallengeController extends Controller
 
     public function __construct(Challenge $model)
     {
-        $this->model = new Repository($model);
+        $this->model = new ChallengeRepository($model);
     }
 
     /**
@@ -30,7 +30,7 @@ class ChallengeController extends Controller
      */
     public function index(Request $request)
     {
-        $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend'];
+        $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
         $whereChecks = [];
         $whereOps = [];
@@ -38,8 +38,11 @@ class ChallengeController extends Controller
         $with = ['user'];
         $withCount = [];
         $currentStatus = [Approved()];
+        $withSums = ['amounts'];
+        $withSumsCol = ['amount'];
+        $addWithSums = ['trend'];
 
-        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
@@ -150,11 +153,12 @@ class ChallengeController extends Controller
         if($request->amount > $user->balance){
             return response(['message' => 'Donation amount cannot be greater than current account balance.'], 200);
         }
-        $donation = new Donation([
+        $donation = new Amount([
             'user_id' => $user->id,
-            'amount' => $request->amount
+            'amount' => $request->amount,
+            'type' => 'donation'
         ]);
-        $challenge->donations()->save($donation);
+        $challenge->amounts()->save($donation);
         $challenge->increment('trend');
         $user->balance -= $request->amount;
         $user->update();
