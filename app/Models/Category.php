@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Constant;
 
 class Category extends Model
 {
     protected $guarded = [];
 
     protected $casts = [
-        'created_at' => 'datetime:m-d-Y h:m A',
-        'updated_at' => 'datetime:m-d-Y h:m A',
+        'created_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
     ];
 
     protected $hidden = [

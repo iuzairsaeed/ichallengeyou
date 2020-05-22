@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Constant;
 
 class Amount extends Model
 {
     protected $guarded = [];
 
     protected $casts = [
-        'created_at' => 'datetime:m-d-Y h:m A',
-        'updated_at' => 'datetime:m-d-Y h:m A',
+        'created_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
     ];
 
     protected $hidden = [
@@ -29,6 +30,6 @@ class Amount extends Model
 
     public function getAmountAttribute($value)
     {
-        return $value ? config('global.currency').$value : null;
+        return $value ? config('global.CURRENCY').$value : null;
     }
 }

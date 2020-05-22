@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\ModelStatus\HasStatuses;
+use App\Models\Constant;
 
 class Challenge extends Model
 {
@@ -19,10 +20,10 @@ class Challenge extends Model
     ];
 
     protected $casts = [
-        'start_time' => 'datetime:m-d-Y h:m A',
-        'created_at' => 'datetime:m-d-Y h:m A',
-        'updated_at' => 'datetime:m-d-Y h:m A',
-        'deleted_at' => 'datetime:m-d-Y h:m A',
+        'start_time' => 'datetime:'.Constant::DATE_FORMAT,
+        'created_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'deleted_at' => 'datetime:'.Constant::DATE_FORMAT,
     ];
 
     protected $appends = [
@@ -69,8 +70,23 @@ class Challenge extends Model
         return $this->hasMany(Reaction::class)->where('favorite', true);
     }
 
+    public function initialAmount()
+    {
+        return $this->hasOne(Amount::class)->where('type', 'initial');
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Amount::class)->where('type', 'donation');
+    }
+
     public function amounts()
     {
         return $this->hasMany(Amount::class);
+    }
+
+    public function acceptedChallenges()
+    {
+        return $this->belongsToMany(AcceptedChallenge::class);
     }
 }

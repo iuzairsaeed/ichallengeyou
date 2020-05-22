@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Console\Commands\ModelMakeCommand;
 use App\Models\User;
 use App\Models\Setting;
+use App\Models\Constant;
 use App\Observers\UserObserver;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,13 +37,18 @@ class AppServiceProvider extends ServiceProvider
         // Loading settings from database into configuration
         config([
             'global' => Setting::all([
-                'name','value'
+                'name', 'value'
             ])
             ->keyBy('name') // key every setting by its name
             ->transform(function ($setting) {
                  return $setting->value; // return only the value
             })
             ->toArray() // make it an array
+        ]);
+
+        //
+        config([
+            'global.DATE_FORMAT' => Constant::DATE_FORMAT
         ]);
 
         // Registerign user CRUD observer

@@ -124,7 +124,7 @@
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$item->title}}</td>
-                                            <td>{{$item->start_time->format('m-d-Y h:m A')}}</td>
+                                            <td>{{$item->start_time->format(config('global.DATE_FORMAT'))}}</td>
                                             <td>{{$item->status}}</td>
                                             <td>
                                                 <a href='/challenges/{{$item->id}}' class="info p-0 mr-2 success" title="View">
@@ -168,7 +168,7 @@
                                             <td>{{$key + 1}}</td>
                                             <td>{{$item->challenge->title}}</td>
                                             <td>{{$item->amount}}</td>
-                                            <td>{{$item->created_at->format('m-d-Y h:m A')}}</td>
+                                            <td>{{$item->created_at->format(config('global.DATE_FORMAT'))}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

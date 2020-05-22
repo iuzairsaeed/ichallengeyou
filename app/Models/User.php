@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Constant;
 
 class User extends Authenticatable
 {
@@ -22,9 +23,9 @@ class User extends Authenticatable
     protected $casts = [
         'is_premium' => 'boolean',
         'is_active' => 'boolean',
-        'email_verified_at' => 'datetime:m-d-Y h:m A',
-        'created_at' => 'datetime:m-d-Y h:m A',
-        'updated_at' => 'datetime:m-d-Y h:m A',
+        'email_verified_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'created_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
     ];
 
     protected $with = [
@@ -38,12 +39,17 @@ class User extends Authenticatable
 
     public function getBalanceAttribute($value)
     {
-        return $value ? config('global.currency').$value : null;
+        return $value ? config('global.CURRENCY').$value : null;
     }
 
     public function challenges()
     {
         return $this->hasMany(Challenge::class);
+    }
+
+    public function acceptedChallenges()
+    {
+        return $this->hasMany(AcceptedChallenge::class);
     }
 
     public function donations()
