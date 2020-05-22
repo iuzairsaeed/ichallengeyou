@@ -16,6 +16,8 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('challengesList', 'ChallengeController@getList')->name('challenges.getList');
         Route::resource('users','UserController');
         Route::get('usersList', 'UserController@getList')->name('users.getList');
+        Route::resource('settings','SettingController');
+        Route::get('settingsList', 'SettingController@getList')->name('settings.getList');
     });
 });
 

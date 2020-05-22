@@ -54,17 +54,17 @@
             { data: 'username' },
             { data: 'email' },
             { data: 'is_premium', render:function (data, type, full, meta) {
-                                    return full.is_premium   ? `<i class="fa fa-dot-circle-o success font-medium-1 mr-1"></i> Yes`
-                                                            : `<i class="fa fa-dot-circle-o danger font-medium-1 mr-1"></i> No`;  }
+                                return full.is_premium   ? `<i class="fa fa-dot-circle-o success font-medium-1 mr-1"></i> Yes`
+                                                        : `<i class="fa fa-dot-circle-o danger font-medium-1 mr-1"></i> No`;  }
              },
             { data: 'is_active', render:function (data, type, full, meta) {
-                                    return full.is_active   ? `<i class="fa fa-dot-circle-o success font-medium-1 mr-1"></i> Active`
-                                                            : `<i class="fa fa-dot-circle-o danger font-medium-1 mr-1"></i> Deactive`;  }
+                                return full.is_active   ? `<i class="fa fa-dot-circle-o success font-medium-1 mr-1"></i> Active`
+                                                        : `<i class="fa fa-dot-circle-o danger font-medium-1 mr-1"></i> Deactive`;  }
             },
             { data: 'actions', render:function (data, type, full, meta) {
-                                    return `<a href="/users/${full.id}" class="showStatus info p-0 mr-2 success" title="View">
-                                                <i class="ft-eye font-medium-3"></i>
-                                            </a>`;  }
+                                return `<a href="/users/${full.id}" class="showStatus info p-0 mr-2 success" title="View">
+                                            <i class="ft-eye font-medium-3"></i>
+                                        </a>`;  }
             }
         ],
         columnDefs: [

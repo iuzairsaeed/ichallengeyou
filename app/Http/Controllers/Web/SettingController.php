@@ -16,6 +16,28 @@ class SettingController extends Controller
         $this->model = new Repository($model);
     }
 
+    public function getList(Request $request)
+    {
+        $orderableCols = ['created_at', 'name', 'value'];
+        $searchableCols = ['name'];
+        $whereChecks = [];
+        $whereOps = [];
+        $whereVals = [];
+        $with = [];
+        $withCount = [];
+        $currentStatus = [];
+
+        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+
+        $serial = ($request->start ?? 0) + 1;
+        collect($data['data'])->map(function ($item) use (&$serial) {
+            $item['serial'] = $serial++;
+            return $item;
+        });
+
+        return response($data, 200);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +45,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        //
+        return view('settings.index');
     }
 
     /**
@@ -78,7 +100,14 @@ class SettingController extends Controller
      */
     public function update(Request $request, Setting $setting)
     {
-        //
+        $this->validate($request, [
+            'value' => 'required'
+        ]);
+        $data = [
+            'value' => $request->value
+        ];
+        $this->model->update($data, $setting);
+        return response('success');
     }
 
     /**
