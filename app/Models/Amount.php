@@ -22,8 +22,13 @@ class Amount extends Model
         return $this->belongsTo(Challenge::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function getAmountAttribute($value)
     {
-        return $value ? get_setting_option('currency').$value : null;
+        return $value ? config('global.currency').$value : null;
     }
 }

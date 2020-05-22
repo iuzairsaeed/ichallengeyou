@@ -27,6 +27,10 @@ class User extends Authenticatable
         'updated_at' => 'datetime:m-d-Y h:m A',
     ];
 
+    protected $with = [
+        'challenges', 'donations'
+    ];
+
     public function getAvatarAttribute($value)
     {
         return file_exists(avatarsPath().$value) ? avatarsPath().$value : avatarsPath().'no-avatar.png';
@@ -34,11 +38,16 @@ class User extends Authenticatable
 
     public function getBalanceAttribute($value)
     {
-        return $value ? get_setting_option('currency').$value : null;
+        return $value ? config('global.currency').$value : null;
     }
 
     public function challenges()
     {
         return $this->hasMany(Challenge::class);
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Amount::class)->where('type', 'donation');
     }
 }

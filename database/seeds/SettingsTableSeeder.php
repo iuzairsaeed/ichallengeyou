@@ -13,8 +13,7 @@ class SettingsTableSeeder extends Seeder
     public function run()
     {
         Setting::create([
-            'label' => 'currency',
-            'field' => 'currency',
+            'name' => 'currency',
             'value' => '$',
         ]);
     }

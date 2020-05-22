@@ -25,9 +25,18 @@ class Challenge extends Model
         'deleted_at' => 'datetime:m-d-Y h:m A',
     ];
 
+    protected $appends = [
+        'status'
+    ];
+
     public function getFileAttribute($value)
     {
         return challengesPath().$value;
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->status()->name;
     }
 
     public function user()

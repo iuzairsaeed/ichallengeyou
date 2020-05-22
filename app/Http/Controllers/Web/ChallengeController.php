@@ -23,7 +23,7 @@ class ChallengeController extends Controller
      */
     public function getList(Request $request)
     {
-        $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend'];
+        $orderableCols = ['created_at', 'title', 'start_time', 'user.name'];
         $searchableCols = ['title'];
         $whereChecks = [];
         $whereOps = [];
@@ -72,15 +72,15 @@ class ChallengeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required|min:2'
-        ]);
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
-        return $this->model->find($id);
+        // $this->validate($request, [
+        //     'name' => 'required|min:2'
+        // ]);
+        // $this->model->update($request->only($this->model->getModel()->fillable), $id);
+        // return $this->model->find($id);
     }
 
     public function destroy($id)
     {
-        return $this->model->delete($id);
+        // return $this->model->delete($id);
     }
 }

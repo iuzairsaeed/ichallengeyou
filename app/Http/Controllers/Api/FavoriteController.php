@@ -30,7 +30,7 @@ class FavoriteController extends Controller
         $whereVals = [true, auth()->id()];
         $with = ['challenge'];
         $withCount = [];
-        $currentStatus = [Approved()];
+        $currentStatus = [];
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 

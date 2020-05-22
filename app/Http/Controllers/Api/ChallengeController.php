@@ -48,7 +48,7 @@ class ChallengeController extends Controller
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
-            $item['amounts_sum'] = get_setting_option('currency').$item->amounts_sum;
+            $item['amounts_sum'] = config('global.currency').$item->amounts_sum;
             $item['like'] = $item->userReaction->like ?? 0;
             $item['unlike'] = $item->userReaction->unlike ?? 0;
             $item['favorite'] = $item->userReaction->favorite ?? 0;
