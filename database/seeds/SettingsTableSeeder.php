@@ -12,10 +12,12 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        Setting::insert([[
-            'name' => 'CURRENCY',
-            'value' => '$',
-        ]
+        Setting::insert([
+            [
+                'name' => 'CURRENCY',
+                'value' => '$',
+                'created_at' => now()
+            ]
         ]);
     }
 }

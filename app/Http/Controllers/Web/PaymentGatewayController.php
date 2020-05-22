@@ -3,26 +3,26 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentGateway;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
-use App\Models\User;
 
-class UserController extends Controller
+class PaymentGatewayController extends Controller
 {
     protected $model;
 
-    public function __construct(User $model)
+    public function __construct(PaymentGateway $model)
     {
         $this->model = new Repository($model);
     }
 
     public function getList(Request $request)
     {
-        $orderableCols = ['created_at', 'name', 'username', 'email', 'is_premium', 'is_active'];
+        $orderableCols = ['created_at', 'name'];
         $searchableCols = ['name'];
-        $whereChecks = ['id'];
-        $whereOps = ['<>'];
-        $whereVals = [auth()->id()];
+        $whereChecks = [];
+        $whereOps = [];
+        $whereVals = [];
         $with = [];
         $withCount = [];
 
@@ -44,7 +44,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        return view('paymentGateways.index');
     }
 
     /**
@@ -54,75 +54,62 @@ class UserController extends Controller
      */
     public function create()
     {
-        // return view('users.create');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     'name' => 'required|min:2'
-        // ]);
-        // $this->model->create($request->only($this->model->getModel()->fillable));
-
-        // return redirect('users')->with('success','User created successfully.');
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User $user
+     * @param  \App\Models\PaymentGateway  $paymentGateway
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(PaymentGateway $paymentGateway)
     {
-        return view('users.show', compact('user'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User $user
+     * @param  \App\Models\PaymentGateway  $paymentGateway
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(PaymentGateway $paymentGateway)
     {
-        // return view('users.edit', compact('user'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\User $user
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\PaymentGateway  $paymentGateway
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, PaymentGateway $paymentGateway)
     {
-        $this->validate($request, [
-            'is_premium' => 'required|boolean',
-            'is_active' => 'required|boolean'
-        ]);
-        $this->model->update($request->only($this->model->getModel()->fillable), $user);
-
-        return redirect('users')->with('success','User updated successfully');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User $user
+     * @param  \App\Models\PaymentGateway  $paymentGateway
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(PaymentGateway $paymentGateway)
     {
-        // $this->model->delete($user);
-
-        // return redirect('users')->with('success','User deleted successfully');
+        //
     }
 }

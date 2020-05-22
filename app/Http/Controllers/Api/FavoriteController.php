@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Repositories\Repository;
+use App\Repositories\ChallengeRepository;
 use App\Models\Reaction;
 
 class FavoriteController extends Controller
@@ -13,7 +13,7 @@ class FavoriteController extends Controller
 
     public function __construct(Reaction $reaction)
     {
-        $this->model = new Repository($reaction);
+        $this->model = new ChallengeRepository($reaction);
     }
 
     /**
@@ -23,21 +23,30 @@ class FavoriteController extends Controller
      */
     public function index(Request $request)
     {
-        $orderableCols = ['created_at'];
+        $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
         $whereChecks = ['favorite', 'user_id'];
         $whereOps = ['=', '='];
         $whereVals = [true, auth()->id()];
-        $with = ['challenge'];
+        $with = ['user'];
         $withCount = [];
         $currentStatus = [];
+        $withSums = [];
+        $withSumsCol = [];
+        $addWithSums = [];
 
-        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
-        foreach ($data['data'] as $key => $item) {
-            $data['data'][$key] = $item->challenge;
-        }
+        collect($data['data'])->map(function ($item) use (&$serial) {
+            $item['serial'] = $serial++;
+            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            $item['like'] = $item->userReaction->like ?? 0;
+            $item['unlike'] = $item->userReaction->unlike ?? 0;
+            $item['favorite'] = $item->userReaction->favorite ?? 0;
+            return $item;
+        });
 
         return response($data, 200);
     }

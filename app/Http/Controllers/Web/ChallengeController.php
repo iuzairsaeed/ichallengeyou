@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Repositories\Repository;
+use App\Repositories\ChallengeRepository;
 use App\Models\Challenge;
 
 class ChallengeController extends Controller
@@ -13,7 +13,7 @@ class ChallengeController extends Controller
 
     public function __construct(Challenge $model)
     {
-        $this->model = new Repository($model);
+        $this->model = new ChallengeRepository($model);
     }
 
     /**
@@ -31,12 +31,17 @@ class ChallengeController extends Controller
         $with = ['user'];
         $withCount = [];
         $currentStatus = [];
+        $withSums = [];
+        $withSumsCol = [];
+        $addWithSums = [];
 
-        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
+            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
             return $item;
         });
         return response($data, 200);

@@ -29,6 +29,8 @@
                 </li>
                 <li class="nav-item {{ $segment1 === 'users' ? 'active' : null }}"><a href="/users"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>
                 </li>
+                <li class="nav-item {{ $segment1 === 'paymentGateways' ? 'active' : null }}"><a href="/paymentGateways"><i class="icon-credit-card"></i><span data-i18n="" class="menu-title">Payment Gateways</span></a>
+                </li>
                 <li class="nav-item {{ $segment1 === 'settings' ? 'active' : null }}"><a href="/settings"><i class="icon-wrench"></i><span data-i18n="" class="menu-title">Settings</span></a>
                 </li>
             </ul>

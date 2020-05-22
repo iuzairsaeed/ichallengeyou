@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <div class="card-title-wrap">
                         <h4 class="card-title">Settings</h4>
-                        <p class="card-text">Here you can see the list of configurable sesttings.</p>
+                        <p class="card-text">Here you can see the list of configurable settings.</p>
                     </div>
                 </div>
                 <div class="card-body collapse show">

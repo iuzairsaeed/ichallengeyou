@@ -13,7 +13,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = [[
+        $data = [
+            [
                 'role' => Admin(),
                 'balance' => 0.00,
                 'is_premium' => 1,
