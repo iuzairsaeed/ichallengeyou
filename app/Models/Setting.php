@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    protected $fillable = [
-        'value'
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,

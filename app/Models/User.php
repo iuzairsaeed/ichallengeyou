@@ -12,9 +12,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    protected $fillable = [
-        'name', 'username', 'email', 'password', 'avatar', 'balance', 'is_premium', 'is_active',
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'updated_at', 'email_verified_at', 'password', 'remember_token'
@@ -55,5 +53,10 @@ class User extends Authenticatable
     public function donations()
     {
         return $this->hasMany(Amount::class)->where('type', 'donation');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

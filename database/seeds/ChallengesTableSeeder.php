@@ -26,26 +26,30 @@ class ChallengesTableSeeder extends Seeder
                 'duration_days' => $faker->numberBetween(0, 10),
                 'duration_hours' => $faker->numberBetween(0, 24),
                 'duration_minutes' => $faker->numberBetween(0, 60),
+                'created_at' => now()
             ]);
 
             $donation = new Amount([
                 'user_id' => $faker->randomElement([1,2]),
                 'amount' => $faker->randomNumber(2),
-                'type' => 'initial'
-            ]);
-            $challenge->amounts()->save($donation);
-
-            $donation = new Amount([
-                'user_id' => $faker->randomElement([1,2]),
-                'amount' => $faker->randomNumber(2),
-                'type' => 'donation'
+                'type' => 'initial',
+                'created_at' => now()
             ]);
             $challenge->amounts()->save($donation);
 
             $donation = new Amount([
                 'user_id' => $faker->randomElement([1,2]),
                 'amount' => $faker->randomNumber(2),
-                'type' => 'donation'
+                'type' => 'donation',
+                'created_at' => now()
+            ]);
+            $challenge->amounts()->save($donation);
+
+            $donation = new Amount([
+                'user_id' => $faker->randomElement([1,2]),
+                'amount' => $faker->randomNumber(2),
+                'type' => 'donation',
+                'created_at' => now()
             ]);
             $challenge->amounts()->save($donation);
             $challenge->setStatus($faker->randomElement([Pending(),Approved()]));

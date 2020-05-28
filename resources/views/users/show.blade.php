@@ -147,7 +147,7 @@
                 <div class="card-header">
                     <div class="card-title-wrap">
                         <h4 class="card-title">Donations</h4>
-                        <p class="card-text">Here you can see the list of donations that this user created.</p>
+                        <p class="card-text">Here you can see the list of donations that this user made.</p>
                     </div>
                 </div>
                 <div class="card-body">
@@ -179,6 +179,44 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap">
+                        <h4 class="card-title">Transactions</h4>
+                        <p class="card-text">Here you can see the list of transactions that this user made.</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-block table-responsive">
+                        <div class="row">
+                            <table class="table table-striped table-bordered" id="transactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($user->transactions as $key => $item)
+                                        <tr>
+                                            <td>{{$key + 1}}</td>
+                                            <td>{{$item->type}}</td>
+                                            <td>{{$item->amount}}</td>
+                                            <td>{{$item->created_at->format(config('global.DATE_FORMAT'))}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 @endsection
 
@@ -191,5 +229,6 @@
         ]
     });
     $('#donationsTable').DataTable();
+    $('#transactionsTable').DataTable();
 </script>
 @endsection

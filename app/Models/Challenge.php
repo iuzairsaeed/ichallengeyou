@@ -11,9 +11,7 @@ class Challenge extends Model
 {
     use SoftDeletes, HasStatuses;
 
-    protected $fillable = [
-        'user_id', 'title', 'description', 'start_time', 'duration_days', 'duration_hours', 'duration_minutes', 'file', 'location', 'amount',
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'user_id', 'updated_at', 'deleted_at', 'userReaction'

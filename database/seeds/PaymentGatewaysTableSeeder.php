@@ -14,10 +14,12 @@ class PaymentGatewaysTableSeeder extends Seeder
     {
         PaymentGateway::insert([
             [
-                'name' => 'PAYPAL'
+                'name' => 'PAYPAL',
+                'created_at' => now()
             ],
             [
-                'name' => 'BITCOIN'
+                'name' => 'BITCOIN',
+                'created_at' => now()
             ]
         ]);
     }

@@ -18,6 +18,7 @@ class CategoriesTableSeeder extends Seeder
             Category::create([
                 'category_id' => $faker->randomElement([1,2]),
                 'name' => $faker->unique()->word . ' ' . $faker->unique()->word,
+                'created_at' => now()
             ]);
         }
     }

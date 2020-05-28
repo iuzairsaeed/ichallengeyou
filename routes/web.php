@@ -19,7 +19,7 @@ Route::group(['namespace' => 'Web'], function () {
         Route::resource('settings','SettingController');
         Route::get('settingsList', 'SettingController@getList')->name('settings.getList');
         Route::resource('paymentGateways','PaymentGatewayController');
-        Route::get('paymentGatewaysList', 'SettingController@getList')->name('paymentGateways.getList');
+        Route::get('paymentGatewaysList', 'PaymentGatewayController@getList')->name('paymentGateways.getList');
     });
 });
 
