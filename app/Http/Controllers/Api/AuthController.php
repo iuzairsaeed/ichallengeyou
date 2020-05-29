@@ -54,6 +54,15 @@ class AuthController extends Controller
         return $this->response($user, 200);
     }
 
+    function logout()
+    {
+        auth()->user()->tokens()->delete();
+
+        return response([
+            'message' => 'You have logged out successfully.'
+        ], 200);
+    }
+
     function register(RegisterRequest $request, RegisterController $register)
     {
         $user = $register->create($request->all());

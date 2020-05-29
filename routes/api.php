@@ -10,6 +10,10 @@ Route::group(['namespace' => 'Api'], function () {
     });
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::group(['prefix' => 'auth'], function () {
+            Route::post('logout', 'AuthController@logout');
+        });
+
         Route::resource('challenges', 'ChallengeController');
         Route::group(['prefix' => 'challenges'], function () {
             Route::post('{challenge}/donation', 'ChallengeController@donation');
