@@ -14,7 +14,7 @@ class Challenge extends Model
     protected $guarded = [];
 
     protected $hidden = [
-        'user_id', 'updated_at', 'deleted_at', 'userReaction'
+        'category_id', 'user_id', 'updated_at', 'deleted_at', 'userReaction'
     ];
 
     protected $casts = [
@@ -26,6 +26,10 @@ class Challenge extends Model
 
     protected $appends = [
         'status'
+    ];
+
+    protected $with = [
+        'user', 'category'
     ];
 
     public function getFileAttribute($value)

@@ -28,12 +28,12 @@ class ChallengeController extends Controller
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];
-        $with = ['user'];
+        $with = [];
         $withCount = [];
         $currentStatus = [];
-        $withSums = [];
-        $withSumsCol = [];
-        $addWithSums = [];
+        $withSums = ['amounts'];
+        $withSumsCol = ['amount'];
+        $addWithSums = ['trend'];
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);

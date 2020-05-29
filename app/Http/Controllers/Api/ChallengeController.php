@@ -35,7 +35,7 @@ class ChallengeController extends Controller
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];
-        $with = ['user'];
+        $with = [];
         $withCount = [];
         $currentStatus = [Approved()];
         $withSums = ['amounts'];
