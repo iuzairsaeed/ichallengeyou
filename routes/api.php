@@ -13,6 +13,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::resource('challenges', 'ChallengeController');
         Route::group(['prefix' => 'challenges'], function () {
             Route::post('{challenge}/donation', 'ChallengeController@donation');
+            Route::get('{challenge}/comments', 'ChallengeController@comments');
             Route::post('{challenge}/comment', 'ChallengeController@comment');
             Route::post('{challenge}/like', 'ChallengeController@like');
             Route::post('{challenge}/unlike', 'ChallengeController@unlike');

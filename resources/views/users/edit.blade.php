@@ -51,7 +51,6 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-actions left">
-                                            <input type="hidden" id="id" name="id" value="{{$user->id}}">
                                             <button type="reset" class="btn btn-raised btn-danger mr-1">
                                                 <i class="icon-trash"></i> Cancel
                                             </button>

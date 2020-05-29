@@ -18,8 +18,11 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
+        // all(['childCategories', 'parentCategory'])
+        $categories = $this->model->all();
         $data = [
-            'data' => $this->model->all(['childCategories', 'parentCategory'])
+            'message' => $categories->count() === 0 ? 'No categories found.' : 'Success',
+            'data' => $categories,
         ];
         return response($data, 200);
     }

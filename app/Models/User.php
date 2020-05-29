@@ -27,7 +27,7 @@ class User extends Authenticatable
     ];
 
     protected $with = [
-        'challenges', 'donations'
+
     ];
 
     public function getAvatarAttribute($value)

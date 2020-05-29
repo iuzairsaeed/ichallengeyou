@@ -18,6 +18,7 @@ class ChallengesTableSeeder extends Seeder
         for ($i = 0; $i < 15; $i++) {
             $challenge = Challenge::create([
                 'user_id' => $faker->randomElement([1,2]),
+                'category_id' => $faker->randomElement([1,2]),
                 'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
                 'description' => $faker->paragraph(),
                 'start_time' => now(),

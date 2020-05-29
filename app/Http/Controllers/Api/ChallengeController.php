@@ -168,6 +168,22 @@ class ChallengeController extends Controller
     }
 
     /**
+     * Get Comments of the specified resource.
+     *
+     * @param  \App\Models\Challenge $challenge
+     * @return \Illuminate\Http\Response
+     */
+    public function comments(Challenge $challenge)
+    {
+        $comments = $challenge->comments;
+        $data = [
+            'message' => $comments->count() === 0 ? 'No comments found.' : 'Success',
+            'data' => $comments,
+        ];
+        return response($data, 200);
+    }
+
+    /**
      * Comment on the specified resource.
      *
      * @param  \App\Models\Challenge $challenge

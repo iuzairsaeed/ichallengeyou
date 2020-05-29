@@ -35,16 +35,18 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Loading settings from database into configuration
-        config([
-            'global' => Setting::all([
-                'name', 'value'
-            ])
-            ->keyBy('name') // key every setting by its name
-            ->transform(function ($setting) {
-                 return $setting->value; // return only the value
-            })
-            ->toArray() // make it an array
-        ]);
+        if (Schema::hasTable('settings')) {
+            config([
+                'global' => Setting::all([
+                    'name', 'value'
+                ])
+                ->keyBy('name') // key every setting by its name
+                ->transform(function ($setting) {
+                     return $setting->value; // return only the value
+                })
+                ->toArray() // make it an array
+            ]);
+        }
 
         //
         config([

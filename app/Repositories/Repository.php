@@ -17,7 +17,7 @@ class Repository implements RepositoryInterface
     }
 
     // Get all instances of model
-    public function all($with)
+    public function all(array $with = [])
     {
         return $this->model->with($with)->get();
     }
