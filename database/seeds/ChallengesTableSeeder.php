@@ -22,7 +22,7 @@ class ChallengesTableSeeder extends Seeder
                 'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
                 'description' => $faker->paragraph(),
                 'start_time' => now(),
-                'file' => 'no-image.jpg',
+                'file' => 'no-image.png',
                 'location' => $faker->country,
                 'duration_days' => $faker->numberBetween(0, 10),
                 'duration_hours' => $faker->numberBetween(0, 24),

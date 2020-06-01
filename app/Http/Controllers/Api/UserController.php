@@ -35,7 +35,7 @@ class UserController extends Controller
         $data = $request->all();
 
         if($request->hasFile('avatar')){
-            $deleteFile = $user->getAttributes()['avatar'] != 'no-avatar.png' ? $user->avatar : null;
+            $deleteFile = $user->getAttributes()['avatar'] != 'no-image.png' ? $user->avatar : null;
             $file_name = uploadFile($request->avatar, avatarsPath(), $deleteFile);
             $data['avatar'] = $file_name;
         }
@@ -43,7 +43,8 @@ class UserController extends Controller
         $user->update();
 
         return response([
-            'message' => 'Avatar has been updated.'
+            'message' => 'Avatar has been updated.',
+            'user' => $user
         ], 200);
     }
 }

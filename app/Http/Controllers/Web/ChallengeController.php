@@ -65,9 +65,9 @@ class ChallengeController extends Controller
         // return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 
-    public function show($id)
+    public function show(Challenge $challenge)
     {
-        return $this->model->show($id);
+        return view('challenges.show', compact('challenge'));
     }
 
     public function edit($id)

@@ -70,7 +70,7 @@ class UserController extends Controller
         // ]);
         // $this->model->create($request->only($this->model->getModel()->fillable));
 
-        // return redirect('users')->with('success','User created successfully.');
+        // return redirect('users')->with('success', 'User created successfully.');
     }
 
     /**
@@ -110,7 +110,7 @@ class UserController extends Controller
         ]);
         $this->model->update($request->only($this->model->getModel()->fillable), $user);
 
-        return redirect('users')->with('success','User updated successfully');
+        return redirect('users')->with('success', 'User updated successfully');
     }
 
     /**
@@ -123,6 +123,6 @@ class UserController extends Controller
     {
         // $this->model->delete($user);
 
-        // return redirect('users')->with('success','User deleted successfully');
+        // return redirect('users')->with('success', 'User deleted successfully');
     }
 }

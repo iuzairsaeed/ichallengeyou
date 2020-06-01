@@ -9,12 +9,15 @@ Route::group(['namespace' => 'Api'], function () {
         Route::put('forgotPassword', 'AuthController@forgotPassword');
     });
 
+    Route::resource('challenges', 'ChallengeController', ['except' => ['create', 'update', 'destroy']]);
+    Route::get('categories', 'CategoryController@index');
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::group(['prefix' => 'auth'], function () {
             Route::post('logout', 'AuthController@logout');
         });
 
-        Route::resource('challenges', 'ChallengeController');
+        Route::resource('challenges', 'ChallengeController', ['except' => ['index', 'show']]);
         Route::group(['prefix' => 'challenges'], function () {
             Route::post('{challenge}/donation', 'ChallengeController@donation');
             Route::get('{challenge}/comments', 'ChallengeController@comments');
@@ -24,7 +27,7 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{challenge}/favorite', 'ChallengeController@favorite');
         });
 
-        Route::resource('categories', 'CategoryController');
+        Route::resource('categories', 'CategoryController', ['except' => ['index']]);
         Route::resource('favorites', 'FavoriteController');
 
         Route::group(['prefix' => 'user'], function () {

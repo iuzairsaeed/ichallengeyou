@@ -7,15 +7,13 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <div class="card-title-wrap">
-                        <div class="card-title">User Information</div>
+                        <h4 class="card-title">User Detail</h4>
                     </div>
                 </div>
                 <div class="card-body px-4">
                     <div class="border-bottom mb-4">
                         <div class="align-self-center halfway-fab text-center">
-                            <a class="profile-image">
-                                <img src="{{ asset($user->avatar) }}" style="width:200px;" class="rounded-circle" alt="Card image">
-                            </a>
+                            <img src="{{ asset($user->avatar) }}" class="width-200" class="rounded-circle" alt="File not available.">
                         </div>
                     </div>
                     <form action="/users/{{$user->id}}" method="POST">
@@ -25,25 +23,25 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700" for="name">Full Name</label>
+                                        <label class="text-bold-700">Full Name</label>
                                         <p>{{ $user->name??'-' }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700" for="username">Username</label>
+                                        <label class="text-bold-700">Username</label>
                                         <p>{{ $user->username??'-' }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700" for="email">Email</label>
+                                        <label class="text-bold-700">Email</label>
                                         <p>{{ $user->email??'-' }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700" for="balance">Current Balance</label>
+                                        <label class="text-bold-700">Current Balance</label>
                                         <p>{{ $user->balance??'-' }}</p>
                                     </div>
                                 </div>
@@ -81,7 +79,6 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-actions left">
-                                        <input type="hidden" id="id" name="id" value="{{$user->id}}">
                                         <button type="reset" class="btn btn-raised btn-danger mr-1">
                                             <i class="icon-trash"></i> Cancel
                                         </button>

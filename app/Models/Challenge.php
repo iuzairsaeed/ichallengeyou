@@ -25,7 +25,7 @@ class Challenge extends Model
     ];
 
     protected $appends = [
-        'status'
+        'status', 'file_mime'
     ];
 
     protected $with = [
@@ -34,7 +34,13 @@ class Challenge extends Model
 
     public function getFileAttribute($value)
     {
-        return challengesPath().$value;
+        $path = challengesPath();
+        return file_exists($path.$value) ? $path.$value : $path.'no-image.png';
+    }
+
+    public function getFileMimeAttribute()
+    {
+        return mime_content_type($this->file);
     }
 
     public function getStatusAttribute()

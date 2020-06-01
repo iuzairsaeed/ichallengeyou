@@ -32,7 +32,8 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value)
     {
-        return file_exists(avatarsPath().$value) ? avatarsPath().$value : avatarsPath().'no-avatar.png';
+        $path = avatarsPath();
+        return file_exists($path.$value) ? $path.$value : $path.'no-image.png';
     }
 
     public function getBalanceAttribute($value)

@@ -23,7 +23,7 @@ class CreateChallengesTable extends Migration
             $table->unsignedInteger('duration_days');
             $table->unsignedInteger('duration_hours');
             $table->unsignedInteger('duration_minutes');
-            $table->string('file')->default('no-image.jpg');
+            $table->string('file')->default('no-image.png');
             $table->string('location')->nullable();
             $table->unsignedInteger('trend')->default(0);
             $table->timestamps();

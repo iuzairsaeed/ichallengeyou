@@ -21,7 +21,7 @@
                                     <div class="col-lg-3 col-md-3 mx-auto">
                                         <div class="form-group">
                                             <span class="avatar avatar-online w-100">
-                                                <img id="navbar-avatar" src="{{ file_exists($user->avatar)?asset($user->avatar):asset('logo.png') }}" width="100%" height="auto" alt="avatar"/>
+                                                <img id="navbar-avatar" src="{{ file_exists($user->avatar)?asset($user->avatar):asset('logo.png') }}" class="width-200" height="auto" alt="avatar"/>
                                             </span>
                                             <div class="form-group">
                                                 <br>
