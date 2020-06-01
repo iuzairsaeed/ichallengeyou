@@ -90,13 +90,4 @@ class AuthController extends Controller
             'message' => 'An email has been sent to your account with new password. You should receive it within 5 minutes.'
         ], 200);
     }
-
-    function changePassword(ChangePasswordRequest $request)
-    {
-        $user = auth()->user();
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return $this->response($user, 200);
-    }
 }

@@ -32,7 +32,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::resource('favorites', 'FavoriteController');
 
         Route::group(['prefix' => 'user'], function () {
-            Route::put('changePassword', 'AuthController@changePassword');
+            Route::put('changePassword', 'UserController@changePassword');
             Route::put('updateProfile', 'UserController@updateProfile');
             Route::put('updateAvatar', 'UserController@updateAvatar');
         });
