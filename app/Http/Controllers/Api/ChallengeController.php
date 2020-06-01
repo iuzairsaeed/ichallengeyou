@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Challenges\CreateChallengeRequest;
 use App\Http\Requests\Comments\CreateCommentRequest;
 use App\Http\Requests\Donations\CreateDonationRequest;
+use App\Http\Resources\ChallengeCollection;
 use App\Repositories\ChallengeRepository;
 use App\Models\Challenge;
 use App\Models\Comment;
@@ -54,6 +55,8 @@ class ChallengeController extends Controller
             $item['favorite'] = $item->userReaction->favorite ?? 0;
             return $item;
         });
+        
+        $data['data'] = ChallengeCollection::collection($data['data']);
         return response($data, 200);
     }
 
