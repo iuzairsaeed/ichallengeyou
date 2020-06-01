@@ -47,13 +47,4 @@ class UserController extends Controller
             'user' => $user
         ], 200);
     }
-
-    function changePassword(ChangePasswordRequest $request)
-    {
-        $user = auth()->user();
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return $this->response($user, 200);
-    }
 }
