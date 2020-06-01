@@ -21,6 +21,7 @@ class AcceptedChallenge extends Model
 
     public function challenge()
     {
-        return $this->belongsTo(Challenge::class);
+        return $this->belongsTo(Challenge::class)->select(['id','title','created_at','file'])->with('amounts');
     }
+    
 }

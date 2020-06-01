@@ -23,6 +23,7 @@ class Amount extends Model
         return $this->belongsTo(Challenge::class);
     }
 
+
     public function user()
     {
         return $this->belongsTo(User::class);
