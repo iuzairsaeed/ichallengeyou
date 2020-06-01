@@ -279,9 +279,9 @@ class ChallengeController extends Controller
     {
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
-        $whereChecks = [];
-        $whereOps = [];
-        $whereVals = [];
+        $whereChecks = ['id'];
+        $whereOps = ['='];
+        $whereVals = [auth()->id()];
         $with = [];
         $withCount = [];
         $currentStatus = [Approved()];
