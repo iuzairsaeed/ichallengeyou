@@ -8,6 +8,7 @@ use App\Http\Requests\Challenges\CreateChallengeRequest;
 use App\Http\Requests\Comments\CreateCommentRequest;
 use App\Http\Requests\Donations\CreateDonationRequest;
 use App\Http\Resources\ChallengeCollection;
+use App\Http\Resources\ChallengeList;
 use App\Repositories\ChallengeRepository;
 use App\Models\Challenge;
 use App\Models\Comment;
@@ -55,7 +56,6 @@ class ChallengeController extends Controller
             $item['favorite'] = $item->userReaction->favorite ?? 0;
             return $item;
         });
-        
         $data['data'] = ChallengeCollection::collection($data['data']);
         return response($data, 200);
     }
@@ -273,5 +273,27 @@ class ChallengeController extends Controller
             ]);
         }
         return response(['message' => 'Challenge Added to Favorites!'], 200);
+    }
+
+    public function myList(Request $request)
+    {
+        $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
+        $searchableCols = ['title'];
+        $whereChecks = [];
+        $whereOps = [];
+        $whereVals = [];
+        $with = [];
+        $withCount = [];
+        $currentStatus = [Approved()];
+        $withSums = ['amounts'];
+        $withSumsCol = ['amount'];
+        $addWithSums = ['trend'];
+
+        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+        
+        $data['data'] = ChallengeList::collection($data['data']);
+        return response($data, 200);
+        
     }
 }
