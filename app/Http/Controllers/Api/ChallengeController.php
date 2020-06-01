@@ -279,7 +279,7 @@ class ChallengeController extends Controller
     {
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
-        $whereChecks = ['id'];
+        $whereChecks = ['user_id'];
         $whereOps = ['='];
         $whereVals = [auth()->id()];
         $with = [];
@@ -291,9 +291,9 @@ class ChallengeController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-        
+
         $data['data'] = ChallengeList::collection($data['data']);
         return response($data, 200);
-        
+
     }
 }
