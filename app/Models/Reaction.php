@@ -22,4 +22,13 @@ class Reaction extends Model
     {
         return $this->belongsTo(Challenge::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    function amounts()
+    {
+        return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');
+    }
 }

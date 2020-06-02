@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\FavouriteCollection;
 use App\Repositories\ChallengeRepository;
 use App\Models\Reaction;
 
@@ -28,11 +29,11 @@ class FavoriteController extends Controller
         $whereChecks = ['favorite', 'user_id'];
         $whereOps = ['=', '='];
         $whereVals = [true, auth()->id()];
-        $with = ['user'];
+        $with = ['challenge'];
         $withCount = [];
         $currentStatus = [];
-        $withSums = [];
-        $withSumsCol = [];
+        $withSums = ['amounts'];
+        $withSumsCol = ['amount'];
         $addWithSums = [];
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
@@ -48,6 +49,7 @@ class FavoriteController extends Controller
             return $item;
         });
 
+        // $data['data'] = FavouriteCollection::collection($data['data']);
         return response($data, 200);
     }
 
