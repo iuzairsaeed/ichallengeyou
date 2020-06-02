@@ -291,7 +291,7 @@ class ChallengeController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-        
+
         $data['data'] = ChallengeList::collection($data['data']);
         return response($data, 200);
 

@@ -72,8 +72,13 @@ class AuthController extends Controller
 
     function forgotPassword(ForgotPasswordRequest $request)
     {
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('email', $request->email)->first();
 
+        if(!$user){
+            return response([
+                'message' => 'No user exists with provided email.'
+            ], 404);
+        }
         if (!$user->is_active){
             return response([
                 'message' => 'Your account has been disabled. Please contact support.'
