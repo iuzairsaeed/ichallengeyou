@@ -22,9 +22,9 @@ class AcceptedChallengeController extends Controller
     {
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
-        $whereChecks = [];
-        $whereOps = [];
-        $whereVals = [];
+        $whereChecks = ['user_id'];
+        $whereOps = ['='];
+        $whereVals = [1];
         $with = ['challenge','user', 'amounts'];
         $withCount = [];
         $currentStatus = [];
