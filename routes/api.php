@@ -19,8 +19,9 @@ Route::group(['namespace' => 'Api'], function () {
 
         Route::resource('challenges', 'ChallengeController', ['except' => ['index', 'show']]);
         Route::group(['prefix' => 'challenge'], function () {
-            Route::get('/myList', 'ChallengeController@myList');
             Route::get('/acceptedChallenge', 'AcceptedChallengeController@acceptedChallenge');
+            Route::get('/donatedChallenge', 'DonatedChallengeController@donatedChallenge');
+            Route::get('/myList', 'ChallengeController@myList');
             Route::post('{challenge}/donation', 'ChallengeController@donation');
             Route::get('{challenge}/comments', 'ChallengeController@comments');
             Route::post('{challenge}/comment', 'ChallengeController@comment');
