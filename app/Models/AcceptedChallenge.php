@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\ModelStatus\HasStatuses;
 use App\Models\Constant;
 
 class AcceptedChallenge extends Model
@@ -28,5 +29,11 @@ class AcceptedChallenge extends Model
     {
         return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');
     }
+
+    public function getStatusAttribute()
+    {
+        return $this->status()->name;
+    }
+
     
 }
