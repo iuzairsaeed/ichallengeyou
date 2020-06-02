@@ -102,4 +102,5 @@ class Challenge extends Model
     {
         return $this->belongsToMany(AcceptedChallenge::class);
     }
+    
 }

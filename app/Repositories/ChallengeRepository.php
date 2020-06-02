@@ -155,4 +155,95 @@ class ChallengeRepository implements RepositoryInterface
             'data' => $records,
         ];
     }
+
+    public function getDonated($request, $with, $withCount,$sums,$sumCol,$groupByVals, $withSums, $withSumsCol, $addWithSums, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
+    {
+        $start = $request->start ?? 0;
+        $length = $request->length ?? 10;
+        $filter = $request->search;
+        $order = $request->order;
+        $search = optional($filter)['value'] ?? 0;
+        $sort = optional($order)[0]['column'] ?? 0;
+        $dir = optional($order)[0]['dir'] ?? 0;
+        $from = $request->date_from;
+        $to = $request->date_to;
+
+
+        $records = $this->model->with($with)->withCount($withCount)->groupBy('challenge_id')->selectRaw('sum(amount) as sum, id, user_id, challenge_id,type');
+        
+        if($withSums){
+            foreach($withSums as $key => $withSum){
+                $records->withCount([
+                    $withSum.' AS '.$withSum.'_sum' => function ($query) use ($withSumsCol, $key) {
+                        $query->select(DB::raw('SUM('.$withSumsCol[$key].')'));
+                    }
+                ]);
+                if(optional($addWithSums)[$key]){
+                    $records->withCount([
+                        $withSum.' AS '.$withSum.'_'.$addWithSums[$key].'_sum' => function ($query) use ($withSumsCol, $key, $addWithSums) {
+                            $query->select(DB::raw('SUM('.$withSumsCol[$key].') + '.$addWithSums[$key]));
+                        }
+                    ]);
+                }
+            }
+        }
+
+        if($currentStatus){
+            $records->currentStatus($currentStatus);
+        }
+
+        if($whereChecks){
+            foreach($whereChecks as $key => $check){
+                $records->where($check, $whereOps[$key] ?? '=', $whereVals[$key]);
+            }
+        }
+        
+        $recordsTotal = $records->count();  
+
+        if($groupByVals){
+            foreach($groupByVals as $val){
+                $records->groupBy($val);
+            }
+        }
+
+        if($from){
+            $records->whereDate('created_at' ,'>=', $from);
+        }
+        if($to){
+            $records->whereDate('created_at' ,'<=', $to);
+        }
+
+        if($search){
+            $records->where(function($query) use ($searchableCols, $search){
+                foreach($searchableCols as $col){
+                    $query->orWhere($col, 'like' , "%$search%");
+                }
+            });
+        }
+        $recordsFiltered = $records->count();
+
+        if($dir){
+            if(in_array($sort, $orderableCols)){
+                $orderBy = $sort;
+            }else{
+                $orderBy = $orderableCols[$sort];
+            }
+            $records->orderBy($orderBy, $dir);
+        }else{
+            $records->latest();
+        }
+        $records = $records->limit($length)->offset($start)->get();
+
+        $message = 'Success';
+        if($records->count() == 0){
+            $message = 'No data available.';
+        }
+
+        return [
+            'message' => $message,
+            'recordsFiltered' => $recordsFiltered,
+            'recordsTotal' => $recordsTotal,
+            'data' => $records,
+        ];
+    }
 }

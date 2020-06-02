@@ -24,7 +24,7 @@ class AcceptedChallengeController extends Controller
         $searchableCols = ['title'];
         $whereChecks = ['user_id'];
         $whereOps = ['='];
-        $whereVals = [1];
+        $whereVals = [auth()->id()];
         $with = ['challenge','user', 'amounts'];
         $withCount = [];
         $currentStatus = [];

@@ -15,13 +15,8 @@ class ChallengeDonated extends JsonResource
     public function toArray($request)
     {
         return  [
-            'id' => $this->id,
-            'status' => $this->status,
-            'amounts_sum' => $this->amounts_sum,
-            'file' => $this->file,
-            'file_mime' => $this->file_mime,
-            'user' => $this->user,
-            'created_at' => $this->created_at,
+            'sum' => $this->sum,
+            'challenge' => $this->challenge,
         ];
     }
 }

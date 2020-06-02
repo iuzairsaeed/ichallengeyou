@@ -22,7 +22,7 @@ class AcceptedChallenge extends Model
 
     public function challenge()
     {
-        return $this->belongsTo(Challenge::class)->select(['id','title','created_at','file']);
+        return $this->belongsTo(Challenge::class)->select(['id','title','start_time','file']);
     }
 
     function amounts()
