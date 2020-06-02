@@ -20,30 +20,28 @@ class AcceptedChallengeController extends Controller
 
     public function acceptedChallenge(Request $request)
     {
-        // dd( $this->model->all() );
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];
-        $with = ['challenge','user', 'challenge.amounts'];
+        $with = ['challenge','user', 'amounts'];
         $withCount = [];
         $currentStatus = [];
-        $withSums = ['challenge.amounts'];
+        $withSums = ['amounts'];
         $withSumsCol = ['amount'];
-        $addWithSums = ['trend'];
+        $addWithSums = [];
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                 $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
-        $serial = ($request->start ?? 0) + 1;
-        dd($item->challenge->amounts);
+        $serial = ($request->start ?? 0);
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
-            $item['amounts_sum'] = config('global.CURRENCY').$item->challenge->amounts;
+            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
             return $item;
         });
-        // $data['data'] = ChallengeAccepted::collection($data['data']);
+        $data['data'] = ChallengeAccepted::collection($data['data']);
         return response($data, 200);
         
     }

@@ -21,7 +21,12 @@ class AcceptedChallenge extends Model
 
     public function challenge()
     {
-        return $this->belongsTo(Challenge::class)->select(['id','title','created_at','file'])->with('amounts');
+        return $this->belongsTo(Challenge::class)->select(['id','title','created_at','file']);
+    }
+
+    function amounts()
+    {
+        return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');
     }
     
 }

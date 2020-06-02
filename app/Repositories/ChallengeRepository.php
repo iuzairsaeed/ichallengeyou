@@ -95,7 +95,7 @@ class ChallengeRepository implements RepositoryInterface
                         $query->select(DB::raw('SUM('.$withSumsCol[$key].')'));
                     }
                 ]);
-                if($addWithSums[$key]){
+                if(optional($addWithSums)[$key]){
                     $records->withCount([
                         $withSum.' AS '.$withSum.'_'.$addWithSums[$key].'_sum' => function ($query) use ($withSumsCol, $key, $addWithSums) {
                             $query->select(DB::raw('SUM('.$withSumsCol[$key].') + '.$addWithSums[$key]));
