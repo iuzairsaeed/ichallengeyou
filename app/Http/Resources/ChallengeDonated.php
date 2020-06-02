@@ -16,7 +16,12 @@ class ChallengeDonated extends JsonResource
     {
         return  [
             'sum' => $this->sum,
-            'challenge' => $this->challenge,
+            'challenge' => [
+                'title' => $this->challenge->title,
+                'start_time' => $this->challenge->start_time,
+                'file' => $this->challenge->file,
+                'file_mime' => $this->challenge->file_mime,
+            ],
         ];
     }
 }
