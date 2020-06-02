@@ -44,7 +44,7 @@ class UserController extends Controller
 
         return response([
             'message' => 'Avatar has been updated.',
-            'user' => $user
+            'avatar' => avatarsPath().$file_name
         ], 200);
     }
 }
