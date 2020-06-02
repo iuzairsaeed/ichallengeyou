@@ -24,8 +24,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['bail', 'required', 'string', 'max:255', 'min:3'],
-            'avatar' => ['image']
+            'name' => ['bail', 'required', 'string', 'max:255', 'min:3']
         ];
     }
 }
