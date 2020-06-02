@@ -16,6 +16,7 @@ class ChallengeAccepted extends JsonResource
     {
         return  [
             'challenge' => $this->challenge,
+            'amounts_sum' => $this->amounts_sum,
         ];
     }
 }
