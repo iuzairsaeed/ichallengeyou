@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Challenges\ChallengeRequest;
 use App\Http\Requests\Challenges\CreateChallengeRequest;
 use App\Http\Requests\Comments\CreateCommentRequest;
 use App\Http\Requests\Donations\CreateDonationRequest;
@@ -78,17 +79,22 @@ class ChallengeController extends Controller
      */
     public function store(CreateChallengeRequest $request)
     {
-        $data = $request->all();
+        try {
+            $data = $request->all();
 
-        if($request->hasFile('file')){
-            $data['file'] = uploadFile($request->file, challengesPath(), null);
+            if($request->hasFile('file')){
+                $data['file'] = uploadFile($request->file, challengesPath(), null);
+            }
+            $data['user_id'] = auth()->id();
+            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+
+            $challenge = $this->model->create($data);
+            $challenge->setStatus(Pending());
+            return response(['message' => 'Challenge has been created.'], 200);
+        } catch (\Exception  $e) {
+            throw $e;
         }
-        $data['user_id'] = auth()->id();
-        $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
-
-        $challenge = $this->model->create($data);
-        $challenge->setStatus(Pending());
-        return response(['message' => 'Challenge has been created.'], 200);
+        
     }
 
     /**
@@ -126,11 +132,25 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Challenge $challenge)
+    public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $this->validate($request, [
-            'name' => 'required|min:2'
-        ]);
+        
+        try {
+            $data = $request->all();
+
+            if($request->hasFile('file')){
+                $data['file'] = uploadFile($request->file, challengesPath(), $challenge->file);
+            }
+            $data['user_id'] = auth()->id();
+            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+            $challenge = $this->model->update($data , $challenge );
+            // $challenge->setStatus(Pending());
+            return response(['message' => 'Challenge has been updated.'], 200);
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
         $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
         return $this->model->find($challenge->id);
     }
