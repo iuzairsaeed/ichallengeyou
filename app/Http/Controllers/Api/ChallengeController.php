@@ -46,7 +46,7 @@ class ChallengeController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-        
+
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
@@ -86,8 +86,8 @@ class ChallengeController extends Controller
         $data['user_id'] = auth()->id();
         $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
 
-        $this->model->create($data);
-        $this->model->setStatus(Pending());
+        $challenge = $this->model->create($data);
+        $challenge->setStatus(Pending());
         return response(['message' => 'Challenge has been created.'], 200);
     }
 
@@ -296,5 +296,5 @@ class ChallengeController extends Controller
         return response($data, 200);
 
     }
-    
+
 }
