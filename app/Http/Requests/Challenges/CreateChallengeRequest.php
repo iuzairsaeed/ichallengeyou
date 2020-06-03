@@ -29,12 +29,12 @@ class CreateChallengeRequest extends FormRequest
             'title' => ['bail', 'required', 'string', 'max:255', 'min:3'],
             'description' => ['bail', 'required', 'max:500', 'min:200'],
             'start_time' => ['required', 'date_format:m-d-Y h:m A'],
-            'duration_days' => ['required', 'integer'],
-            'duration_hours' => ['required', 'integer'],
-            'duration_minutes' => ['required', 'integer'],
-            'file' => ['required', 'mimes:jpg,jpeg,png,mp4,webm'],
+            'duration_days' => ['required', 'integer', 'min:0'],
+            'duration_hours' => ['required', 'integer', 'min:0', 'max:23'],
+            'duration_minutes' => ['required', 'integer', 'min:0', 'max:59'],
             'location' => ['required', 'string'],
             'amount' => ['required', 'numeric', 'min:1'],
+            'file' => ['required', 'mimes:jpg,jpeg,png,mp4,webm'],
         ];
     }
 

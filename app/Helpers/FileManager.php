@@ -15,10 +15,12 @@ function uploadFile(object $file, string $uploadPath, string $oldFile = null)
     }
 
     if(gettype($file) == 'object'){
-        $file_name = random_int(10,9999).strtotime(Carbon::now());
-        $extension = $file->getClientOriginalExtension();
-        $fileNameToStore = $file_name.'.'.$extension;
-        $path = $file->move($uploadPath, $fileNameToStore);
+        $fileNameToStore = $file->hashName();
+        if (config('app.env') == 'testing'){
+            $path = $file->move('storage/framework/testing/disks/storage/', $fileNameToStore);
+        }else{
+            $path = $file->move($uploadPath, $fileNameToStore);
+        }
     }
     return $fileNameToStore;
 }
