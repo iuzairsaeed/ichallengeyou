@@ -16,6 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->foreignId('challenge_id')->nullable();
             $table->unsignedDecimal('amount', 8, 2);
             $table->enum('type', ['load', 'withdraw', 'donate', 'create_challenge', 'won_challenge']);
             $table->timestamps();

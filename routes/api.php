@@ -38,5 +38,9 @@ Route::group(['namespace' => 'Api'], function () {
             Route::put('updateProfile', 'UserController@updateProfile');
             Route::put('updateAvatar', 'UserController@updateAvatar');
         });
+
+        Route::group(['prefix' => 'transaction'], function () {
+            Route::get('history', 'TransactionController@history');
+        });
     });
 });

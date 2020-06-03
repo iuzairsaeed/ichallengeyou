@@ -17,4 +17,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class)->select(['id','name','username']);
     }
+
+    public function challenge()
+    {
+        return $this->belongsTo(Challenge::class)->select(['id','title']);
+    }
 }
