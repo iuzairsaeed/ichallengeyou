@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Challenge;
+use Illuminate\Http\Request;
 use DB;
 
 class ChallengeRepository implements RepositoryInterface
@@ -41,9 +43,40 @@ class ChallengeRepository implements RepositoryInterface
     }
 
     // show the record with the given id
-    public function show($id)
+    public function show($challenge,$user_id,$with)
     {
-        return $this->model->findOrFail($id);
+        // $user_id = $request->id;
+        $challenge_id = $challenge->id;
+        // $with = array('userReaction' => function($query) use ($user_id, $challenge_id) {
+        //         $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
+        //     },
+        //     'getAmountSum' => function($query) {
+        //         $a = $query->sum('amount');
+        //     },
+        // );
+        $records['data'] = $this->model->with($with);
+        dd($records['data']);
+        $challenge_id = $challenge->id;
+        $data['data'] = $challenge->where('id', $challenge_id)->with(
+            array('userReaction' => function($query) use ($user_id, $challenge_id) {
+                    $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
+                },
+                'getAmountSum' => function($query) {
+                    $query->sum('amount');
+                },
+            )
+        )->get();
+        return $records;
+
+
+        $challenge_id = $challenge->id;
+        $record = $challenge->where('id', $challenge_id)->with(
+            array('userReaction' => function($query) use ($request, $challenge_id) {
+                    $query->where('user_id', $request->id)->where('challenge_id', $challenge_id); 
+                },
+            )
+        )->get();
+        return $data;
     }
 
     // Get the associated model
@@ -246,4 +279,35 @@ class ChallengeRepository implements RepositoryInterface
             'data' => $records,
         ];
     }
+
+    public function showChallenge($request,$with,$withSums, $withSumsCol,$withCount,$whereChecks, $whereOps, $whereVals)
+    {
+        $start = $request->start ?? 0;
+        $length = $request->length ?? 10;
+        $records = $this->model->with($with);
+        if($withSums){
+            foreach($withSums as $key => $withSum){
+                $records->withCount([
+                    $withSum.' AS '.$withSum.'_sum' => function ($query) use ($withSumsCol, $key) {
+                        $query->select(DB::raw('SUM('.$withSumsCol[$key].')'));
+                    }
+                ]);
+            }
+        }
+        if($whereChecks){
+            foreach($whereChecks as $key => $check){
+                $records->where($check, $whereOps[$key] ?? '=', $whereVals[$key]);
+            }
+        }        
+        $records = $records->limit($length)->offset($start)->get();
+        $message = 'Success';
+        if($records->count() == 0){
+            $message = 'No data available.';
+        }
+        return [
+            'message' => $message,
+            'data' => $records,
+        ];
+    }
+
 }

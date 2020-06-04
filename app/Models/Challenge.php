@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\ModelStatus\HasStatuses;
 use App\Models\Constant;
+use Illuminate\Faceades\Auth;
 
 class Challenge extends Model
 {
@@ -14,7 +15,7 @@ class Challenge extends Model
     protected $fillable = ['user_id', 'category_id', 'title', 'description', 'start_time', 'duration_days', 'duration_hours', 'duration_minutes', 'file', 'location'];
 
     protected $hidden = [
-        'category_id', 'user_id', 'updated_at', 'deleted_at', 'userReaction'
+        'category_id', 'user_id', 'updated_at', 'deleted_at'
     ];
 
     protected $casts = [
@@ -29,7 +30,7 @@ class Challenge extends Model
     ];
 
     protected $with = [
-        'user', 'category'
+        'user', 'category' , 'userReaction'
     ];
 
     public function getFileAttribute($value)
@@ -65,7 +66,13 @@ class Challenge extends Model
 
     public function userReaction()
     {
-        return $this->hasOne(Reaction::class)->where('user_id', auth()->id());
+        return $this->hasOne(Reaction::class);
+    }
+
+
+    public function getAmountSum()
+    {
+        return $this->hasMany(Amount::class);
     }
 
     public function likes()
@@ -102,5 +109,10 @@ class Challenge extends Model
     {
         return $this->belongsToMany(AcceptedChallenge::class);
     }
-    
+
+    // public function getReaction($user_id)
+    // {
+    //     return $this->hasMany(Reaction::class)->where('user_id', $user_id);
+    // }
+
 }

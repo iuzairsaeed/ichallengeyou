@@ -10,12 +10,15 @@ use App\Http\Requests\Comments\CreateCommentRequest;
 use App\Http\Requests\Donations\CreateDonationRequest;
 use App\Http\Resources\ChallengeCollection;
 use App\Http\Resources\ChallengeList;
+use App\Http\Resources\ChallengeDetailCollection;
 use App\Repositories\ChallengeRepository;
 use App\Models\Challenge;
 use App\Models\Comment;
 use App\Models\Reaction;
 use App\Models\Amount;
+use App\Models\User;
 use Carbon\Carbon;
+use DB;
 
 class ChallengeController extends Controller
 {
@@ -47,7 +50,6 @@ class ChallengeController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
@@ -103,15 +105,46 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function show(Challenge $challenge)
+    public function show(Challenge $challenge, Request $request)
     {
-        $challenge['like'] = $challenge->userReaction->like ?? false;
-        $challenge['unlike'] = $challenge->userReaction->unlike ?? false;
-        $challenge['favorite'] = $challenge->userReaction->favorite ?? false;
-        $data = [
-            'data' => $challenge,
-        ];
-        return response($data, 200);
+        $whereChecks = ['id'];
+        $whereOps = ['='];
+        $whereVals = [$challenge->id];
+        $with = ['userReaction'];
+        $withCount = [];
+        $withSums = ['amounts'];
+        $withSumsCol = ['amount'];
+        $addWithSums = [];
+
+        $data = $this->model->showChallenge($request,$with,$withSums, $withSumsCol,$withCount,$whereChecks, $whereOps, $whereVals);
+
+        return $data;
+        $user_id = $request->id;
+        $challenge_id = $challenge->id;
+        $with = array('userReaction' => function($query) use ($user_id, $challenge_id) {
+                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
+            },
+            'getAmountSum' => function($query) {
+                $a = $query->sum('amount');
+            },
+        );
+        $data['data'] = $this->model->show($challenge,$user_id,$with);
+        // return $data;
+        if($challenge->user_id == $request->id){
+            collect($data['data'])->map(function ($item) use (&$serial) {
+                $item['acceptBtn'] = false;
+                $item['donateBtn'] = false;
+                $item['editBtn'] = true;
+            });
+        } elseif ($challenge->user_id != $request->id) {
+            collect($data['data'])->map(function ($item) use (&$serial) {
+                $item['acceptBtn'] = true;
+                $item['donateBtn'] = true;
+                $item['editBtn'] = false;
+            });
+        }
+        // $data['data'] = ChallengeDetailCollection::collection($data['data']);
+        return $data;
     }
 
     /**
@@ -144,7 +177,6 @@ class ChallengeController extends Controller
             $data['user_id'] = auth()->id();
             $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
-            // $challenge->setStatus(Pending());
             return response(['message' => 'Challenge has been updated.'], 200);
 
         } catch (\Throwable $th) {
