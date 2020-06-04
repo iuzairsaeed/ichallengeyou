@@ -38,18 +38,17 @@ class FavoriteController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
-            $item['like'] = $item->userReaction->like ?? 0;
-            $item['unlike'] = $item->userReaction->unlike ?? 0;
-            $item['favorite'] = $item->userReaction->favorite ?? 0;
+            $item['like'] = $item->like ?? false;
+            $item['unlike'] = $item->unlike ?? false;
+            $item['favorite'] = $item->favorite ?? false;
             return $item;
         });
 
-        // $data['data'] = FavouriteCollection::collection($data['data']);
+        $data['data'] = FavouriteCollection::collection($data['data']);
         return response($data, 200);
     }
 
