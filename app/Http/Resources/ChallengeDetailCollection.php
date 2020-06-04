@@ -14,12 +14,11 @@ class ChallengeDetailCollection extends JsonResource
      */
     public function toArray($request)
     {
-        return($this->getAmountSum);
         return [
             'id' => $this->id,
             'title' => $this->title,
             'file' => $this->file,
-            'amounts_sum' => $this->getAmountSum->sum('amount'),
+            'amounts_sum' => $this->amounts_sum,
             'like' => $this->userReaction->like ?? false,
             'unlike' => $this->userReaction->unlike ?? false,
             'favorite' => $this->userReaction->favorite ?? false,

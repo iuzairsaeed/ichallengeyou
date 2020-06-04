@@ -43,40 +43,9 @@ class ChallengeRepository implements RepositoryInterface
     }
 
     // show the record with the given id
-    public function show($challenge,$user_id,$with)
+    public function show($id)
     {
-        // $user_id = $request->id;
-        $challenge_id = $challenge->id;
-        // $with = array('userReaction' => function($query) use ($user_id, $challenge_id) {
-        //         $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
-        //     },
-        //     'getAmountSum' => function($query) {
-        //         $a = $query->sum('amount');
-        //     },
-        // );
-        $records['data'] = $this->model->with($with);
-        dd($records['data']);
-        $challenge_id = $challenge->id;
-        $data['data'] = $challenge->where('id', $challenge_id)->with(
-            array('userReaction' => function($query) use ($user_id, $challenge_id) {
-                    $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
-                },
-                'getAmountSum' => function($query) {
-                    $query->sum('amount');
-                },
-            )
-        )->get();
-        return $records;
-
-
-        $challenge_id = $challenge->id;
-        $record = $challenge->where('id', $challenge_id)->with(
-            array('userReaction' => function($query) use ($request, $challenge_id) {
-                    $query->where('user_id', $request->id)->where('challenge_id', $challenge_id); 
-                },
-            )
-        )->get();
-        return $data;
+        return $this->model->findOrFail($id);
     }
 
     // Get the associated model
@@ -280,11 +249,14 @@ class ChallengeRepository implements RepositoryInterface
         ];
     }
 
-    public function showChallenge($request,$with,$withSums, $withSumsCol,$withCount,$whereChecks, $whereOps, $whereVals)
+    public function showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$withCount,$whereChecks, $whereOps, $whereVals)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
-        $records = $this->model->with($with);
+        $records = $this->model->with(array('userReaction' => function($query) use ($user_id, $challenge_id) {
+            $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
+            },
+        ));
         if($withSums){
             foreach($withSums as $key => $withSum){
                 $records->withCount([

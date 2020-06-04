@@ -110,40 +110,32 @@ class ChallengeController extends Controller
         $whereChecks = ['id'];
         $whereOps = ['='];
         $whereVals = [$challenge->id];
-        $with = ['userReaction'];
+        $with = [];
         $withCount = [];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = [];
+        $user_id = [$request->id];
+        $challenge_id = [$challenge->id];
 
-        $data = $this->model->showChallenge($request,$with,$withSums, $withSumsCol,$withCount,$whereChecks, $whereOps, $whereVals);
+        $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$withCount,$whereChecks, $whereOps, $whereVals);
 
-        return $data;
-        $user_id = $request->id;
-        $challenge_id = $challenge->id;
-        $with = array('userReaction' => function($query) use ($user_id, $challenge_id) {
-                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
-            },
-            'getAmountSum' => function($query) {
-                $a = $query->sum('amount');
-            },
-        );
-        $data['data'] = $this->model->show($challenge,$user_id,$with);
-        // return $data;
         if($challenge->user_id == $request->id){
             collect($data['data'])->map(function ($item) use (&$serial) {
+                $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
                 $item['acceptBtn'] = false;
                 $item['donateBtn'] = false;
                 $item['editBtn'] = true;
             });
         } elseif ($challenge->user_id != $request->id) {
             collect($data['data'])->map(function ($item) use (&$serial) {
+                $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
                 $item['acceptBtn'] = true;
                 $item['donateBtn'] = true;
                 $item['editBtn'] = false;
             });
         }
-        // $data['data'] = ChallengeDetailCollection::collection($data['data']);
+        $data['data'] = ChallengeDetailCollection::collection($data['data']);
         return $data;
     }
 
