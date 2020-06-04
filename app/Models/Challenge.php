@@ -69,12 +69,6 @@ class Challenge extends Model
         return $this->hasOne(Reaction::class);
     }
 
-
-    public function getAmountSum()
-    {
-        return $this->hasMany(Amount::class);
-    }
-
     public function likes()
     {
         return $this->hasMany(Reaction::class)->where('like', true);

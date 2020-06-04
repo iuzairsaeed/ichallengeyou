@@ -253,10 +253,7 @@ class ChallengeRepository implements RepositoryInterface
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
-        $records = $this->model->with(array('userReaction' => function($query) use ($user_id, $challenge_id) {
-            $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
-            },
-        ));
+        $records = $this->model->with($with);
         if($withSums){
             foreach($withSums as $key => $withSum){
                 $records->withCount([

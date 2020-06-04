@@ -107,10 +107,20 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge, Request $request)
     {
+        $user_id = $request->id;
+        $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
         $whereVals = [$challenge->id];
-        $with = [];
+        $with = array(
+            'userReaction' => function($query) use ($user_id, $challenge_id) {
+                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
+            },
+            'donations' => function($query) {
+                $query->with('user'); 
+            },
+            'initialAmount'            
+        );
         $withCount = [];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
@@ -135,7 +145,7 @@ class ChallengeController extends Controller
                 $item['editBtn'] = false;
             });
         }
-        $data['data'] = ChallengeDetailCollection::collection($data['data']);
+        // $data['data'] = ChallengeDetailCollection::collection($data['data']);
         return $data;
     }
 
