@@ -14,7 +14,7 @@ class CategoriesTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             Category::create([
                 'category_id' => null,
                 'name' => $faker->unique()->word . ' ' . $faker->unique()->word,

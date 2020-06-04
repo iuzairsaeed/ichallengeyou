@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('device_token')->nullable();
             $table->string('avatar')->default('no-image.png');
             $table->string('contactNumber')->nullable();
             $table->unsignedDecimal('balance', 8, 2)->default('0.00');
