@@ -110,9 +110,4 @@ class Challenge extends Model
         return $this->belongsToMany(AcceptedChallenge::class);
     }
 
-    // public function getReaction($user_id)
-    // {
-    //     return $this->hasMany(Reaction::class)->where('user_id', $user_id);
-    // }
-
 }
