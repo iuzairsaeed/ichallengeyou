@@ -12,6 +12,9 @@ class Reaction extends Model
     protected $casts = [
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,
         'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'like' => 'boolean',
+        'unlike' => 'boolean',
+        'favorite' => 'boolean',
     ];
 
     protected $hidden = [
@@ -26,7 +29,7 @@ class Reaction extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     function amounts()
     {
         return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');

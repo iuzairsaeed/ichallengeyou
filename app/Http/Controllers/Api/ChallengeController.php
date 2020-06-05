@@ -54,9 +54,9 @@ class ChallengeController extends Controller
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
-            $item['like'] = $item->userReaction->like ?? 0;
-            $item['unlike'] = $item->userReaction->unlike ?? 0;
-            $item['favorite'] = $item->userReaction->favorite ?? 0;
+            $item['like'] = $item->userReaction->like ?? false;
+            $item['unlike'] = $item->userReaction->unlike ?? false;
+            $item['favorite'] = $item->userReaction->favorite ?? false;
             return $item;
         });
         $data['data'] = ChallengeCollection::collection($data['data']);
@@ -260,7 +260,7 @@ class ChallengeController extends Controller
     public function like(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        if(!$reaction){
+        if(!$reaction || !$reaction->like){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'like' => true,
@@ -286,7 +286,7 @@ class ChallengeController extends Controller
     public function unlike(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        if(!$reaction){
+        if(!$reaction || !$reaction->unlike){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'unlike' => true,
@@ -311,7 +311,7 @@ class ChallengeController extends Controller
     {
         $reaction = $challenge->userReaction;
         $message = '';
-        if(!$reaction){
+        if(!$reaction || !$reaction->favorite){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'favorite' => true,
