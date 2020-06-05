@@ -130,19 +130,16 @@ class ChallengeController extends Controller
         $challenge_id = [$challenge->id];
 
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
-        collect($data['data'])->map(function ($item) use ($user_id) {
-            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
-            if($item->user_id == (int)$user_id[0]){
-                $item['acceptBtn'] = false;
-                $item['submitBtn'] = false;
-                $item['donateBtn'] = false;
-                if(Carbon::now()->format('Y-d-m') <= $item->start_time->format('Y-d-m')  ){
-                    $item['editBtn'] =  true;
+            $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
+            if($data['data']->user_id == (int)$user_id[0]){
+                $data['acceptBtn'] = false;
+                $data['submitBtn'] = false;
+                $data['donateBtn'] = false;
+                if(Carbon::now()->format('Y-d-m') <= $data->start_time->format('Y-d-m')  ){
+                    $data['editBtn'] =  true;
                 }
             }
-        });
-
-        $data['data'] = ChallengeDetailCollection::collection($data['data']);
+        $data = ChallengeDetailCollection::collection($data);
         return $data;
     }
 
