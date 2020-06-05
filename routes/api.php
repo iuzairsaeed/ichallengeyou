@@ -10,10 +10,12 @@ Route::group(['namespace' => 'Api'], function () {
     });
 
     Route::resource('challenges', 'ChallengeController', ['except' => ['create', 'update', 'destroy']]);
-    Route::get('categories', 'CategoryController@index');
+    Route::get('categories', 'CategoryController@index', ['only' => ['index']]);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::group(['prefix' => 'auth'], function () {
+            Route::get('user', 'AuthController@user');
+            Route::put('changePassword', 'AuthController@changePassword');
             Route::post('logout', 'AuthController@logout');
         });
 
@@ -34,7 +36,6 @@ Route::group(['namespace' => 'Api'], function () {
         Route::resource('favorites', 'FavoriteController');
 
         Route::group(['prefix' => 'user'], function () {
-            Route::put('changePassword', 'AuthController@changePassword');
             Route::put('updateProfile', 'UserController@updateProfile');
             Route::put('updateAvatar', 'UserController@updateAvatar');
         });

@@ -60,6 +60,11 @@ class AuthController extends Controller
         return $this->response($user, 200);
     }
 
+    function user()
+    {
+        return $this->response(auth()->user(), 200);
+    }
+
     function logout()
     {
         auth()->user()->tokens()->delete();
