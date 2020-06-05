@@ -54,9 +54,9 @@ class ChallengeController extends Controller
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
-            $item['like'] = $item->userReaction->like ?? false;
-            $item['unlike'] = $item->userReaction->unlike ?? false;
-            $item['favorite'] = $item->userReaction->favorite ?? false;
+            $item['like'] = $item->userReaction->like ?? 0;
+            $item['unlike'] = $item->userReaction->unlike ?? 0;
+            $item['favorite'] = $item->userReaction->favorite ?? 0;
             return $item;
         });
         $data['data'] = ChallengeCollection::collection($data['data']);
