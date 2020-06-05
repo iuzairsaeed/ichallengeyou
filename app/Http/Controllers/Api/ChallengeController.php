@@ -145,7 +145,7 @@ class ChallengeController extends Controller
                 $item['editBtn'] = false;
             });
         }
-        // $data['data'] = ChallengeDetailCollection::collection($data['data']);
+        $data['data'] = ChallengeDetailCollection::collection($data['data']);
         return $data;
     }
 
