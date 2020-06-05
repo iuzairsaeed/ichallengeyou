@@ -28,7 +28,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'username' => $user->username,
                 'email' => $user->email,
-                'contactNumber' => $user->contactNumber,
+                'contact_number' => $user->contact_number,
                 'avatar' => $user->avatar,
                 'is_premium' => $user->is_premium ?? false,
                 'balance' => $user->balance ?? '',
