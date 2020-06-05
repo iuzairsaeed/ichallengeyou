@@ -30,7 +30,7 @@ class Challenge extends Model
     ];
 
     protected $with = [
-        'user', 'category' , 'userReaction'
+        'user', 'category'
     ];
 
     public function getFileAttribute($value)

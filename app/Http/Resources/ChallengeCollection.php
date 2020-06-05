@@ -20,9 +20,9 @@ class ChallengeCollection extends JsonResource
             'file' => $this->file,
             'amounts_sum' => $this->amounts_sum,
             'amounts_trend_sum' => $this->amounts_trend_sum,
-            'like' => $this->like,
-            'unlike' => $this->unlike,
-            'favorite' => $this->favorite,
+            'like' => $this->userReaction->like ?? 0,
+            'unlike' => $this->userReaction->unlike ?? 0,
+            'favorite' => $this->userReaction->favorite ?? 0,
             'file_mime' => $this->file_mime,
             'category_name' => $this->category->name,
 
