@@ -59,12 +59,6 @@ class ChallengeController extends Controller
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
-<<<<<<< HEAD
-=======
-            $item['like'] = $item->userReaction->like ?? false;
-            $item['unlike'] = $item->userReaction->unlike ?? false;
-            $item['favorite'] = $item->userReaction->favorite ?? false;
->>>>>>> 0fda0cbeee778cf6ae6e8654a5e0c7ed61ea5eaf
             return $item;
         });
         $data['data'] = ChallengeCollection::collection($data['data']);
@@ -115,7 +109,7 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge, Request $request)
     {
-        $user_id = $request->id;
+        $user_id = $request->user_id;
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
