@@ -21,7 +21,6 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         $token = $user->createToken('app-user')->plainTextToken;
-
         $data = [
             'user' => [
                 'id' => $user->id,
@@ -30,6 +29,8 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'contact_number' => $user->contact_number,
                 'avatar' => $user->avatar,
+                'device_token' => $user->device_token,
+                'platform' => $user->platform,
                 'is_premium' => $user->is_premium ?? false,
                 'balance' => $user->balance ?? '',
             ],
@@ -53,6 +54,9 @@ class AuthController extends Controller
             ], 401);
         }
 
+        $user->platform = $request->platform;
+        $user->device_token = $request->device_token;
+        $user->update();
         return $this->response($user, 200);
     }
 
