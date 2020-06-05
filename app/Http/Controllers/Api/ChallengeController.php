@@ -59,6 +59,12 @@ class ChallengeController extends Controller
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+<<<<<<< HEAD
+=======
+            $item['like'] = $item->userReaction->like ?? false;
+            $item['unlike'] = $item->userReaction->unlike ?? false;
+            $item['favorite'] = $item->userReaction->favorite ?? false;
+>>>>>>> 0fda0cbeee778cf6ae6e8654a5e0c7ed61ea5eaf
             return $item;
         });
         $data['data'] = ChallengeCollection::collection($data['data']);
@@ -98,7 +104,7 @@ class ChallengeController extends Controller
         } catch (\Exception  $e) {
             throw $e;
         }
-        
+
     }
 
     /**
@@ -116,12 +122,12 @@ class ChallengeController extends Controller
         $whereVals = [$challenge->id];
         $with = array(
             'userReaction' => function($query) use ($user_id, $challenge_id) {
-                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id); 
+                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id);
             },
             'donations' => function($query) {
-                $query->with('user'); 
+                $query->with('user');
             },
-            'initialAmount'            
+            'initialAmount'
         );
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
@@ -166,7 +172,7 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        
+
         try {
             $data = $request->all();
 
@@ -181,7 +187,7 @@ class ChallengeController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
-        
+
         $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
         return $this->model->find($challenge->id);
     }
@@ -262,7 +268,7 @@ class ChallengeController extends Controller
     public function like(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        if(!$reaction){
+        if(!$reaction || !$reaction->like){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'like' => true,
@@ -288,7 +294,7 @@ class ChallengeController extends Controller
     public function unlike(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        if(!$reaction){
+        if(!$reaction || !$reaction->unlike){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'unlike' => true,
@@ -312,18 +318,21 @@ class ChallengeController extends Controller
     public function favorite(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        if(!$reaction){
+        $message = '';
+        if(!$reaction || !$reaction->favorite){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'favorite' => true,
             ]);
             $challenge->userReaction()->save($reaction);
+            $message = 'Challenge Added to Favorites!';
         }else{
             $reaction->update([
                 'favorite' => $reaction->favorite ? false : true
             ]);
+            $message = 'Challenge Removed from Favorites!';
         }
-        return response(['message' => 'Challenge Added to Favorites!'], 200);
+        return response(['message' => $message], 200);
     }
 
     public function myList(Request $request)

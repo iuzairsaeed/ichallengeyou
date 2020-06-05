@@ -22,9 +22,9 @@ class ChallengeDetailCollection extends JsonResource
             'start_time' => $this->start_time,
             'amounts_sum' => $this->amounts_sum,
             'location' => $this->location,
-            'like' => $this->userReaction->like ?? 0,
-            'unlike' => $this->userReaction->unlike ?? 0,
-            'favorite' => $this->userReaction->favorite ?? 0,
+            'like' => $this->userReaction->like ?? false,
+            'unlike' => $this->userReaction->unlike ?? false,
+            'favorite' => $this->userReaction->favorite ?? false,
             'days' => $this->duration_days,
             'hour' => $this->duration_hours,
             'minutes' => $this->duration_minutes,
@@ -42,7 +42,7 @@ class ChallengeDetailCollection extends JsonResource
                 'donateBtn' => $this->donateBtn ?? true,
                 'editBtn' => $this->editBtn ?? false,
             ],
-            
+
         ];
     }
 }
