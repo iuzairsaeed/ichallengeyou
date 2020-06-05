@@ -24,7 +24,6 @@ class ChallengeCollection extends JsonResource
             'unlike' => $this->unlike,
             'favorite' => $this->favorite,
             'file_mime' => $this->file_mime,
-            // 'user' => $this->user,
             'category_name' => $this->category->name,
 
         ];

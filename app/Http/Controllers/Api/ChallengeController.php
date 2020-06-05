@@ -139,6 +139,7 @@ class ChallengeController extends Controller
                 }
             }
         });
+
         $data['data'] = ChallengeDetailCollection::collection($data['data']);
         return $data;
     }
