@@ -42,9 +42,9 @@ class FavoriteController extends Controller
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
-            $item['like'] = $item->like ?? false;
-            $item['unlike'] = $item->unlike ?? false;
-            $item['favorite'] = $item->favorite ?? false;
+            $item['like'] = $item->like ?? 0;
+            $item['unlike'] = $item->unlike ?? 0;
+            $item['favorite'] = $item->favorite ?? 0;
             return $item;
         });
 
