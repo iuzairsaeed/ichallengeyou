@@ -91,7 +91,7 @@ class Challenge extends Model
 
     public function donations()
     {
-        return $this->hasMany(Amount::class)->where('type', 'donation');
+        return $this->hasMany(Amount::class)->where('type', 'donation')->select('amount','user_id','challenge_id');
     }
 
     public function amounts()

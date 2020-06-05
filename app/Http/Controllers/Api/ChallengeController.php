@@ -121,30 +121,24 @@ class ChallengeController extends Controller
             },
             'initialAmount'            
         );
-        $withCount = [];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = [];
         $user_id = [$request->id];
         $challenge_id = [$challenge->id];
 
-        $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$withCount,$whereChecks, $whereOps, $whereVals);
-
-        if($challenge->user_id == $request->id){
-            collect($data['data'])->map(function ($item) use (&$serial) {
-                $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+        $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
+        collect($data['data'])->map(function ($item) use ($user_id) {
+            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            if($item->user_id == (int)$user_id[0]){
                 $item['acceptBtn'] = false;
+                $item['submitBtn'] = false;
                 $item['donateBtn'] = false;
-                $item['editBtn'] = true;
-            });
-        } elseif ($challenge->user_id != $request->id) {
-            collect($data['data'])->map(function ($item) use (&$serial) {
-                $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
-                $item['acceptBtn'] = true;
-                $item['donateBtn'] = true;
-                $item['editBtn'] = false;
-            });
-        }
+                if(Carbon::now()->format('Y-d-m') <= $item->start_time->format('Y-d-m')  ){
+                    $item['editBtn'] =  true;
+                }
+            }
+        });
         $data['data'] = ChallengeDetailCollection::collection($data['data']);
         return $data;
     }

@@ -26,7 +26,7 @@ class Amount extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->select(['id','name']);
+        return $this->belongsTo(User::class)->select(['id','name','avatar']);
     }
 
     public function getAmountAttribute($value)
