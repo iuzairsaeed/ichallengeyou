@@ -30,7 +30,7 @@ class ChallengesTableSeeder extends Seeder
                 8- Must paint big letters on your body promoting the App. I CHALLENGE YOU APP
             ",
             'start_time' => Carbon::createFromDate('2020','09','01'),
-            'file' => ' football_ground.jpg',
+            'file' => 'football_ground.jpg',
             'location' => "Anywhere",
             'duration_days' => '00',
             'duration_hours' => "24",
@@ -66,7 +66,7 @@ class ChallengesTableSeeder extends Seeder
                 5- Must Donate hair to Childrens Hospital fo Cancer patient and to Raise awareness.
             ",
             'start_time' => Carbon::createFromDate('2020','09','08'),
-            'file' => ' shave_head.jpg',
+            'file' => 'shave_head.jpg',
             'location' => "Anywhere",
             'duration_days' => '00',
             'duration_hours' => "02",
@@ -101,7 +101,7 @@ class ChallengesTableSeeder extends Seeder
                 4- Must be 100 KG at least to start Challenge.
             ",
             'start_time' => Carbon::createFromDate('2020','09','09'),
-            'file' => ' loose_kg.jpg',
+            'file' => 'loose_kg.jpg',
             'location' => "Anywhere",
             'duration_days' => '120',
             'duration_hours' => "00",
