@@ -268,13 +268,8 @@ class ChallengeRepository implements RepositoryInterface
                 $records->where($check, $whereOps[$key] ?? '=', $whereVals[$key]);
             }
         }        
-        $records = $records->limit($length)->offset($start)->get();
-        $message = 'Success';
-        if($records->count() == 0){
-            $message = 'No data available.';
-        }
+        $records = $records->limit($length)->offset($start)->first();
         return [
-            'message' => $message,
             'data' => $records,
         ];
     }
