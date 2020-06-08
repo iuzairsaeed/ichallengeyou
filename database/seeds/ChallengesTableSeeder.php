@@ -19,16 +19,7 @@ class ChallengesTableSeeder extends Seeder
             'user_id' => 1,
             'category_id' => 1,
             'title' => 'Invade Stadium while Semi Naked',
-            'description' => "  
-                1- Invade Field after 15 minutes of main game started.
-                2- Must be 10 Minutes before it ends.
-                3- Reach at Least the middle of the field.
-                4- Stadium must have at least 10.000 people.
-                5- Must be on your Underwear.
-                6- Game must be broadcasted on tv
-                7- Must be older than 18 years old.
-                8- Must paint big letters on your body promoting the App. I CHALLENGE YOU APP
-            ",
+            'description' => "1- Invade Field after 15 minutes of main game started.\n2- Must be 10 Minutes before it ends.\n3- Reach at Least the middle of the field.\n4- Stadium must have at least 10.000 people.\n5- Must be on your Underwear.\n6- Game must be broadcasted on tv\n7- Must be older than 18 years old.\n8- Must paint big letters on your body promoting the App. I CHALLENGE YOU APP",
             'start_time' => Carbon::createFromDate('2020','09','01'),
             'file' => 'football_ground.jpg',
             'location' => "Anywhere",
@@ -58,14 +49,7 @@ class ChallengesTableSeeder extends Seeder
             'user_id' => 1,
             'category_id' => 1,
             'title' => 'Shave your Head!',
-            'description' => "  
-                Change your style and raise awareness to Childrens Cancer Victims
-                1- Must be Female.
-                2- Must have hair longer than 35cm.
-                3- Must do a live Video.
-                4- Must be older than 18 years old
-                5- Must Donate hair to Childrens Hospital fo Cancer patient and to Raise awareness.
-            ",
+            'description' => "Change your style and raise awareness to Childrens Cancer Victims\n1- Must be Female.\n2- Must have hair longer than 35cm.\n3- Must do a live Video.\n4- Must be older than 18 years old\n5- Must Donate hair to Childrens Hospital fo Cancer patient and to Raise awareness.",
             'start_time' => Carbon::createFromDate('2020','09','08'),
             'file' => 'shave_head.jpg',
             'location' => "Anywhere",
@@ -95,13 +79,7 @@ class ChallengesTableSeeder extends Seeder
             'user_id' => 1,
             'category_id' => 1,
             'title' => 'Loose 20 kg',
-            'description' => "  
-                Become healthier and more good looking and get paid to do it!
-                1- Loose 20 KG wihtout Surgery.
-                2- Make Videos 3x a Week showing your face, body and scale results.
-                3- Use always same Scale.
-                4- Must be 100 KG at least to start Challenge.
-            ",
+            'description' => "Become healthier and more good looking and get paid to do it!\n1- Loose 20 KG wihtout Surgery.\n2- Make Videos 3x a Week showing your face, body and scale results.\n3- Use always same Scale.\n4- Must be 100 KG at least to start Challenge.",
             'start_time' => Carbon::createFromDate('2020','09','09'),
             'file' => 'loose_kg.jpg',
             'location' => "Anywhere",
