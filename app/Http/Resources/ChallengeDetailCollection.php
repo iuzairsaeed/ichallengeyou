@@ -17,6 +17,7 @@ class ChallengeDetailCollection extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'description' => $this->description,
             'file' => $this->file,
             'file_mime' => $this->file_mime,
             'start_time' => $this->start_time,
@@ -29,20 +30,16 @@ class ChallengeDetailCollection extends JsonResource
             'hour' => $this->duration_hours,
             'minutes' => $this->duration_minutes,
             'initial_amount' => $this->initialAmount->amount,
+            'creater_name' => $this->user->name,
+            'creater_avatar' => $this->user->avatar,
+            'category_name' => $this->category->name,
             'donators' => $this->donations,
-            'user' => [
-                "id" => $this->user->id,
-                "name" => $this->user->name,
-                "avatar" => $this->user->avatar,
-            ],
-            'category' => $this->category,
             'buttons' => [
                 'acceptBtn' => $this->acceptBtn ?? true,
                 'submitBtn' => $this->submitBtn ?? true,
                 'donateBtn' => $this->donateBtn ?? true,
                 'editBtn' => $this->editBtn ?? false,
             ],
-
         ];
     }
 }
