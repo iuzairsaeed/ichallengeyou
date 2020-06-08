@@ -101,7 +101,7 @@ class Challenge extends Model
 
     public function acceptedChallenges()
     {
-        return $this->belongsToMany(AcceptedChallenge::class);
+        return $this->hasOne(AcceptedChallenge::class);
     }
 
 }

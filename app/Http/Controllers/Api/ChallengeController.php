@@ -109,19 +109,22 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge, Request $request)
     {
-        $user_id = $request->user_id;
+        $auth_id = $request->user_id;
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
         $whereVals = [$challenge->id];
         $with = array(
-            'userReaction' => function($query) use ($user_id, $challenge_id) {
-                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id);
+            'userReaction' => function($query) use ($auth_id, $challenge_id) {
+                $query->where('user_id', $auth_id)->where('challenge_id', $challenge_id);
             },
             'donations' => function($query) {
                 $query->with('user');
             },
-            'initialAmount'
+            'initialAmount',
+            'acceptedChallenges' => function($query) use ($auth_id, $challenge_id){
+                $query->where('user_id', $auth_id)->where('challenge_id', $challenge_id);
+            },
         );
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
@@ -130,13 +133,20 @@ class ChallengeController extends Controller
         $challenge_id = [$challenge->id];
 
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
-            $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
-            if($data['data']->user_id == (int)$user_id[0]){
-                $data['acceptBtn'] = false;
-                $data['submitBtn'] = false;
-                $data['donateBtn'] = false;
-                if(Carbon::now()->format('Y-d-m') <= $data->start_time->format('Y-d-m')  ){
-                    $data['editBtn'] =  true;
+        $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
+        
+            if($data['data']->acceptedChallenges){
+                $data['data']['acceptBtn'] = false;
+                $data['data']['submitBtn'] = true;
+                $data['data']['donateBtn'] = false;
+            }
+            if($auth_id){
+                if($data['data']->user_id == (int)$auth_id[0]){
+                    $data['data']['acceptBtn'] = false;
+                    $data['data']['donateBtn'] = false;
+                    if(Carbon::now()->format('Y-d-m') <= $data['data']->start_time->format('Y-d-m')  ){
+                        $data['data']['editBtn'] =  true;
+                    }
                 }
             }
         $data = ChallengeDetailCollection::collection($data);

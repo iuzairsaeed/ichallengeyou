@@ -36,7 +36,7 @@ class ChallengeDetailCollection extends JsonResource
             'donators' => $this->donations,
             'buttons' => [
                 'acceptBtn' => $this->acceptBtn ?? true,
-                'submitBtn' => $this->submitBtn ?? true,
+                'submitBtn' => $this->submitBtn ?? false,
                 'donateBtn' => $this->donateBtn ?? true,
                 'editBtn' => $this->editBtn ?? false,
             ],
