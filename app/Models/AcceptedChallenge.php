@@ -36,5 +36,10 @@ class AcceptedChallenge extends Model
         return $this->status()->name;
     }
 
+    public function submitChallenge()
+    {
+        return $this->belongsTo(SubmitChallenge::class);
+    }
+
     
 }

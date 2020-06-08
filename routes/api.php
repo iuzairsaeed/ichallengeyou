@@ -19,6 +19,7 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('logout', 'AuthController@logout');
         });
 
+        Route::resource('submit', 'SubmitChallengeController');
         Route::resource('challenges', 'ChallengeController', ['except' => ['index', 'show']]);
         Route::group(['prefix' => 'challenge'], function () {
             Route::get('/myList', 'ChallengeController@myList');
