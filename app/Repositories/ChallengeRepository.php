@@ -274,4 +274,15 @@ class ChallengeRepository implements RepositoryInterface
         ];
     }
 
+    public function comments($request,$with)
+    {
+        $start = $request->start ?? 0;
+        $length = $request->length ?? 10;
+        $records = $this->model->with($with);     
+        $records = $records->limit($length)->offset($start)->get();
+        return [
+            'data' => $records,
+        ];
+    }
+
 }
