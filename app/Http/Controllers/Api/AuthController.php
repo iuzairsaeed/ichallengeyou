@@ -15,13 +15,14 @@ use Hash;
 
 class AuthController extends Controller
 {
-    protected function response($user, $statusCode)
+    protected function response($user, $statusCode, $message)
     {
         // Revoke previous tokens...
         $user->tokens()->delete();
 
         $token = $user->createToken('app-user')->plainTextToken;
         $data = [
+            'message' => $message,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -57,12 +58,12 @@ class AuthController extends Controller
         $user->platform = $request->platform;
         $user->device_token = $request->device_token;
         $user->update();
-        return $this->response($user, 200);
+        return $this->response($user, 200, 'You have successfully logged in.');
     }
 
     function user()
     {
-        return $this->response(auth()->user(), 200);
+        return $this->response(auth()->user(), 200, 'Success');
     }
 
     function logout()
@@ -78,7 +79,7 @@ class AuthController extends Controller
     {
         $user = $register->create($request->all());
 
-        return $this->response($user, 201);
+        return $this->response($user, 201, 'You have registered successfully');
     }
 
     function forgotPassword(ForgotPasswordRequest $request)
@@ -113,6 +114,6 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return $this->response($user, 200);
+        return $this->response($user, 200, 'Password has been updated successfully.');
     }
 }
