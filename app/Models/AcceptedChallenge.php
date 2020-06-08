@@ -8,6 +8,7 @@ use App\Models\Constant;
 
 class AcceptedChallenge extends Model
 {
+    use HasStatuses;
     protected $guarded = [];
 
     protected $casts = [
