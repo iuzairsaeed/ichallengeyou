@@ -58,7 +58,7 @@ class SubmitChallengeController extends Controller
         }
         $submit = $this->model->create($data);
         $submit->setStatus(Completed());
-        return response($submit,200);
+        return response('Challenge Submited!',200);
     }
 
     /**
