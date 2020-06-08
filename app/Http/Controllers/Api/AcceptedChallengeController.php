@@ -18,6 +18,17 @@ class AcceptedChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
     }
 
+    public function accept(Request $request)
+    {
+        $data = [
+            'challenge_id' => $request->challenge_id,
+            'user_id' => auth()->id(),
+        ];
+        $acceptedChallenge = $this->model->create($data);
+        $acceptedChallenge->setStatus(Accepted());
+        return response("Your Challenge is Accepted",200);
+    }
+
     public function acceptedChallenge(Request $request)
     {
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
