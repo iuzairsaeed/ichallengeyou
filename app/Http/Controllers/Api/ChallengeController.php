@@ -176,9 +176,9 @@ class ChallengeController extends Controller
 
         try {
             $data = $request->all();
-
             if($request->hasFile('file')){
-                $data['file'] = uploadFile($request->file, challengesPath(), $challenge->file);
+                $deleteFile = $challenge->getAttributes()['file'] != 'no-image.png' ? $challenge->file : null;
+                $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
             }
             $data['user_id'] = auth()->id();
             $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
