@@ -28,7 +28,8 @@ class AcceptedChallengeController extends Controller
             ];
             $acceptedChallenge = $this->model->create($data);
             $acceptedChallenge->setStatus(Accepted());
-            return response("Your Challenge is Accepted",200);
+            $data['message'] = 'You Successfully accept the challenge!';
+            return response($data,200);
         }
         return response("Become one now, its 1 USD for god sake. Don’t be so cheap",200);
     }
