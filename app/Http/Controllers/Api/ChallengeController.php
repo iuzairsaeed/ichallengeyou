@@ -324,19 +324,25 @@ class ChallengeController extends Controller
     public function favorite(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        $message = '';
-        if(!$reaction || !$reaction->favorite){
+        $message = ''; 
+        // dd($reaction->challenge_id);
+        if(!$reaction){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'favorite' => true,
             ]);
             $challenge->userReaction()->save($reaction);
-            $message = 'Challenge Added to Favorites!';
-        }else{
+            $message = 'Added';
+        }elseif($reaction->favorite) {
             $reaction->update([
-                'favorite' => $reaction->favorite ? false : true
-            ]);
-            $message = 'Challenge Removed from Favorites!';
+                'favorite' => false
+                ]);
+            $message = 'Removed';
+        }elseif(!$reaction->favorite) {
+            $reaction->update([
+                'favorite' => true
+                ]);
+            $message = 'Added';
         }
         return response(['message' => $message], 200);
     }

@@ -15,13 +15,12 @@ class FavouriteCollection extends JsonResource
     public function toArray($request)
     {
         return [
-            "id" => $this->id,
-            "challenge_id" => $this->challenge->id,
-            'challenge_title' => $this->challenge->title,
-            'challenge_start_time' => $this->challenge->start_time,
-            'challenge_file' => $this->challenge->file,
-            'challenge_file_mime' => $this->challenge->file_mime,
-            "amounts_sum" => $this->amounts_sum,
+            "id" => $this->challenge->id,
+            'title' => $this->challenge->title,
+            'start_time' => $this->challenge->start_time,
+            'file' => $this->challenge->file,
+            'file_mime' => $this->challenge->file_mime,
+            "amount" => $this->amounts_sum,
         ];
     }
 }
