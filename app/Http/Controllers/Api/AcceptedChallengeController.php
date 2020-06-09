@@ -8,6 +8,7 @@ use App\Http\Resources\ChallengeAccepted;
 use App\Repositories\ChallengeRepository;
 use App\Models\AcceptedChallenge;
 use App\Models\Amount;
+use Illuminate\Support\Facades\Auth;
 
 class AcceptedChallengeController extends Controller
 {
@@ -16,6 +17,20 @@ class AcceptedChallengeController extends Controller
 
     public function __construct(AcceptedChallenge $model) {
         $this->model = new ChallengeRepository($model);
+    }
+
+    public function accept($id)
+    {
+        if(Auth::user()->is_premium){
+            $data = [
+                'challenge_id' => $id,
+                'user_id' => auth()->id(),
+            ];
+            $acceptedChallenge = $this->model->create($data);
+            $acceptedChallenge->setStatus(Accepted());
+            return response("Your Challenge is Accepted",200);
+        }
+        return response("Become one now, its 1 USD for god sake. Don’t be so cheap",200);
     }
 
     public function acceptedChallenge(Request $request)

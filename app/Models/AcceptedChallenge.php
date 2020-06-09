@@ -8,6 +8,7 @@ use App\Models\Constant;
 
 class AcceptedChallenge extends Model
 {
+    use HasStatuses;
     protected $guarded = [];
 
     protected $casts = [
@@ -33,6 +34,11 @@ class AcceptedChallenge extends Model
     public function getStatusAttribute()
     {
         return $this->status()->name;
+    }
+
+    public function submitChallenge()
+    {
+        return $this->belongsTo(SubmitChallenge::class);
     }
 
     

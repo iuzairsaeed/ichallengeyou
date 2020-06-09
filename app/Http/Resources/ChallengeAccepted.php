@@ -16,6 +16,7 @@ class ChallengeAccepted extends JsonResource
     {
         return  [
             'challenge' => [
+                'accepted_challenge_id' => $this->id,
                 'title' => $this->challenge->title,
                 'start_time' => $this->challenge->start_time,
                 'file' => $this->challenge->file,

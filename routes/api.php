@@ -19,10 +19,9 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('logout', 'AuthController@logout');
         });
 
+        Route::resource('submit', 'SubmitChallengeController');
         Route::resource('challenges', 'ChallengeController', ['except' => ['index', 'show']]);
         Route::group(['prefix' => 'challenge'], function () {
-            Route::get('/acceptedChallenge', 'AcceptedChallengeController@acceptedChallenge');
-            Route::get('/donatedChallenge', 'DonatedChallengeController@donatedChallenge');
             Route::get('/myList', 'ChallengeController@myList');
             Route::post('{challenge}/donation', 'ChallengeController@donation');
             Route::get('{challenge}/comments', 'ChallengeController@comments');
@@ -30,6 +29,9 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{challenge}/like', 'ChallengeController@like');
             Route::post('{challenge}/unlike', 'ChallengeController@unlike');
             Route::post('{challenge}/favorite', 'ChallengeController@favorite');
+            Route::get('/acceptedList', 'AcceptedChallengeController@acceptedChallenge');
+            Route::post('{challenge}/accept', 'AcceptedChallengeController@accept');
+            Route::get('/donatedList', 'DonatedChallengeController@donatedChallenge');
         });
 
         Route::resource('categories', 'CategoryController', ['except' => ['index']]);
