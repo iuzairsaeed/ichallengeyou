@@ -213,8 +213,8 @@ class ChallengeController extends Controller
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
         $user = auth()->user();
-        if($request->amount > $user->balance){
-            return response(['message' => 'Donation amount cannot be greater than current account balance.'], 200);
+        if((float)$request->amount > (float)$user->getAttributes()['balance']){
+            return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
         }
         $donation = new Amount([
             'user_id' => $user->id,
@@ -223,9 +223,9 @@ class ChallengeController extends Controller
         ]);
         $challenge->amounts()->save($donation);
         $challenge->increment('trend');
-        $user->balance -= $request->amount;
+        (float)$user->getAttributes()['balance'] -= (float)$request->amount;
         $user->update();
-        return response(['message' => 'Donation has been submitted.'], 200);
+        return response(['message' => 'Your donation of '.$user->balance.' has been contributed to the '.$challenge->title], 200);
     }
 
     /**
@@ -274,21 +274,21 @@ class ChallengeController extends Controller
     public function like(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        if(!$reaction || !$reaction->like){
+        if(!$reaction){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'like' => true,
             ]);
             $challenge->userReaction()->save($reaction);
             $challenge->increment('trend');
-        }else{
+        } else {
             $reaction->update([
-                'like' => $reaction->like ? false : true,
+                'like' => $reaction->like == false ? true : false,
                 'unlike' => false
             ]);
             $challenge->decrement('trend');
         }
-        return response(['message' => 'Reaction Updated!'], 200);
+        return response(['like' => $reaction->like], 200);
     }
 
     /**
@@ -300,19 +300,20 @@ class ChallengeController extends Controller
     public function unlike(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        if(!$reaction || !$reaction->unlike){
-            $reaction = new Reaction([
+        if(!$reaction){
+            $react = $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'unlike' => true,
             ]);
             $challenge->userReaction()->save($reaction);
-        }else{
+            $return = true;
+        } else {
             $reaction->update([
                 'like' => false,
-                'unlike' => $reaction->unlike ? false : true
+                'unlike' => $reaction->unlike == false ? true : false
             ]);
-        }
-        return response(['message' => 'Reaction Updated!'], 200);
+        } 
+        return response(['unlike' => $reaction->unlike ], 200);
     }
 
     /**
@@ -324,27 +325,18 @@ class ChallengeController extends Controller
     public function favorite(Challenge $challenge)
     {
         $reaction = $challenge->userReaction;
-        $message = ''; 
-        // dd($reaction->challenge_id);
         if(!$reaction){
             $reaction = new Reaction([
                 'user_id' => auth()->id(),
                 'favorite' => true,
             ]);
             $challenge->userReaction()->save($reaction);
-            $message = 'Added';
-        }elseif($reaction->favorite) {
+        } else {
             $reaction->update([
-                'favorite' => false
-                ]);
-            $message = 'Removed';
-        }elseif(!$reaction->favorite) {
-            $reaction->update([
-                'favorite' => true
-                ]);
-            $message = 'Added';
+                'favorite' => $reaction->favorite == false ? true : false,
+            ]);
         }
-        return response(['message' => $message], 200);
+        return response(['favorite' => $reaction->favorite], 200);
     }
 
     public function myList(Request $request)
