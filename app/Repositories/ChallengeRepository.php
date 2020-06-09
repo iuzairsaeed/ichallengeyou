@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Challenge;
+use App\Models\SubmitChallenge;
 use Illuminate\Http\Request;
 use DB;
 
@@ -28,6 +29,10 @@ class ChallengeRepository implements RepositoryInterface
     public function create(array $data)
     {
         return $this->model->create($data);
+    }
+    public function createInArray(array $data)
+    {
+        return SubmitChallenge::insert($data);
     }
 
     // update record in the database

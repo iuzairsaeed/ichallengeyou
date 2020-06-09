@@ -47,18 +47,25 @@ class SubmitChallengeController extends Controller
      */
     public function store(Request $request)
     {
-        $data = [
-            'accepted_challenge_id' => $request->accepted_challenge_id,
-        ];
+        $accepted_challenge_id = $request->accepted_challenge_id;
+
         if($request->hasFile('file')){
             foreach ($request->file as $key => $file) {
                 $data['file'][$key] = uploadFile($file, challengesPath(), null);
             }
-            $data['file'] = implode(',' , $data['file']);
         }
-        $submit = $this->model->create($data);
+        foreach($data['file'] as $d){
+            $records[] = [
+                'accepted_challenge_id' => $request->accepted_challenge_id,
+                'file' => $d,
+            ]; 
+            
+        }
+        $this->model->createInArray($records);
+        $submit = AcceptedChallenge::where('id' , $accepted_challenge_id)->first();
         $submit->setStatus(Completed());
         return response('Challenge Submited!',200);
+        return ($submit);
     }
 
     /**
