@@ -45,5 +45,9 @@ Route::group(['namespace' => 'Api'], function () {
         Route::group(['prefix' => 'transaction'], function () {
             Route::get('history', 'TransactionController@history');
         });
+
+        Route::group(['prefix' => 'payment'], function () {
+            Route::post('balance', 'PaymentController@loadBalance');
+        });
     });
 });

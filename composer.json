@@ -16,7 +16,6 @@
 		"laravel/sanctum": "^2.2",
 		"laravel/tinker": "^2.0",
 		"laravel/ui": "^2.0",
-		"paypal/rest-api-sdk-php": "^1.14",
 		"spatie/laravel-model-status": "^1.10",
 		"wyattcast44/laravel-safe-username": "^1.0"
 	},
@@ -42,6 +41,7 @@
 			"app/Helpers/RoleNames.php",
 			"app/Helpers/FileManager.php",
 			"app/Helpers/Helper.php",
+			"app/Helpers/Paypal.php",
 			"app/Helpers/ChallengeStatuses.php"
 		],
 		"psr-4": {
