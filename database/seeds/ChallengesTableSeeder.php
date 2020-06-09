@@ -29,12 +29,7 @@ class ChallengesTableSeeder extends Seeder
             'duration_minutes' => "00",
             'created_at' => now()
         ]);
-        $Acceptedchallenge = AcceptedChallenge::create([
-            'user_id' => 1,
-            'challenge_id' => $challenge->id,
-        ]);
-        $Acceptedchallenge->setStatus(Approved());
-
+        $challenge->setStatus(Approved());
         $donation = new Amount([
             'user_id' => 1,
             'amount' => '100',
@@ -64,11 +59,7 @@ class ChallengesTableSeeder extends Seeder
             'duration_minutes' => "00",
             'created_at' => now()
         ]);
-        $Acceptedchallenge = AcceptedChallenge::create([
-            'user_id' => 1,
-            'challenge_id' => $challenge->id,
-        ]);
-        $Acceptedchallenge->setStatus(Approved());
+        $challenge->setStatus(Approved());
         $donation = new Amount([
             'user_id' => 1,
             'amount' => '432',
@@ -98,11 +89,7 @@ class ChallengesTableSeeder extends Seeder
             'duration_minutes' => "00",
             'created_at' => now()
         ]);
-        $Acceptedchallenge = AcceptedChallenge::create([
-            'user_id' => 1,
-            'challenge_id' => $challenge->id,
-        ]);
-        $Acceptedchallenge->setStatus(Approved());
+        $challenge->setStatus(Approved());
         $donation = new Amount([
             'user_id' => 1,
             'amount' => '500',
