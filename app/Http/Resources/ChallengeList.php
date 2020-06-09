@@ -21,7 +21,7 @@ class ChallengeList extends JsonResource
             'file' => $this->file,
             'file_mime' => $this->file_mime,
             'user' => $this->user,
-            'start_time' => $this->start_time,
+            'start_time' => $this->start_time->format('d M, Y - h:mA'),
         ];
     }
 }
