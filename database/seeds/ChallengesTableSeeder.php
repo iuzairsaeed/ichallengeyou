@@ -15,6 +15,7 @@ class ChallengesTableSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
         # Challenge 1
         $challenge = Challenge::create([
             'user_id' => 1,
@@ -104,5 +105,78 @@ class ChallengesTableSeeder extends Seeder
             'created_at' => now()
         ]);
         $challenge->amounts()->save($donation);
+        # Challenge 4
+        $challenge = Challenge::create([
+            'user_id' => 1,
+            'category_id' => 1,
+            'title' => 'DUMMY VIDEO CHALLENGE',
+            'description' => "Become healthier and more good looking and get paid to do it!\n1- Loose 20 KG wihtout Surgery.\n2- Make Videos 3x a Week showing your face, body and scale results.\n3- Use always same Scale.\n4- Must be 100 KG at least to start Challenge.",
+            'start_time' => Carbon::createFromDate('2020','09','09'),
+            'file' => 'dummy.mp4',
+            'location' => "Anywhere",
+            'duration_days' => '120',
+            'duration_hours' => "00",
+            'duration_minutes' => "00",
+            'created_at' => now()
+        ]);
+        $challenge->setStatus(Approved());
+        $donation = new Amount([
+            'user_id' => 1,
+            'amount' => '202',
+            'type' => 'initial',
+            'created_at' => now()
+        ]);
+        $challenge->amounts()->save($donation);
+        $donation = new Amount([
+            'user_id' => 1,
+            'amount' => '1648',
+            'type' => 'donation',
+            'created_at' => now()
+        ]);
+        $challenge->amounts()->save($donation);
+        # 10 Fake DATA
+        
+        for ($i = 0; $i < 10; $i++) {
+
+            $challenge = Challenge::create([
+                'user_id' => $faker->randomElement([1,2]),
+                'category_id' => $faker->randomElement([1,2]),
+                'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
+                'description' => $faker->paragraph(),
+                'start_time' => now(),
+                'file' => 'no-image.png',
+                'location' => $faker->country,
+                'duration_days' => $faker->numberBetween(0, 10),
+                'duration_hours' => $faker->numberBetween(0, 24),
+                'duration_minutes' => $faker->numberBetween(0, 60),
+                'created_at' => now()
+            ]);
+
+            $donation = new Amount([
+                'user_id' => $faker->randomElement([1,2]),
+                'amount' => $faker->randomNumber(2),
+                'type' => 'initial',
+                'created_at' => now()
+            ]);
+            $challenge->amounts()->save($donation);
+
+            $donation = new Amount([
+                'user_id' => $faker->randomElement([1,2]),
+                'amount' => $faker->randomNumber(2),
+                'type' => 'donation',
+                'created_at' => now()
+            ]);
+            $challenge->amounts()->save($donation);
+
+            $donation = new Amount([
+                'user_id' => $faker->randomElement([1,2]),
+                'amount' => $faker->randomNumber(2),
+                'type' => 'donation',
+                'created_at' => now()
+            ]);
+            $challenge->amounts()->save($donation);
+            $challenge->setStatus($faker->randomElement([Pending(),Approved()]));
+        }
+
     }
 }
