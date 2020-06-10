@@ -16,16 +16,14 @@ class TransactionCollection extends JsonResource
     {
         return [
             "id" => $this->id,
-            "user_id" => $this->user_id,
             "amount" => $this->amount,
             "type" => $this->type,
+            "reason" => $this->reason,
             "month" => $this->month,
-            "date" => $this->date,
+            "day" => $this->day,
             "year" => $this->year,
-            "challenge" => [
-                "challenge_id" => $this->challenge->id ?? "",
-                "title" => $this->challenge->title ?? "",
-            ],
+            "challenge_id" => $this->challenge->id ?? 0,
+            "title" => $this->challenge->title ?? "",
         ];
     }
 }
