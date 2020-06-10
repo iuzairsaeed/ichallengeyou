@@ -4,6 +4,10 @@
       <button type="button" data-toggle="collapse" class="navbar-toggle d-lg-none float-left">
         <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
       </button>
+      <a id="navbar-fullscreen" class="mr-2 display-inline-block apptogglefullscreen">
+        <i class="ft-maximize blue-grey darken-4 toggleClass"></i>
+        <p class="d-none">fullscreen</p>
+      </a>
       <span class="d-lg-none navbar-right navbar-collapse-toggle"><a class="open-navbar-container"><i class="ft-more-vertical"></i></a></span>
     </div>
     @php $user = auth()->user(); @endphp
