@@ -14,7 +14,8 @@ class PaymentController extends Controller
         $user = Auth::User();
         $pay_id = $request->response['id'];
         $auth = paypalAuth();
-        $paymentRecord = paypalDetail($auth['access_token'] , $pay_id);
+        (string)$token = $auth['access_token'];
+        $paymentRecord = paypalDetail($token , $pay_id);
         $amount = $paymentRecord['transactions'][0]['amount']['total'];
         if($paymentRecord['state'] == 'approved' && $paymentRecord['payer']['status'] == 'VERIFIED' ){
             if(!$user->is_premium){
