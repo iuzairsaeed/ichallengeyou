@@ -19,5 +19,12 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => now()
             ]
         ]);
+        Setting::insert([
+            [
+                'name' => 'PREMIUM_COST',
+                'value' => 1,
+                'created_at' => now()
+            ]
+        ]);
     }
 }
