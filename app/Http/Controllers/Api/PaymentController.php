@@ -15,6 +15,9 @@ class PaymentController extends Controller
         $pay_id = $request->response['id'];
         $auth = paypalAuth();
         (string)$token = $auth['access_token'];
+        if(!$token){
+            return response('Token is not Verified' , 401);
+        }
         $paymentRecord = paypalDetail($token , $pay_id);
         $amount = $paymentRecord['transactions'][0]['amount']['total'];
         if($paymentRecord['state'] == 'approved' && $paymentRecord['payer']['status'] == 'VERIFIED' ){
@@ -26,7 +29,7 @@ class PaymentController extends Controller
             $user->update();
             $data = [
                 'message' => '$'.$amount.' has been credited to your account \n Your Total Amount is '.$user->balance,
-                'amount' => $amount,
+                'amount' => '$'.$user->balance,
             ];
             return response($data , 200);
         }
