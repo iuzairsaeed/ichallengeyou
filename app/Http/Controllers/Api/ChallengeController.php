@@ -44,7 +44,7 @@ class ChallengeController extends Controller
         $whereVals = [];
         $with = array(
             'userReaction' => function($query) use ($user_id) {
-                $query->where('user_id', $user_id); 
+                $query->where('user_id', $user_id);
             },
             'comments',
         );
@@ -135,7 +135,7 @@ class ChallengeController extends Controller
 
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
-        
+
             if($data['data']->acceptedChallenges){
                 $data['data']['acceptBtn'] = false;
                 $data['data']['submitBtn'] = true;
@@ -223,10 +223,12 @@ class ChallengeController extends Controller
             'type' => 'donation'
         ]);
         $challenge->amounts()->save($donation);
-        $challenge->increment('trend');
-        (float)$user->getAttributes()['balance'] -= (float)$request->amount;
+        $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
         $user->update();
-        return response(['message' => 'Your donation of '.$user->balance.' has been contributed to the '.$challenge->title], 200);
+        return response([
+            'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
+            'balanace' => $user->balance
+        ], 200);
     }
 
     /**
@@ -311,7 +313,7 @@ class ChallengeController extends Controller
                 'like' => false,
                 'unlike' => $reaction->unlike == false ? true : false
             ]);
-        } 
+        }
         return response(['unlike' => $reaction->unlike ], 200);
     }
 
