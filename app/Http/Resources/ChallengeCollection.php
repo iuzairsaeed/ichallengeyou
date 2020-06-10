@@ -25,6 +25,7 @@ class ChallengeCollection extends JsonResource
             'favorite' => $this->userReaction->favorite ?? false,
             'file_mime' => $this->file_mime,
             'category_name' => $this->category->name,
+            'comments' => $this->comments,
 
         ];
     }

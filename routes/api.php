@@ -12,6 +12,10 @@ Route::group(['namespace' => 'Api'], function () {
     Route::resource('challenges', 'ChallengeController', ['except' => ['create', 'update', 'destroy']]);
     Route::get('categories', 'CategoryController@index', ['only' => ['index']]);
 
+    Route::group(['prefix' => 'challenge'], function () {
+        Route::get('{challenge}/comments', 'ChallengeController@comments');
+    });
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::group(['prefix' => 'auth'], function () {
             Route::get('user', 'AuthController@user');
@@ -24,7 +28,6 @@ Route::group(['namespace' => 'Api'], function () {
         Route::group(['prefix' => 'challenge'], function () {
             Route::get('/myList', 'ChallengeController@myList');
             Route::post('{challenge}/donation', 'ChallengeController@donation');
-            Route::get('{challenge}/comments', 'ChallengeController@comments');
             Route::post('{challenge}/comment', 'ChallengeController@comment');
             Route::post('{challenge}/like', 'ChallengeController@like');
             Route::post('{challenge}/unlike', 'ChallengeController@unlike');
@@ -44,10 +47,8 @@ Route::group(['namespace' => 'Api'], function () {
 
         Route::group(['prefix' => 'transaction'], function () {
             Route::get('history', 'TransactionController@history');
+            Route::post('paypal/addBalance', 'PaymentController@loadBalance');
         });
 
-        Route::group(['prefix' => 'payment'], function () {
-            Route::post('balance', 'PaymentController@loadBalance');
-        });
     });
 });

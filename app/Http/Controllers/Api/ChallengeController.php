@@ -46,6 +46,7 @@ class ChallengeController extends Controller
             'userReaction' => function($query) use ($user_id) {
                 $query->where('user_id', $user_id); 
             },
+            'comments',
         );
         $withCount = [];
         $currentStatus = [Approved()];
