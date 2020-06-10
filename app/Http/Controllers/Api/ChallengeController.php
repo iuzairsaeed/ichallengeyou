@@ -236,16 +236,14 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function comments(Comment $model, Request $request)
+    public function comments(Comment $model, Request $request, $id)
     {
         $this->model = new ChallengeRepository($model);
         $with = ['user'];
-        $comments = $this->model->comments($request,$with);
-        // $comments = $this->model->comments($request,$with);
-
-        return $comments;
+        $comments = $this->model->comments($request,$with,$id);
         $data = [
-            'message' => $comments->count() === 0 ? 'No comments found.' : 'Success',
+            'message' => $comments->count() == 0 ? 'No comments found.' : 'Success',
+            'totalRecord' => $comments->count(),
             'data' => $comments,
         ];
         return response($data, 200);

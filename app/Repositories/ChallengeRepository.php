@@ -279,15 +279,13 @@ class ChallengeRepository implements RepositoryInterface
         ];
     }
 
-    public function comments($request,$with)
+    public function comments($request,$with,$id)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
-        $records = $this->model->with($with);     
+        $records = $this->model->with($with)->where('challenge_id' , $id)->orderBy('created_at' , 'DESC');     
         $records = $records->limit($length)->offset($start)->get();
-        return [
-            'data' => $records,
-        ];
+        return  $records;
     }
 
 }
