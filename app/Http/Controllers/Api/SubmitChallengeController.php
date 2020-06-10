@@ -47,6 +47,7 @@ class SubmitChallengeController extends Controller
      */
     public function store(Request $request)
     {
+        
         $accepted_challenge_id = $request->accepted_challenge_id;
 
         if($request->hasFile('file')){
@@ -63,7 +64,9 @@ class SubmitChallengeController extends Controller
         }
         $this->model->createInArray($records);
         $submit = AcceptedChallenge::where('id' , $accepted_challenge_id)->first();
-        $submit->setStatus(Completed());
+        if($request->submit){
+            $submit->setStatus(Completed());
+        }
         return response('Challenge Submited!',200);
         return ($submit);
     }
