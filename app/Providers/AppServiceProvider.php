@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Schema::defaultStringLength(191);
+        Schema::defaultStringLength(191);
         $this->app->extend('command.model.make', function ($command, $app) {
             return new ModelMakeCommand($app['files']);
         });
