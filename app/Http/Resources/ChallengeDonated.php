@@ -15,6 +15,7 @@ class ChallengeDonated extends JsonResource
     public function toArray($request)
     {
         return  [
+            'id' => $this->challenge->id,
             'title' => $this->challenge->title,
             'start_time' => $this->challenge->start_time->format('d M, Y - h:mA'),
             'file' => $this->challenge->file,
