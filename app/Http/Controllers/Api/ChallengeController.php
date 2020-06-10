@@ -287,7 +287,7 @@ class ChallengeController extends Controller
                 'like' => $reaction->like == false ? true : false,
                 'unlike' => false
             ]);
-            $challenge->decrement('trend');
+            $reaction->like ? $challenge->increment('trend') : $challenge->decrement('trend');
         }
         return response(['like' => $reaction->like], 200);
     }
@@ -313,6 +313,9 @@ class ChallengeController extends Controller
                 'like' => false,
                 'unlike' => $reaction->unlike == false ? true : false
             ]);
+            if($challenge->trend != 0){
+                $challenge->decrement('trend');
+            }
         }
         return response(['unlike' => $reaction->unlike ], 200);
     }

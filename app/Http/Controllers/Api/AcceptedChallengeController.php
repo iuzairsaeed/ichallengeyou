@@ -19,19 +19,22 @@ class AcceptedChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
     }
 
-    public function accept($id)
+    public function accept(int $id)
     {
+        if(AcceptedChallenge::where('challenge_id', 3)->where('user_id' , auth()->id())->exists()){
+            return 1;
+        }
+        return 0;
         if(Auth::user()->is_premium){
-            $data = [
+            $record = [
                 'challenge_id' => $id,
                 'user_id' => auth()->id(),
             ];
-            $acceptedChallenge = $this->model->create($data);
+            $acceptedChallenge = $this->model->create($record);
             $acceptedChallenge->setStatus(Accepted());
-            $data['message'] = 'You Successfully accept the challenge!';
-            return response($data,200);
+            return response('You have successfully accepted the challenge!',200);
         }
-        return response("Become one now, its 1 USD for god sake. Don’t be so cheap",200);
+        return response("Become one now, its 1 USD for god sake. Don’t be so cheap",400);
     }
 
     public function acceptedChallenge(Request $request)

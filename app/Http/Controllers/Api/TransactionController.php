@@ -37,7 +37,33 @@ class TransactionController extends Controller
         collect($data['data'])->map(function ($item) {
             $item['year'] = $item->created_at->year;
             $item['month'] = $item->created_at->month;
-            $item['date'] = $item->created_at->day;
+            $item['day'] = $item->created_at->day;
+            $item['amount'] = config('global.CURRENCY').$item->amount;
+            switch ($item->type) {
+                case 'load':
+                    $item['reason'] = 'Load Balance';
+                    break;
+                case 'won_challenge':
+                    $item['reason'] = 'Won Challange';
+                    break;
+                case 'withdraw':
+                    $item['reason'] = 'Withdraw Balance';
+                    $item['amount'] = '-'.$item['amount'];
+                    break;
+                case 'donate':
+                    $item['reason'] = 'Donate on Challenge';
+                    $item['amount'] = '-'.$item['amount'];
+                    break;
+                case 'create_challenge':
+                    $item['reason'] = 'Created Challenge';
+                    $item['amount'] = '-'.$item['amount'];
+                    break;
+                case 'miscellaneous':
+                    $item['reason'] = 'Premium Cost';
+                    $item['amount'] = '-'.$item['amount'];
+                    break;
+            }
+            $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
         });
         $data['data'] = TransactionCollection::collection($data['data']);
         return response($data, 200);
