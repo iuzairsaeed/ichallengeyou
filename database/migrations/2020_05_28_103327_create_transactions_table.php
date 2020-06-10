@@ -18,7 +18,8 @@ class CreateTransactionsTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('challenge_id')->nullable();
             $table->unsignedDecimal('amount', 8, 2);
-            $table->enum('type', ['load', 'withdraw', 'donate', 'create_challenge', 'won_challenge']);
+            $table->enum('type', ['miscellaneous','load', 'withdraw', 'donate', 'create_challenge', 'won_challenge']);
+            $table->string('invoice_id');
             $table->timestamps();
         });
     }
