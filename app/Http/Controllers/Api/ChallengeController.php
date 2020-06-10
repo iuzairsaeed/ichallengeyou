@@ -244,7 +244,7 @@ class ChallengeController extends Controller
         $comments = $this->model->comments($request,$with,$id);
         $data = [
             'message' => $comments->count() == 0 ? 'No comments found.' : 'Success',
-            'totalRecord' => $comments->count(),
+            'recordsTotal' => $comments->count(),
             'data' => $comments,
         ];
         return response($data, 200);
