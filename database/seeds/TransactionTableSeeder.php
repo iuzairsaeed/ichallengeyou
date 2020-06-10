@@ -55,8 +55,8 @@ class TransactionTableSeeder extends Seeder
             'user_id' => 2,
             'challenge_id' => 1,
             'amount' => 150,
-            'type' => 'won_challenge',
-            'invoice_id' => 'withdraw',
+            'type' => 'withdraw',
+            'invoice_id' => 'Random-Number',
         ]);
         $transaction->save();
         
