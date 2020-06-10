@@ -36,7 +36,7 @@ class TransactionController extends Controller
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item) {
             $item['year'] = $item->created_at->year;
-            $item['month'] = $item->created_at->month;
+            $item['month'] = $item->created_at->format('F');
             $item['day'] = $item->created_at->day;
             $item['amount'] = config('global.CURRENCY').$item->amount;
             switch ($item->type) {
