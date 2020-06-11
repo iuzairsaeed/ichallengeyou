@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
         $data = [
             [
                 'role' => Admin(),
-                'balance' => 0.00,
+                'balance' => 1000.00,
                 'is_premium' => 1,
                 'name' => 'Admin User',
                 'username' => 'admin',
