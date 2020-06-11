@@ -134,8 +134,8 @@ class ChallengesTableSeeder extends Seeder
             'created_at' => now()
         ]);
         $challenge->amounts()->save($donation);
-        # 10 Fake DATA
         
+        # 10 Fake DATA
         for ($i = 0; $i < 10; $i++) {
 
             $challenge = Challenge::create([
