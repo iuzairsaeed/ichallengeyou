@@ -54,15 +54,16 @@ class SubmitChallengeController extends Controller
         if($accepted_challenge){
             $message['message'] = 'You are out of time!';
             if(Carbon::now()->format('Y-d-m') <= $accepted_challenge->challenge->start_time->format('Y-d-m')){
-                $SubmitChallenge = SubmitChallenge::where('accepted_challenge_id' ,$accepted_challenge->id );
-                if(!$SubmitChallenge){
+                $SubmitChallenge = SubmitChallenge::where('accepted_challenge_id' ,$accepted_challenge->id )->first();
+                $submitFile = SubmitFile::where('accepted_challenges_id', $accepted_challenge->id)->first();
+                $message['message'] = $submitFile ? 'You have already submitted the challenge!' : 'No Video Found!' ; 
+                if(!$SubmitChallenge && $submitFile){
                     $data = [
                         'accepted_challenge_id' => $accepted_challenge->id,
                     ];       
                     $submit = $this->model->create($data);
                     $message['message'] = 'Challenge Submited!';
                 }
-                $message['message'] = 'You have already submitted the challenge!';
             }
         }
         return response($message,200);
@@ -81,7 +82,7 @@ class SubmitChallengeController extends Controller
                     }
                     foreach($files['file'] as $file){
                         $records[] = [
-                            'accepted_challenges_id' => $accepted_challenge->id,
+                            'accepted_challenge_id' => $accepted_challenge->id,
                             'file' => $file,
                         ]; 
                     }
@@ -138,8 +139,8 @@ class SubmitChallengeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, SubmitFile $fileModel)
     {
-        //
+        
     }
 }
