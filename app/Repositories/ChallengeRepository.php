@@ -32,7 +32,7 @@ class ChallengeRepository implements RepositoryInterface
     }
     public function createInArray(array $data)
     {
-        return SubmitChallenge::insert($data);
+        return $this->model->insert($data);
     }
 
     // update record in the database

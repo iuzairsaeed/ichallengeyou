@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubmitChallengesTable extends Migration
+class CreateSubmitFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateSubmitChallengesTable extends Migration
      */
     public function up()
     {
-        Schema::create('submit_challenges', function (Blueprint $table) {
+        Schema::create('submit_files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('accepted_challenge_id');
-            $table->boolean('status');
+            $table->foreignId('submited_challenges_id');
+            $table->string('file');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateSubmitChallengesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('submit_challenges');
+        Schema::dropIfExists('submit_files');
     }
 }

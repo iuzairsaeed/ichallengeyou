@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Repositories\ChallengeRepository;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Models\Challenge;
+use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
-use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 class SubmitChallengeController extends Controller
 {
 
@@ -45,31 +46,48 @@ class SubmitChallengeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, SubmitFile $fileModel)
     {
-        
-        $accepted_challenge_id = $request->accepted_challenge_id;
-
-        if($request->hasFile('file')){
-            foreach ($request->file as $key => $file) {
-                $data['file'][$key] = uploadFile($file, challengesPath(), null);
+        $submit = $request->submit;
+        $challenge_id = $request->challenge_id; 
+        $message['message'] = 'You need to accept challenge first';
+        $accepted_challenge = AcceptedChallenge::where('challenge_id' , $challenge_id)->where('user_id' , auth()->id())->with('challenge')->first();     
+        if($accepted_challenge){
+            $message['message'] = 'You are out of time!';
+            if(Carbon::now()->format('Y-d-m') <= $accepted_challenge->challenge->start_time->format('Y-d-m')){
+                # Add Submit Challenge with ( status true | false ) 
+                $data = [
+                    'accepted_challenge_id' => $accepted_challenge->id,
+                    'submit' => $submit,
+                ];       
+                $submited_challenge = $this->model->create($data);
+                # Add Submited Videos if Request have Video 
+                if($request->hasFile('file')){
+                    foreach ($request->file as $key => $video) {
+                        $files['file'][$key] = uploadFile($video, SubmitChallengesPath(), null);
+                    }
+                    foreach($files['file'] as $file){
+                        $records[] = [
+                            'submited_challenges_id' => $submited_challenge->id,
+                            'file' => $file,
+                        ]; 
+                    }
+                    $this->model = new ChallengeRepository($fileModel);
+                    $this->model->createInArray($records);
+                    $message['message'] = 'Video has been Added!';
+                }
+                # set status true | false
+                if($submit){
+                    $accepted_challenge->setStatus(Completed());
+                    $message['message'] = 'Challenge Submited!';
+                    return response($message,200);
+                }
+                return response($message,200);
             }
         }
-        foreach($data['file'] as $d){
-            $records[] = [
-                'accepted_challenge_id' => $request->accepted_challenge_id,
-                'file' => $d,
-            ]; 
-            
-        }
-        $this->model->createInArray($records);
-        $submit = AcceptedChallenge::where('id' , $accepted_challenge_id)->first();
-        if($request->submit){
-            $submit->setStatus(Completed());
-        }
-        return response('Challenge Submited!',200);
-        return ($submit);
+        return response($message,200);
     }
+
 
     /**
      * Display the specified resource.
