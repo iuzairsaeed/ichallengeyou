@@ -44,7 +44,7 @@ class ChallengeRepository implements RepositoryInterface
     // remove record from the database
     public function delete(Model $model)
     {
-        return $model->destroy();
+        return $model->delete();
     }
 
     // show the record with the given id
