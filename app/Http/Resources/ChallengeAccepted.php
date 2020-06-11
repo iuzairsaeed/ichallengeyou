@@ -20,7 +20,7 @@ class ChallengeAccepted extends JsonResource
             'start_time' => $this->challenge->start_time->format('d M, Y'),
             'file' => $this->challenge->file,
             'file_mime' => $this->challenge->file_mime,
-            'status' => $this->status,
+            'status' => $this->challenge->status,
             'amounts_sum' => $this->amounts_sum,
         ];
     }
