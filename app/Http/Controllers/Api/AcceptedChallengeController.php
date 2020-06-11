@@ -21,10 +21,10 @@ class AcceptedChallengeController extends Controller
 
     public function accept(int $id)
     {
-        if(AcceptedChallenge::where('challenge_id', 3)->where('user_id' , auth()->id())->exists()){
-            return 1;
+        if(AcceptedChallenge::where('challenge_id', $id)->where('user_id' , auth()->id())->exists()){
+            $data['message'] = 'You have already accepted this challenge!';
+            return response($data, 400);
         }
-        return 0;
         if(Auth::user()->is_premium){
             $record = [
                 'challenge_id' => $id,
@@ -32,7 +32,8 @@ class AcceptedChallengeController extends Controller
             ];
             $acceptedChallenge = $this->model->create($record);
             $acceptedChallenge->setStatus(Accepted());
-            return response('You have successfully accepted the challenge!',200);
+            $data['message'] = 'You have successfully accepted the challenge!';
+            return response($data,200);
         }
         return response("Become one now, its 1 USD for god sake. Don’t be so cheap",400);
     }

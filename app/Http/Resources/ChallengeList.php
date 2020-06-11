@@ -20,7 +20,7 @@ class ChallengeList extends JsonResource
             'amounts_sum' => $this->amounts_sum,
             'file' => $this->file,
             'file_mime' => $this->file_mime,
-            'start_time' => $this->start_time->format('d M, Y - h:mA'),
+            'start_time' => $this->start_time->format('d M, Y'),
         ];
     }
 }
