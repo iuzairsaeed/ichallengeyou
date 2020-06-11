@@ -52,7 +52,8 @@ Route::group(['namespace' => 'Api'], function () {
         Route::resource('submit','SubmitChallengeController');
         Route::group(['prefix' => 'submit'], function () {
             Route::post('addVideo', 'SubmitChallengeController@addVideo');
-            Route::post('{file}/deleteVideo', 'SubmitChallengeController@deleteVideo');
+            Route::delete('{file}/deleteVideo', 'SubmitChallengeController@deleteVideo');
+            Route::post('{file}/getVideo', 'SubmitChallengeController@deleteVideo');
         });
 
     });

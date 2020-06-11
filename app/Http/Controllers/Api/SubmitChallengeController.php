@@ -29,7 +29,7 @@ class SubmitChallengeController extends Controller
      */
     public function index()
     {
-        // 
+        
     }
 
     /**
@@ -71,6 +71,14 @@ class SubmitChallengeController extends Controller
         return response($message,200);
     }
 
+    public function getVideo(SubmitChallenges $file)
+    {
+        $file_name = $file->file;
+        deleteFile($file_name, SubmitChallengesPath());
+        $file->delete();
+        return response(['message'=>'Video is Deleted!']);
+    }
+
     public function addVideo(SubmitChallengeRequest $request, SubmitFile $fileModel)
     {
         $challenge_id = $request->challenge_id; 
@@ -101,17 +109,12 @@ class SubmitChallengeController extends Controller
         return response($message, 200);
     }
     
-    public function deleteVideo($id)
+    public function deleteVideo(SubmitFile $file)
     {
-        try {
-            $fileModel = SubmitFile::find($id);
-            $this->model = new ChallengeRepository($fileModel);
-            $this->model->delete($fileModel);
-            return response(['message'=>'Video is Deleted!']);
-        } catch (\Throwable  $e) {
-            return response(['message'=>'Video Already Deleted!']);
-        }
-        
+        $file_name = $file->file;
+        deleteFile($file_name, SubmitChallengesPath());
+        $file->delete();
+        return response(['message'=>'Video is Deleted!']);
     }
 
     /**
@@ -122,7 +125,7 @@ class SubmitChallengeController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

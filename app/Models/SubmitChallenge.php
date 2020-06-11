@@ -17,6 +17,7 @@ class SubmitChallenge extends Model
 
     public function acceptedChallenge()
     {
-        return hasMany(AcceptedChallenge::class);
+        return belongsTo(AcceptedChallenge::class);
     }
+
 }

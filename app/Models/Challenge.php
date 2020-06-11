@@ -99,6 +99,11 @@ class Challenge extends Model
         return $this->hasMany(Amount::class);
     }
 
+    public function submits()
+    {
+        return $this->hasMany(SubmitChallenge::class);
+    }
+
     public function acceptedChallenges()
     {
         return $this->hasOne(AcceptedChallenge::class);

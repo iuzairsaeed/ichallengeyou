@@ -281,4 +281,11 @@ class ChallengeRepository implements RepositoryInterface
         return  $records;
     }
 
+    public function getSubmitedVideo($request,$with,$id)
+    {
+        $records = $this->model->with($with)->where('challenge_id' , $id)->orderBy('created_at' , 'DESC');     
+        $records = $records->limit($length)->offset($start)->get();
+        return  $records;
+    }
+
 }

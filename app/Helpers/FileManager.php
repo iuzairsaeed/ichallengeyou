@@ -1,5 +1,6 @@
 <?php
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File; 
 
 function uploadFile(object $file, string $uploadPath, string $oldFile = null)
 {
@@ -22,7 +23,18 @@ function uploadFile(object $file, string $uploadPath, string $oldFile = null)
             $path = $file->move($uploadPath, $fileNameToStore);
         }
     }
+
     return $fileNameToStore;
+}
+
+function deleteFile(string $fileName, string $uploadPath)
+{
+    $file_path = public_path($fileName);
+    if($file_path){
+        if(file_exists($file_path)){
+            unlink($file_path);
+        }
+    }
 }
 
 function avatarsPath()

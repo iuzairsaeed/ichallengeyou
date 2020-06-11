@@ -25,7 +25,7 @@ class SubmitChallengeRequest extends FormRequest
     {
         return [
             'challenge_id' => ['required'],
-            'file' => ['required', 'mimes:mp4,webm', 'max:20480'],
+            'file.*' => ['required', 'mimes:mp4,webm', 'max:20480'],
         ];
     }
 }
