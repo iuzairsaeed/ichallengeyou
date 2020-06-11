@@ -15,7 +15,7 @@ class CreateSubmitFilesTable extends Migration
     {
         Schema::create('submit_files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('submited_challenges_id');
+            $table->foreignId('accepted_challenges_id');
             $table->string('file');
             $table->timestamps();
         });

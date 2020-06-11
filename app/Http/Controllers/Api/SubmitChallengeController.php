@@ -46,46 +46,55 @@ class SubmitChallengeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, SubmitFile $fileModel)
+    public function store(Request $request)
     {
-        $submit = $request->submit;
         $challenge_id = $request->challenge_id; 
         $message['message'] = 'You need to accept challenge first';
         $accepted_challenge = AcceptedChallenge::where('challenge_id' , $challenge_id)->where('user_id' , auth()->id())->with('challenge')->first();     
         if($accepted_challenge){
             $message['message'] = 'You are out of time!';
             if(Carbon::now()->format('Y-d-m') <= $accepted_challenge->challenge->start_time->format('Y-d-m')){
-                # Add Submit Challenge with ( status true | false ) 
-                $data = [
-                    'accepted_challenge_id' => $accepted_challenge->id,
-                    'submit' => $submit,
-                ];       
-                $submited_challenge = $this->model->create($data);
-                # Add Submited Videos if Request have Video 
+                $SubmitChallenge = SubmitChallenge::where('accepted_challenge_id' ,$accepted_challenge->id );
+                if(!$SubmitChallenge){
+                    $data = [
+                        'accepted_challenge_id' => $accepted_challenge->id,
+                    ];       
+                    $submit = $this->model->create($data);
+                    $message['message'] = 'Challenge Submited!';
+                }
+                $message['message'] = 'You have already submitted the challenge!';
+            }
+        }
+        return response($message,200);
+    }
+
+    public function addVideo(Request $request, SubmitFile $fileModel)
+    {
+        $challenge_id = $request->challenge_id; 
+        $message['message'] = 'You need to accept challenge first';
+        $accepted_challenge = AcceptedChallenge::where('challenge_id' , $challenge_id)->where('user_id' , auth()->id())->with('challenge')->first();     
+        if($accepted_challenge){
+            if(Carbon::now()->format('Y-d-m') <= $accepted_challenge->challenge->start_time->format('Y-d-m')) {
                 if($request->hasFile('file')){
                     foreach ($request->file as $key => $video) {
                         $files['file'][$key] = uploadFile($video, SubmitChallengesPath(), null);
                     }
                     foreach($files['file'] as $file){
                         $records[] = [
-                            'submited_challenges_id' => $submited_challenge->id,
+                            'accepted_challenges_id' => $accepted_challenge->id,
                             'file' => $file,
                         ]; 
                     }
                     $this->model = new ChallengeRepository($fileModel);
                     $this->model->createInArray($records);
-                    $message['message'] = 'Video has been Added!';
-                }
-                # set status true | false
-                if($submit){
                     $accepted_challenge->setStatus(Completed());
-                    $message['message'] = 'Challenge Submited!';
-                    return response($message,200);
+                    $message['message'] = 'Video has been Added!';
+                    return response($message, 200);  
                 }
-                return response($message,200);
             }
+            $message['message'] = 'You are out of time!';
         }
-        return response($message,200);
+        return response($message, 200);
     }
 
 
