@@ -151,7 +151,7 @@ class ChallengesTableSeeder extends Seeder
                 'duration_minutes' => $faker->numberBetween(0, 60),
                 'created_at' => now()
             ]);
-
+            $challenge->setStatus(Approved());
             $donation = new Amount([
                 'user_id' => $faker->randomElement([1,2]),
                 'amount' => $faker->randomNumber(2),
