@@ -48,9 +48,12 @@ Route::group(['namespace' => 'Api'], function () {
             Route::get('history', 'TransactionController@history');
             Route::post('paypal/addBalance', 'PaymentController@loadBalance');
         });
-
-        Route::resource('submit', 'SubmitChallengeController');
-        Route::post('submit/addVideo', 'SubmitChallengeController@addVideo');
+        
+        Route::resource('submit','SubmitChallengeController');
+        Route::group(['prefix' => 'submit'], function () {
+            Route::post('addVideo', 'SubmitChallengeController@addVideo');
+            Route::post('{file}/deleteVideo', 'SubmitChallengeController@deleteVideo');
+        });
 
     });
 });

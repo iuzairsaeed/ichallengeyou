@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Repositories\ChallengeRepository;
+use App\Http\Requests\Challenges\SubmitChallengeRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
 use Carbon\Carbon;
+use Exception;
 class SubmitChallengeController extends Controller
 {
 
@@ -55,7 +57,7 @@ class SubmitChallengeController extends Controller
             $message['message'] = 'You are out of time!';
             if(Carbon::now()->format('Y-d-m') <= $accepted_challenge->challenge->start_time->format('Y-d-m')){
                 $SubmitChallenge = SubmitChallenge::where('accepted_challenge_id' ,$accepted_challenge->id )->first();
-                $submitFile = SubmitFile::where('accepted_challenges_id', $accepted_challenge->id)->first();
+                $submitFile = SubmitFile::where('accepted_challenge_id', $accepted_challenge->id)->first();
                 $message['message'] = $submitFile ? 'You have already submitted the challenge!' : 'No Video Found!' ; 
                 if(!$SubmitChallenge && $submitFile){
                     $data = [
@@ -69,7 +71,7 @@ class SubmitChallengeController extends Controller
         return response($message,200);
     }
 
-    public function addVideo(Request $request, SubmitFile $fileModel)
+    public function addVideo(SubmitChallengeRequest $request, SubmitFile $fileModel)
     {
         $challenge_id = $request->challenge_id; 
         $message['message'] = 'You need to accept challenge first';
@@ -84,6 +86,7 @@ class SubmitChallengeController extends Controller
                         $records[] = [
                             'accepted_challenge_id' => $accepted_challenge->id,
                             'file' => $file,
+                            'created_at' => now(),
                         ]; 
                     }
                     $this->model = new ChallengeRepository($fileModel);
@@ -97,7 +100,19 @@ class SubmitChallengeController extends Controller
         }
         return response($message, 200);
     }
-
+    
+    public function deleteVideo($id)
+    {
+        try {
+            $fileModel = SubmitFile::find($id);
+            $this->model = new ChallengeRepository($fileModel);
+            $this->model->delete($fileModel);
+            return response(['message'=>'Video is Deleted!']);
+        } catch (\Throwable  $e) {
+            return response(['message'=>'Video Already Deleted!']);
+        }
+        
+    }
 
     /**
      * Display the specified resource.
@@ -139,7 +154,7 @@ class SubmitChallengeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, SubmitFile $fileModel)
+    public function destroy(Request $request)
     {
         
     }
