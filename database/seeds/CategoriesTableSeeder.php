@@ -12,14 +12,46 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
-
-        for ($i = 0; $i < 8; $i++) {
-            Category::create([
-                'category_id' => null,
-                'name' => $faker->unique()->word . ' ' . $faker->unique()->word,
-                'created_at' => now()
-            ]);
-        }
+        Category::create([
+            'category_id' => null,
+            'name' => 'Action',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Adventure',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Academics',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Echo',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Creativity',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Entertainment',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Health + Fitness',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Location-Based',
+            'created_at' => now()
+        ]);
+	
     }
 }

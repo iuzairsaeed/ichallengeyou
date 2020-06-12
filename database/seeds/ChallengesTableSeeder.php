@@ -136,7 +136,7 @@ class ChallengesTableSeeder extends Seeder
         $challenge->amounts()->save($donation);
         
         # 10 Fake DATA
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
 
             $challenge = Challenge::create([
                 'user_id' => $faker->randomElement([1,2]),

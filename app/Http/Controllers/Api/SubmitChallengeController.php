@@ -44,12 +44,14 @@ class SubmitChallengeController extends Controller
         return response($data,$res);
     }
 
-    public function getVideo(SubmitChallenges $file)
+    public function getVideo(Challenge $challenge)
     {
-        $file_name = $file->file;
-        deleteFile($file_name, SubmitChallengesPath());
-        $file->delete();
-        return response(['message'=>'Video is Deleted!']);
+        try {
+            $data['file'] = $challenge->acceptedChallenges->submitFiles;
+            return response($data,200);
+        } catch (\Throwable $th) {
+            return response(['message'=>'No Video Found!'],400);
+        }
     }
 
     public function addVideo(Challenge $challenge, SubmitChallengeRequest $request)
