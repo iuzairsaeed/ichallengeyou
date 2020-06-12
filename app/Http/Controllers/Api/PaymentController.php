@@ -23,6 +23,7 @@ class PaymentController extends Controller
             return response('Token is not Verified' , 401);
         }
         $paymentRecord = paypalDetail($token , $pay_id);
+        return $paymentRecord;
         $amount = $paymentRecord['transactions'][0]['amount']['total'];
         if($paymentRecord['state'] == 'approved' && $paymentRecord['payer']['status'] == 'VERIFIED' ){
             if(!$user->is_premium){
@@ -31,6 +32,13 @@ class PaymentController extends Controller
             }
             $user->balance = (float)$user->getAttributes()['balance'] + $amount;
             $user->update();
+            Transaction::create([
+                'user_id' => $user->id,
+                'challenge_id' => null,
+                'amount' => $amount,
+                'type' => 'load',
+                'invoice_id' => $pay_id,
+            ]);
             $data = [
                 'message' => '$'.$amount.' has been credited to your account \n Your Total Amount is '.$user->balance,
                 'amount' => $user->balance,
