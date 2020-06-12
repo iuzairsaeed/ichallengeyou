@@ -49,7 +49,7 @@ class ChallengesTableSeeder extends Seeder
         # Challenge 2
         $challenge = Challenge::create([
             'user_id' => 1,
-            'category_id' => 1,
+            'category_id' => 6,
             'title' => 'Shave your Head!',
             'description' => "Change your style and raise awareness to Childrens Cancer Victims\n1- Must be Female.\n2- Must have hair longer than 35cm.\n3- Must do a live Video.\n4- Must be older than 18 years old\n5- Must Donate hair to Childrens Hospital fo Cancer patient and to Raise awareness.",
             'start_time' => Carbon::createFromDate('2020','09','08'),
@@ -79,7 +79,7 @@ class ChallengesTableSeeder extends Seeder
         # Challenge 3
         $challenge = Challenge::create([
             'user_id' => 1,
-            'category_id' => 1,
+            'category_id' => 7,
             'title' => 'Loose 20 kg',
             'description' => "Become healthier and more good looking and get paid to do it!\n1- Loose 20 KG wihtout Surgery.\n2- Make Videos 3x a Week showing your face, body and scale results.\n3- Use always same Scale.\n4- Must be 100 KG at least to start Challenge.",
             'start_time' => Carbon::createFromDate('2020','09','09'),

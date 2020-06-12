@@ -19,12 +19,12 @@ class CategoriesTableSeeder extends Seeder
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Adventure',
+            'name' => 'Academics',
             'created_at' => now()
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Academics',
+            'name' => 'Adventure',
             'created_at' => now()
         ]);
         Category::create([
