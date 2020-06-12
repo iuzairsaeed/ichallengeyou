@@ -12,6 +12,10 @@ class PaymentController extends Controller
     public function loadBalance(Request $request)
     {
         $user = Auth::User();
+        $data = [
+            'message' => 'Your Amount has not been credited to your account \n Your Total Amount is '.$user->balance,
+            'amount' => $user->balance,
+        ];
         $pay_id = $request->response['id'];
         $auth = paypalAuth();
         (string)$token = $auth['access_token'];
@@ -29,10 +33,10 @@ class PaymentController extends Controller
             $user->update();
             $data = [
                 'message' => '$'.$amount.' has been credited to your account \n Your Total Amount is '.$user->balance,
-                'amount' => '$'.$user->balance,
+                'amount' => $user->balance,
             ];
             return response($data , 200);
         }
-        return response('$data' , 200); 
+        return response($data , 402 ); 
     }
 }
