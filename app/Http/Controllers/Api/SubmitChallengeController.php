@@ -22,53 +22,25 @@ class SubmitChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function submitChallenge(Challenge $challenge)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $challenge_id = $request->challenge_id; 
-        $message['message'] = 'You need to accept challenge first';
-        $accepted_challenge = AcceptedChallenge::where('challenge_id' , $challenge_id)->where('user_id' , auth()->id())->with('challenge')->first();     
-        if($accepted_challenge){
-            $message['message'] = 'You are out of time!';
-            if(Carbon::now()->format('Y-d-m') <= $accepted_challenge->challenge->start_time->format('Y-d-m')){
-                $SubmitChallenge = SubmitChallenge::where('accepted_challenge_id' ,$accepted_challenge->id )->first();
-                $submitFile = SubmitFile::where('accepted_challenge_id', $accepted_challenge->id)->first();
-                $message['message'] = $submitFile ? 'You have already submitted the challenge!' : 'No Video Found!' ; 
-                if(!$SubmitChallenge && $submitFile){
-                    $data = [
-                        'accepted_challenge_id' => $accepted_challenge->id,
-                    ];       
-                    $submit = $this->model->create($data);
-                    $message['message'] = 'Challenge Submited!';
+        $res = 200;
+        try {
+            $data['message'] = 'No Video Uploaded!';
+            if ($challenge->acceptedChallenge->submitFiles->first()) {
+                $data['message'] = 'You are out of time!';
+                if(Carbon::now()->format('Y-d-m') <= $challenge->start_time->format('Y-d-m')){
+                    $data['accepted_challenge_id'] = $challenge->acceptedChallenge->id;
+                    $this->model->create($data);
+                    $data['message']='You have Successfuly Submitted the Challenge!';
                 }
             }
+        } catch (\Throwable $th) {
+            $data['message'] = 'You need to accept challenge first';
+            $res = 400;
         }
-        return response($message,200);
+        return response($data,$res);
     }
 
     public function getVideo(SubmitChallenges $file)
@@ -117,48 +89,4 @@ class SubmitChallengeController extends Controller
         return response(['message'=>'Video is Deleted!']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
-    {
-        
-    }
 }

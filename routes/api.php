@@ -49,8 +49,8 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('paypal/addBalance', 'PaymentController@loadBalance');
         });
         
-        Route::resource('submit','SubmitChallengeController');
         Route::group(['prefix' => 'submit'], function () {
+            Route::post('{challenge}', 'SubmitChallengeController@submitChallenge');
             Route::post('addVideo', 'SubmitChallengeController@addVideo');
             Route::delete('{file}/deleteVideo', 'SubmitChallengeController@deleteVideo');
             Route::post('{file}/getVideo', 'SubmitChallengeController@deleteVideo');
