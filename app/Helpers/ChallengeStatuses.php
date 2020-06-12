@@ -25,6 +25,11 @@ function Completed()
     return 'Completed';
 }
 
+function Submited()
+{
+    return 'Submited';
+}
+
 function Winner()
 {
     return 'Winner';

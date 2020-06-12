@@ -33,6 +33,7 @@ class SubmitChallengeController extends Controller
                 if(Carbon::now()->format('Y-d-m') <= $challenge->start_time->format('Y-d-m')){
                     $data['accepted_challenge_id'] = $challenge->acceptedChallenges->id;
                     $this->model->create($data);
+                    $challenge->acceptedChallenges->setStatus(Submited());
                     $data['message']='You have Successfuly Submitted the Challenge!';
                 }
             }
@@ -69,7 +70,6 @@ class SubmitChallengeController extends Controller
                     ]; 
                 }
                 $this->model->createInArray($records, $fileModel);
-                $challenge->acceptedChallenges->setStatus(Completed());
                 $message['message'] = 'Video has been Added!';
             }
         } catch (\Throwable $th) {
