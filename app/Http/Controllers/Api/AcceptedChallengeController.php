@@ -8,6 +8,7 @@ use App\Http\Resources\ChallengeAccepted;
 use App\Repositories\ChallengeRepository;
 use App\Models\AcceptedChallenge;
 use App\Models\Amount;
+use App\Models\Challenge;
 use Illuminate\Support\Facades\Auth;
 
 class AcceptedChallengeController extends Controller
@@ -19,23 +20,17 @@ class AcceptedChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
     }
 
-    public function accept(int $id)
+    public function accept(Challenge $challenge)
     {
-        if(AcceptedChallenge::where('challenge_id', $id)->where('user_id' , auth()->id())->exists()){
-            $data['message'] = 'You have already accepted this challenge!';
-            return response($data, 400);
-        }
-        if(Auth::user()->is_premium){
-            $record = [
-                'challenge_id' => $id,
+        $message['message'] = 'You have already accepted this challenge!';
+        if(!$challenge->acceptedChallenges()->where('user_id' , auth()->id())->exists()){
+            $acceptedChallenge = new AcceptedChallenge([
                 'user_id' => auth()->id(),
-            ];
-            $acceptedChallenge = $this->model->create($record);
-            $acceptedChallenge->setStatus(Accepted());
-            $data['message'] = 'You have successfully accepted the challenge!';
-            return response($data,200);
+            ]);
+            $challenge->acceptedChallenges()->save($acceptedChallenge);
+            $message['message'] = 'You have successfully accepted the challenge!';
         }
-        return response("Become one now, its 1 USD for god sake. Don’t be so cheap",400);
+        return response($message, 200);
     }
 
     public function acceptedChallenge(Request $request)

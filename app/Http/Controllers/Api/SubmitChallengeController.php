@@ -79,7 +79,7 @@ class SubmitChallengeController extends Controller
         return response(['message'=>'Video is Deleted!']);
     }
 
-    public function addVideo(SubmitChallengeRequest $request, SubmitFile $fileModel)
+    public function addVideo(SubmitFile $fileModel, SubmitChallengeRequest $request)
     {
         $challenge_id = $request->challenge_id; 
         $message['message'] = 'You need to accept challenge first';
