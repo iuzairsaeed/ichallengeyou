@@ -30,8 +30,9 @@ class ChallengeRepository implements RepositoryInterface
     {
         return $this->model->create($data);
     }
-    public function createInArray(array $data)
+    public function createInArray(array $data, Model $model)
     {
+        $this->model = $model;
         return $this->model->insert($data);
     }
 

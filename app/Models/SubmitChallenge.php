@@ -15,7 +15,7 @@ class SubmitChallenge extends Model
         'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
     ];
 
-    public function acceptedChallenge()
+    public function acceptedChallenges()
     {
         return belongsTo(AcceptedChallenge::class);
     }
