@@ -16,6 +16,7 @@ use App\Models\Challenge;
 use App\Models\Comment;
 use App\Models\Reaction;
 use App\Models\Amount;
+use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use DB;
@@ -92,9 +93,16 @@ class ChallengeController extends Controller
             }
             $data['user_id'] = auth()->id();
             $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
-
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
+            $transaction = new Transaction([
+                'user_id' => $user->id,
+                'challenge_id' => $request->id,
+                'amount' => $request->amount,
+                'type' => 'create_challenge',
+                'invoice_id' => null,
+            ]);
+            $challenge->transactions()->save($transaction);
             return response(['message' => 'Challenge has been created.'], 200);
         } catch (\Exception  $e) {
             throw $e;
@@ -223,6 +231,14 @@ class ChallengeController extends Controller
             'type' => 'donation'
         ]);
         $challenge->amounts()->save($donation);
+        $transaction = new Transaction([
+            'user_id' => $user->id,
+            'challenge_id' => $challenge->id,
+            'amount' => $request->amount,
+            'type' => 'donate',
+            'invoice_id' => null,
+        ]);
+        $challenge->transactions()->save($transaction);
         $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
         $user->update();
         return response([

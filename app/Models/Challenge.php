@@ -103,4 +103,9 @@ class Challenge extends Model
         return $this->hasOne(AcceptedChallenge::class,'challenge_id')->where('user_id', auth()->id());
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
 }
