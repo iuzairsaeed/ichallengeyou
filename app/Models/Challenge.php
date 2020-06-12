@@ -99,7 +99,7 @@ class Challenge extends Model
         return $this->hasMany(Amount::class);
     }
 
-    public function acceptedChallenge()
+    public function acceptedChallenges()
     {
         return $this->hasOne(AcceptedChallenge::class,'challenge_id')->where('user_id', auth()->id());
     }
