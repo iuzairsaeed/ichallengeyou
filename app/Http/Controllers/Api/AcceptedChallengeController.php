@@ -23,11 +23,11 @@ class AcceptedChallengeController extends Controller
     public function accept(Challenge $challenge)
     {
         $message['message'] = 'You have already accepted this challenge!';
-        if(!$challenge->acceptedChallenges()->where('user_id' , auth()->id())->exists()){
+        if(!$challenge->acceptedChallenge()->exists()){
             $acceptedChallenge = new AcceptedChallenge([
                 'user_id' => auth()->id(),
             ]);
-            $challenge->acceptedChallenges()->save($acceptedChallenge);
+            $challenge->acceptedChallenge()->save($acceptedChallenge);
             $message['message'] = 'You have successfully accepted the challenge!';
         }
         return response($message, 200);

@@ -38,7 +38,12 @@ class AcceptedChallenge extends Model
 
     public function submitChallenge()
     {
-        return $this->belongsTo(SubmitChallenge::class);
+        return $this->hasMany(SubmitChallenge::class);
+    }
+
+    public function submitFiles()
+    {
+        return $this->hasMany(SubmitFile::class);
     }
 
     
