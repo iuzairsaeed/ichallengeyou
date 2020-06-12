@@ -135,8 +135,8 @@ class ChallengesTableSeeder extends Seeder
         ]);
         $challenge->amounts()->save($donation);
         
-        # 10 Fake DATA
-        for ($i = 0; $i < 20; $i++) {
+        # 20 Fake DATA
+        for ($i = 0; $i <= 20; $i++) {
 
             $challenge = Challenge::create([
                 'user_id' => $faker->randomElement([1,2]),
@@ -175,7 +175,6 @@ class ChallengesTableSeeder extends Seeder
                 'created_at' => now()
             ]);
             $challenge->amounts()->save($donation);
-            $challenge->setStatus($faker->randomElement([Pending(),Approved()]));
         }
 
     }
