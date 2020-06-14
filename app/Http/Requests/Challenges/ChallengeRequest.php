@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Challenges;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ChallengeRequest extends FormRequest
 {
@@ -26,13 +27,12 @@ class ChallengeRequest extends FormRequest
         $rules = [
             'title' => ['bail', 'required', 'string', 'max:255', 'min:3'],
             'description' => ['bail', 'required', 'max:500', 'min:200'],
-            'start_time' => ['required', 'date_format:m-d-Y h:m A'],
+            'start_time' => ['required', 'date_format:Y-m-d H:i'],
             'duration_days' => ['required', 'integer', 'min:0'],
             'duration_hours' => ['required', 'integer', 'min:0', 'max:23'],
             'duration_minutes' => ['required', 'integer', 'min:0', 'max:59'],
             'location' => ['required', 'string'],
             'amount' => ['required', 'numeric', 'min:1'],
-            'file' => ['required', 'mimes:jpg,jpeg,png,mp4,webm', 'max:20480'],
         ];
         switch ($this->method()) {
             case 'POST': {

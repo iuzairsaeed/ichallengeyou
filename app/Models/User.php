@@ -41,6 +41,16 @@ class User extends Authenticatable
         return $value ? config('global.CURRENCY').$value : null;
     }
 
+    /**
+     * Specifies the user's FCM token
+     *
+     * @return string
+     */
+    public function routeNotificationForFcm()
+    {
+        return $this->device_token;
+    }
+
     public function challenges()
     {
         return $this->hasMany(Challenge::class);

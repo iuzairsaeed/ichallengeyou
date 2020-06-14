@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Challenges\ChallengeRequest;
-use App\Http\Requests\Challenges\CreateChallengeRequest;
 use App\Http\Requests\Comments\CreateCommentRequest;
 use App\Http\Requests\Donations\CreateDonationRequest;
 use App\Http\Resources\ChallengeCollection;
@@ -82,7 +81,7 @@ class ChallengeController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateChallengeRequest $request)
+    public function store(ChallengeRequest $request)
     {
         try {
             $data = $request->all();
@@ -91,7 +90,7 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
 
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
@@ -182,7 +181,7 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
             return response(['message' => 'Challenge has been updated.'], 200);
 
