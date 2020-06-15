@@ -24,7 +24,7 @@ class SubmitChallengeController extends Controller
 
 
     public function getSubmitChallenge(Challenge $challenge){
-        //
+        return $challenge->acceptedChallenges;
     }
 
     public function postSubmitChallenge(Challenge $challenge)
@@ -34,7 +34,6 @@ class SubmitChallengeController extends Controller
             $data['message'] = 'No Video Uploaded!';
             if ($challenge->acceptedChallenges->submitFiles->first()) {
                 $data['message'] = 'You are out of time!';
-                return Carbon::now()->format('Y-d-m'); 
                 if(Carbon::now()->format('Y-d-m') >= $challenge->start_time->format('Y-d-m')){
                     $data['accepted_challenge_id'] = $challenge->acceptedChallenges->id;
                     $this->model->create($data);
@@ -76,11 +75,12 @@ class SubmitChallengeController extends Controller
                         'created_at' => now(),
                     ]; 
                 }
-                $this->model->createInArray($records, $fileModel);
+                $model = new SubmitFile;
+                $this->model->createInArray($records, $model);
                 $message['message'] = 'Video has been Added!';
             }
         } catch (\Throwable $th) {
-            $data['message'] = 'You need to accept challenge first';
+            $message['message'] = 'You need to accept challenge first';
             $res = 400;
         }    
         return response($message, 200);
