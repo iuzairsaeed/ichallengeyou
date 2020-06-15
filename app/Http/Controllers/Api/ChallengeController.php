@@ -83,7 +83,7 @@ class ChallengeController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateChallengeRequest $request)
+    public function store(ChallengeRequest $request)
     {
         try {
             $data = $request->all();
@@ -92,12 +92,12 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
             $transaction = new Transaction([
-                'user_id' => $user->id,
-                'challenge_id' => $request->id,
+                'user_id' => auth()->id(),
+                'challenge_id' => $challenge->id,
                 'amount' => $request->amount,
                 'type' => 'create_challenge',
                 'invoice_id' => null,
@@ -190,7 +190,7 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
             return response(['message' => 'Challenge has been updated.'], 200);
 
@@ -288,7 +288,7 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function like(Challenge $challenge) 
+    public function like(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){

@@ -40,7 +40,7 @@ class ChallengeRequest extends FormRequest
                 $rules['file'] = ['required', 'mimes:jpg,jpeg,png,mp4,webm'];
             }
             case 'PUT' || 'PATCH': {
-                $rules['file'] = ['mimes:jpg,jpeg,png,mp4,webm', 'max:20480'];
+                $rules['file'] = ['mimes:jpg,jpeg,png,mp4,webm', 'max:51200‬'];
             }
             default:
                 break;
