@@ -11,7 +11,7 @@
                         <i class="icon-speedometer font-large-2 text-red"></i>
                     </div>
                     <div class="p-2 media-body text-right">
-                        <h5 class="text-bold-400 m-0">33</h5>
+                        <h5 class="text-bold-400 m-0">{{$totalChallenges}}</h5>
                         <span>Total Challenges</span>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                         <i class="icon-graph font-large-2 text-red"></i>
                     </div>
                     <div class="p-2 media-body text-right">
-                        <h5 class="text-bold-400 m-0">20</h5>
+                        <h5 class="text-bold-400 m-0">{{$approvedChallenges}}</h5>
                         <span>Approved Challenges</span>
                     </div>
                 </div>
