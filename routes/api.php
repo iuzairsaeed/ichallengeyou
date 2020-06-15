@@ -46,6 +46,7 @@ Route::group(['namespace' => 'Api'], function () {
 
         Route::group(['prefix' => 'transaction'], function () {
             Route::get('history', 'TransactionController@history');
+            Route::post('withdraw', 'TransactionController@withdraw');
             Route::post('paypal/addBalance', 'PaymentController@loadBalance');
         });
         
