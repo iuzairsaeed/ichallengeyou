@@ -42,11 +42,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Specifies the user's FCM token
+     * Route notifications for the FCM channel.
      *
+     * @param  \Illuminate\Notifications\Notification  $notification
      * @return string
      */
-    public function routeNotificationForFcm()
+    public function routeNotificationForFcm($notification)
     {
         return $this->device_token;
     }
