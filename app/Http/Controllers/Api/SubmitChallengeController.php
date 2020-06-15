@@ -54,7 +54,7 @@ class SubmitChallengeController extends Controller
                 $data['message'] = 'No Video Uploaded!';
                 if ($challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitFiles()->exists()) {
                     $data['message'] = 'You are out of time!';
-                    if(Carbon::now()->format('Y-d-m') >= $challenge->start_time->format('Y-d-m')){
+                    if(Carbon::now()->format('Y-d-m') <= $challenge->start_time->format('Y-d-m')){
                         $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                         $this->model->create($data);
                         $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submited());

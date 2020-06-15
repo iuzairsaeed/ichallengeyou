@@ -3,7 +3,6 @@
 namespace App\Models;
 use Spatie\ModelStatus\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\AcceptedChallenge;
 
 class SubmitChallenge extends Model
 {
@@ -18,6 +17,11 @@ class SubmitChallenge extends Model
     public function acceptedChallenges()
     {
         return belongsTo(AcceptedChallenge::class);
+    }
+
+    public function votes()
+    {
+        return hasMany(Vote::class);
     }
 
 }

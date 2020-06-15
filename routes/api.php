@@ -60,5 +60,10 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{file}/getVideo', 'SubmitChallengeController@deleteVideo');
         });
 
+        Route::group(['prefix' => 'vote'], function () {
+            Route::post('{submitedChallenge}', 'VoteController@vote');
+            // Route::get('{submitedChallenge}/donw', 'VoteController@voteDown');
+        });
+        
     });
 });
