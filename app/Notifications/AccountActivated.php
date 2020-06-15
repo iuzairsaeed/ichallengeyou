@@ -47,7 +47,7 @@ class AccountActivated extends Notification
             'title'        => 'Foo',
             'body'         => 'Bar',
             'sound'        => '', // Optional
-            'icon'         => '', // Optional
+            'icon'         => 'favicon.ico', // Optional
             'click_action' => '' // Optional
         ])->data([
             'param1' => 'baz' // Optional
