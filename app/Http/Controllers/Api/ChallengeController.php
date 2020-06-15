@@ -92,7 +92,7 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
             $transaction = new Transaction([
@@ -190,7 +190,7 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
+            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
             return response(['message' => 'Challenge has been updated.'], 200);
 
