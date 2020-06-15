@@ -96,7 +96,6 @@ class ChallengeController extends Controller
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
             $transaction = new Transaction([
-                'user_id' => $user->id,
                 'challenge_id' => $request->id,
                 'amount' => $request->amount,
                 'type' => 'create_challenge',
