@@ -16,14 +16,30 @@ class SettingsTableSeeder extends Seeder
             [
                 'name' => 'CURRENCY',
                 'value' => '$',
-                'created_at' => now()
-            ]
-        ]);
-        Setting::insert([
+                'type' => 'text',
+            ],
             [
                 'name' => 'PREMIUM_COST',
                 'value' => 1,
-                'created_at' => now()
+                'type' => 'number',
+            ],
+            [
+                'name' => 'TERMS_CONDITIONS',
+                'value' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum scelerisque dignissim iaculis. Etiam quis tempor metus, in facilisis urna. Fusce sit amet consequat est.</p>
+                            <ul>
+                                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                                <li>Curabitur semper purus et tempor interdum.</li>
+                                <li>Proin suscipit nibh quis ex tincidunt, in pellentesque urna faucibus.</li>
+                            </ul>
+                            <ul>
+                                <li>Quisque sit amet orci molestie, sodales sem eu, mattis quam.</li>
+                                <li>Proin ac odio euismod, elementum ligula in, lobortis ante.</li>
+                                <li>Donec id turpis maximus, sollicitudin neque egestas, venenatis enim.</li>
+                                <li>Pellentesque fermentum risus ultrices tempus porttitor.</li>
+                                <li>Nam sit amet purus varius nisi mollis efficitur.</li>
+                                <li>Nullam porta nisl a diam accumsan, vitae maximus neque elementum.</li>
+                            </ul>',
+                'type' => 'textarea',
             ]
         ]);
     }
