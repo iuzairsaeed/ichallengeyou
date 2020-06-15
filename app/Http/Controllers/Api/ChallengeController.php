@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Challenges\ChallengeRequest;
+use App\Http\Requests\Challenges\CreateChallengeRequest;
 use App\Http\Requests\Comments\CreateCommentRequest;
 use App\Http\Requests\Donations\CreateDonationRequest;
 use App\Http\Resources\ChallengeCollection;
@@ -82,7 +83,7 @@ class ChallengeController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ChallengeRequest $request)
+    public function store(CreateChallengeRequest $request)
     {
         try {
             $data = $request->all();
@@ -91,8 +92,7 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
-
+            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
             $transaction = new Transaction([
@@ -117,21 +117,21 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge, Request $request)
     {
-        $auth_id = $request->user_id;
+        $user_id = $request->user_id;
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
         $whereVals = [$challenge->id];
         $with = array(
-            'userReaction' => function($query) use ($auth_id, $challenge_id) {
-                $query->where('user_id', $auth_id)->where('challenge_id', $challenge_id);
+            'userReaction' => function($query) use ($user_id, $challenge_id) {
+                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id);
             },
             'donations' => function($query) {
                 $query->with('user');
             },
             'initialAmount',
-            'acceptedChallenges' => function($query) use ($auth_id, $challenge_id){
-                $query->where('user_id', $auth_id)->where('challenge_id', $challenge_id);
+            'acceptedChallenges' => function($query) use ($user_id, $challenge_id){
+                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id);
             },
         );
         $withSums = ['amounts'];
@@ -148,8 +148,8 @@ class ChallengeController extends Controller
                 $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
             }
-            if($auth_id){
-                if($data['data']->user_id == (int)$auth_id[0]){
+            if($user_id){
+                if($data['data']->user_id == (int)$user_id[0]){
                     $data['data']['acceptBtn'] = false;
                     $data['data']['donateBtn'] = false;
                     if(Carbon::now()->format('Y-d-m') <= $data['data']->start_time->format('Y-d-m')  ){
@@ -189,7 +189,7 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
             }
             $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
+            $data['start_time'] = Carbon::createFromFormat('m-d-Y h:m A', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
             return response(['message' => 'Challenge has been updated.'], 200);
 
