@@ -7,6 +7,7 @@ use App\Http\Requests\Challenges\SubmitChallengeRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\SubmitChallengeCollection;
+use App\Http\Resources\SubmitChallengeDetailCollection;
 use Illuminate\Http\Request;
 use App\Models\Challenge;
 use App\Models\SubmitFile;
@@ -24,13 +25,23 @@ class SubmitChallengeController extends Controller
     }
 
 
-    public function getSubmitChallenge(Challenge $challenge,Request $request){
+    public function getSubmitChallengerList(Challenge $challenge,Request $request){
         try {
             $data['data'] = $challenge->acceptedChallenges;
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
         } catch (\Throwable $th) {
             return response(['message'=>'No submited Challenge'],204);
+        }
+    }
+
+    public function getSubmitChallengeDetail(AcceptedChallenge $acceptedChallenge){
+        try {
+            $data['data'] = $acceptedChallenge;
+            $data = SubmitChallengeDetailCollection::collection($data);
+            return response($data,200);
+        } catch (\Exception $th) {
+            return response($th,204);
         }
     }
 

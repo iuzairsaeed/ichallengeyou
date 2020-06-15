@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubmitChallengeCollection extends JsonResource
+class SubmitChallengeDetailCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -15,10 +15,11 @@ class SubmitChallengeCollection extends JsonResource
     public function toArray($request)
     {
         return  [
-            'accepted_challenge_id' => $this->id,
+            'id' => $this->id,
             'title' => $this->challenge->title,
             'user' => $this->user,
             'submit_date' => $this->submitChallenge[0]->created_at->format('Y-m-d H:i A'),
+            'submit_files' => $this->submitFiles,
         ];
     }
 }
