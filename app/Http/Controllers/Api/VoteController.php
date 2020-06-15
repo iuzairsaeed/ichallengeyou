@@ -20,29 +20,33 @@ class VoteController extends Controller
     }
 
     public function vote(SubmitChallenge $submitedChallenge,Request $request) {
-        $sub_id  = $submitedChallenge->id;
-        $vote    = $request->vote;
-        $voted = Vote::where('user_id',auth()->id())
-        ->where('submited_challenge_id',$submitedChallenge->id)
-        ->first();
-        $data['message'] = 'You have already voted';
-        if($voted){
-            if($voted->vote != $vote){
-                $voted->vote = $vote;
-                $voted->update();
+        $data['message'] = 'You can\'t. Vote!';
+        if(!auth()->id() == $submitedChallenge->acceptedChallenge->user_id){
+            $sub_id  = $submitedChallenge->id;
+            $vote    = $request->vote;
+            $voted = Vote::where('user_id',auth()->id())
+            ->where('submited_challenge_id',$submitedChallenge->id)
+            ->first();
+            $data['message'] = 'You have already voted';
+            if($voted){
+                if($voted->vote != $vote){
+                    $voted->vote = $vote;
+                    $voted->update();
+                    $data['message'] = ($vote == true) ? 'Your Vote has been casted Positive on this challenge.' : 'Your Vote has been casted Negative on this challenge' ;
+                    $data['vote'] = $vote;
+                }
+                return response($data, 208);
+            } else {
                 $data['message'] = 'Your Vote has been cast.';
-                $data['vote'] = $vote;
+                $vote = [
+                    'user_id' => auth()->id(),
+                    'submited_challenge_id' => $sub_id,
+                    'vote' => $vote
+                ];
+                $this->model->create($vote);    
+                return response($data, 200);
             }
-            return response($data, 208);
-        } else {
-            $data['message'] = 'Your Vote has been cast.';
-            $vote = [
-                'user_id' => auth()->id(),
-                'submited_challenge_id' => $sub_id,
-                'vote' => $vote
-            ];
-            $this->model->create($vote);    
-            return response($data, 200);
         }
+        return response($data, 200);
     }
 }
