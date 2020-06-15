@@ -14,4 +14,10 @@ class PageController extends Controller
         }
         return response(['message' => 'Not Found'], 404);
     }
+
+    public function terms_conditions()
+    {
+        $text = config('global.TERMS_CONDITIONS');
+        return view('pages.terms_conditions', compact('text'));
+    }
 }

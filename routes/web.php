@@ -23,4 +23,5 @@ Route::group(['namespace' => 'Web'], function () {
     });
 });
 
+Route::get('terms_conditions', 'Web\PageController@terms_conditions')->where('any', '.*');
 Route::get('{any}', 'Web\PageController@home')->where('any', '.*');
