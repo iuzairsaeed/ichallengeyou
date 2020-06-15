@@ -83,7 +83,7 @@ class ChallengeController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateChallengeRequest $request)
+    public function store(ChallengeRequest $request)
     {
         try {
             $data = $request->all();
@@ -288,7 +288,7 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function like(Challenge $challenge) 
+    public function like(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){
