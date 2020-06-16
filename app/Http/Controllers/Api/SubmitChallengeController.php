@@ -86,7 +86,6 @@ class SubmitChallengeController extends Controller
 
     public function addVideo(Challenge $challenge, SubmitChallengeRequest $request)
     {
-        $res = 200;
         try {
             $files = $request->file;
             $before_date = $challenge->start_time;
