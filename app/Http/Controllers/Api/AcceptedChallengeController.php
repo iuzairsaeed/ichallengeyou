@@ -30,7 +30,7 @@ class AcceptedChallengeController extends Controller
                 $after_date = $before_date->addDays($challenge->duration_days)
                 ->addHours($challenge->duration_hours)
                 ->addMinutes($challenge->duration_minutes);
-                if(date('Y-m-d H:i:s') <= $after_date){
+                if(now() <= $after_date){
                     $acceptedChallenge = new AcceptedChallenge([
                         'user_id' => auth()->id(),
                     ]);

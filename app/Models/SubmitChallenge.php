@@ -3,10 +3,11 @@
 namespace App\Models;
 use Spatie\ModelStatus\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class SubmitChallenge extends Model
 {
-    use HasStatuses;
+    use HasStatuses,Notifiable;
     protected $fillable = ['accepted_challenge_id' , 'file'];
 
     protected $casts = [

@@ -6,9 +6,11 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Console\Commands\ModelMakeCommand;
 use App\Models\User;
+use App\Models\SubmitChallenge;
 use App\Models\Setting;
 use App\Models\Constant;
 use App\Observers\UserObserver;
+use App\Observers\SubmitChallengeObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -55,5 +57,13 @@ class AppServiceProvider extends ServiceProvider
 
         // Registerign user CRUD observer
         User::observe(UserObserver::class);
+
+        // \App\Models\SubmitChallenge::creating(function($model){
+        //     $model->accepted_challenge_id = 11111;
+        // });
+
+        \App\Models\SubmitChallenge::observe(\App\Observers\SubmitChallengeObserver::class);
+        // For SubmitChallenge CRUD observer
+        // SubmitChallenge::observe(SubmitChallengeObserver::class);
     }
 }

@@ -57,7 +57,7 @@ class SubmitChallengeController extends Controller
                     $after_date = $before_date->addDays($challenge->duration_days)
                     ->addHours($challenge->duration_hours)
                     ->addMinutes($challenge->duration_minutes);
-                    if(date('Y-m-d H:i:s') >=  $challenge->start_time && date('Y-m-d H:i:s') <= $after_date){
+                    if(now() <=  $challenge->start_time && now() <= $after_date){
                         $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                         $this->model->create($data);
                         $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submited());
@@ -92,7 +92,7 @@ class SubmitChallengeController extends Controller
             ->addHours($challenge->duration_hours)
             ->addMinutes($challenge->duration_minutes);
             $message['message'] = 'You are out of time!';
-            if(date('Y-m-d H:i:s') >=  $challenge->start_time && date('Y-m-d H:i:s') <= $after_date){
+            if(now() <=  $challenge->start_time && now() <= $after_date){
                 $file = uploadFile($files, SubmitChallengesPath(), null);
                 $records = new SubmitFile ([
                     'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
