@@ -118,21 +118,21 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge, Request $request)
     {
-        $user_id = $request->user_id;
+        $id = $request->user_id;
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
         $whereVals = [$challenge->id];
         $with = array(
-            'userReaction' => function($query) use ($user_id, $challenge_id) {
-                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id);
+            'userReaction' => function($query) use ($id, $challenge_id) {
+                $query->where('user_id', $id)->where('challenge_id', $challenge_id);
             },
             'donations' => function($query) {
                 $query->with('user');
             },
             'initialAmount',
-            'acceptedChallenges' => function($query) use ($user_id, $challenge_id){
-                $query->where('user_id', $user_id)->where('challenge_id', $challenge_id);
+            'acceptedChallenges' => function($query) use ($id, $challenge_id){
+                $query->where('user_id', $id)->where('challenge_id', $challenge_id);
             },
         );
         $withSums = ['amounts'];
@@ -144,16 +144,16 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-            if($data['data']->acceptedChallenges){
+            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
                 $data['data']['acceptBtn'] = false;
                 $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
             }
-            if($user_id){
-                if($data['data']->user_id == (int)$user_id[0]){
+            if($id){
+                if($data['data']->user_id == (int)$id){
                     $data['data']['acceptBtn'] = false;
                     $data['data']['donateBtn'] = false;
-                    if(Carbon::now()->format('Y-d-m') <= $data['data']->start_time->format('Y-d-m')  ){
+                    if(now() <= $challenge->start_time ){
                         $data['data']['editBtn'] =  true;
                     }
                 }
