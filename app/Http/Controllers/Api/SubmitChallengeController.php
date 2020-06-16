@@ -13,8 +13,8 @@ use App\Models\Challenge;
 use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
-use Carbon\Carbon;
 use Exception;
+
 class SubmitChallengeController extends Controller
 {
 
@@ -30,7 +30,7 @@ class SubmitChallengeController extends Controller
             $data['data'] = $challenge->acceptedChallenges;
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
-        } catch (\Throwable $th) {
+        } catch (\Exception $th) {
             return response(['message'=>'No submited Challenge'],204);
         }
     }
@@ -41,7 +41,7 @@ class SubmitChallengeController extends Controller
             $data = SubmitChallengeDetailCollection::collection($data);
             return response($data,200);
         } catch (\Exception $th) {
-            return response($th,204);
+            return response($th->getMessage(),204);
         }
     }
 
