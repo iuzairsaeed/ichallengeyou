@@ -47,7 +47,6 @@ class SubmitChallengeController extends Controller
 
     public function postSubmitChallenge(Challenge $challenge)
     {
-        $res = 200;
         try {
             $data['message']='You have Already Submitted the Challenge!';
             if(!$challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitChallenge()->exists()){
@@ -71,7 +70,7 @@ class SubmitChallengeController extends Controller
             $data['message'] = 'You need to accept challenge first';
             $res = 400;
         }
-        return response($data,$res);
+        return response($data,200);
     }
 
     public function getVideo(Challenge $challenge)
