@@ -22,15 +22,27 @@ class AcceptedChallengeController extends Controller
 
     public function accept(Challenge $challenge)
     {
-        $message['message'] = 'You have already accepted this challenge!';
-        if(!$challenge->acceptedChallenges()->where('user_id', auth()->id())->exists()){
-            $acceptedChallenge = new AcceptedChallenge([
-                'user_id' => auth()->id(),
-            ]);
-            $challenge->acceptedChallenges()->save($acceptedChallenge);
-            $message['message'] = 'You have successfully accepted the challenge!';
+        try {
+            $message['message'] = 'You Can\'t Accept This Challenge!';
+            if($challenge->user_id != auth()->id() && !$challenge->acceptedChallenges()->where('user_id', auth()->id())->exists()){
+                $message['message'] = 'You are out of time!';
+                $before_date = $challenge->start_time;
+                $after_date = $before_date->addDays($challenge->duration_days)
+                ->addHours($challenge->duration_hours)
+                ->addMinutes($challenge->duration_minutes);
+                if(date('Y-m-d H:i:s') <= $after_date){
+                    $acceptedChallenge = new AcceptedChallenge([
+                        'user_id' => auth()->id(),
+                    ]);
+                    $challenge->acceptedChallenges()->save($acceptedChallenge);
+                    $message['message'] = 'You have successfully accepted the challenge!';
+                }
+            }
+            return response($message, 200);
+        } catch (\Throwable $th) {
+            return response($th->getMessage(), 422);
         }
-        return response($message, 200);
+        
     }
 
     public function acceptedChallenge(Request $request)

@@ -54,7 +54,11 @@ class SubmitChallengeController extends Controller
                 $data['message'] = 'No Video Uploaded!';
                 if ($challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitFiles()->exists()) {
                     $data['message'] = 'You are out of time!';
-                    if(Carbon::now()->format('Y-d-m') <= $challenge->start_time->format('Y-d-m')){
+                    $before_date = $challenge->start_time;
+                    $after_date = $before_date->addDays($challenge->duration_days)
+                    ->addHours($challenge->duration_hours)
+                    ->addMinutes($challenge->duration_minutes);
+                    if(date('Y-m-d H:i:s') >=  $challenge->start_time && date('Y-m-d H:i:s') <= $after_date){
                         $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                         $this->model->create($data);
                         $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submited());
@@ -85,8 +89,12 @@ class SubmitChallengeController extends Controller
         $res = 200;
         try {
             $files = $request->file;
+            $before_date = $challenge->start_time;
+            $after_date = $before_date->addDays($challenge->duration_days)
+            ->addHours($challenge->duration_hours)
+            ->addMinutes($challenge->duration_minutes);
             $message['message'] = 'You are out of time!';
-            if(Carbon::now()->format('Y-d-m') >= $challenge->start_time->format('Y-d-m')){
+            if(date('Y-m-d H:i:s') >=  $challenge->start_time && date('Y-m-d H:i:s') <= $after_date){
                 $file = uploadFile($files, SubmitChallengesPath(), null);
                 $records = new SubmitFile ([
                     'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
