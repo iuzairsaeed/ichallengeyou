@@ -24,18 +24,21 @@ class AcceptedChallengeController extends Controller
     {
         try {
             $message['message'] = 'You Can\'t Accept This Challenge!';
-            if($challenge->user_id != auth()->id() && !$challenge->acceptedChallenges()->where('user_id', auth()->id())->exists()){
-                $message['message'] = 'You are out of time!';
-                $before_date = $challenge->start_time;
-                $after_date = $before_date->addDays($challenge->duration_days)
-                ->addHours($challenge->duration_hours)
-                ->addMinutes($challenge->duration_minutes);
-                if(now() <= $after_date){
-                    $acceptedChallenge = new AcceptedChallenge([
-                        'user_id' => auth()->id(),
-                    ]);
-                    $challenge->acceptedChallenges()->save($acceptedChallenge);
-                    $message['message'] = 'You have successfully accepted the challenge!';
+            if ($challenge->user_id != auth()->id()) {
+                $message['message'] = 'You have Already accepted This Challenge!';
+                if($challenge->user_id != auth()->id() && !$challenge->acceptedChallenges()->where('user_id', auth()->id())->exists()){
+                    $message['message'] = 'You are out of time!';
+                    $before_date = $challenge->start_time;
+                    $after_date = $before_date->addDays($challenge->duration_days)
+                    ->addHours($challenge->duration_hours)
+                    ->addMinutes($challenge->duration_minutes);
+                    if(now() <= $after_date){
+                        $acceptedChallenge = new AcceptedChallenge([
+                            'user_id' => auth()->id(),
+                        ]);
+                        $challenge->acceptedChallenges()->save($acceptedChallenge);
+                        $message['message'] = 'You have successfully accepted the challenge!';
+                    }
                 }
             }
             return response($message, 200);
