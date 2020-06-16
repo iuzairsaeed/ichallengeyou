@@ -39,10 +39,12 @@ class ChallengeRequest extends FormRequest
         switch ($this->method()) {
             case 'POST': {
                 $rules['terms_accepted'] = ['required', Rule::in(['true'])];
-                $rules['file'] = ['required', 'mimes:jpg,jpeg,png,mp4,webm'];
+                $rules['file'] = ['required', 'mimes:jpg,jpeg,png,mp4,webm', 'max:51200‬'];
+                break;
             }
             case 'PUT' || 'PATCH': {
                 $rules['file'] = ['mimes:jpg,jpeg,png,mp4,webm', 'max:51200‬'];
+                break;
             }
             default:
                 break;
@@ -64,6 +66,6 @@ class ChallengeRequest extends FormRequest
     }
 
     protected function failedValidation(Validator $validator) {
-        throw new HttpResponseException(response()->json($validator->errors(), 406)); 
+        throw new HttpResponseException(response()->json($validator->errors(), 406));
     }
 }
