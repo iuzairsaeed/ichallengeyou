@@ -46,11 +46,11 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'These credentials do not match our records.'
-            ], 401);
+            ], 400);
         }elseif(!$user->is_active){
             return response([
                 'message' => 'Your account has been disabled. Please contact support.'
-            ], 401);
+            ], 400);
         }
 
         $user->platform = $request->platform;
