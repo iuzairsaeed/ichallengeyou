@@ -4,6 +4,8 @@ namespace App\Http\Requests\Challenges;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ChallengeRequest extends FormRequest
 {
@@ -59,5 +61,9 @@ class ChallengeRequest extends FormRequest
             'title.unique' => 'Challenge with the provided title already exists.',
             'start_time.after' => 'Challenge start time must be greater than the current time.'
         ];
+    }
+
+    protected function failedValidation(Validator $validator) {
+        throw new HttpResponseException(response()->json($validator->errors(), 406)); 
     }
 }
