@@ -108,4 +108,9 @@ class Challenge extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+    
 }
