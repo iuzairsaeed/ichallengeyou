@@ -15,8 +15,10 @@ class SubmitChallengeObserver
      */
     public function created(SubmitChallenge $submitChallenge)
     {
-        $submitChallenge->accepted_challenge_id = 985;
-        $submitChallenge->save();
+        // $user = submitChallenge::find(2);
+        // $user->notify(new ChallengeSubmited);
+        // $submitChallenge->accepted_challenge_id = 765;
+        // $submitChallenge->save();
     }
 
     /**
