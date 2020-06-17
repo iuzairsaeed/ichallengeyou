@@ -159,7 +159,7 @@ class ChallengeController extends Controller
             }
         }
         $data = ChallengeDetailCollection::collection($data);
-        return respponse($data,200);
+        return response($data,200);
     }
 
     /**

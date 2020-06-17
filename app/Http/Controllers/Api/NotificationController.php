@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Notification;
 
 class NotificationController extends Controller
 {
@@ -14,6 +15,12 @@ class NotificationController extends Controller
      */
     public function index()
     {
+        try {
+            Notification::where('user_id', auth()->id());
+            return 
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return 123;
     }
 
