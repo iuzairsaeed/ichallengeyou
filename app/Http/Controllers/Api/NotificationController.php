@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Http\Resources\NotificationCollection;
 
 class NotificationController extends Controller
 {
@@ -16,12 +17,12 @@ class NotificationController extends Controller
     public function index()
     {
         try {
-            Notification::where('user_id', auth()->id());
-            return 
-        } catch (\Throwable $th) {
-            //throw $th;
+            $data['data'] = Notification::where('user_id', auth()->id())->get();
+            $data['data'] = NotificationCollection::collection($data['data']);
+            return response($data,200);
+        } catch (\Exception $th) {
+            return response(['message'=>'Notificatoins not Found!'],204);
         }
-        return 123;
     }
 
     /**
