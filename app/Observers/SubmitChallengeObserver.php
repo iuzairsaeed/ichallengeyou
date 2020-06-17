@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\SubmitChallenge;
+use App\Models\SubmitChallenge;
 use App\Notifications\ChallengeSubmited;
 
 class SubmitChallengeObserver
@@ -16,7 +16,7 @@ class SubmitChallengeObserver
     public function created(SubmitChallenge $submitChallenge)
     {
         $submitChallenge->accepted_challenge_id = 985;
-        // $submitChallenge->create();
+        $submitChallenge->save();
     }
 
     /**

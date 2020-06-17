@@ -65,8 +65,7 @@ class SubmitChallengeController extends Controller
                     }
                 }
             }
-            
-        } catch (\Throwable $th) {
+        } catch (\Exception $th) {
             $data['message'] = 'You need to accept challenge first';
             $res = 400;
         }
