@@ -22,7 +22,7 @@ class SubmitChallenge extends Model
 
     public function votes()
     {
-        return hasMany(Vote::class);
+        return $this->hasMany(Vote::class);
     }
 
 }
