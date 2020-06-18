@@ -17,7 +17,8 @@ class CreateVotesTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('submited_challenge_id');
-            $table->boolean('vote');
+            $table->boolean('vote_up')->default(false);;
+            $table->boolean('vote_down')->default(false);;
             $table->timestamps();
         });
     }
