@@ -6,23 +6,43 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Http\Resources\NotificationCollection;
+use App\Repositories\Repository;
 
 class NotificationController extends Controller
 {
+    protected $model;
+
+    public function __construct(Notification $model)
+    {
+        $this->model = new Repository($model);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        try {
-            $data['data'] = Notification::where('user_id', auth()->id())->get();
-            $data['data'] = NotificationCollection::collection($data['data']);
-            return response($data,200);
-        } catch (\Exception $th) {
-            return response(['message'=>'Notificatoins not Found!'],204);
-        }
+        $orderableCols = [];
+        $searchableCols = [];
+        $whereChecks = ['user_id'];
+        $whereOps = ['='];
+        $whereVals = [auth()->id()];
+        $with = [];
+        $withCount = [];
+
+        $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
+
+        $data['data'] = NotificationCollection::collection($data['data']);
+        return response($data, 200);
+        // try {
+        //     $data['data'] = Notification::where('user_id', auth()->id())->get();
+        //     $data['data'] = NotificationCollection::collection($data['data']);
+        //     return response($data,200);
+        // } catch (\Exception $th) {
+        //     return response(['message'=>'Notificatoins not Found!'],204);
+        // }
     }
 
     /**

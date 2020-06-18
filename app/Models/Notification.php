@@ -7,7 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     protected $fillable = [
-        'challenge_id','user_id','title','body',
+        'challenge_id', 'user_id', 'title', 'body'
     ];
 
+    protected $hidden = [
+        'user_id'
+    ];
+
+    protected $with = [
+        'challenge'
+    ];
+
+    public function challenge()
+    {
+        return $this->belongsTo(Challenge::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
