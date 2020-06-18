@@ -170,7 +170,8 @@ class ChallengeController extends Controller
      */
     public function edit(Challenge $challenge)
     {
-        //
+        $challenge['amount'] = $challenge->initialAmount->getAttributes()['amount'];
+        return response($challenge, 200);
     }
 
     /**
@@ -368,7 +369,7 @@ class ChallengeController extends Controller
         $whereVals = [auth()->id()];
         $with = [];
         $withCount = [];
-        $currentStatus = [Approved()];
+        $currentStatus = [];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];
