@@ -21,6 +21,7 @@ class NotificationCollection extends JsonResource
             ],
             'title' => $this->title,
             'body' => $this->body,
+            'created_at' => $this->created_at,
         ];
     }
 }

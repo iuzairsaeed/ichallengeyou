@@ -18,6 +18,11 @@ class Notification extends Model
         'challenge'
     ];
 
+    public function getCreatedAtAttribute($value)
+    {
+        return time_elapsed_string($value);
+    }
+
     public function challenge()
     {
         return $this->belongsTo(Challenge::class);
