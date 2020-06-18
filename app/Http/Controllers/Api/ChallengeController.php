@@ -170,7 +170,10 @@ class ChallengeController extends Controller
      */
     public function edit(Challenge $challenge)
     {
-        $challenge['amount'] = $challenge->initialAmount->getAttributes()['amount'];
+        if($challenge->user_id <> auth()->id()){
+            return response(['message' => 'You cannot edit this challenge.'], 403);
+        }
+        $challenge['amount'] = $challenge->initialAmount->getAttributes()['amount'] ?? 0;
         return response($challenge, 200);
     }
 
