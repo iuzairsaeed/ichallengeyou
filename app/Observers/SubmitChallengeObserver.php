@@ -2,7 +2,11 @@
 
 namespace App\Observers;
 
+use Illuminate\Http\Request;
 use App\Models\SubmitChallenge;
+use App\Models\Challenge;
+use App\Models\Notification;
+use App\Models\User;
 use App\Notifications\ChallengeSubmited;
 
 class SubmitChallengeObserver
@@ -15,10 +19,20 @@ class SubmitChallengeObserver
      */
     public function created(SubmitChallenge $submitChallenge)
     {
-        // $user = submitChallenge::find(2);
-        // $user->notify(new ChallengeSubmited);
-        // $submitChallenge->accepted_challenge_id = 765;
-        // $submitChallenge->save();
+        $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
+        $user = $submitChallenge->acceptedChallenge->user;
+        $challenge = $submitChallenge->acceptedChallenge->challenge;        
+        $notificationModels = [];
+        foreach ($donators as $donator) {
+            $notification[] = new Notification([
+                'challenge_id' => $challenge->id,
+                'user_id' => $donator->user->id,
+                'title' => 'Challenge Submited', 
+                'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
+            ]);
+            $donator->user->notify(new ChallengeSubmited);
+        }
+        $submitChallenge->acceptedChallenge->challenge->notifications()->saveMany($notification);
     }
 
     /**

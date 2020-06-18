@@ -58,11 +58,6 @@ class AppServiceProvider extends ServiceProvider
         // Registerign user CRUD observer
         User::observe(UserObserver::class);
 
-        // \App\Models\SubmitChallenge::creating(function($model){
-        //     $model->accepted_challenge_id = 11111;
-        // });
-
-        // \App\Models\SubmitChallenge::observe(\App\Observers\SubmitChallengeObserver::class);
         # For SubmitChallenge CRUD observer
         SubmitChallenge::observe(SubmitChallengeObserver::class);
     }

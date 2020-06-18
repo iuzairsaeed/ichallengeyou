@@ -144,22 +144,22 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+        if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+            $data['data']['acceptBtn'] = false;
+            $data['data']['submitBtn'] = true;
+            $data['data']['donateBtn'] = false;
+        }
+        if($id){
+            if($data['data']->user_id == (int)$id){
                 $data['data']['acceptBtn'] = false;
-                $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
-            }
-            if($id){
-                if($data['data']->user_id == (int)$id){
-                    $data['data']['acceptBtn'] = false;
-                    $data['data']['donateBtn'] = false;
-                    if(now() <= $challenge->start_time ){
-                        $data['data']['editBtn'] =  true;
-                    }
+                if(now() <= $challenge->start_time ){
+                    $data['data']['editBtn'] =  true;
                 }
             }
+        }
         $data = ChallengeDetailCollection::collection($data);
-        return $data;
+        return response($data,200);
     }
 
     /**
