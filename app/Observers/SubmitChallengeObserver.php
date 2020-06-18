@@ -19,20 +19,24 @@ class SubmitChallengeObserver
      */
     public function created(SubmitChallenge $submitChallenge)
     {
-        $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
-        $user = $submitChallenge->acceptedChallenge->user;
-        $challenge = $submitChallenge->acceptedChallenge->challenge;        
-        $notificationModels = [];
-        foreach ($donators as $donator) {
-            $notification[] = new Notification([
-                'challenge_id' => $challenge->id,
-                'user_id' => $donator->user->id,
-                'title' => 'Challenge Submited', 
-                'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
-            ]);
-            $donator->user->notify(new ChallengeSubmited);
+        try {
+            $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
+            $user = $submitChallenge->acceptedChallenge->user;
+            $challenge = $submitChallenge->acceptedChallenge->challenge;        
+            $notificationModels = [];
+            foreach ($donators as $donator) {
+                $notification[] = new Notification([
+                    'challenge_id' => $challenge->id,
+                    'user_id' => $donator->user->id,
+                    'title' => 'Challenge Submited', 
+                    'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
+                ]);
+                $donator->user->notify(new ChallengeSubmited);
+            }
+            $submitChallenge->acceptedChallenge->challenge->notifications()->saveMany($notification);
+        } catch (\Throwable $th) {
+            return response('No Donator Found' , 204);
         }
-        $submitChallenge->acceptedChallenge->challenge->notifications()->saveMany($notification);
     }
 
     /**

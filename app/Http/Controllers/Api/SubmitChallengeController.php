@@ -58,7 +58,7 @@ class SubmitChallengeController extends Controller
                     $after_date = $before_date->addDays($challenge->duration_days)
                     ->addHours($challenge->duration_hours)
                     ->addMinutes($challenge->duration_minutes);
-                    if(now() <=  $challenge->start_time && now() <= $after_date){
+                    if(now() >=  $challenge->start_time && now() <= $after_date){
                         $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                         $this->model->create($data);
                         $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submited());
