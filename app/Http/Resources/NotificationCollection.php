@@ -18,6 +18,7 @@ class NotificationCollection extends JsonResource
             'challenge' => [
                 'title' => $this->challenge->title,
                 'file' => $this->challenge->file,
+                'file_mime' => $this->challenge->file_mime,
             ],
             'title' => $this->title,
             'body' => $this->body,
