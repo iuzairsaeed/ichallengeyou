@@ -95,6 +95,13 @@ class ChallengeController extends Controller
             $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
+            $donation = new Amount([
+                'user_id' => auth()->id(),
+                'amount' => $request->amount,
+                'type' => 'initial',
+                'created_at' => now()
+            ]);
+            $challenge->amounts()->save($donation);
             $transaction = new Transaction([
                 'user_id' => auth()->id(),
                 'challenge_id' => $challenge->id,

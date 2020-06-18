@@ -113,9 +113,6 @@ class ChallengeRepository implements RepositoryInterface
                 }
             }
         }
-        if($currentStatus){
-            $records->currentStatus($currentStatus);
-        }
 
         if($whereChecks){
             foreach($whereChecks as $key => $check){
