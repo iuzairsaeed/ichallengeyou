@@ -379,7 +379,10 @@ class ChallengeController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-
+        collect($data['data'])->map(function ($item){
+            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            return $item;
+        });
         $data['data'] = ChallengeList::collection($data['data']);
         return response($data, 200);
 
