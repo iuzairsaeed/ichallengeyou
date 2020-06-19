@@ -20,8 +20,9 @@ class VoteController extends Controller
     }
 
     public function voteUp(SubmitChallenge $submitedChallenge) {
-        $data['message'] = 'You can\'t Vote, your own Challenge';
-        if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){
+        $data['message'] = 'You can\'t Vote, your own Challenge'; $res = 400;
+        if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id && $submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'  ){
+            $res = 200;
             $sub_id  = $submitedChallenge->id;
             $voted = Vote::where('user_id',auth()->id())
             ->where('submited_challenge_id',$submitedChallenge->id)
@@ -34,7 +35,7 @@ class VoteController extends Controller
                 $data['vote_up'] = $vote_up;
                 $data['vote_down'] = $vote_down;
             } else {
-                $data['message'] = 'Your Vote has been casted Positive on this Challenge!';
+                $data['message'] = 'Your Vote has been casted Positive on this Challenge!'; 
                 $data['vote_down'] = false;
                 $data['vote_up'] = true;
                 $vote = [
@@ -45,13 +46,13 @@ class VoteController extends Controller
                 $this->model->create($vote);    
             }
         }
-        return response($data, 200);
+        return response($data, $res);
     }
 
     public function voteDown(SubmitChallenge $submitedChallenge)
     {
         $data['message'] = 'You can\'t Vote, your own Challenge';
-        if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){
+        if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id && $submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'  ){
             $sub_id  = $submitedChallenge->id;
             $voted = Vote::where('user_id',auth()->id())
             ->where('submited_challenge_id',$submitedChallenge->id)

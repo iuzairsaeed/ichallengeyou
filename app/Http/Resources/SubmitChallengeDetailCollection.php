@@ -24,7 +24,7 @@ class SubmitChallengeDetailCollection extends JsonResource
                 'avatar' => $this->user->avatar,
             ],
             'submit_videos' => [
-                'file' => $this->submitFiles->file,
+                'file' => $this->submitFiles,
             ],
         ];
     }
