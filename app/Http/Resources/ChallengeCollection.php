@@ -24,7 +24,7 @@ class ChallengeCollection extends JsonResource
             'unlike' => $this->userReaction->unlike ?? false,
             'favorite' => $this->userReaction->favorite ?? false,
             'file_mime' => $this->file_mime,
-            'category_name' => $this->category->name,
+            'category_name' => $this->category->name ?? '',
         ];
     }
 }

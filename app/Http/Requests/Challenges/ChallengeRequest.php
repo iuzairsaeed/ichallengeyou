@@ -32,6 +32,7 @@ class ChallengeRequest extends FormRequest
             'duration_minutes' => ['required', 'integer', 'min:0', 'max:59'],
             'location' => ['required', 'string', 'max:75'],
             'amount' => ['required', 'numeric', 'min:1'],
+            'category_id' => ['required', 'exists:categories,id'],
         ];
         switch ($this->method()) {
             case 'POST': {
@@ -60,7 +61,8 @@ class ChallengeRequest extends FormRequest
     {
         return [
             'title.unique' => 'Challenge with the provided title already exists.',
-            'start_time.after' => 'Challenge start time must be greater than the current time.'
+            'start_time.after' => 'Challenge start time must be greater than the current time.',
+            'category_id.exists' => 'Kindly select a category of your challenge.',
         ];
     }
 
