@@ -31,7 +31,7 @@ return [
     ],
 
     'fcm' => [
-        'key' => env('FCM_SECRET_KEY')
+        'key' => config('global.FCM_SECRET_KEY')
      ]
 
 ];
