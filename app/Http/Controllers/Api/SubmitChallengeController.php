@@ -28,7 +28,19 @@ class SubmitChallengeController extends Controller
 
     public function getSubmitChallengerList(Challenge $challenge,Request $request){
         try {
-            $data['data'] = $challenge->acceptedChallenges;
+            $orderableCols = [];
+            $searchableCols = [];
+            $whereChecks = [];
+            $whereOps = [];
+            $whereVals = [];
+            $with = [];
+            $withCount = [];
+            $currentStatus = [];
+            $withSums = [];
+            $withSumsCol = [];
+            $addWithSums = [];
+            $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+            $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
         } catch (\Exception $th) {
