@@ -63,6 +63,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::group(['prefix' => 'vote'], function () {
             Route::post('{submitedChallenge}/up', 'VoteController@voteUp');
             Route::post('{submitedChallenge}/down', 'VoteController@voteDown');
+            Route::get('{challenge}/result', 'VoteController@result');
         });
         Route::resource('notification', 'NotificationController');
     });

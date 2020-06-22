@@ -49,5 +49,5 @@ function challengesPath()
 
 function SubmitChallengesPath()
 {
-    return 'storage/submited/';
+    return 'storage/submitted/';
 }

@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Repositories\ChallengeRepository;
-use App\Http\Resources\TransactionCollection;
-use Carbon\Carbon;
+use App\Repositories\VoteRepository;
 use App\Models\Vote;
 use App\Models\SubmitChallenge;
+use App\Models\Challenge;
 
 class VoteController extends Controller
 {
@@ -16,7 +15,20 @@ class VoteController extends Controller
 
     public function __construct(Vote $model)
     {
-        $this->model = new ChallengeRepository($model);
+        $this->model = new VoteRepository($model);
+    }
+
+    public function result(Challenge $challenge)
+    {
+        $acceptedChallenges = $challenge->acceptedChallenges;
+        $total_votes = 0;
+        foreach ($acceptedChallenges as $value) {
+            $submitedChallenge = $value->submitChallenge->first();
+            $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
+            ->count();
+        }
+        $data = $this->model->getResult($challenge,$total_votes);
+        return($data);
     }
 
     public function voteUp(SubmitChallenge $submitedChallenge) {
@@ -25,7 +37,7 @@ class VoteController extends Controller
             $res = 200;
             $sub_id  = $submitedChallenge->id;
             $voted = Vote::all()->where('user_id',auth()->id());
-            if($voted){
+            if($voted->first()){
                 $data['message'] = 'You have already voted to another challenger!'; $res = 400;
                 if( $voted = $voted->where('submited_challenge_id',$submitedChallenge->id)->first()){
                     $vote_up = $voted->vote_up = ($voted->vote_up == false) ? true : false ;
@@ -36,10 +48,9 @@ class VoteController extends Controller
                     $data['vote_down'] = $vote_down;
                 }
             } else {
-                dd(1);
                 $data['message'] = 'Your Vote has been casted Positive on this Challenge!'; 
-                $data['vote_down'] = false;
                 $data['vote_up'] = true;
+                $data['vote_down'] = false;
                 $vote = [
                     'user_id' => auth()->id(),
                     'submited_challenge_id' => $sub_id,

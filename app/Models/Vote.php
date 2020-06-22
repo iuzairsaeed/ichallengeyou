@@ -10,7 +10,7 @@ class Vote extends Model
 
     public function submitChallenges()
     {
-        return $this->belongsTo(SubmitedChallenge::class);
+        return $this->belongsTo(SubmitChallenge::class);
     }
 
 }

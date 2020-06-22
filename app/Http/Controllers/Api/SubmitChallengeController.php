@@ -32,7 +32,7 @@ class SubmitChallengeController extends Controller
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
         } catch (\Exception $th) {
-            return response(['message'=>'No submited Challenge'],204);
+            return response(['message'=>'No submitted Challenge'],204);
         }
     }
 
@@ -61,7 +61,7 @@ class SubmitChallengeController extends Controller
                     if(now() >=  $challenge->start_time && now() <= $after_date){
                         $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                         $this->model->create($data);
-                        $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submited());
+                        $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submitted());
                         $data['message']='You have Successfuly Submitted the Challenge!'; $res = 200;
                     }
                 }

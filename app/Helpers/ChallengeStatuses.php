@@ -25,9 +25,9 @@ function Completed()
     return 'Completed';
 }
 
-function Submited()
+function Submitted()
 {
-    return 'Submited';
+    return 'Submitted';
 }
 
 function Winner()
