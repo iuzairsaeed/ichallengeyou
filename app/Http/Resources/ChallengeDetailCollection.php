@@ -20,7 +20,7 @@ class ChallengeDetailCollection extends JsonResource
             'description' => $this->description,
             'file' => $this->file,
             'file_mime' => $this->file_mime,
-            'start_time' => $this->start_time->format('d M, Y - h:mA'),
+            'start_time' => $this->start_time->format('d M, Y - h:m A'),
             'amounts_sum' => $this->amounts_sum,
             'location' => $this->location,
             'like' => $this->userReaction->like ?? false,
@@ -32,6 +32,7 @@ class ChallengeDetailCollection extends JsonResource
             'initial_amount' => $this->initialAmount->amount,
             'creator_name' => $this->user->name,
             'creator_avatar' => $this->user->avatar,
+            'category_id' => $this->category->id,
             'category_name' => $this->category->name,
             'donators' => $this->donations,
             'buttons' => [

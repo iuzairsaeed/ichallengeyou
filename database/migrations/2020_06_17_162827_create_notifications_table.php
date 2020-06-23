@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVotesTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateVotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('votes', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('submited_challenge_id');
-            $table->boolean('vote_up')->default(false);;
-            $table->boolean('vote_down')->default(false);;
+            $table->foreignId('challenge_id');
+            $table->string('title');
+            $table->string('body');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateVotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('votes');
+        Schema::dropIfExists('notifications');
     }
 }

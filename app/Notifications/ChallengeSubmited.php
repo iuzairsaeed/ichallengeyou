@@ -47,9 +47,9 @@ class ChallengeSubmited extends Notification
             'body'         => 'Challenge has been Submited', 
             'sound'        => '', // Optional 
             'icon'         => '', // Optional
-            'click_action' => '' // Optional
+            'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
         ])->data([
-            'param1' => 'baz' // Optional
+            'user_id' => $notifiable->id // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
         
         return $message;

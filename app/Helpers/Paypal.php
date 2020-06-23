@@ -3,7 +3,7 @@
 function paypalAuth(){
 
     $curl = curl_init();
-    $clientId = env('PAYPAL_CLIENT_ID');
+    $clientId = config('global.PAYPAL_CLIENT_ID');
     $clientSecret = env('PAYPAL_CLIENT_SECRET');
     curl_setopt($curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
     curl_setopt_array($curl, array(
@@ -29,7 +29,7 @@ function paypalAuth(){
 function paypalDetail($access_token,$pay_id)
 {
     $curl = curl_init();
-    $clientId = env('PAYPAL_CLIENT_ID');
+    $clientId = config('global.PAYPAL_CLIENT_SECRET');
     $clientSecret = env('PAYPAL_CLIENT_SECRET');
     curl_setopt($curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
     curl_setopt_array($curl, array(

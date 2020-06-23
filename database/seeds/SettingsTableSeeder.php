@@ -40,7 +40,22 @@ class SettingsTableSeeder extends Seeder
                                 <li>Nullam porta nisl a diam accumsan, vitae maximus neque elementum.</li>
                             </ul>',
                 'type' => 'textarea',
-            ]
+            ],
+            [
+                'name' => 'FCM_SECRET_KEY',
+                'value' => 'AAAAcG2KUA8:APA91bGODgsELMbG2xAMvAwddZ4WIQJhQHyBbs7sLb15hJUvLUkaLPm8YpY2_nSoG1iPERqyWOkIZI8A4v6II7I-NzyxkBhtZqtnLXYVotqW1p7m_6O6p4Lk2x8d0nLPHkwNMw986WQC',
+                'type' => 'textarea',
+            ],
+            [
+                'name' => 'PAYPAL_CLIENT_ID',
+                'value' => 'Ab53_-WMeShRUNx6lvevKNgqpJYIvM46DRTAuuTzIN_l2QXBPi4d11xgkVRn67bspowmWc6WFClmTv_N',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'PAYPAL_CLIENT_SECRET',
+                'value' => 'EEGikJpagcxHKy6abaKbDN1VgpS61ERo4owIbrlvumcFHlQIYayFZvD9OQnYZmUojNpOjcblDfUyj3Ge',
+                'type' => 'text',
+            ],
         ]);
     }
 }

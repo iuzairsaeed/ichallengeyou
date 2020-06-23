@@ -95,6 +95,13 @@ class ChallengeController extends Controller
             $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
+            $donation = new Amount([
+                'user_id' => auth()->id(),
+                'amount' => $request->amount,
+                'type' => 'initial',
+                'created_at' => now()
+            ]);
+            $challenge->amounts()->save($donation);
             $transaction = new Transaction([
                 'user_id' => auth()->id(),
                 'challenge_id' => $challenge->id,
@@ -144,22 +151,22 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+        if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+            $data['data']['acceptBtn'] = false;
+            $data['data']['submitBtn'] = true;
+            $data['data']['donateBtn'] = false;
+        }
+        if($id){
+            if($data['data']->user_id == (int)$id){
                 $data['data']['acceptBtn'] = false;
-                $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
-            }
-            if($id){
-                if($data['data']->user_id == (int)$id){
-                    $data['data']['acceptBtn'] = false;
-                    $data['data']['donateBtn'] = false;
-                    if(now() <= $challenge->start_time ){
-                        $data['data']['editBtn'] =  true;
-                    }
+                if(now() <= $challenge->start_time ){
+                    $data['data']['editBtn'] =  true;
                 }
             }
+        }
         $data = ChallengeDetailCollection::collection($data);
-        return $data;
+        return response($data,200);
     }
 
     /**
@@ -170,7 +177,11 @@ class ChallengeController extends Controller
      */
     public function edit(Challenge $challenge)
     {
-        //
+        if($challenge->user_id <> auth()->id()){
+            return response(['message' => 'You cannot edit this challenge.'], 403);
+        }
+        $challenge['amount'] = $challenge->initialAmount->getAttributes()['amount'] ?? 0;
+        return response($challenge, 200);
     }
 
     /**
@@ -368,14 +379,17 @@ class ChallengeController extends Controller
         $whereVals = [auth()->id()];
         $with = [];
         $withCount = [];
-        $currentStatus = [Approved()];
+        $currentStatus = [];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];
 
         $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-
+        collect($data['data'])->map(function ($item){
+            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            return $item;
+        });
         $data['data'] = ChallengeList::collection($data['data']);
         return response($data, 200);
 

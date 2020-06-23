@@ -7,6 +7,7 @@ use App\Http\Requests\Challenges\SubmitChallengeRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\SubmitChallengeCollection;
+use App\Http\Resources\SubmitedVideoCollection;
 use App\Http\Resources\SubmitChallengeDetailCollection;
 use Illuminate\Http\Request;
 use App\Models\Challenge;
@@ -27,11 +28,23 @@ class SubmitChallengeController extends Controller
 
     public function getSubmitChallengerList(Challenge $challenge,Request $request){
         try {
-            $data['data'] = $challenge->acceptedChallenges;
+            $orderableCols = [];
+            $searchableCols = [];
+            $whereChecks = [];
+            $whereOps = [];
+            $whereVals = [];
+            $with = [];
+            $withCount = [];
+            $currentStatus = [];
+            $withSums = [];
+            $withSumsCol = [];
+            $addWithSums = [];
+            $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+            $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
         } catch (\Exception $th) {
-            return response(['message'=>'No submited Challenge'],204);
+            return response(['message'=>'No submitted Challenge'],204);
         }
     }
 
@@ -48,7 +61,7 @@ class SubmitChallengeController extends Controller
     public function postSubmitChallenge(Challenge $challenge)
     {
         try {
-            $data['message']='You have Already Submitted the Challenge!';
+            $data['message']='You have Already Submitted the Challenge!'; $res = 400;
             if(!$challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitChallenge()->exists()){
                 $data['message'] = 'No Video Uploaded!';
                 if ($challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitFiles()->exists()) {
@@ -57,41 +70,47 @@ class SubmitChallengeController extends Controller
                     $after_date = $before_date->addDays($challenge->duration_days)
                     ->addHours($challenge->duration_hours)
                     ->addMinutes($challenge->duration_minutes);
-                    if(now() <=  $challenge->start_time && now() <= $after_date){
+                    if(now() >=  $challenge->start_time && now() <= $after_date){
                         $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                         $this->model->create($data);
-                        $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submited());
-                        $data['message']='You have Successfuly Submitted the Challenge!';
+                        $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submitted());
+                        $data['message']='You have Successfuly Submitted the Challenge!'; $res = 200;
                     }
                 }
             }
         } catch (\Exception $th) {
             $data['message'] = 'You need to accept challenge first';
+            $data['message'] = $th->getMessage();
             $res = 400;
         }
-        return response($data,200);
+        return response($data,$res);
     }
 
     public function getVideo(Challenge $challenge)
     {
         try {
-            $data['file'] = $challenge->acceptedChallenges->submitFiles;
+            $data['file'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitFiles()->get();
+            $data['file'] = SubmitedVideoCollection::collection($data['file']);
             return response($data,200);
         } catch (\Throwable $th) {
-            return response(['message'=>'No Video Found!'],400);
+            return $th->getMessage();
+            return response(['message'=>'No Video Found!'],204);
         }
     }
 
     public function addVideo(Challenge $challenge, SubmitChallengeRequest $request)
     {
         try {
+            // if(){
+
+            // }
             $files = $request->file;
             $before_date = $challenge->start_time;
             $after_date = $before_date->addDays($challenge->duration_days)
             ->addHours($challenge->duration_hours)
             ->addMinutes($challenge->duration_minutes);
-            $message['message'] = 'You are out of time!';
-            if(now() <=  $challenge->start_time && now() <= $after_date){
+            $message['message'] = 'You are out of time!'; $res = 400;
+            if(now() >=  $challenge->start_time && now() <= $after_date){
                 $file = uploadFile($files, SubmitChallengesPath(), null);
                 $records = new SubmitFile ([
                     'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
@@ -99,13 +118,13 @@ class SubmitChallengeController extends Controller
                     'created_at' => now(),
                 ]); 
                 $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitFiles()->save($records);
-                $message['message'] = 'Video has been Added!';
+                $message['message'] = 'Video has been Added!';$res = 200;
             }
         } catch (\Throwable $th) {
             $message['message'] = 'You need to accept challenge first';
             $res = 400;
         }    
-        return response($message, 200);
+        return response($message, $res);
     }
     
     public function deleteVideo(SubmitFile $file)

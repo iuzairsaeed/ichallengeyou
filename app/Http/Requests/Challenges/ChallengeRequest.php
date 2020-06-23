@@ -25,7 +25,6 @@ class ChallengeRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'title' => ['bail', 'required', 'unique:challenges', 'string', 'max:75', 'min:3'],
             'description' => ['bail', 'required', 'max:500', 'min:200'],
             'start_time' => ['required', 'date_format:Y-m-d H:i', 'after:'.date(DATE_ATOM, time() + (5 * 60 * 60))],
             'duration_days' => ['required', 'integer', 'min:0'],
@@ -33,14 +32,17 @@ class ChallengeRequest extends FormRequest
             'duration_minutes' => ['required', 'integer', 'min:0', 'max:59'],
             'location' => ['required', 'string', 'max:75'],
             'amount' => ['required', 'numeric', 'min:1'],
+            'category_id' => ['required', 'exists:categories,id'],
         ];
         switch ($this->method()) {
             case 'POST': {
+                $rules['title'] = ['bail', 'required', 'unique:challenges', 'string', 'max:75', 'min:3'];
                 $rules['terms_accepted'] = ['required', Rule::in(['true'])];
                 $rules['file'] = ['required', 'mimes:jpg,jpeg,png,mp4,webm', 'max:51200‬'];
                 break;
             }
             case 'PUT' || 'PATCH': {
+                $rules['title'] = ['bail', 'required', 'string', 'max:75', 'min:3'];
                 $rules['file'] = ['mimes:jpg,jpeg,png,mp4,webm', 'max:51200‬'];
                 break;
             }
@@ -59,7 +61,8 @@ class ChallengeRequest extends FormRequest
     {
         return [
             'title.unique' => 'Challenge with the provided title already exists.',
-            'start_time.after' => 'Challenge start time must be greater than the current time.'
+            'start_time.after' => 'Challenge start time must be greater than the current time.',
+            'category_id.exists' => 'Kindly select a category of your challenge.',
         ];
     }
 
