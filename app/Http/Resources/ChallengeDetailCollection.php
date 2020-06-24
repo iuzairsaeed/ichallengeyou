@@ -40,6 +40,8 @@ class ChallengeDetailCollection extends JsonResource
                 'submitBtn' => $this->submitBtn ?? false,
                 'donateBtn' => $this->donateBtn ?? true,
                 'editBtn' => $this->editBtn ?? false,
+                'bidBtn' => $this->bidBtn ?? true,
+                'submitedListBtn' => true,
             ],
         ];
     }

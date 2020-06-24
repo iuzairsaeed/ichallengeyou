@@ -40,9 +40,15 @@ class ChallengeController extends Controller
         $user_id = $request->user_id;
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
-        $whereChecks = [];
-        $whereOps = [];
-        $whereVals = [];
+        if($request->category_id){
+            $whereChecks = ['category_id'];
+            $whereOps = ['='];
+            $whereVals = [$request->category_id];
+        } else {
+            $whereChecks = [];
+            $whereOps = [];
+            $whereVals = [];
+        }
         $with = array(
             'userReaction' => function($query) use ($user_id) {
                 $query->where('user_id', $user_id);
@@ -126,6 +132,7 @@ class ChallengeController extends Controller
     public function show(Challenge $challenge, Request $request)
     {
         $id = $request->user_id;
+        $user = User::where('id',$id)->first();
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
@@ -151,17 +158,20 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-        if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
-            $data['data']['acceptBtn'] = false;
-            $data['data']['submitBtn'] = true;
-            $data['data']['donateBtn'] = false;
-        }
-        if($id){
-            if($data['data']->user_id == (int)$id){
+        if($user->is_premium){
+            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
                 $data['data']['acceptBtn'] = false;
+                $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
-                if(now() <= $challenge->start_time ){
-                    $data['data']['editBtn'] =  true;
+            }
+            if($id){
+                if($data['data']->user_id == (int)$id){
+                    $data['data']['acceptBtn'] = false;
+                    $data['data']['donateBtn'] = false;
+                    $data['data']['bidBtn'] = false;
+                    if(now() <= $challenge->start_time ){
+                        $data['data']['editBtn'] =  true;
+                    }
                 }
             }
         }
