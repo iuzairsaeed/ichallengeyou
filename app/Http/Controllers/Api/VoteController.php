@@ -20,15 +20,21 @@ class VoteController extends Controller
 
     public function result(Challenge $challenge)
     {
-        $acceptedChallenges = $challenge->acceptedChallenges;
-        $total_votes = 0;
-        foreach ($acceptedChallenges as $value) {
-            $submitedChallenge = $value->submitChallenge->first();
-            $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
-            ->count();
+        try {
+            $acceptedChallenges = $challenge->acceptedChallenges;
+            $total_votes = 0;
+            foreach ($acceptedChallenges as $value) {
+                $submitedChallenge = $value->submitChallenge->first();
+                $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
+                ->count();
+            }
+            $data = $this->model->getResult($challenge,$total_votes);
+            return response($data,200);
+        } catch (\Throwable $th) {
+            $data['message'] = 'No Votes Count!';
+            return response($data,207);
         }
-        $data = $this->model->getResult($challenge,$total_votes);
-        return($data);
+        
     }
 
     public function voteUp(SubmitChallenge $submitedChallenge) {

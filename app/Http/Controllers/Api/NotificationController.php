@@ -36,13 +36,6 @@ class NotificationController extends Controller
 
         $data['data'] = NotificationCollection::collection($data['data']);
         return response($data, 200);
-        // try {
-        //     $data['data'] = Notification::where('user_id', auth()->id())->get();
-        //     $data['data'] = NotificationCollection::collection($data['data']);
-        //     return response($data,200);
-        // } catch (\Exception $th) {
-        //     return response(['message'=>'Notificatoins not Found!'],204);
-        // }
     }
 
     /**

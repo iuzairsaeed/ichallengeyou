@@ -14,7 +14,6 @@ use App\Models\Challenge;
 use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
-use Exception;
 
 class SubmitChallengeController extends Controller
 {
@@ -78,9 +77,8 @@ class SubmitChallengeController extends Controller
                     }
                 }
             }
-        } catch (\Exception $th) {
+        } catch (\Throwable $th) {
             $data['message'] = 'You need to accept challenge first';
-            $data['message'] = $th->getMessage();
             $res = 400;
         }
         return response($data,$res);
@@ -101,9 +99,6 @@ class SubmitChallengeController extends Controller
     public function addVideo(Challenge $challenge, SubmitChallengeRequest $request)
     {
         try {
-            // if(){
-
-            // }
             $files = $request->file;
             $before_date = $challenge->start_time;
             $after_date = $before_date->addDays($challenge->duration_days)

@@ -15,12 +15,9 @@ class NotificationCollection extends JsonResource
     public function toArray($request)
     {
         return [
-            'challenge' => [
-                'id' => $this->challenge->id,
-                'title' => $this->challenge->title,
-                'file' => $this->challenge->file,
-                'file_mime' => $this->challenge->file_mime,
-            ],
+            'voter_id' => $this->notifiable->user_id ?? 0,
+            'challenge_detail_id' => $this->notifiable->submitChallenges->accepted_challenge_id ?? 0,
+            'submited_challenge_id' => $this->notifiable->accepted_challenge_id ?? 0,
             'title' => $this->title,
             'body' => $this->body,
             'created_at' => $this->created_at,

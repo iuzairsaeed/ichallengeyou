@@ -10,7 +10,17 @@ class Vote extends Model
 
     public function submitChallenges()
     {
-        return $this->belongsTo(SubmitChallenge::class);
+        return $this->belongsTo(SubmitChallenge::class, 'submited_challenge_id');
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 
 }

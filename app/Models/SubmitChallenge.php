@@ -25,4 +25,9 @@ class SubmitChallenge extends Model
         return $this->hasMany(Vote::class);
     }
 
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
+    }
+
 }

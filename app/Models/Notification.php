@@ -7,15 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     protected $fillable = [
-        'challenge_id', 'user_id', 'title', 'body'
+         'user_id', 'title', 'body'
     ];
 
     protected $hidden = [
         'user_id'
-    ];
-
-    protected $with = [
-        'challenge'
     ];
 
     public function getCreatedAtAttribute($value)
@@ -31,5 +27,15 @@ class Notification extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vote()
+    {
+        return $this->belongsTo(Vote::class);
+    }
+
+    public function notifiable()
+    {
+        return $this->morphTo();
     }
 }
