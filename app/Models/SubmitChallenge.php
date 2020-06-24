@@ -9,6 +9,9 @@ class SubmitChallenge extends Model
 {
     use HasStatuses,Notifiable;
     protected $fillable = ['accepted_challenge_id' , 'file'];
+    protected $with = [
+        'acceptedChallenge'
+    ];
 
     protected $casts = [
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,

@@ -26,24 +26,28 @@ class SubmitChallengeController extends Controller
 
 
     public function getSubmitChallengerList(Challenge $challenge,Request $request){
+        $acceptedChallengeModel = new AcceptedChallenge;
+        $this->model = new ChallengeRepository($acceptedChallengeModel);
         try {
             $orderableCols = [];
             $searchableCols = [];
-            $whereChecks = [];
-            $whereOps = [];
-            $whereVals = [];
+            $whereChecks = ['challenge_id'];
+            $whereOps = ['='];
+            $whereVals = [$challenge->id];
             $with = [];
             $withCount = [];
             $currentStatus = [];
+            $whereHas = 'submitChallenge';
             $withSums = [];
             $withSumsCol = [];
             $addWithSums = [];
-            $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+            $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
             $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
         } catch (\Exception $th) {
-            return response(['message'=>'No submitted Challenge'],204);
+            return ;
+            return response(['message'=>$th->getMessage()],204);
         }
     }
 

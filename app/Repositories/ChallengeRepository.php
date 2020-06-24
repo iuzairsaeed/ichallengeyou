@@ -84,7 +84,7 @@ class ChallengeRepository implements RepositoryInterface
     }
 
     // Get data for datatable
-    public function getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
+    public function getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
@@ -97,6 +97,10 @@ class ChallengeRepository implements RepositoryInterface
         $to = $request->date_to;
 
         $records = $this->model->with($with)->withCount($withCount);
+
+        if($whereHas){
+            $records->has($whereHas);
+        }
         if($withSums){
             foreach($withSums as $key => $withSum){
                 $records->withCount([
@@ -113,7 +117,6 @@ class ChallengeRepository implements RepositoryInterface
                 }
             }
         }
-
         if($whereChecks){
             foreach($whereChecks as $key => $check){
                 $records->where($check, $whereOps[$key] ?? '=', $whereVals[$key]);
@@ -147,8 +150,8 @@ class ChallengeRepository implements RepositoryInterface
         }else{
             $records->latest();
         }
+        
         $records = $records->limit($length)->offset($start)->get();
-
         $message = 'Success';
         if($records->count() == 0){
             $message = 'No data available.';

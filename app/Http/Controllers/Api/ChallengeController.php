@@ -164,6 +164,11 @@ class ChallengeController extends Controller
                 $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
             }
+            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+                $data['data']['acceptBtn'] = false;
+                $data['data']['submitBtn'] = true;
+                $data['data']['donateBtn'] = false;
+            }
             if($id){
                 if($data['data']->user_id == (int)$id){
                     $data['data']['acceptBtn'] = false;
@@ -174,6 +179,11 @@ class ChallengeController extends Controller
                     }
                 }
             }
+        } else {
+            $data['data']['acceptBtn'] = false;
+            $data['data']['submitBtn'] = false;
+            $data['data']['donateBtn'] = false;
+            $data['data']['bidBtn'] = false;
         }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
