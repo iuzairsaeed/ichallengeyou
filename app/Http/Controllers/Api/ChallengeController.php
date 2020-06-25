@@ -157,7 +157,7 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-        if($user->is_premium){
+        if(optional($user)->is_premium){
             if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
                 $data['data']['acceptBtn'] = false;
                 $data['data']['submitBtn'] = true;
