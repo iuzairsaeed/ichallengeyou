@@ -25,7 +25,7 @@ class SubmitChallenge extends Model
 
     public function votes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Vote::class, 'submited_challenge_id');
     }
 
     public function notifications()

@@ -43,11 +43,15 @@ class SubmitChallengeController extends Controller
             $whereHas = 'submitChallenge';
             $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
             $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+            collect($data['data'])->map(function ($item) {
+                $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();
+                $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
+            });
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
         } catch (\Exception $th) {
             return ;
-            return response(['message'=>$th->getMessage()],204);
+            return response(['message'=>$th->getMessage()],400);
         }
     }
 
