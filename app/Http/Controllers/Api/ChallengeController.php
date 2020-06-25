@@ -92,9 +92,10 @@ class ChallengeController extends Controller
      */
     public function store(ChallengeRequest $request)
     {
-        try {
+        $message['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        if(auth()->user()->is_premium){
+            $message['message'] = 'Challenge has been Created!'; $res = 200;
             $data = $request->all();
-
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
@@ -117,11 +118,8 @@ class ChallengeController extends Controller
                 'invoice_id' => null,
             ]);
             $challenge->transactions()->save($transaction);
-            return response(['message' => 'Challenge has been created.'], 200);
-        } catch (\Exception  $e) {
-            throw $e;
         }
-
+        return response($message, $res);
     }
 
     /**
@@ -214,8 +212,10 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-
-        try {
+        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        if(auth()->user()->is_premium){
+            $data['message'] = 'Challenge has been Updated!'; $res = 200;
+            $res = 200;
             $data = $request->all();
             if($request->hasFile('file')){
                 $deleteFile = $challenge->getAttributes()['file'] != 'no-image.png' ? $challenge->file : null;
@@ -224,14 +224,12 @@ class ChallengeController extends Controller
             $data['user_id'] = auth()->id();
             $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
-            return response(['message' => 'Challenge has been updated.'], 200);
-
-        } catch (\Throwable $th) {
-            throw $th;
         }
+        return response($data, $res);
 
-        $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
-        return $this->model->find($challenge->id);
+
+        // $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
+        // return $this->model->find($challenge->id);
     }
 
     /**
@@ -253,30 +251,34 @@ class ChallengeController extends Controller
      */
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
-        $user = auth()->user();
-        if((float)$request->amount > (float)$user->getAttributes()['balance']){
-            return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
+        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        if(auth()->user()->is_premium){
+            $user = auth()->user();
+            if((float)$request->amount > (float)$user->getAttributes()['balance']){
+                return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
+            }
+            $donation = new Amount([
+                'user_id' => $user->id,
+                'amount' => $request->amount,
+                'type' => 'donation'
+            ]);
+            $challenge->amounts()->save($donation);
+            $transaction = new Transaction([
+                'user_id' => $user->id,
+                'challenge_id' => $challenge->id,
+                'amount' => $request->amount,
+                'type' => 'donate',
+                'invoice_id' => null,
+            ]);
+            $challenge->transactions()->save($transaction);
+            $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
+            $user->update();
+            return response([
+                'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
+                'balanace' => $user->balance
+            ], 200);
         }
-        $donation = new Amount([
-            'user_id' => $user->id,
-            'amount' => $request->amount,
-            'type' => 'donation'
-        ]);
-        $challenge->amounts()->save($donation);
-        $transaction = new Transaction([
-            'user_id' => $user->id,
-            'challenge_id' => $challenge->id,
-            'amount' => $request->amount,
-            'type' => 'donate',
-            'invoice_id' => null,
-        ]);
-        $challenge->transactions()->save($transaction);
-        $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
-        $user->update();
-        return response([
-            'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
-            'balanace' => $user->balance
-        ], 200);
+        return response($data,$res);
     }
 
     /**
