@@ -108,21 +108,24 @@ class SubmitChallengeController extends Controller
         try {
             $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
             if(auth()->user()->is_premium){
-                $files = $request->file;
-                $before_date = $challenge->start_time;
-                $after_date = $before_date->addDays($challenge->duration_days)
-                ->addHours($challenge->duration_hours)
-                ->addMinutes($challenge->duration_minutes);
-                $data['message'] = 'You are out of time!'; $res = 400;
-                if(now() >=  $challenge->start_time && now() <= $after_date){
-                    $file = uploadFile($files, SubmitChallengesPath(), null);
-                    $records = new SubmitFile ([
-                        'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
-                        'file' => $file,
-                        'created_at' => now(),
-                    ]); 
-                    $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitFiles()->save($records);
-                    $data['message'] = 'Video has been Added!';$res = 200;
+                $data['message'] = 'You can\'t add video due to Submited Challenge!'; $res = 400;
+                if(!$challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitChallenge->first()){
+                    $files = $request->file;
+                    $before_date = $challenge->start_time;
+                    $after_date = $before_date->addDays($challenge->duration_days)
+                    ->addHours($challenge->duration_hours)
+                    ->addMinutes($challenge->duration_minutes);
+                    $data['message'] = 'You are out of time!'; $res = 400;
+                    if(now() >=  $challenge->start_time && now() <= $after_date){
+                        $file = uploadFile($files, SubmitChallengesPath(), null);
+                        $records = new SubmitFile ([
+                            'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
+                            'file' => $file,
+                            'created_at' => now(),
+                        ]); 
+                        $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitFiles()->save($records);
+                        $data['message'] = 'Video has been Added!';$res = 200;
+                    }
                 }
             }
         } catch (\Throwable $th) {
