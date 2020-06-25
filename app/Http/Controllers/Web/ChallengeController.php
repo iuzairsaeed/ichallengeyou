@@ -34,8 +34,9 @@ class ChallengeController extends Controller
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];
+        $whereHas = null;
 
-        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;

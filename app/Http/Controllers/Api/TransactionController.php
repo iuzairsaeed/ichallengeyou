@@ -59,8 +59,9 @@ class TransactionController extends Controller
         $withSums = [];
         $withSumsCol = [];
         $addWithSums = [];
+        $whereHas = null;
 
-        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item) {
             $item['year'] = $item->created_at->year;

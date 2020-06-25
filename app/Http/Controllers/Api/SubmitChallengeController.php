@@ -37,10 +37,10 @@ class SubmitChallengeController extends Controller
             $with = [];
             $withCount = [];
             $currentStatus = [];
-            $whereHas = 'submitChallenge';
             $withSums = [];
             $withSumsCol = [];
             $addWithSums = [];
+            $whereHas = 'submitChallenge';
             $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
             $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
