@@ -163,7 +163,7 @@ class ChallengeController extends Controller
                 $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
             }
-            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()->submitChallenge->first()){
+            if(optional($data['data']->acceptedChallenges()->where('user_id', $id)->first())->submitChallenge){
                 $data['data']['acceptBtn'] = false;
                 $data['data']['submitBtn'] = false;
                 $data['data']['donateBtn'] = false;
