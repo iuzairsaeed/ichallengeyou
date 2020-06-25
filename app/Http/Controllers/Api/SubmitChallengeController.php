@@ -49,8 +49,7 @@ class SubmitChallengeController extends Controller
             });
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
-        } catch (\Exception $th) {
-            return ;
+        } catch (\Throwable $th) {
             return response(['message'=>$th->getMessage()],400);
         }
     }
@@ -58,10 +57,27 @@ class SubmitChallengeController extends Controller
     public function getSubmitChallengeDetail(AcceptedChallenge $acceptedChallenge){
         try {
             $data['data'] = $acceptedChallenge;
-            $data = SubmitChallengeDetailCollection::collection($data);
-            return response($data,200);
-        } catch (\Exception $th) {
-            return response($th->getMessage(),204);
+            if($data['data']->submitChallenge->first()){
+                collect($data)->map(function($item) {
+                    $item['submited_challenge_id'] = $item->submitChallenge[0]->id;
+                    $item['title'] = $item->challenge->title;
+                    $item['description'] = $item->challenge->description;
+                    $item['submit_date'] = $item->submitChallenge[0]->created_at->format('Y-m-d H:i A');
+                    $item['files'] = $item->submitFiles->pluck('file');
+                    $item['voteUp'] = $item->submitChallenge->first()->votes()
+                    ->where('user_id',auth()->id())
+                    ->where('vote_up',true)->first();
+                    $item['voteDown'] = $item->submitChallenge->first()->votes()
+                    ->where('user_id',auth()->id())
+                    ->where('vote_down',true)->first();
+                });
+
+                $data = SubmitChallengeDetailCollection::collection($data);
+                return response($data,200);
+            }
+            return response(['message'=>'There is No Submited Challenge'], 207);
+        } catch (\Throwable $th) {
+            return response($th->getMessage(),207);
         }
     }
 
@@ -103,7 +119,7 @@ class SubmitChallengeController extends Controller
             return response($data,200);
         } catch (\Throwable $th) {
             return $th->getMessage();
-            return response(['message'=>'No Video Found!'],204);
+            return response(['message'=>'No Video Found!'],207);
         }
     }
 
