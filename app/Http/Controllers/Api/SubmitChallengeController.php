@@ -10,6 +10,7 @@ use App\Http\Resources\SubmitChallengeCollection;
 use App\Http\Resources\SubmitedVideoCollection;
 use App\Http\Resources\SubmitChallengeDetailCollection;
 use Illuminate\Http\Request;
+use App\Models\Vote;
 use App\Models\Challenge;
 use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
@@ -24,6 +25,23 @@ class SubmitChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
     }
 
+    public function result(Challenge $challenge)
+    {
+        try {
+            $acceptedChallenges = $challenge->acceptedChallenges;
+            $total_votes = 0;
+            foreach ($acceptedChallenges as $value) {
+                $submitedChallenge = $value->submitChallenge->first();
+                $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
+                ->count();
+            }   
+            $data = $this->model->getResult($challenge,$total_votes);
+            return response($data,200);
+        } catch (\Throwable $th) {
+            $data['message'] = 'No Votes Count!';
+            return response($data,207);
+        }
+    }
 
     public function getSubmitChallengerList(Challenge $challenge,Request $request){
         $acceptedChallengeModel = new AcceptedChallenge;

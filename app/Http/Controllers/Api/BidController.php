@@ -24,13 +24,13 @@ class BidController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Challenge $challenge, Request $request)
     {
         $orderableCols = [];
         $searchableCols = [];
-        $whereChecks = [];
-        $whereOps = [];
-        $whereVals = [];
+        $whereChecks = ['challenge_id'];
+        $whereOps = ['='];
+        $whereVals = [$challenge->id];
         $with = ['user'];
         $withCount = [];
         $currentStatus = [];
