@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Repositories\ChallengeRepository;
+use App\Repositories\VoteRepository;
 use App\Http\Requests\Challenges\SubmitChallengeRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -27,12 +28,15 @@ class SubmitChallengeController extends Controller
 
     public function result(Challenge $challenge)
     {
+        $vote = new Vote;
+        $this->model = new VoteRepository($vote);
         try {
             $acceptedChallenges = $challenge->acceptedChallenges;
             $total_votes = 0;
             foreach ($acceptedChallenges as $value) {
                 $submitedChallenge = $value->submitChallenge->first();
                 $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
+                ->where('vote_up', true)
                 ->count();
             }   
             $data = $this->model->getResult($challenge,$total_votes);
@@ -44,8 +48,14 @@ class SubmitChallengeController extends Controller
     }
 
     public function getSubmitChallengerList(Challenge $challenge,Request $request){
+        $result = $this->result($challenge)->original;
+        dd($result);
         $acceptedChallengeModel = new AcceptedChallenge;
         $this->model = new ChallengeRepository($acceptedChallengeModel);
+        $before_date = $challenge->start_time;
+        $after_date = $before_date->addDays($challenge->duration_days)
+        ->addHours($challenge->duration_hours)
+        ->addMinutes($challenge->duration_minutes);
         try {
             $orderableCols = [];
             $searchableCols = [];
@@ -61,7 +71,10 @@ class SubmitChallengeController extends Controller
             $whereHas = 'submitChallenge';
             $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
             $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-            collect($data['data'])->map(function ($item) {
+            collect($data['data'])->map(function ($item) use ($result) {
+                if($item->user_id == $result[$key]['id'] && $result[$key]['result'] >= 50 ){
+                    $item['isWinner'] = true;
+                }
                 $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();
                 $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
             });

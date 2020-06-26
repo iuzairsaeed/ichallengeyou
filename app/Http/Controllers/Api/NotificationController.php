@@ -29,11 +29,20 @@ class NotificationController extends Controller
         $whereChecks = ['user_id'];
         $whereOps = ['='];
         $whereVals = [auth()->id()];
-        $with = [];
+        $with = ['challenge'];
         $withCount = [];
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
-
+        // // collect($data['data'])->map(function ($item) {
+        // //     dd($item->notifiable);
+        // //     if($item->notifiable->acceptedChallenge->challenge->file){
+        // //         $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
+        // //     } else {
+        // //         // $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
+        // //     }
+        // //     // dd($item->notifiable->acceptedChallenge->challenge->file);
+        // // });
+        // return ($data);
         $data['data'] = NotificationCollection::collection($data['data']);
         return response($data, 200);
     }

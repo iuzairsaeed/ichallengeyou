@@ -14,6 +14,10 @@ class Notification extends Model
         'user_id'
     ];
 
+    protected $with = [
+        'challenge'
+    ];
+
     public function getCreatedAtAttribute($value)
     {
         return time_elapsed_string($value);

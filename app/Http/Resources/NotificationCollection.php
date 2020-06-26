@@ -20,6 +20,9 @@ class NotificationCollection extends JsonResource
             'accepted_challenge_id' => $this->notifiable->accepted_challenge_id ?? 0,
             'title' => $this->title,
             'body' => $this->body,
+            'type' => $this->notifiable_type,
+            'file1' => $this->notifiable->acceptedChallenge->challenge->file ?? 0,
+            'file2' => $this->notifiable->votes[0]->submitChallenges->acceptedChallenge->challenge->file ?? 0,
             'created_at' => $this->created_at,
         ];
     }
