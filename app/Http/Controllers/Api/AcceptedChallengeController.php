@@ -9,7 +9,6 @@ use App\Repositories\ChallengeRepository;
 use App\Models\AcceptedChallenge;
 use App\Models\Amount;
 use App\Models\Challenge;
-use Illuminate\Support\Facades\Auth;
 
 class AcceptedChallengeController extends Controller
 {

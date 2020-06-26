@@ -65,6 +65,12 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{submitedChallenge}/down', 'VoteController@voteDown');
             Route::get('{challenge}/result', 'VoteController@result');
         });
+
         Route::resource('notification', 'NotificationController');
+        
+        Route::group(['prefix' => 'bid'], function () {
+            Route::get('{challenge}/list', 'BidController@index');
+            Route::post('{challenge}', 'BidController@store');
+        });
     });
 });
