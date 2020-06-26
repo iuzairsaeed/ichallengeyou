@@ -144,6 +144,7 @@ class ChallengeController extends Controller
                 $query->with('user');
             },
             'initialAmount',
+            'bids',
             'acceptedChallenges' => function($query) use ($id, $challenge_id){
                 $query->where('user_id', $id)->where('challenge_id', $challenge_id);
             },

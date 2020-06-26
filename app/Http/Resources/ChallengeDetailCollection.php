@@ -30,6 +30,7 @@ class ChallengeDetailCollection extends JsonResource
             'hour' => $this->duration_hours,
             'minutes' => $this->duration_minutes,
             'initial_amount' => $this->initialAmount->amount,
+            'bids' => $this->bids->count(),
             'creator_name' => $this->user->name,
             'creator_avatar' => $this->user->avatar,
             'category_id' => $this->category->id,
