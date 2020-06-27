@@ -86,6 +86,7 @@ class VoteRepository implements RepositoryInterface
     public function getResult($challenge,$total_votes)
     {
         $acceptedChallenges = $challenge->acceptedChallenges;
+        $data = [];
         foreach ($acceptedChallenges as $key => $value) {
             $submitedChallenge = $value->submitChallenge->first();
             $total_vote_up = $this->model->where('submited_challenge_id', $submitedChallenge->id)
@@ -94,14 +95,17 @@ class VoteRepository implements RepositoryInterface
             $total_vote_down = $this->model->where('submited_challenge_id',$submitedChallenge->id)
             ->where('vote_down',true)
             ->count();
+            $data[$key]['id'] = $value->user->id;
             $data[$key]['name'] = $value->user->name;
             $data[$key]['votes'] = $total_vote_up - $total_vote_down;
-            $data[$key]['vote_in_percentage'] = (int)((($total_vote_up - $total_vote_down) / $total_votes)*100);
+            $result = (int)((($total_vote_up - $total_vote_down) / $total_votes)*100);
+            $data[$key]['result'] = ( $result < 0 ? 0 : $result  );
         }
-        return [
-            'message' => 'Success',
-            'data' => $data,
-        ];
+        return $data;
+        // return [
+        //     'message' => 'Success',
+        //     'data' => $data,
+        // ];
     }
 
     

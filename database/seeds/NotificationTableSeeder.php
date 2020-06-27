@@ -15,7 +15,8 @@ class NotificationTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
         for ($i = 0; $i <= 60; $i++) {
             Notification::create([
-                'challenge_id' => $faker->randomElement([1,2,3,4]),
+                'notifiable_id' => $faker->randomElement([1,2,3,4]),
+                'notifiable_type' => $faker->randomElement(['App\Models\SubmitChallenge','App\Models\Vote']),
                 'user_id' => $faker->randomElement([1,2,3,4]),
                 'title' => 'Dummy Heading',
                 'body' => 'Dummy Text!',

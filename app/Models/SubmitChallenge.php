@@ -9,6 +9,9 @@ class SubmitChallenge extends Model
 {
     use HasStatuses,Notifiable;
     protected $fillable = ['accepted_challenge_id' , 'file'];
+    protected $with = [
+        'acceptedChallenge'
+    ];
 
     protected $casts = [
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,
@@ -22,7 +25,12 @@ class SubmitChallenge extends Model
 
     public function votes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Vote::class, 'submited_challenge_id');
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 
 }

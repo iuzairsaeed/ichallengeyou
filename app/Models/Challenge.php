@@ -112,5 +112,10 @@ class Challenge extends Model
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function bids()
+    {
+        return $this->hasMany(Bid::class);
+    }
     
 }

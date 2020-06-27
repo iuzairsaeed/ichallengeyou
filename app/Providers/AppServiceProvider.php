@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Schema;
 use App\Console\Commands\ModelMakeCommand;
 use App\Models\User;
 use App\Models\SubmitChallenge;
+use App\Models\Vote;
 use App\Models\Setting;
 use App\Models\Constant;
 use App\Observers\UserObserver;
 use App\Observers\SubmitChallengeObserver;
+use App\Observers\VoteObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -57,8 +59,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Registerign user CRUD observer
         User::observe(UserObserver::class);
-
-        # For SubmitChallenge CRUD observer
+        // For SubmitChallenge CRUD observer
         SubmitChallenge::observe(SubmitChallengeObserver::class);
+        // For SubmitChallenge CRUD observer
+        Vote::observe(VoteObserver::class);
     }
 }

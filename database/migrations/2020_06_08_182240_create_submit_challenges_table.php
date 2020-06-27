@@ -16,6 +16,7 @@ class CreateSubmitChallengesTable extends Migration
         Schema::create('submit_challenges', function (Blueprint $table) {
             $table->id();
             $table->foreignId('accepted_challenge_id');
+            $table->tinyInteger('isWinner');
             $table->timestamps();
         });
     }

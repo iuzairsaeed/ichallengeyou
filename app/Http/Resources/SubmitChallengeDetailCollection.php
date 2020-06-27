@@ -15,17 +15,19 @@ class SubmitChallengeDetailCollection extends JsonResource
     public function toArray($request)
     {
         return  [
-            'submited_challenge_id' => $this->submitChallenge[0]->id,
-            'title' => $this->challenge->title,
-            'submit_date' => $this->submitChallenge[0]->created_at->format('Y-m-d H:i A'),
+            'submited_challenge_id' => $this->submited_challenge_id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'submit_date' => $this->submit_date,
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
                 'avatar' => $this->user->avatar,
             ],
-            'submit_videos' => [
-                'file' => $this->submitFiles,
-            ],
+            'file' => $this->files,
+            'voteUp' => $this->voteUp ? true :false ,
+            'voteDown' => $this->voteDown ? true :false ,
+
         ];
     }
 }

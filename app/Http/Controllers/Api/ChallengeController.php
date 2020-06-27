@@ -40,9 +40,15 @@ class ChallengeController extends Controller
         $user_id = $request->user_id;
         $orderableCols = ['created_at', 'title', 'start_time', 'user.name', 'trend', 'amounts_sum', 'amounts_trend_sum'];
         $searchableCols = ['title'];
-        $whereChecks = [];
-        $whereOps = [];
-        $whereVals = [];
+        if($request->category_id){
+            $whereChecks = ['category_id'];
+            $whereOps = ['='];
+            $whereVals = [$request->category_id];
+        } else {
+            $whereChecks = [];
+            $whereOps = [];
+            $whereVals = [];
+        }
         $with = array(
             'userReaction' => function($query) use ($user_id) {
                 $query->where('user_id', $user_id);
@@ -54,8 +60,9 @@ class ChallengeController extends Controller
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];
+        $whereHas = null;
 
-        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
@@ -85,9 +92,10 @@ class ChallengeController extends Controller
      */
     public function store(ChallengeRequest $request)
     {
-        try {
+        $message['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        if(auth()->user()->is_premium){
+            $message['message'] = 'Challenge has been Created!'; $res = 200;
             $data = $request->all();
-
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
@@ -110,11 +118,8 @@ class ChallengeController extends Controller
                 'invoice_id' => null,
             ]);
             $challenge->transactions()->save($transaction);
-            return response(['message' => 'Challenge has been created.'], 200);
-        } catch (\Exception  $e) {
-            throw $e;
         }
-
+        return response($message, $res);
     }
 
     /**
@@ -126,6 +131,7 @@ class ChallengeController extends Controller
     public function show(Challenge $challenge, Request $request)
     {
         $id = $request->user_id;
+        $user = User::where('id',$id)->first();
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
@@ -138,6 +144,7 @@ class ChallengeController extends Controller
                 $query->with('user');
             },
             'initialAmount',
+            'bids',
             'acceptedChallenges' => function($query) use ($id, $challenge_id){
                 $query->where('user_id', $id)->where('challenge_id', $challenge_id);
             },
@@ -151,19 +158,33 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-        if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
-            $data['data']['acceptBtn'] = false;
-            $data['data']['submitBtn'] = true;
-            $data['data']['donateBtn'] = false;
-        }
-        if($id){
-            if($data['data']->user_id == (int)$id){
+        if(optional($user)->is_premium){
+            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
                 $data['data']['acceptBtn'] = false;
+                $data['data']['submitBtn'] = true;
                 $data['data']['donateBtn'] = false;
-                if(now() <= $challenge->start_time ){
-                    $data['data']['editBtn'] =  true;
+            }
+            if(optional($data['data']->acceptedChallenges()->where('user_id', $id)->first())->submitChallenge){
+                $data['data']['acceptBtn'] = false;
+                $data['data']['submitBtn'] = false;
+                $data['data']['donateBtn'] = false;
+                $data['data']['bidBtn'] = false;
+            }
+            if($id){
+                if($data['data']->user_id == (int)$id){
+                    $data['data']['acceptBtn'] = false;
+                    $data['data']['donateBtn'] = false;
+                    $data['data']['bidBtn'] = false;
+                    if(now() <= $challenge->start_time ){
+                        $data['data']['editBtn'] =  true;
+                    }
                 }
             }
+        } else {
+            $data['data']['acceptBtn'] = false;
+            $data['data']['submitBtn'] = false;
+            $data['data']['donateBtn'] = false;
+            $data['data']['bidBtn'] = false;
         }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
@@ -193,8 +214,10 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-
-        try {
+        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        if(auth()->user()->is_premium){
+            $data['message'] = 'Challenge has been Updated!'; $res = 200;
+            $res = 200;
             $data = $request->all();
             if($request->hasFile('file')){
                 $deleteFile = $challenge->getAttributes()['file'] != 'no-image.png' ? $challenge->file : null;
@@ -203,14 +226,12 @@ class ChallengeController extends Controller
             $data['user_id'] = auth()->id();
             $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
-            return response(['message' => 'Challenge has been updated.'], 200);
-
-        } catch (\Throwable $th) {
-            throw $th;
         }
+        return response($data, $res);
 
-        $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
-        return $this->model->find($challenge->id);
+
+        // $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
+        // return $this->model->find($challenge->id);
     }
 
     /**
@@ -232,30 +253,34 @@ class ChallengeController extends Controller
      */
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
-        $user = auth()->user();
-        if((float)$request->amount > (float)$user->getAttributes()['balance']){
-            return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
+        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        if(auth()->user()->is_premium){
+            $user = auth()->user();
+            if((float)$request->amount > (float)$user->getAttributes()['balance']){
+                return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
+            }
+            $donation = new Amount([
+                'user_id' => $user->id,
+                'amount' => $request->amount,
+                'type' => 'donation'
+            ]);
+            $challenge->amounts()->save($donation);
+            $transaction = new Transaction([
+                'user_id' => $user->id,
+                'challenge_id' => $challenge->id,
+                'amount' => $request->amount,
+                'type' => 'donate',
+                'invoice_id' => null,
+            ]);
+            $challenge->transactions()->save($transaction);
+            $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
+            $user->update();
+            return response([
+                'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
+                'balanace' => $user->balance
+            ], 200);
         }
-        $donation = new Amount([
-            'user_id' => $user->id,
-            'amount' => $request->amount,
-            'type' => 'donation'
-        ]);
-        $challenge->amounts()->save($donation);
-        $transaction = new Transaction([
-            'user_id' => $user->id,
-            'challenge_id' => $challenge->id,
-            'amount' => $request->amount,
-            'type' => 'donate',
-            'invoice_id' => null,
-        ]);
-        $challenge->transactions()->save($transaction);
-        $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
-        $user->update();
-        return response([
-            'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
-            'balanace' => $user->balance
-        ], 200);
+        return response($data,$res);
     }
 
     /**
@@ -383,8 +408,9 @@ class ChallengeController extends Controller
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];
+        $whereHas = null;
 
-        $data = $this->model->getData($request, $with, $withCount, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item){
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;

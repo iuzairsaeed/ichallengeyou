@@ -30,6 +30,7 @@ class ChallengeDetailCollection extends JsonResource
             'hour' => $this->duration_hours,
             'minutes' => $this->duration_minutes,
             'initial_amount' => $this->initialAmount->amount,
+            'bids' => $this->bids->count() ?? 0,
             'creator_name' => $this->user->name,
             'creator_avatar' => $this->user->avatar,
             'category_id' => $this->category->id,
@@ -40,6 +41,8 @@ class ChallengeDetailCollection extends JsonResource
                 'submitBtn' => $this->submitBtn ?? false,
                 'donateBtn' => $this->donateBtn ?? true,
                 'editBtn' => $this->editBtn ?? false,
+                'bidBtn' => $this->bidBtn ?? true,
+                'submitedListBtn' => true,
             ],
         ];
     }
