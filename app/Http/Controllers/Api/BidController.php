@@ -73,10 +73,7 @@ class BidController extends Controller
                 $message['message'] = 'You have already Bid on This Challenge!';
                 if(!$challenge->bids()->where('user_id',auth()->id())->exists()){
                     $message['message'] = 'You are out of time!';
-                    $before_date = $challenge->start_time;
-                    $after_date = $before_date->addDays($challenge->duration_days)
-                    ->addHours($challenge->duration_hours)
-                    ->addMinutes($challenge->duration_minutes);
+                    $after_date = $challenge->after_date;
                     if(now() <= $after_date){
                         $bid = new Bid([
                             'user_id' => auth()->id(),

@@ -49,6 +49,14 @@ class Challenge extends Model
         return $this->status()->name;
     }
 
+    public function getAfterDateAttribute() {
+        $before_date = $this->start_time;
+        $after_date = $before_date->addDays($this->duration_days)
+        ->addHours($this->duration_hours)
+        ->addMinutes($this->duration_minutes);
+        return $after_date;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class)->select(['id','name','username','avatar']);

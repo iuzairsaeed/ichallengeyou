@@ -23,7 +23,6 @@ class SubmitChallengeObserver
             $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
             $user = $submitChallenge->acceptedChallenge->user;
             $challenge = $submitChallenge->acceptedChallenge->challenge;        
-            $notificationModels = [];
             foreach ($donators as $donator) {
                 $notification[] = new Notification([
                     'user_id' => $donator->user->id,
@@ -46,7 +45,7 @@ class SubmitChallengeObserver
      */
     public function updated(SubmitChallenge $submitChallenge)
     {
-        //
+        
     }
 
     /**

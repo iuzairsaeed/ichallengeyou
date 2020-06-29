@@ -19,6 +19,7 @@ class CreateNotificationsTable extends Migration
             $table->morphs('notifiable');
             $table->string('title');
             $table->string('body');
+            $table->string('click_action');
             $table->timestamps();
         });
     }

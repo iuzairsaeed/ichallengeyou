@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class VoteNotification extends Notification
+class AskCandidate extends Notification
 {
     use Queueable;
 
@@ -37,17 +37,17 @@ class VoteNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return  Benwilkins\FCM\FcmMessage;
      */
     public function toFcm($notifiable)
     {
-        $message = new FcmMessage();
+        $message = new FcmMessage(); 
         $message->content([
-            'title'        => 'Check Your Votes',
-            'body'         => 'You have been Voted',
+            'title'        => 'Challenge Result',
+            'body'         => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
             'sound'        => '', // Optional
             'icon'         => 'favicon.ico', // Optional
-            'click_action' => 'VOTE_LIST_SCREEN' // Optional
+            'click_action' => 'ASK_RESULT_SCREEN' // Optional
         ])->data([
             'id' => $notifiable->id // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.

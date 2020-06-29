@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Repositories\ChallengeRepository;
 use App\Repositories\VoteRepository;
+use App\Notifications\AskCandidate;
 use App\Http\Requests\Challenges\SubmitChallengeRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\SubmitChallengeCollection;
 use App\Http\Resources\SubmitedVideoCollection;
 use App\Http\Resources\SubmitChallengeDetailCollection;
-use Illuminate\Http\Request;
 use App\Models\Vote;
 use App\Models\Challenge;
 use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
+use App\Models\Notification;
 
 class SubmitChallengeController extends Controller
 {
@@ -48,15 +50,10 @@ class SubmitChallengeController extends Controller
     }
 
     public function getSubmitChallengerList(Challenge $challenge,Request $request){
-        $result = $this->result($challenge)->original;
-        dd($result);
-        $acceptedChallengeModel = new AcceptedChallenge;
-        $this->model = new ChallengeRepository($acceptedChallengeModel);
-        $before_date = $challenge->start_time;
-        $after_date = $before_date->addDays($challenge->duration_days)
-        ->addHours($challenge->duration_hours)
-        ->addMinutes($challenge->duration_minutes);
         try {
+            $acceptedChallengeModel = new AcceptedChallenge;
+            $this->model = new ChallengeRepository($acceptedChallengeModel);
+
             $orderableCols = [];
             $searchableCols = [];
             $whereChecks = ['challenge_id'];
@@ -71,13 +68,42 @@ class SubmitChallengeController extends Controller
             $whereHas = 'submitChallenge';
             $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
             $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-            collect($data['data'])->map(function ($item) use ($result) {
-                if($item->user_id == $result[$key]['id'] && $result[$key]['result'] >= 50 ){
-                    $item['isWinner'] = true;
-                }
+            collect($data['data'])->map(function ($item) {
                 $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();
                 $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
             });
+            if(now() > $challenge->after_date) {
+                $count = 0;
+                $results = $this->result($challenge)->original;
+                foreach ($results as $result) {
+                    if($result['result'] >= 40 && $result['result'] <= 60){
+                        $count++;   
+                    }
+                }
+                if($count == 1){
+                    foreach ($data['data'] as $value) {
+                        foreach ($results as $result) {
+                            if($value->user_id == $result['id'] && $result['result'] >= 51){
+                                $value['isWinner'] = true;
+                            }
+                        }
+                    }
+                } else {
+                    $isNotification = Notification::where('id', $data['data'][0]->submitChallenge[0]->id )->exists();
+                    if(!$isNotification){
+                        foreach ($data['data'] as $challenger) {
+                            $notification = new Notification([
+                                'user_id' => $challenger->user->id,
+                                'title' => 'Challenge Submited', 
+                                'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
+                                'click_action' => 'ASK_RESULT_SCREEN', 
+                            ]);
+                            $challenger->user->notify(new AskCandidate);
+                            $challenger->submitChallenge[0]->notifications()->save($notification);
+                        }
+                    }
+                }
+            }
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,200);
         } catch (\Throwable $th) {
@@ -122,10 +148,7 @@ class SubmitChallengeController extends Controller
                     $data['message'] = 'No Video Uploaded!';
                     if ($challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitFiles()->exists()) {
                         $data['message'] = 'You are out of time!';
-                        $before_date = $challenge->start_time;
-                        $after_date = $before_date->addDays($challenge->duration_days)
-                        ->addHours($challenge->duration_hours)
-                        ->addMinutes($challenge->duration_minutes);
+                        $after_date = $challenge->after_date;
                         if(now() >=  $challenge->start_time && now() <= $after_date){
                             $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                             $this->model->create($data);
@@ -162,10 +185,7 @@ class SubmitChallengeController extends Controller
                 $data['message'] = 'You can\'t add video due to Submited Challenge!'; $res = 400;
                 if(!$challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitChallenge->first()){
                     $files = $request->file;
-                    $before_date = $challenge->start_time;
-                    $after_date = $before_date->addDays($challenge->duration_days)
-                    ->addHours($challenge->duration_hours)
-                    ->addMinutes($challenge->duration_minutes);
+                    $after_date = $challenge->after_date;
                     $data['message'] = 'You are out of time!'; $res = 400;
                     if(now() >=  $challenge->start_time && now() <= $after_date){
                         $file = uploadFile($files, SubmitChallengesPath(), null);
