@@ -34,7 +34,7 @@ class PaymentGatewayController extends Controller
             return $item;
         });
 
-        return response($data, 200);
+        return response($data, $data['response']);
     }
 
     /**

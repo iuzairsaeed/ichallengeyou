@@ -50,7 +50,7 @@ class FavoriteController extends Controller
         });
 
         $data['data'] = FavouriteCollection::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
     }
 
     /**

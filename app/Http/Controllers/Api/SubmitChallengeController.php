@@ -96,7 +96,7 @@ class SubmitChallengeController extends Controller
                                 'user_id' => $challenger->user->id,
                                 'title' => 'Challenge Submited', 
                                 'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
-                                'click_action' => 'ASK_RESULT_SCREEN', 
+                                'click_action' => 'ASK_RESULT_DIALOG', 
                             ]);
                             $challenger->user->notify(new AskCandidate);
                             $challenger->submitChallenge[0]->notifications()->save($notification);
@@ -105,7 +105,7 @@ class SubmitChallengeController extends Controller
                 }
             }
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
-            return response($data,200);
+            return response($data,$data['response']);
         } catch (\Throwable $th) {
             return response(['message'=>$th->getMessage()],400);
         }

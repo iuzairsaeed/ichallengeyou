@@ -71,7 +71,7 @@ class ChallengeController extends Controller
             return $item;
         });
         $data['data'] = ChallengeCollection::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
     }
 
     /**
@@ -417,7 +417,7 @@ class ChallengeController extends Controller
             return $item;
         });
         $data['data'] = ChallengeList::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
 
     }
 
