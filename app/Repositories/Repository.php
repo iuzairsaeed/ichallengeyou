@@ -125,12 +125,15 @@ class Repository implements RepositoryInterface
         $records = $records->limit($length)->offset($start)->get();
 
         $message = 'Success';
+        $response = 200;
         if($records->count() == 0){
             $message = 'No data available.';
+            $response = 204;
         }
 
         return [
             'message' => $message,
+            'response' => $response,
             'recordsFiltered' => $recordsFiltered,
             'recordsTotal' => $recordsTotal,
             'data' => $records,
