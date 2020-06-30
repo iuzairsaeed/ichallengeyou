@@ -16,6 +16,35 @@ class ChallengesTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
+        # Challenge DEFAULT FOR TESTING
+        $challenge = Challenge::create([
+            'user_id' => 1,
+            'category_id' => 1,
+            'title' => 'Invade Stadium while Semi Naked',
+            'description' => "1- Invade Field after 15 minutes of main game started.\n2- Must be 10 Minutes before it ends.\n3- Reach at Least the middle of the field.\n4- Stadium must have at least 10.000 people.\n5- Must be on your Underwear.\n6- Game must be broadcasted on tv\n7- Must be older than 18 years old.\n8- Must paint big letters on your body promoting the App. I CHALLENGE YOU APP",
+            'start_time' => now(), 
+            'file' => 'football_ground.jpg',
+            'location' => "Anywhere",
+            'duration_days' => '00',
+            'duration_hours' => "01",
+            'duration_minutes' => "00",
+            'created_at' => now()
+        ]);
+        $challenge->setStatus(Approved());
+        $donation = new Amount([
+            'user_id' => 1,
+            'amount' => '100',
+            'type' => 'initial',
+            'created_at' => now()
+        ]);
+        $challenge->amounts()->save($donation);
+        $donation = new Amount([
+            'user_id' => 1,
+            'amount' => '836',
+            'type' => 'donation',
+            'created_at' => now()
+        ]);
+        $challenge->amounts()->save($donation);
         # Challenge 1
         $challenge = Challenge::create([
             'user_id' => 1,
