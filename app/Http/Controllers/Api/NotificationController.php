@@ -34,10 +34,14 @@ class NotificationController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
         collect($data['data'])->map(function ($item) {
-            if(optional($item->notifiable->acceptedChallenge)->challenge){
+            if(optional($item->notifiable->acceptedChallenge)->challenge){ 
+                #ModelType = SubmitedChallenge
                 $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
-            } else {
+                $item['data_id'] = $item->notifiable->accepted_challenge_id;
+            } else { 
+                #ModelType = Vote
                 $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
+                $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
             }
         });
         $data['data'] = NotificationCollection::collection($data['data']);

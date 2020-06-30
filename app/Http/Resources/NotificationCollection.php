@@ -15,13 +15,12 @@ class NotificationCollection extends JsonResource
     public function toArray($request)
     {
         return [
-            'voter_id' => $this->notifiable->user_id ?? 0,
-            'challenge_detail_id' => $this->notifiable->submitChallenges->accepted_challenge_id ?? 0,
-            'accepted_challenge_id' => $this->notifiable->accepted_challenge_id ?? 0,
+            'data_id' => $this->data_id ?? 0,
             'title' => $this->title,
             'body' => $this->body,
             'type' => $this->notifiable_type,
             'file' => $this->file ?? 0,
+            'click_action' => $this->click_action,
             'created_at' => $this->created_at,
         ];
     }

@@ -29,7 +29,7 @@ class SubmitChallengeObserver
                     'title' => 'Challenge Submited', 
                     'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
                 ]);
-                $donator->user->notify(new ChallengeSubmited);
+                $donator->user->notify(new ChallengeSubmited($submitChallenge->accepted_challenge_id));
             }
             $submitChallenge->notifications()->saveMany($notification);
         } catch (\Throwable $th) {

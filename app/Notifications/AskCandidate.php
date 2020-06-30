@@ -47,9 +47,9 @@ class AskCandidate extends Notification
             'body'         => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
             'sound'        => '', // Optional
             'icon'         => 'favicon.ico', // Optional
-            'click_action' => 'ASK_RESULT_SCREEN' // Optional
+            'click_action' => 'ASK_RESULT_DIALOG' // Optional
         ])->data([
-            'id' => $notifiable->id // Optional
+            'data_id' => $notifiable->id // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
 
         return $message;

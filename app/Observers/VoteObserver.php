@@ -31,7 +31,7 @@ class VoteObserver
                 'body' => $voter->name.' has Vote You on the Submited Challenge '.$challenge->title, 
                 'click_action' => 'CHALLENGE_DETAIL_SCREEN',
             ]);
-            $user->notify(new VoteNotification);
+            $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
             $vote->notifications()->save($notification);
         } catch (\Throwable $th) {
             return response('No Votes Found' , 204);
