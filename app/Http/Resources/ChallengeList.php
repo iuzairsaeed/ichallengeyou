@@ -16,6 +16,7 @@ class ChallengeList extends JsonResource
     {
         return  [
             'id' => $this->id,
+            'title' => $this->title,
             'status' => $this->status,
             'amounts_sum' => $this->amounts_sum,
             'file' => $this->file,
