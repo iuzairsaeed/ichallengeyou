@@ -13,6 +13,7 @@ use App\Http\Resources\SubmitChallengeCollection;
 use App\Http\Resources\SubmitedVideoCollection;
 use App\Http\Resources\SubmitChallengeDetailCollection;
 use App\Models\Vote;
+use App\Models\Amount;
 use App\Models\Challenge;
 use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
@@ -182,20 +183,24 @@ class SubmitChallengeController extends Controller
         try {
             $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
             if(auth()->user()->is_premium){
-                $data['message'] = 'You can\'t add video due to Submited Challenge!'; $res = 400;
-                if(!$challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitChallenge->first()){
-                    $files = $request->file;
-                    $after_date = $challenge->after_date;
-                    $data['message'] = 'You are out of time!'; $res = 400;
-                    if(now() >=  $challenge->start_time && now() <= $after_date){
-                        $file = uploadFile($files, SubmitChallengesPath(), null);
-                        $records = new SubmitFile ([
-                            'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
-                            'file' => $file,
-                            'created_at' => now(),
-                        ]); 
-                        $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitFiles()->save($records);
-                        $data['message'] = 'Video has been Added!';$res = 200;
+                $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
+                $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';
+                if(!$isDonator){
+                    $data['message'] = 'You can\'t add video due to Submited Challenge!'; $res = 400;
+                    if(!$challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitChallenge->first()){
+                        $files = $request->file;
+                        $after_date = $challenge->after_date;
+                        $data['message'] = 'You are out of time!'; $res = 400;
+                        if(now() >=  $challenge->start_time && now() <= $after_date){
+                            $file = uploadFile($files, SubmitChallengesPath(), null);
+                            $records = new SubmitFile ([
+                                'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
+                                'file' => $file,
+                                'created_at' => now(),
+                            ]); 
+                            $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitFiles()->save($records);
+                            $data['message'] = 'Video has been Added!';$res = 200;
+                        }
                     }
                 }
             }
