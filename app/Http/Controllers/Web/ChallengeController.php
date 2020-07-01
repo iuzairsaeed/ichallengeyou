@@ -71,13 +71,14 @@ class ChallengeController extends Controller
         return view('challenges.show', compact('challenge'));
     }
 
-    public function edit($id)
+    public function edit(Challenge $challenge)
     {
-        //
+        return view('challenges.edit', compact('challenge'));
     }
 
     public function update(Request $request, $id)
     {
+        ECHO 'UPDATE';
         // $this->validate($request, [
         //     'name' => 'required|min:2'
         // ]);

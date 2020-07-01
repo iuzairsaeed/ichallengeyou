@@ -45,7 +45,7 @@ class NotificationController extends Controller
             }
         });
         $data['data'] = NotificationCollection::collection($data['data']);
-        return response($data, $data['response']);
+        return response($data, 404);
     }
 
     /**
