@@ -138,8 +138,7 @@ class ChallengeRepository implements RepositoryInterface
                 }
             });
         }
-        $recordsFiltered = $records->count();
-
+        
         if($dir){
             if(in_array($sort, $orderableCols)){
                 $orderBy = $sort;
@@ -152,6 +151,7 @@ class ChallengeRepository implements RepositoryInterface
         }
         
         $records = $records->limit($length)->offset($start)->get();
+        $recordsFiltered = $records->count();
         $message = 'Success';
         $response = 200;
         if($records->count() == 0){
@@ -225,7 +225,7 @@ class ChallengeRepository implements RepositoryInterface
                 }
             });
         }
-        $recordsFiltered = $records->count();
+        
 
         if($dir){
             if(in_array($sort, $orderableCols)){
@@ -238,6 +238,7 @@ class ChallengeRepository implements RepositoryInterface
             $records->latest();
         }
         $records = $records->limit($length)->offset($start)->get();
+        $recordsFiltered = $records->count();
 
         $message = 'Success';
         $response = 200;

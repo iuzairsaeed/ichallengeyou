@@ -29,30 +29,93 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700">Title At</label>
-                                        <input type="text" value="{{$challenge->title ?? '-'}}" class="form-control"/>
+                                        <label class="text-bold-700">Title</label>
+                                        <p>{{$challenge->title ?? '-'}}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="text-bold-700">Location</label>
-                                        <input type="text" value="{{ $challenge->location??'-' }}" class="form-control"/>
+                                        <p>{{ $challenge->location??'-' }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="text-bold-700">Created At</label>
-                                        <input type="date" value="{{ date('Y-m-d', strtotime($challenge->created_at)) }}" class="form-control"/>
+                                        <p>{{$challenge->created_at->format(config('global.DATE_FORMAT'))??'-'}}</p>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label class="text-bold-700">Description</label>
-                                        <textarea type="text" class="form-control">{{ $challenge->description??'-' }}</textarea>
+                                        <p>{{ $challenge->description??'-' }}</p>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Duration Days</label>
+                                        <p>{{$challenge->duration_days ?? '-'}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Duration Hours</label>
+                                        <p>{{$challenge->duration_hours ?? '-'}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Duration Minutes</label>
+                                        <p>{{$challenge->duration_minutes ?? '-'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Result Type</label>
+                                    <p>{{$challenge->result_type == 'first_win' ? 'First Win' : 'Vote'}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Category</label>
+                                    <p>{{$challenge->category->name}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Location</label>
+                                    <p>{{$challenge->location}}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Creater</label><br>
+                                    <div class="row" >
+                                        <img src="{{ asset($challenge->user->avatar) }}" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
+                                        <p style="margin:10px" > {{$challenge->user->name}}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Status</label>
+                                        <div class="input-group">
+                                            <div class="custom-control custom-radio display-inline-block pr-3">
+                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active1" value='1' {{($challenge->status == 'Approved') ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="is_active1">Approved</label>
+                                            </div>
+                                            <div class="custom-control custom-radio display-inline-block">
+                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active2" value='0' {{($challenge->status == 'Pending') ? 'checked' :'' }}>
+                                                <label class="custom-control-label" for="is_active2">Pending</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
                             </div>
                             
                             <div class="row">

@@ -39,7 +39,9 @@ class VoteController extends Controller
 
     public function voteUp(SubmitChallenge $submitedChallenge) {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $data['message'] = 'You can\'t Vote, your own Challenge';
             if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 
                 $data['message'] = 'The result of this Challenge is not based on Vote';
@@ -78,7 +80,9 @@ class VoteController extends Controller
     public function voteDown(SubmitChallenge $submitedChallenge)
     {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $data['message'] = 'You can\'t Vote, your own Challenge';
             if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 
                 $data['message'] = 'The result of this Challenge is not based on Vote';

@@ -67,7 +67,9 @@ class BidController extends Controller
     public function store(Challenge $challenge,BidRequest $request)
     {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $message['message'] = 'You Can\'t Bid on This Challenge!';
             if($challenge->user_id != auth()->id()) {
                 $message['message'] = 'You have already Bid on This Challenge!';

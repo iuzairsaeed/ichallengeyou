@@ -76,9 +76,10 @@ class ChallengeController extends Controller
         return view('challenges.edit', compact('challenge'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Challenge $challenge)
     {
-        ECHO 'UPDATE';
+        $challenge->setStatus(Approved());
+        return redirect()->back()->with('success', 'Challenge Approved Successfully');
         // $this->validate($request, [
         //     'name' => 'required|min:2'
         // ]);
