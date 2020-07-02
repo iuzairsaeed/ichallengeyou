@@ -138,7 +138,7 @@ class ChallengeController extends Controller
         $whereVals = [$challenge->id];
         $with = array(
             'userReaction' => function($query) use ($id, $challenge_id) {
-                $query->where('user_id', $id)->where('challenge_id', $challenge_id);
+                $query->where('user_id', $id)->where(['reactionable_id'=>$challenge_id]);
             },
             'donations' => function($query) {
                 $query->with('user');
@@ -326,7 +326,7 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function like(Challenge $challenge)
+    public function likeChallenge(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){
@@ -346,13 +346,31 @@ class ChallengeController extends Controller
         return response(['like' => $reaction->like], 200);
     }
 
+    public function likeComment(Comment $comment)
+    {
+        $reaction = $comment->userReaction ? $comment->userReaction->where('user_id', auth()->id())->first() : null;
+        if(!$reaction){
+            $reaction = new Reaction([
+                'user_id' => auth()->id(),
+                'like' => true,
+            ]);
+            $comment->userReaction()->save($reaction);
+        } else {
+            $reaction->update([
+                'like' => $reaction->like == false ? true : false,
+                'unlike' => false
+            ]);
+        }
+        return response(['like' => $reaction->like], 200);
+    }
+
     /**
      * Unlike the specified resource.
      *
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function unlike(Challenge $challenge)
+    public function unlikeChallenge(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){
@@ -373,6 +391,25 @@ class ChallengeController extends Controller
         }
         return response(['unlike' => $reaction->unlike ], 200);
     }
+    
+    public function unlikeComment(Comment $comment)
+    {
+        $reaction = $comment->userReaction ? $comment->userReaction->where('user_id', auth()->id())->first() : null;
+        if(!$reaction){
+            $react = $reaction = new Reaction([
+                'user_id' => auth()->id(),
+                'unlike' => true,
+            ]);
+            $comment->userReaction()->save($reaction);
+            $return = true;
+        } else {
+            $reaction->update([
+                'like' => false,
+                'unlike' => $reaction->unlike == false ? true : false
+            ]);
+        }
+        return response(['unlike' => $reaction->unlike ], 200);
+    }
 
     /**
      * Favorite the specified resource.
@@ -380,7 +417,7 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function favorite(Challenge $challenge)
+    public function favoriteChallenge(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){

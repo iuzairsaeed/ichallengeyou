@@ -21,10 +21,10 @@ class Reaction extends Model
         'created_at', 'updated_at'
     ];
 
-    public function challenge()
-    {
-        return $this->belongsTo(Challenge::class);
-    }
+    // public function challenge()
+    // {
+    //     return $this->belongsTo(Challenge::class);
+    // }
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,5 +33,10 @@ class Reaction extends Model
     function amounts()
     {
         return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');
+    }
+
+    public function reactionable()
+    {
+        return $this->morphTo();
     }
 }

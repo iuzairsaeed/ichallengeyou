@@ -74,7 +74,7 @@ class Challenge extends Model
 
     public function userReaction()
     {
-        return $this->hasOne(Reaction::class);
+        return $this->morphMany(Reaction::class, 'reactionable');
     }
 
     public function likes()
