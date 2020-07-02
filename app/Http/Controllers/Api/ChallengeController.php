@@ -93,7 +93,7 @@ class ChallengeController extends Controller
      */
     public function store(ChallengeRequest $request)
     {
-        $message['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
         if(auth()->user()->is_premium){
             $message['message'] = 'Challenge has been Created!'; $res = 200;
             $data = $request->all();
@@ -215,7 +215,7 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
         if(auth()->user()->is_premium){
             $data['message'] = 'Challenge has been Updated!'; $res = 200;
             $res = 200;
@@ -254,7 +254,7 @@ class ChallengeController extends Controller
      */
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
-        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
         if(auth()->user()->is_premium){
             $user = auth()->user();
             if((float)$request->amount > (float)$user->getAttributes()['balance']){

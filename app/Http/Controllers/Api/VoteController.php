@@ -38,7 +38,7 @@ class VoteController extends Controller
     }
 
     public function voteUp(SubmitChallenge $submitedChallenge) {
-        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
         if(auth()->user()->is_premium){
             $data['message'] = 'You can\'t Vote, your own Challenge';
             if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 
@@ -77,7 +77,7 @@ class VoteController extends Controller
 
     public function voteDown(SubmitChallenge $submitedChallenge)
     {
-        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
         if(auth()->user()->is_premium){
             $data['message'] = 'You can\'t Vote, your own Challenge';
             if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 

@@ -162,7 +162,7 @@ class SubmitChallengeController extends Controller
     public function postSubmitChallenge(Challenge $challenge)
     {
         try {
-            $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
             if(auth()->user()->is_premium){
                 $data['message']='You have Already Submitted the Challenge!'; $res = 400;
                 if(!$challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitChallenge()->exists()){
@@ -201,7 +201,7 @@ class SubmitChallengeController extends Controller
     public function addVideo(Challenge $challenge, SubmitChallengeRequest $request)
     {
         try {
-            $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
             if(auth()->user()->is_premium){
                 $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
                 $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';

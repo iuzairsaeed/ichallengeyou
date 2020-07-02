@@ -22,7 +22,7 @@ class AcceptedChallengeController extends Controller
     public function accept(Challenge $challenge)
     {
         try {
-            $message['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!';
+            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';
             if(auth()->user()->is_premium){
                 $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
                 $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';
