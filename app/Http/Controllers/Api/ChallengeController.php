@@ -292,7 +292,7 @@ class ChallengeController extends Controller
     public function comments(Comment $model, Request $request, $id)
     {
         $this->model = new ChallengeRepository($model);
-        $with = ['user'];
+        $with = ['user','replies'];
         $comments = $this->model->comments($request,$with,$id);
         $data = [
             'message' => $comments->count() == 0 ? 'No comments found.' : 'Success',
@@ -310,7 +310,9 @@ class ChallengeController extends Controller
      */
     public function comment(Challenge $challenge, CreateCommentRequest $request)
     {
+        // dd($request->parent_id);
         $comment = new Comment([
+            'parent_id' => $request->parent_id ?? 0,
             'user_id' => auth()->id(),
             'text' => $request->text
         ]);

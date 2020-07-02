@@ -284,7 +284,7 @@ class ChallengeRepository implements RepositoryInterface
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
-        $records = $this->model->with($with)->where('challenge_id' , $id)->orderBy('created_at' , 'DESC');     
+        $records = $this->model->with($with)->where(['challenge_id'=>$id,'parent_id'=>0])->orderBy('created_at' , 'DESC');     
         $records = $records->limit($length)->offset($start)->get();
         return  $records;
     }

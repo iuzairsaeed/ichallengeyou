@@ -15,7 +15,7 @@ class Comment extends Model
     ];
 
     protected $hidden = [
-        'user_id', 'challenge_id', 'updated_at'
+        'user_id', 'challenge_id', 'updated_at','parent_id'
     ];
 
     protected $with = [
@@ -35,5 +35,9 @@ class Comment extends Model
     public function challenge()
     {
         return $this->belongsTo(Challenge::class);
+    }
+
+    public function replies() {
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 }
