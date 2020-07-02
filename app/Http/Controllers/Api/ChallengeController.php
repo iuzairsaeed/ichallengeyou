@@ -11,6 +11,7 @@ use App\Http\Requests\Donations\CreateDonationRequest;
 use App\Http\Resources\ChallengeCollection;
 use App\Http\Resources\ChallengeList;
 use App\Http\Resources\ChallengeDetailCollection;
+use App\Http\Resources\FavouriteCollection;
 use App\Repositories\ChallengeRepository;
 use App\Models\Challenge;
 use App\Models\Comment;

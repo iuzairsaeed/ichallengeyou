@@ -21,10 +21,11 @@ class Reaction extends Model
         'created_at', 'updated_at'
     ];
 
-    // public function challenge()
-    // {
-    //     return $this->belongsTo(Challenge::class);
-    // }
+    public function challenge()
+    {
+        return $this->belongsTo(Challenge::class, 'reactionable_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
