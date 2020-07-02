@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AcceptedChallengeSeeder::class);
         $this->call(NotificationTableSeeder::class);
         $this->call(BidTableSeeder::class);
+        $this->call(SubmitChallengeTableSeeder::class);
+        $this->call(VoteChallengeTableSeeder::class);
     }
 }

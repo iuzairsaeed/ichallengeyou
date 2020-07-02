@@ -34,7 +34,7 @@ class VoteObserver
             $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
             $vote->notifications()->save($notification);
         } catch (\Throwable $th) {
-            return response('No Votes Found' , 204);
+            return response('No Votes Found' , 404);
         }
     }
 

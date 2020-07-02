@@ -33,7 +33,7 @@ class SubmitChallengeObserver
             }
             $submitChallenge->notifications()->saveMany($notification);
         } catch (\Throwable $th) {
-            return response('No Votes Found' , 204);
+            return response('No Votes Found' , 404);
         }
     }
 

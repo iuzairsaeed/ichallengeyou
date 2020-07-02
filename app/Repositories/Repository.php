@@ -128,7 +128,7 @@ class Repository implements RepositoryInterface
         $response = 200;
         if($records->count() == 0){
             $message = 'No data available.';
-            $response = 204;
+            $response = 404;
         }
 
         return [
