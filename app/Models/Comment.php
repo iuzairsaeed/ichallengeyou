@@ -19,7 +19,7 @@ class Comment extends Model
     ];
 
     protected $with = [
-        'user'
+        'user','userReaction'
     ];
 
     public function getCreatedAtAttribute($value)
@@ -43,6 +43,6 @@ class Comment extends Model
 
     public function userReaction()
     {
-        return $this->morphMany(Reaction::class, 'reactionable');
+        return $this->morphMany(Reaction::class, 'reactionable')->select(['reactionable_id','like','unlike']);
     }
 }

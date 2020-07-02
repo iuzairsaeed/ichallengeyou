@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TransactionTableSeeder::class);
         $this->call(AcceptedChallengeSeeder::class);
         $this->call(NotificationTableSeeder::class);
+        $this->call(BidTableSeeder::class);
     }
 }
