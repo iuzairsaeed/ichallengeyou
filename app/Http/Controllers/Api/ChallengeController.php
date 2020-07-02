@@ -94,7 +94,9 @@ class ChallengeController extends Controller
     public function store(ChallengeRequest $request)
     {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $message['message'] = 'Challenge has been Created!'; $res = 200;
             $data = $request->all();
             if($request->hasFile('file')){
@@ -159,36 +161,29 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-        if(optional($user)->is_premium){
-            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
-                $data['data']['acceptBtn'] = false;
-                $data['data']['submitBtn'] = true;
-                $data['data']['donateBtn'] = false;
-            }
-            if(optional($data['data']->acceptedChallenges()->where('user_id', $id)->first())->submitChallenge){
-                $data['data']['acceptBtn'] = false;
-                $data['data']['submitBtn'] = false;
-                $data['data']['donateBtn'] = false;
-                $data['data']['bidBtn'] = false;
-            }
-            if($id){
-                if($data['data']->user_id == (int)$id){
-                    $data['data']['acceptBtn'] = false;
-                    $data['data']['donateBtn'] = false;
-                    $data['data']['bidBtn'] = false;
-                    if(now() <= $challenge->start_time ){
-                        $data['data']['editBtn'] =  true;
-                    }
-                }
-                if($data['data']->acceptedChallenges()->count() > 0){
-                    $data['data']['reviewBtn'] = true;
-                }
-            }
-        } else {
+        if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+            $data['data']['acceptBtn'] = false;
+            $data['data']['submitBtn'] = true;
+            $data['data']['donateBtn'] = false;
+        }
+        if(optional($data['data']->acceptedChallenges()->where('user_id', $id)->first())->submitChallenge){
             $data['data']['acceptBtn'] = false;
             $data['data']['submitBtn'] = false;
             $data['data']['donateBtn'] = false;
             $data['data']['bidBtn'] = false;
+        }
+        if($id){
+            if($data['data']->user_id == (int)$id){
+                $data['data']['acceptBtn'] = false;
+                $data['data']['donateBtn'] = false;
+                $data['data']['bidBtn'] = false;
+                if(now() <= $challenge->start_time ){
+                    $data['data']['editBtn'] =  true;
+                }
+            }
+            if($data['data']->acceptedChallenges()->count() > 0){
+                $data['data']['reviewBtn'] = true;
+            }
         }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
@@ -219,7 +214,9 @@ class ChallengeController extends Controller
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $data['message'] = 'Challenge has been Updated!'; $res = 200;
             $res = 200;
             $data = $request->all();
@@ -258,7 +255,9 @@ class ChallengeController extends Controller
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $user = auth()->user();
             if((float)$request->amount > (float)$user->getAttributes()['balance']){
                 return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
