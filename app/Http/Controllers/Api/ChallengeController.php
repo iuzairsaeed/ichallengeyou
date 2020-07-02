@@ -180,6 +180,9 @@ class ChallengeController extends Controller
                         $data['data']['editBtn'] =  true;
                     }
                 }
+                if($data['data']->acceptedChallenges()->count() > 0){
+                    $data['data']['reviewBtn'] = true;
+                }
             }
         } else {
             $data['data']['acceptBtn'] = false;
