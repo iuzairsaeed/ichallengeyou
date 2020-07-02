@@ -66,7 +66,7 @@ class BidController extends Controller
      */
     public function store(Challenge $challenge,BidRequest $request)
     {
-        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';$res=400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';
         if(auth()->user()->is_premium){
             $message['message'] = 'You Can\'t Bid on This Challenge!';
             if($challenge->user_id != auth()->id()) {
@@ -80,12 +80,12 @@ class BidController extends Controller
                             'bid_amount' => $request->bid_amount,
                         ]);
                         $challenge->bids()->save($bid);
-                        $message['message'] = 'You have successfully Bid on the challenge!'; $res=200;
+                        $message['message'] = 'You have successfully Bid on the challenge!';
                     }
                 }
             }
         }
-        return response($message, $res);
+        return response($message, 200);
     }
 
     /**
