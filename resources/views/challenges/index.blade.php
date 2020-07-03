@@ -74,11 +74,8 @@
             { data: 'user.name' },
             { data: 'status' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenges/${full.id}" class="info p-0 mr-2 success" title="View">
+                                return `<a href="/challenges/${full.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
-                                        </a>
-                                        <a href="/challenges/${full.id}/edit/" class="edit success p-0 mr-2" title="Edit">
-                                            <i class="ft-edit font-medium-3"></i>
                                         </a>`;
                                 }
             }

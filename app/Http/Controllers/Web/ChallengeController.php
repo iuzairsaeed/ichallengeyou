@@ -68,6 +68,19 @@ class ChallengeController extends Controller
 
     public function show(Challenge $challenge)
     {
+        try {
+            $with = array(
+                'donations' => function($query) {
+                    $query->with('user');
+                },
+                'initialAmount',
+                'bids',
+            );
+            $challenge = $challenge->with($with)->where('id' , $challenge->id)->first();
+            return view('challenges.show', compact('challenge'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
         $with = array(
             'donations' => function($query) {
                 $query->with('user');
@@ -84,14 +97,31 @@ class ChallengeController extends Controller
         // return view('challenges.edit', compact('challenge'));
     }
 
-    public function update(Challenge $challenge)
+    public function update(Challenge $challenge, Request $request)
     {
-        $challenge->setStatus(Approved());
-        return redirect()->back()->with('success', 'Challenge Approved Successfully');
+        try {
+            if($request->is_active == 'pending'){
+                $challenge->setStatus(Pending());
+                $message = 'Pending';
+            } else {
+                $message = 'Approved';
+                $challenge->setStatus(Approved());
+            }
+            return redirect()->back()->with('success', 'Challenge '.$message.' Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
 
-    public function destroy($id)
+    public function destroy(Challenge $challenge)
     {
-        // return $this->model->delete($id);
+        try {
+            $this->model->delete($challenge);
+            return redirect('/challenges')->with('success', 'Challenge Deleted Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+        } 
+
     }
 }

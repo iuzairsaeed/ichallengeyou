@@ -18,8 +18,6 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('usersList', 'UserController@getList')->name('users.getList');
         Route::resource('settings','SettingController');
         Route::get('settingsList', 'SettingController@getList')->name('settings.getList');
-        Route::resource('paymentGateways','PaymentGatewayController');
-        Route::get('paymentGatewaysList', 'PaymentGatewayController@getList')->name('paymentGateways.getList');
     });
 });
 

@@ -22,9 +22,14 @@
                             @endif
                         </div>
                     </div>
-                    <form action="/challenges/{{$challenge->id}}" method="POST">
+                    <form id="deleteForm" action="/challenges/{{$challenge->id}}" method="POST">
+                        @method('Delete')
+                        @csrf
+                    </form>
+                    <form id="updateForm" action="/challenges/{{$challenge->id}}" method="POST">
                         @method('PUT')
                         @csrf
+                    
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -43,15 +48,6 @@
                                     <div class="form-group">
                                         <label class="text-bold-700">Created At</label>
                                         <p>{{$challenge->created_at->format(config('global.DATE_FORMAT'))??'-'}}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label class="text-bold-700">Description</label>
-                                        <p>{{ $challenge->description??'-' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -100,36 +96,36 @@
                                         <p style="margin:10px" > {{$challenge->user->name}}</p>
                                     </div>
                                 </div>
-
                                 <div class="col-md-4">
                                     <label class="text-bold-700">Initial Amount</label><br>
                                     <p> {{$challenge->initialAmount->amount}}</p>
                                 </div>
-                                
-                                   
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Start Time</label><br>
+                                    <p> {{$challenge->start_time->format(config('global.DATE_FORMAT')) ?? '' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Description</label>
+                                        <p>{{ $challenge->description??'-' }}</p>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-actions left">
-                                        <button type="reset" class="btn btn-raised btn-danger mr-1">
-                                            <i class="icon-trash"></i> Cancel
-                                        </button>
-                                        <button type="submit" class="btn btn-raised btn-success">
-                                            <i class="icon-check"></i> Upadate Challenge
-                                        </button>
-                                    </div>
-                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="text-bold-700">Status</label>
                                         <div class="input-group">
                                             <div class="custom-control custom-radio display-inline-block pr-3">
-                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active1" value='1' {{($challenge->status == 'Approved') ? 'checked' : '' }}>
+                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active1" value='approved' {{($challenge->status == 'Approved') ? 'checked' : '' }}>
                                                 <label class="custom-control-label" for="is_active1">Approved</label>
                                             </div>
                                             <div class="custom-control custom-radio display-inline-block">
-                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active2" value='0' {{($challenge->status == 'Pending') ? 'checked' :'' }}>
+                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active2" value='pending' {{($challenge->status == 'Pending') ? 'checked' :'' }}>
                                                 <label class="custom-control-label" for="is_active2">Pending</label>
                                             </div>
                                         </div>
@@ -138,6 +134,18 @@
                             </div>
                         </div>
                     </form>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-actions left">
+                                <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
+                                    <i class="icon-check"></i> Upadate Challenge
+                                </button>
+                                <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
+                                    <i class="icon-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,7 +216,7 @@
                                     <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>{{$item->user->name}}</td>
-                                        <td>{{$item->bid_amount}}</td>
+                                        <td>{{config('global.CURRENCY').$item->bid_amount}}</td>
                                         <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
                                     </tr>
                                     @endforeach
