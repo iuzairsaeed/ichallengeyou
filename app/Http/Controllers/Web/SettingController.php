@@ -31,6 +31,8 @@ class SettingController extends Controller
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
+            $item['valueOriginal'] = $item->value;
+            $item['value'] = (strlen($item->value) > 15) ? substr($item->value, 0, 50).'...' : $item->value;
             return $item;
         });
 

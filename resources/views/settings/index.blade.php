@@ -19,6 +19,7 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Value</th>
+                                    {{-- <th>ValueOriginal</th> --}}
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -53,7 +54,9 @@
                         <div class="col-md-12" >
                             <div class="form-group">
                                 <label for="value">Value</label>
-                                <input type="text" class="form-control border-primary" id="value" name="value" novalidate required>
+                                <div id="value">
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -91,8 +94,9 @@
             { data: 'serial'},
             { data: 'name' },
             { data: 'value' },
+            // { data: 'valueOriginal' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-value="${full.value}" data-toggle="modal" data-keyboard="false" data-target="#editSetting">
+                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-valueOriginal="${full.valueOriginal}" data-value="${full.value}"  data-toggle="modal" data-keyboard="false" data-target="#editSetting">
                                             <i class="ft-edit font-medium-3"></i>
                                         </a>`;  }
             }
@@ -107,6 +111,13 @@
         const button = $(event.relatedTarget);
         const name = button.data('name');
         const value = button.data('value');
+        const valueOriginal = button.data('valueoriginal');
+        var type = jQuery.type(value);
+        if(type == 'number'){
+            $("#value").html('<input type="number" class="form-control border-primary"  name="value" value='+valueOriginal+' novalidate required>');
+        } else if (type == 'string'){
+            $("#value").html('<textarea class="form-control border-primary"  name="value" novalidate required>'+valueOriginal+'</textarea>');
+        } 
         const id = button.data('id');
         const modal = $(this);
         $(this).find('.modal-body #name').text(name);
