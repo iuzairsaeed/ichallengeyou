@@ -72,7 +72,7 @@ class ChallengeController extends Controller
             return $item;
         });
         $data['data'] = ChallengeCollection::collection($data['data']);
-        return response($data, $data['response']);
+        return response($data, 200);
     }
 
     /**
