@@ -19,7 +19,6 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Value</th>
-                                    {{-- <th>ValueOriginal</th> --}}
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -54,7 +53,7 @@
                         <div class="col-md-12" >
                             <div class="form-group">
                                 <label for="value">Value</label>
-                                <div id="value">
+                                <div id="valueDiv">
                                     
                                 </div>
                             </div>
@@ -94,7 +93,6 @@
             { data: 'serial'},
             { data: 'name' },
             { data: 'value' },
-            // { data: 'valueOriginal' },
             { data: 'actions', render:function (data, type, full, meta) {
                                 return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-valueOriginal="${full.valueOriginal}" data-value="${full.value}"  data-toggle="modal" data-keyboard="false" data-target="#editSetting">
                                             <i class="ft-edit font-medium-3"></i>
@@ -114,14 +112,14 @@
         const valueOriginal = button.data('valueoriginal');
         var type = jQuery.type(value);
         if(type == 'number'){
-            $("#value").html('<input type="number" class="form-control border-primary"  name="value" value='+valueOriginal+' novalidate required>');
+            $("#valueDiv").html('<input type="number" class="form-control border-primary" id="value" name="value" value='+valueOriginal+' novalidate required>');
         } else if (type == 'string'){
-            $("#value").html('<textarea class="form-control border-primary"  name="value" novalidate required>'+valueOriginal+'</textarea>');
+            $("#valueDiv").html('<textarea class="form-control border-primary" id="value" name="value" novalidate required>'+valueOriginal+'</textarea>');
         } 
         const id = button.data('id');
         const modal = $(this);
         $(this).find('.modal-body #name').text(name);
-        $(this).find('.modal-body #value').val(value);
+        $(this).find('.modal-body #value').val(valueOriginal);
         $(this).find('.modal-body #id').val(id);
     });
 
