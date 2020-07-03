@@ -150,8 +150,8 @@ class ChallengeRepository implements RepositoryInterface
             $records->latest();
         }
         
-        $records = $records->limit($length)->offset($start)->get();
         $recordsFiltered = $records->count();
+        $records = $records->limit($length)->offset($start)->get();
         $message = 'Success';
         $response = 200;
         if($records->count() == 0){
@@ -237,8 +237,8 @@ class ChallengeRepository implements RepositoryInterface
         }else{
             $records->latest();
         }
-        $records = $records->limit($length)->offset($start)->get();
         $recordsFiltered = $records->count();
+        $records = $records->limit($length)->offset($start)->get();
 
         $message = 'Success';
         $response = 200;

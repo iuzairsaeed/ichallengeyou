@@ -80,11 +80,6 @@ class ChallengeController extends Controller
     {
         $challenge->setStatus(Approved());
         return redirect()->back()->with('success', 'Challenge Approved Successfully');
-        // $this->validate($request, [
-        //     'name' => 'required|min:2'
-        // ]);
-        // $this->model->update($request->only($this->model->getModel()->fillable), $id);
-        // return $this->model->find($id);
     }
 
     public function destroy($id)
