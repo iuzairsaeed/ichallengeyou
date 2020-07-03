@@ -155,10 +155,8 @@ class ChallengeController extends Controller
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = [];
-        $user_id = [$request->id];
-        $challenge_id = [$challenge->id];
 
-        $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
+        $data = $this->model->showChallenge($request,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
         if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){

@@ -30,7 +30,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="text-bold-700">Title</label>
-                                        <p>{{ $challenge->title??'-' }}</p>
+                                        <p>{{$challenge->title ?? '-'}}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -42,10 +42,11 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="text-bold-700">Created At</label>
-                                        <p>{{ $challenge->created_at->format(config('global.DATE_FORMAT'))??'-' }}</p>
+                                        <p>{{$challenge->created_at->format(config('global.DATE_FORMAT'))??'-'}}</p>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -54,8 +55,62 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Duration Days</label>
+                                        <p>{{$challenge->duration_days ?? '-'}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Duration Hours</label>
+                                        <p>{{$challenge->duration_hours ?? '-'}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Duration Minutes</label>
+                                        <p>{{$challenge->duration_minutes ?? '-'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Result Type</label>
+                                    <p>{{$challenge->result_type == 'first_win' ? 'First Win' : 'Vote'}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Category</label>
+                                    <p>{{$challenge->category->name}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Location</label>
+                                    <p>{{$challenge->location}}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Creater</label><br>
+                                    <div class="row" >
+                                        <img src="{{ asset($challenge->user->avatar) }}" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
+                                        <p style="margin:10px" > {{$challenge->user->name}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Initial Amount</label><br>
+                                    <p> {{$challenge->initialAmount->amount}}</p>
+                                </div>
+                                
+                                   
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
                                     <div class="form-actions left">
                                         <button type="reset" class="btn btn-raised btn-danger mr-1">
                                             <i class="icon-trash"></i> Cancel
@@ -65,6 +120,21 @@
                                         </button>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Status</label>
+                                        <div class="input-group">
+                                            <div class="custom-control custom-radio display-inline-block pr-3">
+                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active1" value='1' {{($challenge->status == 'Approved') ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="is_active1">Approved</label>
+                                            </div>
+                                            <div class="custom-control custom-radio display-inline-block">
+                                                <input type="radio" class="custom-control-input" name="is_active" id="is_active2" value='0' {{($challenge->status == 'Pending') ? 'checked' :'' }}>
+                                                <label class="custom-control-label" for="is_active2">Pending</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                     </form>
@@ -72,6 +142,85 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap">
+                        <h4 class="card-title">Donations</h4>
+                        <p class="card-text">Here you can see the list of donations that users made on this challenge.</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-block table-responsive">
+                        <div class="row">
+                            <table class="table table-striped table-bordered" id="donationsTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Amount</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($challenge->donations as $key => $item)
+                                    <tr>
+                                        <td>{{$key + 1}}</td>
+                                        <td>{{$item->challenge->title}}</td>
+                                        <td>{{$item->amount}}</td>
+                                        <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap">
+                        <h4 class="card-title">Bids</h4>
+                        <p class="card-text">Here you can see the list of bids that users made on this challenge.</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-block table-responsive">
+                        <div class="row">
+                            <table class="table table-striped table-bordered" id="donationsTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>User</th>
+                                        <th>Bid Amount</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($challenge->bids as $key => $item)
+                                    <tr>
+                                        <td>{{$key + 1}}</td>
+                                        <td>{{$item->user->name}}</td>
+                                        <td>{{$item->bid_amount}}</td>
+                                        <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 @endsection
 

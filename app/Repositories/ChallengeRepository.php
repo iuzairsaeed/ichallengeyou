@@ -256,7 +256,7 @@ class ChallengeRepository implements RepositoryInterface
         ];
     }
 
-    public function showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals)
+    public function showChallenge($request,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
