@@ -45,7 +45,7 @@ class ChallengeController extends Controller
             $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
             return $item;
         });
-        return response($data, $data['response']);
+        return response($data, 200);
     }
 
     public function index()
