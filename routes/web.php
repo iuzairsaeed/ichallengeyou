@@ -18,6 +18,8 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('usersList', 'UserController@getList')->name('users.getList');
         Route::resource('settings','SettingController');
         Route::get('settingsList', 'SettingController@getList')->name('settings.getList');
+        Route::resource('amounts','AmountController');
+        Route::get('amountsList', 'AmountController@getList')->name('amounts.getList');
     });
 });
 

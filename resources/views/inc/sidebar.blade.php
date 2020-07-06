@@ -31,6 +31,8 @@
                 </li>
                 <li class="nav-item {{ $segment1 === 'settings' ? 'active' : null }}"><a href="/settings"><i class="icon-wrench"></i><span data-i18n="" class="menu-title">Settings</span></a>
                 </li>
+                <li class="nav-item {{ $segment1 === 'amounts' ? 'active' : null }}"><a href="/amounts"><i class="icon-wallet"></i><span data-i18n="" class="menu-title">Amount</span></a>
+                </li>
             </ul>
         </div>
     </div>
