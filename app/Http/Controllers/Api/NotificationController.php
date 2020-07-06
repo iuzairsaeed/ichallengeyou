@@ -33,18 +33,19 @@ class NotificationController extends Controller
         $withCount = [];
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
-        // // collect($data['data'])->map(function ($item) {
-        // //     dd($item->notifiable);
-        // //     if($item->notifiable->acceptedChallenge->challenge->file){
-        // //         $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
-        // //     } else {
-        // //         // $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
-        // //     }
-        // //     // dd($item->notifiable->acceptedChallenge->challenge->file);
-        // // });
-        // return ($data);
+        collect($data['data'])->map(function ($item) {
+            if(optional(optional($item->notifiable)->acceptedChallenge)->challenge){ 
+                #ModelType = SubmitedChallenge
+                $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
+                $item['data_id'] = $item->notifiable->accepted_challenge_id;
+            } else { 
+                #ModelType = Vote
+                $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
+                $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
+            }
+        });
         $data['data'] = NotificationCollection::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
     }
 
     /**

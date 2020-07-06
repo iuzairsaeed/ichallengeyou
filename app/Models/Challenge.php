@@ -49,6 +49,14 @@ class Challenge extends Model
         return $this->status()->name;
     }
 
+    public function getAfterDateAttribute() {
+        $before_date = $this->start_time;
+        $after_date = $before_date->addDays($this->duration_days)
+        ->addHours($this->duration_hours)
+        ->addMinutes($this->duration_minutes);
+        return $after_date;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class)->select(['id','name','username','avatar']);
@@ -66,7 +74,7 @@ class Challenge extends Model
 
     public function userReaction()
     {
-        return $this->hasOne(Reaction::class);
+        return $this->morphMany(Reaction::class, 'reactionable');
     }
 
     public function likes()
@@ -91,7 +99,7 @@ class Challenge extends Model
 
     public function donations()
     {
-        return $this->hasMany(Amount::class)->where('type', 'donation')->select('amount','user_id','challenge_id');
+        return $this->hasMany(Amount::class)->where('type', 'donation')->select('amount','user_id','challenge_id','created_at');
     }
 
     public function amounts()

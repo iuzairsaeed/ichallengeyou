@@ -12,14 +12,15 @@ class VoteNotification extends Notification
 {
     use Queueable;
 
+    protected $accepted_challenge_id;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($accepted_challenge_id)
     {
-        //
+        $this->accepted_challenge_id = $accepted_challenge_id;
     }
 
     /**
@@ -47,9 +48,9 @@ class VoteNotification extends Notification
             'body'         => 'You have been Voted',
             'sound'        => '', // Optional
             'icon'         => 'favicon.ico', // Optional
-            'click_action' => 'VOTE_LIST_SCREEN' // Optional
+            'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
         ])->data([
-            'user_id' => $notifiable->id // Optional
+            'data_id' => $this->accepted_challenge_id // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
 
         return $message;

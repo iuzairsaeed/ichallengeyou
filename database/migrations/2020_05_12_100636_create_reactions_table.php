@@ -16,7 +16,7 @@ class CreateReactionsTable extends Migration
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('challenge_id');
+            $table->morphs('reactionable');
             $table->boolean('like')->default(false);
             $table->boolean('unlike')->default(false);
             $table->boolean('favorite')->default(false);

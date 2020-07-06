@@ -95,7 +95,7 @@ class TransactionController extends Controller
             $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
         });
         $data['data'] = TransactionCollection::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
 
     
     }

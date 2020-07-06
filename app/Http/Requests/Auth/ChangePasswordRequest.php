@@ -26,7 +26,7 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'old_password' => ['bail', 'required', new MatchOldPassword],
-            'password' => ['bail', 'required', 'string', 'min:8', 'regex:/[@$!%*#?&]/', 'confirmed', 'different:old_password'],
+            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed', 'different:old_password'],
         ];
     }
 

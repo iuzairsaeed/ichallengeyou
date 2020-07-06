@@ -28,12 +28,14 @@ Route::group(['namespace' => 'Api'], function () {
             Route::get('/myList', 'ChallengeController@myList');
             Route::post('{challenge}/donation', 'ChallengeController@donation');
             Route::post('{challenge}/comment', 'ChallengeController@comment');
-            Route::post('{challenge}/like', 'ChallengeController@like');
-            Route::post('{challenge}/unlike', 'ChallengeController@unlike');
-            Route::post('{challenge}/favorite', 'ChallengeController@favorite');
+            Route::post('{challenge}/likeChallenge', 'ChallengeController@likeChallenge');
+            Route::post('{challenge}/unlikeChallenge', 'ChallengeController@unlikeChallenge');
+            Route::post('{challenge}/favorite', 'ChallengeController@favoriteChallenge');
             Route::get('/acceptedList', 'AcceptedChallengeController@acceptedChallenge');
             Route::post('{challenge}/accept', 'AcceptedChallengeController@accept');
             Route::get('/donatedList', 'DonatedChallengeController@donatedChallenge');
+            Route::post('{comment}/likeComment', 'ChallengeController@likeComment');
+            Route::post('{comment}/unlikeComment', 'ChallengeController@unlikeComment');
         });
 
         Route::resource('categories', 'CategoryController', ['except' => ['index']]);

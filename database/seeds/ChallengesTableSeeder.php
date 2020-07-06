@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Challenge;
 use App\Models\AcceptedChallenge;
 use App\Models\Amount;
+use App\Models\Bid;
 use Carbon\Carbon;
 
 class ChallengesTableSeeder extends Seeder
@@ -16,6 +17,41 @@ class ChallengesTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
+        # Challenge DEFAULT FOR TESTING
+        $challenge = Challenge::create([
+            'user_id' => 1,
+            'category_id' => 1,
+            'title' => 'TEST',
+            'description' => 'TEST',
+            'start_time' => now(), 
+            'file' => 'football_ground.jpg',
+            'location' => "WISCONSIN",
+            'duration_days' => '00',
+            'duration_hours' => "01",
+            'duration_minutes' => "00",
+            'created_at' => now()
+        ]);
+        $challenge->setStatus(Approved());
+        $donation = new Amount([
+            'user_id' => 1,
+            'amount' => '100',
+            'type' => 'initial',
+            'created_at' => now()
+        ]);
+        $challenge->amounts()->save($donation);
+        $donation = new Amount([
+            'user_id' => 1,
+            'amount' => '836',
+            'type' => 'donation',
+            'created_at' => now()
+        ]);
+        $challenge->amounts()->save($donation);
+        $bid = new Bid([
+            'user_id' => 2,
+            'bid_amount' => 200,
+        ]);
+        $challenge->bids()->save($bid);
+
         # Challenge 1
         $challenge = Challenge::create([
             'user_id' => 1,
@@ -45,6 +81,16 @@ class ChallengesTableSeeder extends Seeder
             'created_at' => now()
         ]);
         $challenge->amounts()->save($donation);
+        $bid = new Bid([
+            'user_id' => 2,
+            'bid_amount' => 200,
+        ]);
+        $challenge->bids()->save($bid);
+        $bid = new Bid([
+            'user_id' => 3,
+            'bid_amount' => 200,
+        ]);
+        $challenge->bids()->save($bid);
                 
         # Challenge 2
         $challenge = Challenge::create([
@@ -75,6 +121,16 @@ class ChallengesTableSeeder extends Seeder
             'created_at' => now()
         ]);
         $challenge->amounts()->save($donation);
+        $bid = new Bid([
+            'user_id' => 2,
+            'bid_amount' => 200,
+        ]);
+        $challenge->bids()->save($bid);
+        $bid = new Bid([
+            'user_id' => 3,
+            'bid_amount' => 200,
+        ]);
+        $challenge->bids()->save($bid);
 
         # Challenge 3
         $challenge = Challenge::create([
@@ -105,6 +161,16 @@ class ChallengesTableSeeder extends Seeder
             'created_at' => now()
         ]);
         $challenge->amounts()->save($donation);
+        $bid = new Bid([
+            'user_id' => 2,
+            'bid_amount' => 200,
+        ]);
+        $challenge->bids()->save($bid);
+        $bid = new Bid([
+            'user_id' => 3,
+            'bid_amount' => 200,
+        ]);
+        $challenge->bids()->save($bid);
         # Challenge 4
         $challenge = Challenge::create([
             'user_id' => 1,

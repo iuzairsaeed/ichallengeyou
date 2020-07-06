@@ -138,8 +138,7 @@ class ChallengeRepository implements RepositoryInterface
                 }
             });
         }
-        $recordsFiltered = $records->count();
-
+        
         if($dir){
             if(in_array($sort, $orderableCols)){
                 $orderBy = $sort;
@@ -151,14 +150,18 @@ class ChallengeRepository implements RepositoryInterface
             $records->latest();
         }
         
+        $recordsFiltered = $records->count();
         $records = $records->limit($length)->offset($start)->get();
         $message = 'Success';
+        $response = 200;
         if($records->count() == 0){
             $message = 'No data available.';
+            $response = 404;
         }
 
         return [
             'message' => $message,
+            'response' => $response,
             'recordsFiltered' => $recordsFiltered,
             'recordsTotal' => $recordsTotal,
             'data' => $records,
@@ -222,7 +225,7 @@ class ChallengeRepository implements RepositoryInterface
                 }
             });
         }
-        $recordsFiltered = $records->count();
+        
 
         if($dir){
             if(in_array($sort, $orderableCols)){
@@ -234,22 +237,26 @@ class ChallengeRepository implements RepositoryInterface
         }else{
             $records->latest();
         }
+        $recordsFiltered = $records->count();
         $records = $records->limit($length)->offset($start)->get();
 
         $message = 'Success';
+        $response = 200;
         if($records->count() == 0){
             $message = 'No data available.';
+            $response = 404;
         }
 
         return [
             'message' => $message,
+            'response' => $response,
             'recordsFiltered' => $recordsFiltered,
             'recordsTotal' => $recordsTotal,
             'data' => $records,
         ];
     }
 
-    public function showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals)
+    public function showChallenge($request,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
@@ -278,7 +285,7 @@ class ChallengeRepository implements RepositoryInterface
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
-        $records = $this->model->with($with)->where('challenge_id' , $id)->orderBy('created_at' , 'DESC');     
+        $records = $this->model->with($with)->where(['challenge_id'=>$id,'parent_id'=>0])->orderBy('created_at' , 'DESC');     
         $records = $records->limit($length)->offset($start)->get();
         return  $records;
     }

@@ -23,8 +23,9 @@ class Reaction extends Model
 
     public function challenge()
     {
-        return $this->belongsTo(Challenge::class);
+        return $this->belongsTo(Challenge::class, 'reactionable_id');
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,5 +34,10 @@ class Reaction extends Model
     function amounts()
     {
         return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');
+    }
+
+    public function reactionable()
+    {
+        return $this->morphTo();
     }
 }

@@ -22,28 +22,31 @@ class AcceptedChallengeController extends Controller
     public function accept(Challenge $challenge)
     {
         try {
-            $message['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!';
+            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';$res = 400;
+            $message['premiumBtn'] = true;
             if(auth()->user()->is_premium){
-                $message['message'] = 'You Can\'t Accept This Challenge!';
-                if ($challenge->user_id != auth()->id()) {
-                    $message['message'] = 'You have Already accepted This Challenge!';
-                    if($challenge->user_id != auth()->id() && !$challenge->acceptedChallenges()->where('user_id', auth()->id())->exists()){
-                        $message['message'] = 'You are out of time!';
-                        $before_date = $challenge->start_time;
-                        $after_date = $before_date->addDays($challenge->duration_days)
-                        ->addHours($challenge->duration_hours)
-                        ->addMinutes($challenge->duration_minutes);
-                        if(now() <= $after_date){
-                            $acceptedChallenge = new AcceptedChallenge([
-                                'user_id' => auth()->id(),
-                            ]);
-                            $challenge->acceptedChallenges()->save($acceptedChallenge);
-                            $message['message'] = 'You have successfully accepted the challenge!';
+                $message['premiumBtn'] = false;
+                $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
+                $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';
+                if(!$isDonator){
+                    $message['message'] = 'You Can\'t Accept Your Own Challenge!';
+                    if ($challenge->user_id != auth()->id()) {
+                        $message['message'] = 'You have Already accepted This Challenge!';
+                        if($challenge->user_id != auth()->id() && !$challenge->acceptedChallenges()->where('user_id', auth()->id())->exists()){
+                            $message['message'] = 'You are out of time!';
+                            $after_date = $challenge->after_date;
+                            if(now() <= $after_date){
+                                $acceptedChallenge = new AcceptedChallenge([
+                                    'user_id' => auth()->id(),
+                                ]);
+                                $challenge->acceptedChallenges()->save($acceptedChallenge);
+                                $message['message'] = 'You have successfully accepted the challenge!';$res = 200;
+                            }
                         }
                     }
                 }
             }
-            return response($message, 200);
+            return response($message, $res);
         } catch (\Throwable $th) {
             return response($th->getMessage(), 422);
         }
@@ -75,7 +78,7 @@ class AcceptedChallengeController extends Controller
             return $item;
         });
         $data['data'] = ChallengeAccepted::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
         
     }
     /**

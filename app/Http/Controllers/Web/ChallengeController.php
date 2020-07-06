@@ -68,25 +68,60 @@ class ChallengeController extends Controller
 
     public function show(Challenge $challenge)
     {
+        try {
+            $with = array(
+                'donations' => function($query) {
+                    $query->with('user');
+                },
+                'initialAmount',
+                'bids',
+            );
+            $challenge = $challenge->with($with)->where('id' , $challenge->id)->first();
+            return view('challenges.show', compact('challenge'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        $with = array(
+            'donations' => function($query) {
+                $query->with('user');
+            },
+            'initialAmount',
+            'bids',
+        );
+        $challenge = $challenge->with($with)->where('id' , $challenge->id)->first();
         return view('challenges.show', compact('challenge'));
     }
 
-    public function edit($id)
+    public function edit(Challenge $challenge)
     {
-        //
+        // return view('challenges.edit', compact('challenge'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Challenge $challenge, Request $request)
     {
-        // $this->validate($request, [
-        //     'name' => 'required|min:2'
-        // ]);
-        // $this->model->update($request->only($this->model->getModel()->fillable), $id);
-        // return $this->model->find($id);
+        try {
+            if($request->is_active == 'pending'){
+                $challenge->setStatus(Pending());
+                $message = 'Pending';
+            } else {
+                $message = 'Approved';
+                $challenge->setStatus(Approved());
+            }
+            return redirect()->back()->with('success', 'Challenge '.$message.' Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
 
-    public function destroy($id)
+    public function destroy(Challenge $challenge)
     {
-        // return $this->model->delete($id);
+        try {
+            $this->model->delete($challenge);
+            return redirect('/challenges')->with('success', 'Challenge Deleted Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+        } 
+
     }
 }

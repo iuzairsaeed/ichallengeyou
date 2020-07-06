@@ -23,18 +23,17 @@ class SubmitChallengeObserver
             $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
             $user = $submitChallenge->acceptedChallenge->user;
             $challenge = $submitChallenge->acceptedChallenge->challenge;        
-            $notificationModels = [];
             foreach ($donators as $donator) {
                 $notification[] = new Notification([
                     'user_id' => $donator->user->id,
                     'title' => 'Challenge Submited', 
                     'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
                 ]);
-                $donator->user->notify(new ChallengeSubmited);
+                $donator->user->notify(new ChallengeSubmited($submitChallenge->accepted_challenge_id));
             }
             $submitChallenge->notifications()->saveMany($notification);
         } catch (\Throwable $th) {
-            return response('No Votes Found' , 204);
+            return response('No Votes Found' , 404);
         }
     }
 
@@ -46,7 +45,7 @@ class SubmitChallengeObserver
      */
     public function updated(SubmitChallenge $submitChallenge)
     {
-        //
+        
     }
 
     /**

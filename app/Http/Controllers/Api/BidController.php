@@ -45,7 +45,7 @@ class BidController extends Controller
             $item['bid_amount'] = config('global.CURRENCY').$item->bid_amount;
         });
         $data['data'] = BidCollection::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
     }
 
     /**
@@ -66,29 +66,28 @@ class BidController extends Controller
      */
     public function store(Challenge $challenge,BidRequest $request)
     {
-        $message['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!';$res=400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $message['message'] = 'You Can\'t Bid on This Challenge!';
             if($challenge->user_id != auth()->id()) {
                 $message['message'] = 'You have already Bid on This Challenge!';
                 if(!$challenge->bids()->where('user_id',auth()->id())->exists()){
                     $message['message'] = 'You are out of time!';
-                    $before_date = $challenge->start_time;
-                    $after_date = $before_date->addDays($challenge->duration_days)
-                    ->addHours($challenge->duration_hours)
-                    ->addMinutes($challenge->duration_minutes);
+                    $after_date = $challenge->after_date;
                     if(now() <= $after_date){
                         $bid = new Bid([
                             'user_id' => auth()->id(),
                             'bid_amount' => $request->bid_amount,
                         ]);
                         $challenge->bids()->save($bid);
-                        $message['message'] = 'You have successfully Bid on the challenge!'; $res=200;
+                        $message['message'] = 'You have successfully Bid on the challenge!';
                     }
                 }
             }
         }
-        return response($message, $res);
+        return response($message, 200);
     }
 
     /**

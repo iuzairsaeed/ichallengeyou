@@ -102,10 +102,6 @@ class VoteRepository implements RepositoryInterface
             $data[$key]['result'] = ( $result < 0 ? 0 : $result  );
         }
         return $data;
-        // return [
-        //     'message' => 'Success',
-        //     'data' => $data,
-        // ];
     }
 
     

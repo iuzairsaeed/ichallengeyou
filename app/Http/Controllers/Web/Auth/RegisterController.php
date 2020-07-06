@@ -53,9 +53,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'alpha_dash', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'regex:/[@$!%*#?&]/', 'confirmed'],
-        ], [
-            'password.regex' => 'Password must contain at least one special character.'
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'contact_number' => ['regex:/[0-9+*-*]/'],
         ]);
     }
 
@@ -73,6 +72,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'device_token' => $data['device_token'],
+            'contact_number' => $data['contact_number'],
             'platform' => $data['platform'],
         ]);
     }

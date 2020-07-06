@@ -11,6 +11,7 @@ use App\Http\Requests\Donations\CreateDonationRequest;
 use App\Http\Resources\ChallengeCollection;
 use App\Http\Resources\ChallengeList;
 use App\Http\Resources\ChallengeDetailCollection;
+use App\Http\Resources\FavouriteCollection;
 use App\Repositories\ChallengeRepository;
 use App\Models\Challenge;
 use App\Models\Comment;
@@ -92,8 +93,10 @@ class ChallengeController extends Controller
      */
     public function store(ChallengeRequest $request)
     {
-        $message['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $message['message'] = 'Challenge has been Created!'; $res = 200;
             $data = $request->all();
             if($request->hasFile('file')){
@@ -138,7 +141,7 @@ class ChallengeController extends Controller
         $whereVals = [$challenge->id];
         $with = array(
             'userReaction' => function($query) use ($id, $challenge_id) {
-                $query->where('user_id', $id)->where('challenge_id', $challenge_id);
+                $query->where('user_id', $id)->where(['reactionable_id'=>$challenge_id]);
             },
             'donations' => function($query) {
                 $query->with('user');
@@ -152,39 +155,33 @@ class ChallengeController extends Controller
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = [];
-        $user_id = [$request->id];
-        $challenge_id = [$challenge->id];
 
-        $data = $this->model->showChallenge($request,$user_id,$challenge_id,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
+        $data = $this->model->showChallenge($request,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
 
-        if(optional($user)->is_premium){
-            if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
-                $data['data']['acceptBtn'] = false;
-                $data['data']['submitBtn'] = true;
-                $data['data']['donateBtn'] = false;
-            }
-            if(optional($data['data']->acceptedChallenges()->where('user_id', $id)->first())->submitChallenge){
-                $data['data']['acceptBtn'] = false;
-                $data['data']['submitBtn'] = false;
-                $data['data']['donateBtn'] = false;
-                $data['data']['bidBtn'] = false;
-            }
-            if($id){
-                if($data['data']->user_id == (int)$id){
-                    $data['data']['acceptBtn'] = false;
-                    $data['data']['donateBtn'] = false;
-                    $data['data']['bidBtn'] = false;
-                    if(now() <= $challenge->start_time ){
-                        $data['data']['editBtn'] =  true;
-                    }
-                }
-            }
-        } else {
+        if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+            $data['data']['acceptBtn'] = false;
+            $data['data']['submitBtn'] = true;
+            $data['data']['donateBtn'] = false;
+        }
+        if(optional($data['data']->acceptedChallenges()->where('user_id', $id)->first())->submitChallenge){
             $data['data']['acceptBtn'] = false;
             $data['data']['submitBtn'] = false;
             $data['data']['donateBtn'] = false;
             $data['data']['bidBtn'] = false;
+        }
+        if($id){
+            if($data['data']->user_id == (int)$id){
+                $data['data']['acceptBtn'] = false;
+                $data['data']['donateBtn'] = false;
+                $data['data']['bidBtn'] = false;
+                if(now() <= $challenge->start_time ){
+                    $data['data']['editBtn'] =  true;
+                }
+            }
+            if($data['data']->acceptedChallenges()->count() > 0){
+                $data['data']['reviewBtn'] = true;
+            }
         }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
@@ -214,8 +211,10 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $data['message'] = 'Challenge has been Updated!'; $res = 200;
             $res = 200;
             $data = $request->all();
@@ -253,8 +252,10 @@ class ChallengeController extends Controller
      */
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
-        $data['message'] = 'Become one now, its 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
+            $message['premiumBtn'] = false;
             $user = auth()->user();
             if((float)$request->amount > (float)$user->getAttributes()['balance']){
                 return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
@@ -292,14 +293,14 @@ class ChallengeController extends Controller
     public function comments(Comment $model, Request $request, $id)
     {
         $this->model = new ChallengeRepository($model);
-        $with = ['user'];
+        $with = ['user','replies'];
         $comments = $this->model->comments($request,$with,$id);
         $data = [
             'message' => $comments->count() == 0 ? 'No comments found.' : 'Success',
             'recordsTotal' => $comments->count(),
             'data' => $comments,
         ];
-        return response($data, 200);
+        return response($data,200);
     }
 
     /**
@@ -310,7 +311,9 @@ class ChallengeController extends Controller
      */
     public function comment(Challenge $challenge, CreateCommentRequest $request)
     {
+        // dd($request->parent_id);
         $comment = new Comment([
+            'parent_id' => $request->parent_id ?? 0,
             'user_id' => auth()->id(),
             'text' => $request->text
         ]);
@@ -324,7 +327,7 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function like(Challenge $challenge)
+    public function likeChallenge(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){
@@ -344,13 +347,31 @@ class ChallengeController extends Controller
         return response(['like' => $reaction->like], 200);
     }
 
+    public function likeComment(Comment $comment)
+    {
+        $reaction = $comment->userReaction ? $comment->userReaction->where('user_id', auth()->id())->first() : null;
+        if(!$reaction){
+            $reaction = new Reaction([
+                'user_id' => auth()->id(),
+                'like' => true,
+            ]);
+            $comment->userReaction()->save($reaction);
+        } else {
+            $reaction->update([
+                'like' => $reaction->like == false ? true : false,
+                'unlike' => false
+            ]);
+        }
+        return response(['like' => $reaction->like], 200);
+    }
+
     /**
      * Unlike the specified resource.
      *
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function unlike(Challenge $challenge)
+    public function unlikeChallenge(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){
@@ -371,6 +392,25 @@ class ChallengeController extends Controller
         }
         return response(['unlike' => $reaction->unlike ], 200);
     }
+    
+    public function unlikeComment(Comment $comment)
+    {
+        $reaction = $comment->userReaction ? $comment->userReaction->where('user_id', auth()->id())->first() : null;
+        if(!$reaction){
+            $react = $reaction = new Reaction([
+                'user_id' => auth()->id(),
+                'unlike' => true,
+            ]);
+            $comment->userReaction()->save($reaction);
+            $return = true;
+        } else {
+            $reaction->update([
+                'like' => false,
+                'unlike' => $reaction->unlike == false ? true : false
+            ]);
+        }
+        return response(['unlike' => $reaction->unlike ], 200);
+    }
 
     /**
      * Favorite the specified resource.
@@ -378,7 +418,7 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function favorite(Challenge $challenge)
+    public function favoriteChallenge(Challenge $challenge)
     {
         $reaction = $challenge->userReaction ? $challenge->userReaction->where('user_id', auth()->id())->first() : null;
         if(!$reaction){
@@ -417,7 +457,7 @@ class ChallengeController extends Controller
             return $item;
         });
         $data['data'] = ChallengeList::collection($data['data']);
-        return response($data, 200);
+        return response($data, $data['response']);
 
     }
 

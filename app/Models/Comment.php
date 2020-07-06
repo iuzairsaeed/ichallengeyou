@@ -15,11 +15,11 @@ class Comment extends Model
     ];
 
     protected $hidden = [
-        'user_id', 'challenge_id', 'updated_at'
+        'user_id', 'challenge_id', 'updated_at','parent_id'
     ];
 
     protected $with = [
-        'user'
+        'user','userReaction'
     ];
 
     public function getCreatedAtAttribute($value)
@@ -35,5 +35,14 @@ class Comment extends Model
     public function challenge()
     {
         return $this->belongsTo(Challenge::class);
+    }
+
+    public function replies() {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    public function userReaction()
+    {
+        return $this->morphMany(Reaction::class, 'reactionable')->select(['reactionable_id','like','unlike']);
     }
 }
