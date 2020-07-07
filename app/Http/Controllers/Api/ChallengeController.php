@@ -179,7 +179,18 @@ class ChallengeController extends Controller
                     $data['data']['editBtn'] =  true;
                 }
             }
-            if($data['data']->acceptedChallenges()->count() > 0){
+            $acceptedChallenges = $data['data']->acceptedChallenges()->where('challenge_id', $challenge_id)->with('submitChallenge')->get();
+            $isSubmited = 0;
+            $isDonator = false;
+            foreach($acceptedChallenges as $acceptedChallenge){
+                if($acceptedChallenge->submitChallenge->first()){
+                    $isSubmited++;
+                }
+                if($challenge->donations->where('user_id',  $id)->first()){
+                    $isDonator = true;
+                }
+            }
+            if($isDonator && $isSubmited > 0){
                 $data['data']['reviewBtn'] = true;
             }
         }
