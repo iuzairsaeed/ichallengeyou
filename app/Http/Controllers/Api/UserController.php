@@ -49,7 +49,7 @@ class UserController extends Controller
     }
 
     public function getAllUsers() {
-        $data = User::get('username');
+        $data = User::get(['name','username']);
         collect($data)->map(function ($item) {
             $item['pass'] = 'secret';
         });
