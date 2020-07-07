@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $casts = [
         'is_premium' => 'boolean',
         'is_active' => 'boolean',
+        'is_admin' => 'boolean',
         'email_verified_at' => 'datetime:'.Constant::DATE_FORMAT,
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,
         'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
