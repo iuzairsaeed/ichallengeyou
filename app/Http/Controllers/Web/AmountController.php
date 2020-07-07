@@ -29,8 +29,8 @@ class AmountController extends Controller
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
         $serial = ($request->start ?? 0) + 1;
-        collect($data['data'])->map(function ($item) {
-            // $item['serial'] = $serial++;
+        collect($data['data'])->map(function ($item) use ($serial) {
+            $item['serial'] = $serial++;
             $item['amount'] = config('global.CURRENCY').$item->amount;
         });
         return response($data, $data['response']);
