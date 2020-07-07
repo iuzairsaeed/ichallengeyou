@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <div class="card-title-wrap">
                         <h4 class="card-title">Transaction</h4>
-                        <p class="card-text">Here you can see the list of existing transctions.</p>
+                        <p class="card-text">Here you can see the list of existing transactions.</p>
                     </div>
                 </div>
                 <div class="card-body">
@@ -76,7 +76,7 @@
             { data: 'reason' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenges/${full.challenge_id}" class="info success" title="View">
+                                return `<a href="/amounts/${full.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
                                 }
@@ -84,7 +84,7 @@
         ],
         columnDefs: [
             { width: "6%", "targets": [-1, 0] },
-            { orderable: false, targets: [-2, -1,] }
+            { orderable: false, targets: [ -1,-5,-6] }
         ],
     });
     $('#date_from, #date_to').change(function(){

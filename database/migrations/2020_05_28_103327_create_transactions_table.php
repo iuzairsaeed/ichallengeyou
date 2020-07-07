@@ -20,6 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedDecimal('amount', 8, 2);
             $table->enum('type', ['miscellaneous','load', 'withdraw', 'donate', 'create_challenge', 'won_challenge']);
             $table->string('invoice_id')->nullable();
+            $table->string('invoice_type')->nullable();
             $table->timestamps();
         });
     }

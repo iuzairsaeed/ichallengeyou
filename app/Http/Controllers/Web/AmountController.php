@@ -19,8 +19,9 @@ class AmountController extends Controller
 
     public function getList(Request $request)
     {
-        $orderableCols = ['created_at'];
-        $searchableCols = ['type'];
+        // dd($request->all());
+        $orderableCols = ['user_id','challenge_id','amount','type','created_at'];
+        $searchableCols = ['type','amount'];
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];
@@ -55,7 +56,7 @@ class AmountController extends Controller
             }
             $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
         });
-        return response($data, $data['response']);
+        return response($data, 200);
     }
 
     /**
@@ -95,9 +96,31 @@ class AmountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Transaction $amount)
     {
-        //
+        $amount['amount'] = config('global.CURRENCY').$amount->amount;
+        $amount['challenge_title'] = $amount->challenge->title ?? '';
+        switch ($amount->type) {
+            case 'load':
+                $amount['reason'] = 'Load Balance';
+                break;
+            case 'won_challenge':
+                $amount['reason'] = 'Won Challange';
+                break;
+            case 'withdraw':
+                $amount['reason'] = 'Withdraw Balance';
+                break;
+            case 'donate':
+                $amount['reason'] = 'Donate on Challenge';
+                break;
+            case 'create_challenge':
+                $amount['reason'] = 'Created Challenge';
+                break;
+            case 'miscellaneous':
+                $amount['reason'] = 'Premium Cost';
+                break;
+        }
+        return view('amounts.show', compact('amount'));
     }
 
     /**
@@ -129,8 +152,13 @@ class AmountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Transaction $amount)
     {
-        //
+        try {
+            $amount->delete();
+            return redirect('/amounts')->with('success', 'Transaction Deleted Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+        } 
     }
 }
