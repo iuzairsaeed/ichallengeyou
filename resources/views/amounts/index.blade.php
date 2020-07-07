@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-wrap">
-                        <h4 class="card-title">Amounts</h4>
+                        <h4 class="card-title">Transaction</h4>
                         <p class="card-text">Here you can see the list of existing transctions.</p>
                     </div>
                 </div>
@@ -35,6 +35,7 @@
                                         <th>User</th>
                                         <th>ChallengeTitle</th>
                                         <th>Amount</th>
+                                        <th>Reason</th>
                                         <th>Created By</th>
                                         <th>Actions</th>
                                     </tr>
@@ -70,8 +71,9 @@
         columns: [
             { data: 'serial'},
             { data: 'user.name' },
-            { data: 'challenge.title' },
+            { data: 'challenge_title' },
             { data: 'amount' },
+            { data: 'reason' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
                                 return `<a href="/challenges/${full.challenge_id}" class="info success" title="View">
@@ -81,8 +83,8 @@
             }
         ],
         columnDefs: [
-            { width: "10%", "targets": [-1, 0] },
-            { orderable: false, targets: [-2, -1] }
+            { width: "6%", "targets": [-1, 0] },
+            { orderable: false, targets: [-2, -1,] }
         ],
     });
     $('#date_from, #date_to').change(function(){

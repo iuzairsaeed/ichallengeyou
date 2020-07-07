@@ -21,17 +21,39 @@ class AmountController extends Controller
     {
         $orderableCols = ['created_at'];
         $searchableCols = ['type'];
-        $whereChecks = ['type'];
-        $whereOps = ['='];
-        $whereVals = ['create_challenge'];
+        $whereChecks = [];
+        $whereOps = [];
+        $whereVals = [];
         $with = ['challenge','user'];
         $withCount = [];
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
         $serial = ($request->start ?? 0) + 1;
-        collect($data['data'])->map(function ($item) use ($serial) {
+        collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             $item['amount'] = config('global.CURRENCY').$item->amount;
+            $item['challenge_title'] = $item->challenge->title ?? '';
+            switch ($item->type) {
+                case 'load':
+                    $item['reason'] = 'Load Balance';
+                    break;
+                case 'won_challenge':
+                    $item['reason'] = 'Won Challange';
+                    break;
+                case 'withdraw':
+                    $item['reason'] = 'Withdraw Balance';
+                    break;
+                case 'donate':
+                    $item['reason'] = 'Donate on Challenge';
+                    break;
+                case 'create_challenge':
+                    $item['reason'] = 'Created Challenge';
+                    break;
+                case 'miscellaneous':
+                    $item['reason'] = 'Premium Cost';
+                    break;
+            }
+            $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
         });
         return response($data, $data['response']);
     }

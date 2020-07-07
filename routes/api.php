@@ -74,5 +74,6 @@ Route::group(['namespace' => 'Api'], function () {
             Route::get('{challenge}/list', 'BidController@index');
             Route::post('{challenge}', 'BidController@store');
         });
+        Route::get('user/list', 'UserController@getAllUsers');
     });
 });

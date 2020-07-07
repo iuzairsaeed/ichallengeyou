@@ -47,4 +47,13 @@ class UserController extends Controller
             'avatar' => avatarsPath().$file_name
         ], 200);
     }
+
+    public function getAllUsers() {
+        $data = User::get('username');
+        collect($data)->map(function ($item) {
+            $item['pass'] = 'secret';
+        });
+        return ($data);
+        return response($data, 200);
+    }
 }
