@@ -53,7 +53,6 @@ class UserController extends Controller
         collect($data)->map(function ($item) {
             $item['pass'] = 'secret';
         });
-        return ($data);
         return response($data, 200);
     }
 }
