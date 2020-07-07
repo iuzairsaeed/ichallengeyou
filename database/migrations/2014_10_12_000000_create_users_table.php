@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->unsignedDecimal('balance', 8, 2)->default('0.00');
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_admin')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

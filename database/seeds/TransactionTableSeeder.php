@@ -47,7 +47,6 @@ class TransactionTableSeeder extends Seeder
         $transaction->save();
         $transaction = new Transaction([
             'user_id' => 2,
-            'challenge_id' => 1,
             'amount' => 150,
             'type' => 'withdraw',
         ]);
