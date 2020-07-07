@@ -18,6 +18,7 @@ class ChallengeDetailCollection extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'result_type' => $this->result_type,
             'file' => $this->file,
             'file_mime' => $this->file_mime,
             'start_time' => $this->start_time->format('d M, Y - h:m A'),
