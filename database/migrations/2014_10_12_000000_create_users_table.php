@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_active')->default(true);
             $table->boolean('is_admin')->default(false);
+            $table->boolean('is_dummy')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

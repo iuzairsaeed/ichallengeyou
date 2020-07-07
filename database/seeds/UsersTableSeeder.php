@@ -404,6 +404,7 @@ class UsersTableSeeder extends Seeder
                 'email' => strtolower($email[$i]).'@idu.com',
                 'contact_number' => 123456789,
                 'password' => Hash::make('secret'),
+                'is_dummy' => true,
                 'created_at' => now()
             ];
         }
