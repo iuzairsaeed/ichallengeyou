@@ -289,8 +289,16 @@ class ChallengeRepository implements RepositoryInterface
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
         $records = $this->model->with($with)->where(['challenge_id'=>$id,'parent_id'=>0])->orderBy('created_at' , 'DESC');     
+        $recordsTotal = $records->count();
         $records = $records->limit($length)->offset($start)->get();
-        return  $records;
+        $recordsFiltered = $records->count();
+        $data = [
+            'message' => $records->count() == 0 ? 'No comments found.' : 'Success',
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $records,
+        ];
+        return  $data;
     }
 
     public function getSubmitedVideo($request,$with,$id)

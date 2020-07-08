@@ -306,12 +306,8 @@ class ChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
         $with = ['user','replies'];
         $comments = $this->model->comments($request,$with,$id);
-        $data = [
-            'message' => $comments->count() == 0 ? 'No comments found.' : 'Success',
-            'recordsTotal' => $comments->count(),
-            'data' => $comments,
-        ];
-        return response($data,200);
+        
+        return response($comments,200);
     }
 
     /**
