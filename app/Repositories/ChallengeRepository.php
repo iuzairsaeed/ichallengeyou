@@ -101,6 +101,9 @@ class ChallengeRepository implements RepositoryInterface
         if($whereHas){
             $records->has($whereHas);
         }
+        if($currentStatus){
+            $records->currentStatus('Approved');
+        }
         if($withSums){
             foreach($withSums as $key => $withSum){
                 $records->withCount([
