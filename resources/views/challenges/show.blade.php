@@ -202,7 +202,7 @@
                 <div class="card-body">
                     <div class="card-block table-responsive">
                         <div class="row">
-                            <table class="table table-striped table-bordered" id="donationsTable">
+                            <table class="table table-striped table-bordered" id="bidsTable">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -234,14 +234,14 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-wrap">
-                        <h4 class="card-title">Accepted Challenges</h4>
+                        <h4 class="card-title">Acceptors</h4>
                         <p class="card-text">Here you can see the list of Acceptors.</p>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="card-block table-responsive">
                         <div class="row">
-                            <table class="table table-striped table-bordered" id="donationsTable">
+                            <table class="table table-striped table-bordered" id="acceptorsTable">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -265,12 +265,66 @@
             </div>
         </div>
     </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap">
+                        <h4 class="card-title">Submitors</h4>
+                        <p class="card-text">Here you can see the list of Submitors.</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-block table-responsive">
+                        <div class="row">
+                            <table class="table table-striped table-bordered" id="submitorsTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>User</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($challenge->acceptedChallenges as $key => $value)
+                                        @foreach ($value->submitChallenge as $key => $item)
+                                        <tr>
+                                            <td>{{$key + 1}}</td>
+                                            <td>{{$value->user->name}}</td>
+                                            <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </section>
 @endsection
 
 @section('afterScript')
 <script>
-
+    $('#donationsTable').DataTable();
+    $('#bidsTable').DataTable();
+    $('#acceptorsTable').DataTable({
+        columnDefs: [
+            { width: "16%", "targets": [-3] },
+            { width: "32%", "targets": [-2] },
+            { orderable: false, targets: [-2, -1] }
+        ]
+    });
+    $('#submitorsTable').DataTable({
+        columnDefs: [
+            { width: "16%", "targets": [-3] },
+            { width: "32%", "targets": [-2] },
+            { orderable: false, targets: [-2, -1] }
+        ]
+    });
 </script>
 @endsection
