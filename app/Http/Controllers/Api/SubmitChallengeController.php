@@ -80,7 +80,7 @@ class SubmitChallengeController extends Controller
             $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
             $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             collect($data['data'])->map(function ($item) {
-                $item['isWinner'] = (bool)$item->submitChallenge->first()->isWinner;
+                $item['isWinner'] = $item->submitChallenge->first()->isWinner;
                 $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();
                 $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
             });

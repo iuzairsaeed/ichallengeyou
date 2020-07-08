@@ -16,6 +16,7 @@ class SubmitChallenge extends Model
     protected $casts = [
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,
         'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
+        'isWinner' => 'boolean'
     ];
 
     public function acceptedChallenge()
