@@ -38,17 +38,13 @@
                                         <p>{{$challenge->title ?? '-'}}</p>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="text-bold-700">Location</label>
-                                        <p>{{ $challenge->location??'-' }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="text-bold-700">Created At</label>
-                                        <p>{{$challenge->created_at->format(config('global.DATE_FORMAT'))??'-'}}</p>
-                                    </div>
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Initial Amount</label><br>
+                                    <p> {{$challenge->initialAmount->amount}}</p>
+                                </div>  
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">Start Time</label><br>
+                                    <p> {{$challenge->start_time->format(config('global.DATE_FORMAT')) ?? '' }}</p>
                                 </div>
                             </div>
 
@@ -96,13 +92,11 @@
                                         <p style="margin:10px" > {{$challenge->user->name}}</p>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="text-bold-700">Initial Amount</label><br>
-                                    <p> {{$challenge->initialAmount->amount}}</p>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="text-bold-700">Start Time</label><br>
-                                    <p> {{$challenge->start_time->format(config('global.DATE_FORMAT')) ?? '' }}</p>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Created At</label>
+                                        <p>{{$challenge->created_at->format(config('global.DATE_FORMAT'))??'-'}}</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -110,7 +104,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label class="text-bold-700">Description</label>
-                                        <p>{{ $challenge->description??'-' }}</p>
+                                        <p class="font"> {{ print(nl2br($challenge->description)??'-') }}  </p>
                                     </div>
                                 </div>
                             </div>
@@ -173,9 +167,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($challenge->donations as $key => $item)
+                                    @php $a=0; @endphp
+                                    @foreach ($challenge->donations->sortByDesc('created_at') as $item)
                                     <tr>
-                                        <td>{{$key + 1}}</td>
+                                        <td>{{++$a}}</td>
                                         <td>{{$item->challenge->title}}</td>
                                         <td>{{$item->amount}}</td>
                                         <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
@@ -212,9 +207,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($challenge->bids as $key => $item)
+                                    @php $a = 0; @endphp
+                                    @foreach ($challenge->bids->sortByDesc('created_at') as $item)
                                     <tr>
-                                        <td>{{$key + 1}}</td>
+                                        <td>{{++$a}}</td>
                                         <td>{{$item->user->name}}</td>
                                         <td>{{config('global.CURRENCY').$item->bid_amount}}</td>
                                         <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
@@ -250,9 +246,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($challenge->acceptedChallenges as $key => $item)
+                                    @php $a=0; @endphp
+                                    @foreach ($challenge->acceptedChallenges->sortByDesc('created_at') as $item)
                                     <tr>
-                                        <td>{{$key + 1}}</td>
+                                        <td>{{++$a}}</td>
                                         <td>{{$item->user->name}}</td>
                                         <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
                                     </tr>
@@ -287,10 +284,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($challenge->acceptedChallenges as $key => $value)
-                                        @foreach ($value->submitChallenge as $key => $item)
+                                    @php $a=0; @endphp
+                                    @foreach ($challenge->acceptedChallenges as $value)
+                                        @foreach ($value->submitChallenge->sortByDesc('created_at') as $item)
                                         <tr>
-                                            <td>{{$key + 1}}</td>
+                                            <td>{{++$a}}</td>
                                             <td>{{$value->user->name}}</td>
                                             <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
                                         </tr>
@@ -310,6 +308,7 @@
 
 @section('afterScript')
 <script>
+    $.fn.dataTable.moment('d M, Y - h:m A');
     $('#donationsTable').DataTable();
     $('#bidsTable').DataTable();
     $('#acceptorsTable').DataTable({

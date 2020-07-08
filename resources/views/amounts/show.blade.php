@@ -11,11 +11,7 @@
                     </div>
                 </div>
                 <div class="card-body px-4">
-                    <div class="border-bottom mb-4">
-                        <div class="align-self-center halfway-fab text-center mb-4">
-                            
-                        </div>
-                    </div>
+                    
                     <form id="deleteForm" action="/amounts/{{$amount->id}}" method="POST">
                         @method('Delete')
                         @csrf
@@ -28,19 +24,19 @@
                             
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label class="text-bold-700">User</label><br>
-                                    <div class="row" >
-                                        <img src="{{ asset($amount->user->avatar) }}" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
-                                        <p style="margin:10px" > {{$amount->user->name}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
                                     <label class="text-bold-700">Transaction Type</label><br>
                                     <p style="margin:10px" > {{$amount->reason}}</p>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="text-bold-700">Amount</label><br>
                                     <p style="margin:10px" > {{$amount->amount}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-bold-700">User</label><br>
+                                    <div class="row" >
+                                        <img src="{{ asset($amount->user->avatar) }}" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
+                                        <p style="margin:10px" > {{$amount->user->name}}</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -77,6 +73,7 @@
                             </div>
                         </div>
                     </div>
+                    <br>
                 </div>
             </div>
         </div>
