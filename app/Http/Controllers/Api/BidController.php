@@ -45,7 +45,7 @@ class BidController extends Controller
             $item['bid_amount'] = config('global.CURRENCY').$item->bid_amount;
         });
         $data['data'] = BidCollection::collection($data['data']);
-        return response($data, $data['response']);
+        return response($data, 200);
     }
 
     /**
