@@ -162,10 +162,10 @@ class SubmitChallengeController extends Controller
     public function postSubmitChallenge(Challenge $challenge)
     {
         try {
-            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
-            $message['premiumBtn'] = true;
+            $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
-                $message['premiumBtn'] = false;
+                $data['premiumBtn'] = false;
                 $data['message']='You have Already Submitted the Challenge!'; $res = 400;
                 if(!$challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitChallenge()->exists()){
                     $data['message'] = 'No Video Uploaded!';
@@ -203,10 +203,10 @@ class SubmitChallengeController extends Controller
     public function addVideo(Challenge $challenge, SubmitChallengeRequest $request)
     {
         try {
-            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
-            $message['premiumBtn'] = true;
+            $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
-                $message['premiumBtn'] = false;
+                $data['premiumBtn'] = false;
                 $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
                 $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';
                 if(!$isDonator){

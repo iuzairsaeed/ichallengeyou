@@ -222,10 +222,10 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
-        $message['premiumBtn'] = true;
+        $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $data['premiumBtn'] = true;
         if(auth()->user()->is_premium){
-            $message['premiumBtn'] = false;
+            $data['premiumBtn'] = false;
             $data['message'] = 'Challenge has been Updated!'; $res = 200;
             $res = 200;
             $data = $request->all();
@@ -263,10 +263,10 @@ class ChallengeController extends Controller
      */
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
-        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
-        $message['premiumBtn'] = true;
+        $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $data['premiumBtn'] = true;
         if(auth()->user()->is_premium){
-            $message['premiumBtn'] = false;
+            $data['premiumBtn'] = false;
             $user = auth()->user();
             if((float)$request->amount > (float)$user->getAttributes()['balance']){
                 return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
