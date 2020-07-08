@@ -237,10 +237,13 @@ class SubmitChallengeController extends Controller
     
     public function deleteVideo(SubmitFile $file)
     {
-        $file_name = $file->file;
-        deleteFile($file_name, SubmitChallengesPath());
-        $file->delete();
-        return response(['message'=>'Video is Deleted!']);
+        if(now() >=  $challenge->start_time && now() <= $after_date){
+            $file_name = $file->file;
+            deleteFile($file_name, SubmitChallengesPath());
+            $file->delete();
+            return response(['message'=>'Video is Deleted!']);
+        }
+        return response(['message'=>'You\'re out of time !']);
     }
 
 }
