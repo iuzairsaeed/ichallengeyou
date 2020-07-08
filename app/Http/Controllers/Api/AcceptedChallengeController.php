@@ -24,6 +24,7 @@ class AcceptedChallengeController extends Controller
         try {
             $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';$res = 400;
             $message['premiumBtn'] = true;
+            $message['submitBtn'] = false;
             if(auth()->user()->is_premium){
                 $message['premiumBtn'] = false;
                 $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
@@ -41,6 +42,9 @@ class AcceptedChallengeController extends Controller
                                 ]);
                                 $challenge->acceptedChallenges()->save($acceptedChallenge);
                                 $message['message'] = 'You have successfully accepted the challenge!';$res = 200;
+                                if(now() >=  $challenge->start_time && now() <= $challenge->after_date){
+                                    $message['submitBtn'] = true;
+                                }
                             }
                         }
                     }
