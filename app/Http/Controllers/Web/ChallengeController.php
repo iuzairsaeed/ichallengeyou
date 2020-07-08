@@ -69,14 +69,8 @@ class ChallengeController extends Controller
     public function show(Challenge $challenge)
     {
         try {
-            $with = array(
-                'donations' => function($query) {
-                    $query->with('user');
-                },
-                'initialAmount',
-                'bids',
-            );
-            $challenge = $challenge->with($with)->where('id' , $challenge->id)->first();
+            
+            $challenge = $challenge->where('id' , $challenge->id)->first();
             return view('challenges.show', compact('challenge'));
         } catch (\Throwable $th) {
             throw $th;
