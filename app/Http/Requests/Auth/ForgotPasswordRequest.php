@@ -27,4 +27,16 @@ class ForgotPasswordRequest extends FormRequest
             'email' => ['bail', 'required', 'string', 'email', 'max:255', 'exists:users'],
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'email.exists' => 'This email is not registered!'
+        ];
+    }
 }
