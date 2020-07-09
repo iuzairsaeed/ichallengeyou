@@ -27,6 +27,7 @@ class SubmitChallengeDetailCollection extends JsonResource
             'file' => $this->files,
             'voteUp' => $this->voteUp ? true :false ,
             'voteDown' => $this->voteDown ? true :false ,
+            'voteBtn' => $this->voteBtn,
 
         ];
     }

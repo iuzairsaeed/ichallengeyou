@@ -271,22 +271,25 @@ class ChallengeController extends Controller
             if((float)$request->amount > (float)$user->getAttributes()['balance']){
                 return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
             }
-            $donation = new Amount([
-                'user_id' => $user->id,
-                'amount' => $request->amount,
-                'type' => 'donation'
-            ]);
-            $challenge->amounts()->save($donation);
-            $transaction = new Transaction([
-                'user_id' => $user->id,
-                'challenge_id' => $challenge->id,
-                'amount' => $request->amount,
-                'type' => 'donate',
-                'invoice_id' => null,
-            ]);
-            $challenge->transactions()->save($transaction);
-            $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
-            $user->update();
+            $message['message'] = 'You are out of time!';
+            if(now() <= $challenge->after_date){
+                $donation = new Amount([
+                    'user_id' => $user->id,
+                    'amount' => $request->amount,
+                    'type' => 'donation'
+                ]);
+                $challenge->amounts()->save($donation);
+                $transaction = new Transaction([
+                    'user_id' => $user->id,
+                    'challenge_id' => $challenge->id,
+                    'amount' => $request->amount,
+                    'type' => 'donate',
+                    'invoice_id' => null,
+                ]);
+                $challenge->transactions()->save($transaction);
+                $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
+                $user->update();
+            }
             return response([
                 'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
                 'balanace' => $user->balance

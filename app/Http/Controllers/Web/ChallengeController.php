@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\ChallengeRepository;
+use App\Models\SubmitChallenge;
+use App\Models\AcceptedChallenge;
 use App\Models\Challenge;
+use App\Models\Amount;
+use App\Models\Bid;
 
 class ChallengeController extends Controller
 {
@@ -28,7 +32,7 @@ class ChallengeController extends Controller
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];
-        $with = [];
+        $with = ['donations','bids','acceptedChallenges'];
         $withCount = [];
         $currentStatus = [];
         $withSums = ['amounts'];
@@ -47,6 +51,8 @@ class ChallengeController extends Controller
         });
         return response($data, 200);
     }
+
+    
 
     public function index()
     {
@@ -118,4 +124,65 @@ class ChallengeController extends Controller
         } 
 
     }
+
+    public function getDonations($id, Request $request)
+    {
+        $model = new Amount;
+        $this->model = new ChallengeRepository($model);
+        $orderableCols = ['user_id', 'amount', 'created_at'];
+        $searchableCols = [];
+        $whereChecks = ['challenge_id'];
+        $whereOps = ['='];
+        $whereVals = [$id];
+        $with = ['user'];
+        $withCount = [];
+        $currentStatus = [];
+        $withSums = [];
+        $withSumsCol = [];
+        $addWithSums = [];
+        $whereHas = null;
+
+        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+
+        $serial = ($request->start ?? 0) + 1;
+        collect($data['data'])->map(function ($item) use (&$serial) {
+            $item['serial'] = $serial++;
+            return $item;
+        });
+        return response($data, 200);
+    }
+
+    public function getBids($id, Request $request)
+    {
+        $model = new Bid;
+        $this->model = new ChallengeRepository($model);
+        $orderableCols = ['user_id', 'bid_amount', 'created_at'];
+        $searchableCols = [];
+        $whereChecks = ['challenge_id'];
+        $whereOps = ['='];
+        $whereVals = [$id];
+        $with = ['user'];
+        $withCount = [];
+        $currentStatus = [];
+        $withSums = [];
+        $withSumsCol = [];
+        $addWithSums = [];
+        $whereHas = null;
+
+        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+
+        $serial = ($request->start ?? 0) + 1;
+        collect($data['data'])->map(function ($item) use (&$serial) {
+            $item['serial'] = $serial++;
+            return $item;
+        });
+        return response($data, 200);
+    }
+    
+    
+    
+    
+    
 }

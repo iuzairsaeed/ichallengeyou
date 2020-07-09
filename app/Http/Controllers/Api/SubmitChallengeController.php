@@ -148,6 +148,7 @@ class SubmitChallengeController extends Controller
                     $item['voteDown'] = $item->submitChallenge->first()->votes()
                     ->where('user_id',auth()->id())
                     ->where('vote_down',true)->first();
+                    $item['voteBtn'] = ($item->challenge->result_type === 'vote') ? true : false;
                 });
 
                 $data = SubmitChallengeDetailCollection::collection($data);

@@ -161,22 +161,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Title</th>
+                                        <th>User</th>
                                         <th>Amount</th>
                                         <th>Created At</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @php $a=0; @endphp
-                                    @foreach ($challenge->donations->sortByDesc('created_at') as $item)
-                                    <tr>
-                                        <td>{{++$a}}</td>
-                                        <td>{{$item->challenge->title}}</td>
-                                        <td>{{$item->amount}}</td>
-                                        <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -204,19 +194,9 @@
                                         <th>User</th>
                                         <th>Bid Amount</th>
                                         <th>Created At</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @php $a = 0; @endphp
-                                    @foreach ($challenge->bids->sortByDesc('created_at') as $item)
-                                    <tr>
-                                        <td>{{++$a}}</td>
-                                        <td>{{$item->user->name}}</td>
-                                        <td>{{config('global.CURRENCY').$item->bid_amount}}</td>
-                                        <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -243,18 +223,9 @@
                                         <th>#</th>
                                         <th>User</th>
                                         <th>Created At</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @php $a=0; @endphp
-                                    @foreach ($challenge->acceptedChallenges->sortByDesc('created_at') as $item)
-                                    <tr>
-                                        <td>{{++$a}}</td>
-                                        <td>{{$item->user->name}}</td>
-                                        <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -263,67 +234,109 @@
         </div>
     </div>
     
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title-wrap">
-                        <h4 class="card-title">Submitors</h4>
-                        <p class="card-text">Here you can see the list of Submitors.</p>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-block table-responsive">
-                        <div class="row">
-                            <table class="table table-striped table-bordered" id="submitorsTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>User</th>
-                                        <th>Created At</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php $a=0; @endphp
-                                    @foreach ($challenge->acceptedChallenges as $value)
-                                        @foreach ($value->submitChallenge->sortByDesc('created_at') as $item)
-                                        <tr>
-                                            <td>{{++$a}}</td>
-                                            <td>{{$value->user->name}}</td>
-                                            <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
-                                        </tr>
-                                        @endforeach
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </section>
 @endsection
 
 @section('afterScript')
-<script>
-    $.fn.dataTable.moment('d M, Y - h:m A');
-    $('#donationsTable').DataTable();
-    $('#bidsTable').DataTable();
+<script>    
+
+    $('#donationsTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax:
+        {
+            url: '{{ route("challenges.getDonations", $challenge->id) }}',
+            type: 'GET',
+            dataType: 'JSON',
+            data:function(data){
+                data.date_from= $('#date_from').val();
+                data.date_to= $('#date_to').val();
+            },
+            error: function (reason) {
+                return reason;
+            }
+        },
+        columns: [
+            { data: 'serial' },
+            { data: 'user.name' },
+            { data: 'amount' },
+            { data: 'created_at' },
+            { data: 'actions', render:function (data, type, full, meta) {
+                                return `<a href="/challenges/${full.id}" class="info success" title="View">
+                                            <i class="ft-eye font-medium-3"></i>
+                                        </a>`;
+                                }
+            }
+        ],
+        columnDefs: [
+            { orderable: false, targets: [-1, -2] }
+        ],
+    });
+
+    $('#bidsTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax:
+        {
+            url: '{{ route("challenges.getBids", $challenge->id) }}',
+            type: 'GET',
+            dataType: 'JSON',
+            data:function(data){
+                data.date_from= $('#date_from').val();
+                data.date_to= $('#date_to').val();
+            },
+            error: function (reason) {
+                return reason;
+            }
+        },
+        columns: [
+            { data: 'serial' },
+            { data: 'user.name' },
+            { data: 'bid_amount' },
+            { data: 'created_at' },
+            { data: 'actions', render:function (data, type, full, meta) {
+                                return `<a href="/challenges/${full.id}" class="info success" title="View">
+                                            <i class="ft-eye font-medium-3"></i>
+                                        </a>`;
+                                }
+            }
+            
+        ]
+    });
+
     $('#acceptorsTable').DataTable({
-        columnDefs: [
-            { width: "16%", "targets": [-3] },
-            { width: "32%", "targets": [-2] },
-            { orderable: false, targets: [-2, -1] }
+        processing: true,
+        serverSide: true,
+        ajax:
+        {
+            url: '{{ route("challenges.getAcceptors", $challenge->id) }}',
+            type: 'GET',
+            dataType: 'JSON',
+            data:function(data){
+                data.date_from= $('#date_from').val();
+                data.date_to= $('#date_to').val();
+            },
+            error: function (reason) {
+                return reason;
+            }
+        },
+        columns: [
+            { data: 'serial' },
+            { data: 'user.name' },
+            { data: 'created_at' },
+            { data: 'actions', render:function (data, type, full, meta) {
+                                return `<a href="/challenge/${full.id}/submitedChallenge" class="info success" title="View">
+                                            <i class="ft-eye font-medium-3"></i>
+                                        </a>`;
+                                }
+            }
         ]
     });
-    $('#submitorsTable').DataTable({
-        columnDefs: [
-            { width: "16%", "targets": [-3] },
-            { width: "32%", "targets": [-2] },
-            { orderable: false, targets: [-2, -1] }
-        ]
-    });
+    
+    
+    
+
+    
+
 </script>
 @endsection
