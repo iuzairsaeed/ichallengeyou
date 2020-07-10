@@ -28,6 +28,7 @@ class SubmitChallengeObserver
                     'user_id' => $donator->user->id,
                     'title' => 'Challenge Submited', 
                     'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
+                    'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
                 ]);
                 $donator->user->notify(new ChallengeSubmited($submitChallenge->accepted_challenge_id));
             }
