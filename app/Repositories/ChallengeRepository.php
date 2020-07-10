@@ -211,7 +211,7 @@ class ChallengeRepository implements RepositoryInterface
             }
         }
         
-        $recordsTotal = $records->count();  
+         
 
         if($groupByVals){
             foreach($groupByVals as $val){
@@ -245,8 +245,9 @@ class ChallengeRepository implements RepositoryInterface
         }else{
             $records->latest();
         }
-        $recordsFiltered = $records->count();
+        $recordsTotal = $records->get()->count(); 
         $records = $records->limit($length)->offset($start)->get();
+        $recordsFiltered = $records->count();
 
         $message = 'Success';
         $response = 200;
