@@ -24,6 +24,7 @@ class PaymentController extends Controller
             return response('Token is not Verified' , 401);
         }
         $paymentRecord = paypalDetail($token , $pay_id);
+        dd($paymentRecord);
         $amount = $paymentRecord['transactions'][0]['amount']['total'];
         if($paymentRecord['state'] == 'approved' && $paymentRecord['payer']['status'] == 'VERIFIED' ){
             if(!$user->is_premium){
