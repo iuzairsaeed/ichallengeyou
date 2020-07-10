@@ -22,6 +22,7 @@ class SubmitChallengeObserver
         try {
             $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
             $user = $submitChallenge->acceptedChallenge->user;
+            $creater = $submitChallenge->acceptedChallenge->challenge->user;
             $challenge = $submitChallenge->acceptedChallenge->challenge;        
             foreach ($donators as $donator) {
                 $notification[] = new Notification([
@@ -29,12 +30,24 @@ class SubmitChallengeObserver
                     'title' => 'Challenge Submited', 
                     'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
                     'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
+                    'data_id' => $submitChallenge->accepted_challenge_id, 
                 ]);
                 $donator->user->notify(new ChallengeSubmited($submitChallenge->accepted_challenge_id));
             }
             $submitChallenge->notifications()->saveMany($notification);
+
+            $createrNotification = new Notification([
+                'user_id' => $creater->id,
+                'title' => 'Challenge Submited', 
+                'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
+                'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
+                'data_id' => $submitChallenge->accepted_challenge_id, 
+            ]);
+            $submitChallenge->notifications()->save($createrNotification);  
+            $creater->notify(new ChallengeSubmited($submitChallenge->accepted_challenge_id));
+
         } catch (\Throwable $th) {
-            return response('No Votes Found' , 404);
+            return response($th->getMessage() , 400);
         }
     }
 
