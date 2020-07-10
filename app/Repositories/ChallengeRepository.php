@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Challenge;
 use App\Models\SubmitChallenge;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use DB;
 
 class ChallengeRepository implements RepositoryInterface
@@ -16,6 +17,7 @@ class ChallengeRepository implements RepositoryInterface
     // Constructor to bind model to repo
     public function __construct(Model $model)
     {
+        // $this->$key = $model;
         $this->model = $model;
     }
 
@@ -161,6 +163,9 @@ class ChallengeRepository implements RepositoryInterface
             $message = 'No data available.';
             $response = 404;
         }
+
+        #store in cache
+        Cache::put('data', $records, now()->addMinutes(2));
 
         return [
             'message' => $message,

@@ -17,6 +17,7 @@ class ChallengeCollection extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'description' => $this->description,
             'file' => $this->file,
             'amounts_sum' => $this->amounts_sum,
             'amounts_trend_sum' => $this->amounts_trend_sum,

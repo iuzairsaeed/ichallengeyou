@@ -233,6 +233,35 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap">
+                        <h4 class="card-title">Submitors</h4>
+                        <p class="card-text">Here you can see the list of Submitors.</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-block table-responsive">
+                        <div class="row">
+                            <table class="table table-striped table-bordered" id="submitorsTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>User</th>
+                                        <th>Created At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
 </section>
 @endsection
@@ -301,7 +330,10 @@
                                 }
             }
             
-        ]
+        ],
+        columnDefs: [
+            { orderable: false, targets: [-1, -2] }
+        ],
     });
 
     $('#acceptorsTable').DataTable({
@@ -325,14 +357,48 @@
             { data: 'user.name' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenge/${full.id}/submitedChallenge" class="info success" title="View">
+                                return `<a href="/challenge/${full.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
                                 }
             }
-        ]
+        ],
+        columnDefs: [
+            { orderable: false, targets: [-1, -2] }
+        ],
     });
-    
+
+    $('#submitorsTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax:
+        {
+            url: '{{ route("challenges.getSubmitors", $challenge->id) }}',
+            type: 'GET',
+            dataType: 'JSON',
+            data:function(data){
+                data.date_from= $('#date_from').val();
+                data.date_to= $('#date_to').val();
+            },
+            error: function (reason) {
+                return reason;
+            }
+        },
+        columns: [
+            { data: 'serial' },
+            { data: 'user.name' },
+            { data: 'created_at' },
+            { data: 'actions', render:function (data, type, full, meta) {
+                                return `<a href="/challenges/${full.id}" class="info success" title="View">
+                                            <i class="ft-eye font-medium-3"></i>
+                                        </a>`;
+                                }
+            }
+        ],
+        columnDefs: [
+            { orderable: false, targets: [-1, -2] }
+        ],
+    });
     
     
 

@@ -17,7 +17,6 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('{challenge}/challengesBids', 'ChallengeController@getBids')->name('challenges.getBids');
         Route::get('{challenge}/challengesDonations', 'ChallengeController@getDonations')->name('challenges.getDonations');
         Route::get('{challenge}/challengesAcceptors', 'AcceptedChallengeController@getAcceptors')->name('challenges.getAcceptors');
-        Route::get('{challenge}/submitedChallenge', 'AcceptedChallengeController@submitedChallenge');
         Route::get('{challenge}/challengesSubmitors', 'AcceptedChallengeController@getSubmitors')->name('challenges.getSubmitors');
         Route::resource('users','UserController');
         Route::get('usersList', 'UserController@getList')->name('users.getList');

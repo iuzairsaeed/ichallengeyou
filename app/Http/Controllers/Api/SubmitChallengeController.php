@@ -45,8 +45,7 @@ class SubmitChallengeController extends Controller
             $data = $this->model->getResult($challenge,$total_votes);
             return response($data,200);
         } catch (\Throwable $th) {
-            $data['message'] = 'No Votes Count!';
-            return response($data,207);
+            return response(null,400);
         }
     }
 
@@ -65,7 +64,7 @@ class SubmitChallengeController extends Controller
             $acceptedChallengeModel = new AcceptedChallenge;
             $this->model = new ChallengeRepository($acceptedChallengeModel);
 
-            $orderableCols = [];
+            $orderableCols = ['created_at'];
             $searchableCols = [];
             $whereChecks = ['challenge_id'];
             $whereOps = ['='];
@@ -87,39 +86,41 @@ class SubmitChallengeController extends Controller
             if(now() > $challenge->after_date) {
                 $count = 0; $isWinner = 0;
                 $results = $this->result($challenge)->original;
-                foreach ($results as $result) {
-                    if(($result['result'] >= 40 && $result['result'] <= 60) || $result['result'] >= 51 ){
-                        $count++;   
+                if($results){
+                    foreach ($results as $result) {
+                        if(($result['result'] >= 40 && $result['result'] <= 60) || $result['result'] >= 51 ){
+                            $count++;   
+                        }
                     }
-                }
-                foreach ($data['data'] as $d) {
-                    if($d->submitChallenge->first()->isWinner){
-                        $isWinner++;
+                    foreach ($data['data'] as $d) {
+                        if($d->submitChallenge->first()->isWinner){
+                            $isWinner++;
+                        }
                     }
-                }
-                if($isWinner <> 1){
-                    if($count == 1){
-                        foreach ($data['data'] as $value) {
-                            foreach ($results as $result) {
-                                if($value->user_id == $result['id'] && $result['result'] >= 51){
-                                    $submitedChallenge = $value->submitChallenge->first();
-                                    $this->saveWinner($submitedChallenge);
-                                    $value['isWinner'] = true;
+                    if($isWinner <> 1){
+                        if($count == 1){
+                            foreach ($data['data'] as $value) {
+                                foreach ($results as $result) {
+                                    if($value->user_id == $result['id'] && $result['result'] >= 51){
+                                        $submitedChallenge = $value->submitChallenge->first();
+                                        $this->saveWinner($submitedChallenge);
+                                        $value['isWinner'] = true;
+                                    }
                                 }
                             }
-                        }
-                    } else {
-                        $isNotification = Notification::where('id', $data['data'][0]->submitChallenge[0]->id )->exists();
-                        if(!$isNotification){
-                            foreach ($data['data'] as $challenger) {
-                                $notification = new Notification([
-                                    'user_id' => $challenger->user->id,
-                                    'title' => 'Challenge Submited', 
-                                    'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
-                                    'click_action' => 'ASK_RESULT_DIALOG', 
-                                ]);
-                                $challenger->user->notify(new AskCandidate);
-                                $challenger->submitChallenge[0]->notifications()->save($notification);
+                        } else {
+                            $isNotification = Notification::where('id', $data['data'][0]->submitChallenge[0]->id )->exists();
+                            if(!$isNotification){
+                                foreach ($data['data'] as $challenger) {
+                                    $notification = new Notification([
+                                        'user_id' => $challenger->user->id,
+                                        'title' => 'Challenge Submited', 
+                                        'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
+                                        'click_action' => 'ASK_RESULT_DIALOG', 
+                                    ]);
+                                    $challenger->user->notify(new AskCandidate);
+                                    $challenger->submitChallenge[0]->notifications()->save($notification);
+                                }
                             }
                         }
                     }
