@@ -29,7 +29,8 @@ class VoteObserver
                 'user_id' => $user->id,
                 'title' => 'Check Your Votes', 
                 'body' => $voter->name.' has Vote You on the Submited Challenge '.$challenge->title, 
-                'click_action' => 'CHALLENGE_DETAIL_SCREEN',
+                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
+                'data_id' => $vote->submitChallenges->accepted_challenge_id, 
             ]);
             $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
             $vote->notifications()->save($notification);
