@@ -29,7 +29,7 @@ class CategoriesTableSeeder extends Seeder
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Echo',
+            'name' => 'Eco',
             'created_at' => now()
         ]);
         Category::create([
