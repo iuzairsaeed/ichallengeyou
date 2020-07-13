@@ -58,8 +58,8 @@ class SettingsTableSeeder extends Seeder
             ],
             [
                 'name' => 'SECOND_VOTE_DURATION_IN_DAYS',
-                'value' => '2',
-                'type' => 'text',
+                'value' => 2,
+                'type' => 'number',
             ],
         ]);
     }
