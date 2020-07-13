@@ -1,24 +1,19 @@
 <?php
 
 namespace App\Observers;
-use Illuminate\Http\Request;
-use App\Models\Amount;
+use App\Models\Transaction;
 
-class AmountObserver
+class TransactionObserver
 {
     /**
      * Handle the submit challenge "created" event.
      *
-     * @param  \App\Amount  $Amount
+     * @param  \App\SubmitChallenge  $submitChallenge
      * @return void
      */
-    public function created(Amount $amount)
+    public function created(SubmitChallenge $submitChallenge)
     {
-        try {
-            dd($amount);
-        } catch (\Throwable $th) {
-            return response($th->getMessage() , 400);
-        }
+        //
     }
 
     /**

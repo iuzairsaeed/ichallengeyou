@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\Schema;
 use App\Console\Commands\ModelMakeCommand;
 use App\Models\User;
 use App\Models\Vote;
-use App\Models\Amount;
 use App\Models\Setting;
 use App\Models\Constant;
+use App\Models\Transaction;
 use App\Models\SubmitChallenge;
 use App\Observers\UserObserver;
-use App\Observers\AmountObserver;
 use App\Observers\VoteObserver;
+use App\Observers\AmountObserver;
+use App\Observers\TransactionObserver;
 use App\Observers\SubmitChallengeObserver;
 
 class AppServiceProvider extends ServiceProvider
@@ -65,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
         SubmitChallenge::observe(SubmitChallengeObserver::class);
         // For SubmitChallenge CRUD observer
         Vote::observe(VoteObserver::class);
-        // For Amount CRUD observer
-        Amount::observe(AmountObserver::class);
+        // For Transaction CRUD observer
+        Transaction::observe(TransactionObserver::class);
     }
 }
