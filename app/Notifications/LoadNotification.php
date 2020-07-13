@@ -8,19 +8,20 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class VoteNotification extends Notification implements ShouldQueue
+class LoadNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $accepted_challenge_id;
+    protected $amount;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($accepted_challenge_id)
+    public function __construct($amount)
     {
-        $this->accepted_challenge_id = $accepted_challenge_id;
+        $this->amount = $amount;
     }
 
     /**
@@ -38,21 +39,21 @@ class VoteNotification extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return  Benwilkins\FCM\FcmMessage;
      */
-    public function toFcm($notifiable)
+    public function toFcm($notifiable) 
     {
         $message = new FcmMessage();
         $message->content([
-            'title'        => 'Check Your Votes',
-            'body'         => 'You have been Voted',
-            'sound'        => '', // Optional
+            'title' => 'Balance Loaded Successfully!', 
+            'body' => $this->amount.' has been Successfully Added to your Account!', 
+            'sound'        => '', // Optional 
             'icon'         => 'favicon.ico', // Optional
-            'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
+            'click_action' =>'HOME_SCREEN', // Optional
         ])->data([
-            'data_id' => $this->accepted_challenge_id // Optional
+            'data_id' => auth()->id() // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
-
+        
         return $message;
     }
 

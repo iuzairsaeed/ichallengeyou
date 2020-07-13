@@ -20,6 +20,6 @@ class Transaction extends Model
 
     public function challenge()
     {
-        return $this->belongsTo(Challenge::class)->select(['id','title']);
+        return $this->belongsTo(Challenge::class)->select(['id','title','user_id']);
     }
 }
