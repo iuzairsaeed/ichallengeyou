@@ -57,6 +57,8 @@ class TransactionTableSeeder extends Seeder
             'user_id' => 2,
             'amount' => 150,
             'type' => 'withdraw',
+            'invoice_id' => "BITCOIN1-1234567893216540",
+            'invoice_type' => 'BITCOIN',
         ]);
         $transaction->save();
 

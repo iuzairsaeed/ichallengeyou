@@ -14,42 +14,67 @@ class CategoriesTableSeeder extends Seeder
     {
         Category::create([
             'category_id' => null,
-            'name' => 'Action',
-            'created_at' => now()
-        ]);
-        Category::create([
-            'category_id' => null,
-            'name' => 'Academics',
-            'created_at' => now()
-        ]);
-        Category::create([
-            'category_id' => null,
             'name' => 'Adventure',
             'created_at' => now()
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Eco',
+            'name' => 'Animal',
             'created_at' => now()
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Creativity',
+            'name' => 'Brave',
             'created_at' => now()
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Entertainment',
+            'name' => 'Charity',
             'created_at' => now()
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Health + Fitness',
+            'name' => 'Crazy',
             'created_at' => now()
         ]);
         Category::create([
             'category_id' => null,
-            'name' => 'Location-Based',
+            'name' => 'Creative',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Ecologic',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Funny',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Movies',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Music',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Sports',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'Stupid',
+            'created_at' => now()
+        ]);
+        Category::create([
+            'category_id' => null,
+            'name' => 'World Record',
             'created_at' => now()
         ]);
 	

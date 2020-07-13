@@ -19,51 +19,51 @@ class TransactionObserver
      */
     public function created(Transaction $transaction)
     {
-        $user = auth()->user();
+        $user = auth()->user() ;
         $transaction_type = $transaction->type;
         switch ($transaction_type) {
             case 'load':
                 Notification::create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $transaction->user_id,
                     'title' => 'Balance Loaded Successfully!', 
                     'body' => $transaction->amount.' has been Successfully Added to your Account!', 
                     'click_action' =>'HOME_SCREEN', 
-                    'data_id' => auth()->id(), 
+                    'data_id' => $transaction->user_id, 
                 ]);
-                $user->notify(new LoadNotification($transaction->amount));
+                $transaction->user->notify(new LoadNotification($transaction->amount));
                 break;
             case 'miscellaneous':
                 Notification::create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $transaction->user_id, 
                     'title' => 'Congratulation! ♥', 
                     'body' => 'By using '.config('global.PREMIUM_COST').' You\'re Premium User Now!', 
                     'click_action' =>'HOME_SCREEN', 
-                    'data_id' => auth()->id(), 
+                    'data_id' => $transaction->user_id, 
                 ]);
-                $user->notify(new MiscellaneousNotification());
+                $transaction->user->notify(new MiscellaneousNotification());
                 break;
             case 'withdraw':
                 Notification::create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $transaction->user_id,
                     'title' => 'Withdrawal Transaction',
                     'body' => $transaction->amount.' has been debited', 
                     'click_action' =>'HOME_SCREEN', 
-                    'data_id' => auth()->id(), 
+                    'data_id' => $transaction->user_id, 
                 ]);
-                $user->notify(new WithdrawalNotification($transaction->amount));
+                $transaction->user->notify(new WithdrawalNotification($transaction->amount));
                 break;
             case 'donate':
                 Notification::create([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()->id() ?? 1,
                     'title' => 'You have Donated Successfully!',
                     'body' => $transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
-                $user->notify(new DonateNotification('current_user',$transaction->challenge_id));
+                $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id));
                 Notification::create([
                     'user_id' => $transaction->challenge->user->id,
-                    'title' => auth()->user()->name.' have Donated on Your Challenge '.$transaction->challenge->title,
+                    'title' => (auth()->user()->name ?? 'Seeder Test User' ).' have Donated on Your Challenge '.$transaction->challenge->title,
                     'body' => $transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
