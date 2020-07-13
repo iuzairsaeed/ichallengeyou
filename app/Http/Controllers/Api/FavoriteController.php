@@ -33,7 +33,7 @@ class FavoriteController extends Controller
         $withCount = [];
         $currentStatus = [];
         $withSums = ['amounts'];
-        $withSumsCol = ['amount'];
+        $withSumsCol = ['amounts.amount'];
         $addWithSums = [];
         $whereHas = null;
 
