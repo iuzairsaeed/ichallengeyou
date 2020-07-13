@@ -48,8 +48,10 @@ class VoteController extends Controller
                 if($submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'  ){
                     $res = 200;
                     $sub_id  = $submitedChallenge->id;
-                    $voted = Vote::all()->where('user_id',auth()->id());
-                    if($voted->first()){
+                    $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
+                    $voted = Vote::where('user_id',auth()->id())->first();
+                    // dd($acceptedChallenges);
+                    if($voted){
                         $data['message'] = 'You have already voted to another challenger!';
                         if( $voted = $voted->where('submited_challenge_id',$submitedChallenge->id)->first()){
                             $vote_up = $voted->vote_up = ($voted->vote_up == false) ? true : false ;
@@ -67,7 +69,7 @@ class VoteController extends Controller
                         $vote = [
                             'user_id' => auth()->id(),
                             'submited_challenge_id' => $sub_id,
-                            'vote_down' => true,
+                            'vote_up' => true,
                         ];
                         $this->model->create($vote);    
                     }
