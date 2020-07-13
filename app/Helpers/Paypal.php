@@ -4,7 +4,7 @@ function paypalAuth(){
 
     $curl = curl_init();
     $clientId = config('global.PAYPAL_CLIENT_ID');
-    $clientSecret = env('PAYPAL_CLIENT_SECRET');
+    $clientSecret = config('global.PAYPAL_CLIENT_SECRET');
     curl_setopt($curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
     curl_setopt_array($curl, array(
     CURLOPT_URL => "https://api.sandbox.paypal.com/v1/oauth2/token",
@@ -30,6 +30,7 @@ function paypalDetail($access_token,$pay_id)
 {
     $curl = curl_init();
     $clientId = config('global.PAYPAL_CLIENT_SECRET');
+    $clientSecret = config('global.PAYPAL_CLIENT_SECRET');
     $clientSecret = env('PAYPAL_CLIENT_SECRET');
     curl_setopt($curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
     curl_setopt_array($curl, array(
