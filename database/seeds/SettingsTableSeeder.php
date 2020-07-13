@@ -56,6 +56,11 @@ class SettingsTableSeeder extends Seeder
                 'value' => 'EEGikJpagcxHKy6abaKbDN1VgpS61ERo4owIbrlvumcFHlQIYayFZvD9OQnYZmUojNpOjcblDfUyj3Ge',
                 'type' => 'text',
             ],
+            [
+                'name' => 'SECOND_VOTE_DURATION_IN_DAYS',
+                'value' => '2',
+                'type' => 'text',
+            ],
         ]);
     }
 }
