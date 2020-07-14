@@ -49,11 +49,21 @@ class VoteController extends Controller
                     $res = 200;
                     $sub_id  = $submitedChallenge->id;
                     $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
-                    $voted = Vote::where('user_id',auth()->id())->first();
-                    // dd($acceptedChallenges);
-                    if($voted){
-                        $data['message'] = 'You have already voted to another challenger!';
-                        if( $voted = $voted->where('submited_challenge_id',$submitedChallenge->id)->first()){
+                    $isVoted = 0;
+                    $voters = Vote::where('user_id',auth()->id())->get();
+                    if($voters){
+                        foreach($acceptedChallenges as $acceptedChallenge){
+                            foreach($voters as $voter){
+                                if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
+                                    $isVoted++;
+                                }
+                            }
+                        }
+                        if($isVoted >= 1){
+                            $data['message'] = 'You have already voted to challenger!';
+                        }
+                        $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)->first();
+                        if($voted){
                             $vote_up = $voted->vote_up = ($voted->vote_up == false) ? true : false ;
                             $vote_down = $voted->vote_down = false ;
                             $voted->update();
