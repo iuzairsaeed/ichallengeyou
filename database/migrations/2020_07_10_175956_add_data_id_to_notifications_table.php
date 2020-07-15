@@ -26,7 +26,7 @@ class AddDataIdToNotificationsTable extends Migration
     public function down()
     {
         Schema::table('notifications', function (Blueprint $table) {
-            Schema::dropColumn('data_id');
+            $table->dropColumn('data_id');
         });
     }
 }
