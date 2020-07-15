@@ -18,6 +18,7 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('{challenge}/challengesDonations', 'ChallengeController@getDonations')->name('challenges.getDonations');
         Route::get('{challenge}/challengesAcceptors', 'AcceptedChallengeController@getAcceptors')->name('challenges.getAcceptors');
         Route::get('{challenge}/challengesSubmitors', 'AcceptedChallengeController@getSubmitors')->name('challenges.getSubmitors');
+        Route::get('{challenge}/voters', 'AcceptedChallengeController@voters')->name('challenges.voters');
         Route::resource('users','UserController');
         Route::get('usersList', 'UserController@getList')->name('users.getList');
         Route::resource('settings','SettingController');
@@ -25,6 +26,9 @@ Route::group(['namespace' => 'Web'], function () {
         Route::resource('amounts','AmountController');
         Route::get('amountsList', 'AmountController@getList')->name('amounts.getList');
     });
+
+    Route::resource('votes','VoteController');
+
 });
 
 Route::get('terms_conditions', 'Web\PageController@terms_conditions')->where('any', '.*');
