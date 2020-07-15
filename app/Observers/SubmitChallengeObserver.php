@@ -21,30 +21,30 @@ class SubmitChallengeObserver
     {
         try {
             $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
-            $user = $submitChallenge->acceptedChallenge->user;
+            $submitor = $submitChallenge->acceptedChallenge->user;
             $creater = $submitChallenge->acceptedChallenge->challenge->user;
-            $challenge = $submitChallenge->acceptedChallenge->challenge;        
+            $challenge = $submitChallenge->acceptedChallenge->challenge;   
             foreach ($donators as $donator) {
                 $notification[] = new Notification([
                     'user_id' => $donator->user->id,
                     'title' => 'Challenge Submited', 
-                    'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
+                    'body' => $submitor->name.' has been Submited the Challenge '.$challenge->title, 
                     'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $submitChallenge->accepted_challenge_id, 
                 ]);
-                $donator->user->notify(new ChallengeSubmited($submitChallenge->accepted_challenge_id));
+                $donator->user->notify(new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $donator, $submitor, $creater, $challenge));
             }
             $submitChallenge->notifications()->saveMany($notification);
 
             $createrNotification = new Notification([
                 'user_id' => $creater->id,
                 'title' => 'Challenge Submited', 
-                'body' => $user->name.' has been Submited the Challenge '.$challenge->title, 
+                'body' => $submitor->name.' has been Submited the Challenge '.$challenge->title, 
                 'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
                 'data_id' => $submitChallenge->accepted_challenge_id, 
             ]);
             $submitChallenge->notifications()->save($createrNotification);  
-            $creater->notify(new ChallengeSubmited($submitChallenge->accepted_challenge_id));
+            $creater->notify(new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $donator, $submitor, $creater, $challenge));
 
         } catch (\Throwable $th) {
             return response($th->getMessage() , 400);
@@ -59,7 +59,57 @@ class SubmitChallengeObserver
      */
     public function updated(SubmitChallenge $submitChallenge)
     {
-        
+        if($submitChallenge->isWinner == true){
+            $donators = $submitChallenge->acceptedChallenge->challenge->donations()->get();
+            $winner = $submitChallenge->acceptedChallenge->user;
+            $creater = $submitChallenge->acceptedChallenge->challenge->user;
+            $challenge = $submitChallenge->acceptedChallenge->challenge; 
+            $submitors =  $submitChallenge->acceptedChallenge->challenge->acceptedChallenges;
+            foreach ($donators as $donator) {
+                $notification[] = new Notification([
+                    'user_id' => $donator->user->id,
+                    'title' => 'Win Challenge', 
+                    'body' => $winner->name.' WIN the Challenge Donor '.$challenge->title, 
+                    'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN', 
+                    'data_id' => $challenge->id, 
+                ]);
+                $donator->user->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $donator, $winner, $creater, $challenge));
+            }
+            $submitChallenge->notifications()->saveMany($notification);
+    
+            $createrNotification = new Notification([
+                'user_id' => $creater->id,
+                'title' => 'Win Challenge', 
+                'body' => $winner->name.' WIN the Challenge Createer '.$challenge->title, 
+                'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN', 
+                'data_id' => $challenge->id, 
+            ]);
+            $submitChallenge->notifications()->save($createrNotification);
+            $creater->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $donator, $winner, $creater, $challenge));
+    
+            foreach ($submitors as $submitor) {
+                $submitorNotification[] = new Notification([
+                    'user_id' => $submitor->user_id,
+                    'title' => 'Win Challenge', 
+                    'body' => $winner->name.' WIN the Challenge submitor '.$challenge->title, 
+                    'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN', 
+                    'data_id' => $challenge->id, 
+                ]);
+                $submitor->user->notify(new ChallengeSubmited('toSubmitor', $challenge->id, $donator, $winner, $creater, $challenge));
+            }
+            $submitChallenge->notifications()->saveMany($submitorNotification);  
+
+            $winnerNotification = new Notification([
+                'user_id' => $winner->id,
+                'title' => 'Congratulations!! You have Won The Challenge WINNER', 
+                'body' => $winner->name.' WIN the Challenge '.$challenge->title, 
+                'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN', 
+                'data_id' => $challenge->id, 
+            ]);
+            $submitChallenge->notifications()->save($winnerNotification);  
+            $creater->notify(new ChallengeSubmited('toWinner', $challenge->id, $donator, $winner, $creater, $challenge));
+    
+        }
     }
 
     /**
