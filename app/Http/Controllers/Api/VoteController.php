@@ -45,13 +45,13 @@ class VoteController extends Controller
             $data['message'] = 'You can\'t Vote, your own Challenge';
             if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 
                 $data['message'] = 'The result of this Challenge is not based on Vote';
-                if($submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'  ){
+                if($submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'){
                     $res = 200;
                     $sub_id  = $submitedChallenge->id;
                     $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
                     $isVoted = 0;
                     $voters = Vote::where('user_id',auth()->id())->get();
-                    if($voters){
+                    if($voters->first()) {
                         foreach($acceptedChallenges as $acceptedChallenge){
                             foreach($voters as $voter){
                                 if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
@@ -65,6 +65,7 @@ class VoteController extends Controller
                         $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)->first();
                         if($voted){
                             $vote_up = $voted->vote_up = ($voted->vote_up == false) ? true : false ;
+                            ($vote_up == true) ? true : $voted->delete();
                             $vote_down = $voted->vote_down = false ;
                             $voted->update();
                             $data['message'] = ($vote_up == true) ? 'Your Vote has been casted Positive on this challenge.' : 'Your Vote has been removed' ;
@@ -99,13 +100,26 @@ class VoteController extends Controller
             if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 
                 $data['message'] = 'The result of this Challenge is not based on Vote';
                 if($submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'  ){
-                    $sub_id  = $submitedChallenge->id;
-                    $voted = Vote::all()->where('user_id',auth()->id());
                     $res = 200;
-                    if($voted){
-                        $data['message'] = 'You have already voted to another challenger!';
-                        if( $voted = $voted->where('submited_challenge_id',$submitedChallenge->id)->first()){
+                    $sub_id  = $submitedChallenge->id;
+                    $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
+                    $isVoted = 0;
+                    $voters = Vote::where('user_id',auth()->id())->get();
+                    if($voters->first()) {
+                        foreach($acceptedChallenges as $acceptedChallenge){
+                            foreach($voters as $voter){
+                                if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
+                                    $isVoted++;
+                                }
+                            }
+                        }
+                        if($isVoted >= 1){
+                            $data['message'] = 'You have already voted to challenger!';
+                        }
+                        $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)->first();
+                        if($voted){
                             $vote_down = $voted->vote_down = ($voted->vote_down == false) ? true : false ;
+                            ($vote_down == true) ? true : $voted->delete();
                             $vote_up = $voted->vote_up = false ;
                             $voted->update();
                             $data['message'] = ($vote_down == true) ? 'Your Vote has been casted Negative on this challenge.' : 'Your Vote has been removed' ;
