@@ -37,7 +37,7 @@ class SubmitChallengeController extends Controller
             $acceptedChallenges = $challenge->acceptedChallenges;
             $total_votes = 0;
             foreach ($acceptedChallenges as $value) {
-                $submitedChallenge = $value->submitChallenge->first();
+                $submitedChallenge = $value->submitChallenge;
                 $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
                 ->where('vote_up', true)
                 ->count();
@@ -79,7 +79,7 @@ class SubmitChallengeController extends Controller
             $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
             $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             collect($data['data'])->map(function ($item) {
-                $item['isWinner'] = $item->submitChallenge->first()->isWinner;
+                $item['isWinner'] = $item->submitChallenge->isWinner;
                 $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();
                 $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
             });
@@ -93,7 +93,7 @@ class SubmitChallengeController extends Controller
                         }
                     }
                     foreach ($data['data'] as $d) {
-                        if($d->submitChallenge->first()->isWinner){
+                        if($d->submitChallenge->isWinner){
                             $isWinner++;
                         }
                     }
@@ -102,14 +102,14 @@ class SubmitChallengeController extends Controller
                             foreach ($data['data'] as $value) {
                                 foreach ($results as $result) {
                                     if($value->user_id == $result['id'] && $result['result'] >= 51){
-                                        $submitedChallenge = $value->submitChallenge->first();
+                                        $submitedChallenge = $value->submitChallenge;
                                         $this->saveWinner($submitedChallenge);
                                         $value['isWinner'] = true;
                                     }
                                 }
                             }
                         } else {
-                            $isNotification = Notification::where('id', $data['data'][0]->submitChallenge[0]->id )->exists();
+                            $isNotification = Notification::where('id', $data['data'][0]->submitChallenge->id )->exists();
                             if(!$isNotification){
                                 foreach ($data['data'] as $challenger) {
                                     $notification = new Notification([

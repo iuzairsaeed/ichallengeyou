@@ -88,7 +88,7 @@ class VoteRepository implements RepositoryInterface
         $acceptedChallenges = $challenge->acceptedChallenges;
         $data = [];
         foreach ($acceptedChallenges as $key => $value) {
-            $submitedChallenge = $value->submitChallenge->first();
+            $submitedChallenge = $value->submitChallenge;
             $total_vote_up = $this->model->where('submited_challenge_id', $submitedChallenge->id)
             ->where('vote_up',true)
             ->count();
