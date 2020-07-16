@@ -75,10 +75,10 @@ class AcceptedChallengeController extends Controller
     {
         $orderableCols = ['user_id', 'created_at'];
         $searchableCols = [];
-        $whereChecks = ['challenge_id'];
-        $whereOps = ['='];
-        $whereVals = [$challenge->id];
-        $with = ['user'];
+        $whereChecks = ['id','challenge_id'];
+        $whereOps = ['=','='];
+        $whereVals = [$request->id,$challenge->id];
+        $with = ['user','submitFiles'];
         $withCount = [];
         $currentStatus = [];
         $withSums = [];

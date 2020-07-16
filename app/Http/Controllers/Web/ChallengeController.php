@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\ChallengeRepository;
+use App\Repositories\VoteRepository;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
 use App\Models\Challenge;
 use App\Models\Amount;
 use App\Models\Bid;
+use App\Models\Vote;
 
 class ChallengeController extends Controller
 {
@@ -72,12 +74,34 @@ class ChallengeController extends Controller
         // return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 
-    public function show(Challenge $challenge)
+    public function show(Challenge $challenge,Request $request)
     {
         try {
-            
+
+            $count = 0; $isWinner = 0;
+            $data = $this->getSubmitors($challenge,$request)->original;
+            $results = $this->result($challenge)->original;
+            if($results){
+                foreach ($results as $result) {
+                    if(($result['result'] >= 40 && $result['result'] <= 60) || $result['result'] >= 51 ){
+                        $count++;   
+                    }
+                }
+            }
+            if($isWinner <> 1){
+                if($count == 1){
+                    foreach ($data['data'] as $value) {
+                        foreach ($results as $result) {
+                            if($value->user_id == $result['id'] && $result['result'] >= 51){
+                                $value['isWinner'] = true;
+                            }
+                        }
+                    }
+                }
+            }
+            $winner = optional($data['data'])->where('isWinner',1)->first();
             $challenge = $challenge->where('id' , $challenge->id)->first();
-            return view('challenges.show', compact('challenge'));
+            return view('challenges.show', compact('challenge','winner'));
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -180,9 +204,54 @@ class ChallengeController extends Controller
         });
         return response($data, 200);
     }
-    
-    
-    
-    
+
+    public function result(Challenge $challenge)
+    {
+        $vote = new Vote;
+        $this->model = new VoteRepository($vote);
+        try {
+            $acceptedChallenges = $challenge->acceptedChallenges;
+            $total_votes = 0;
+            foreach ($acceptedChallenges as $value) {
+                $submitedChallenge = $value->submitChallenge;
+                $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
+                ->where('vote_up', true)
+                ->count();
+            }   
+            $data = $this->model->getResult($challenge,$total_votes);
+            return response($data,200);
+        } catch (\Throwable $th) {
+            return response(null,400);
+        }
+    }
+
+    public function getSubmitors(Challenge $challenge, Request $request)
+    {
+        $model = new AcceptedChallenge;
+        $this->model = new ChallengeRepository($model);
+
+        $orderableCols = ['user_id', 'created_at'];
+        $searchableCols = [];
+        $whereChecks = ['challenge_id'];
+        $whereOps = ['='];
+        $whereVals = [$challenge->id];
+        $with = ['user','submitFiles'];
+        $withCount = [];
+        $currentStatus = [];
+        $withSums = [];
+        $withSumsCol = [];
+        $addWithSums = [];
+        $whereHas = 'submitChallenge';
+
+        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+        $serial = ($request->start ?? 0) + 1;
+        collect($data['data'])->map(function ($item) use (&$serial) {
+            $item['isWinner'] = $item->submitChallenge->first()->isWinner ? 'Winner' : '-';
+            $item['serial'] = $serial++;
+            return $item;
+        });
+        return response($data, 200);
+    }
     
 }

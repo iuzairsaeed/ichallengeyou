@@ -57,6 +57,11 @@ class SettingsTableSeeder extends Seeder
                 'type' => 'text',
             ],
             [
+                'name' => 'ASK_CANDIDATES_DURATION_IN_HOURS',
+                'value' => 24,
+                'type' => 'number',
+            ],
+            [
                 'name' => 'SECOND_VOTE_DURATION_IN_DAYS',
                 'value' => 2,
                 'type' => 'number',

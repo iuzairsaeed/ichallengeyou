@@ -109,7 +109,11 @@ class SubmitChallengeController extends Controller
                                 }
                             }
                         } else {
-                            $isNotification = Notification::where('id', $data['data'][0]->submitChallenge->id )->exists();
+                            $isNotification = Notification::where('notifiable_id', $data['data'][0]->submitChallenge->id )
+                                ->where('notifiable_type', 'App\Models\SubmitChallenge' )
+                                ->where('click_action', 'ASK_RESULT_DIALOG' )
+                                ->exists();
+                            // dd(!$isNotification );
                             if(!$isNotification){
                                 foreach ($data['data'] as $challenger) {
                                     $notification = new Notification([
@@ -119,7 +123,7 @@ class SubmitChallengeController extends Controller
                                         'click_action' => 'ASK_RESULT_DIALOG', 
                                     ]);
                                     $challenger->user->notify(new AskCandidate);
-                                    $challenger->submitChallenge[0]->notifications()->save($notification);
+                                    $challenger->submitChallenge->notifications()->save($notification);
                                 }
                             }
                         }
@@ -139,10 +143,10 @@ class SubmitChallengeController extends Controller
             $data['data'] = $acceptedChallenge;
             if($data['data']->submitChallenge->first()){
                 collect($data)->map(function($item) {
-                    $item['submited_challenge_id'] = $item->submitChallenge[0]->id;
+                    $item['submited_challenge_id'] = $item->submitChallenge->id;
                     $item['title'] = $item->challenge->title;
                     $item['description'] = $item->challenge->description;
-                    $item['submit_date'] = $item->submitChallenge[0]->created_at->format('Y-m-d H:i A');
+                    $item['submit_date'] = $item->submitChallenge->created_at->format('Y-m-d H:i A');
                     $item['files'] = $item->submitFiles->pluck('file');
                     $item['voteUp'] = $item->submitChallenge->first()->votes()
                     ->where('user_id',auth()->id())
@@ -152,8 +156,7 @@ class SubmitChallengeController extends Controller
                     ->where('vote_down',true)->first();
                     $item['voteBtn'] = ($item->challenge->result_type === 'vote') ? true : false;
                 });
-
-                $data = SubmitChallengeDetailCollection::collection($data);
+                   $data = SubmitChallengeDetailCollection::collection($data);
                 return response($data,200);
             }
             return response(['message'=>'There is No Submited Challenge'], 207);
@@ -214,7 +217,7 @@ class SubmitChallengeController extends Controller
                 $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';
                 if(!$isDonator){
                     $data['message'] = 'You can\'t add video due to Submited Challenge!'; $res = 400;
-                    if(!$challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitChallenge->first()){
+                    if(!optional($challenge->acceptedChallenges()->where('user_id', auth()->id())->first())->submitChallenge){
                         $files = $request->file;
                         $after_date = $challenge->after_date;
                         $data['message'] = 'You are out of time!'; $res = 400;
@@ -232,6 +235,7 @@ class SubmitChallengeController extends Controller
                 }
             }
         } catch (\Throwable $th) {
+            return response($th, $res);
             $data['message'] = 'You need to accept challenge first';
             $res = 400;
         }    

@@ -98,15 +98,44 @@
                                         <p>{{$challenge->created_at->format(config('global.DATE_FORMAT'))??'-'}}</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div><br>
 
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="text-bold-700">Description</label>
                                         <p class="font"> {{ print(nl2br($challenge->description)??'-') }}  </p>
                                     </div>
-                                </div>
+                                </div>   
+                            </div>
+
+                            <div class="row">
+                                @if (now() > $challenge->after_date )
+                                    @if ($winner)
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="text-bold-700">Winner </label> 
+                                                <p class="font text-bold-500"> {{ (optional(optional($winner)->user)->name)?? ' ' }}  <i class="icon-trophy"></i></p>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label class="text-bold-700">Voters on this challenge </label>
+                                                <div class="input-group">
+                                                    <div class="custom-control custom-radio display-inline-block pr-3">
+                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_active3" value='donators' {{($challenge->allowVoter == 'donators') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label" for="is_active1">Donators</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio display-inline-block">
+                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_active4" value='premiumUsers' {{($challenge->allowVoter == 'premiumUsers') ? 'checked' :'' }}>
+                                                        <label class="custom-control-label" for="is_active2">Donators & Premium Users</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
                             </div>
                             
                             <div class="row">
@@ -263,32 +292,37 @@
         </div>
     </div>
     
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title-wrap">
-                        <h4 class="card-title">Voters</h4>
-                        <p class="card-text">Here you can see the list of Voters.</p>
-                    </div>
+    <div class="modal fade text-left" id="editSubmitorDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h3 class="modal-title" id="myModalLabel3">Submitted Challenge Detial</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="card-body">
-                    <div class="card-block table-responsive">
+                <div class="modal-body">
+                    <form action="POST" name="updateSubmitorDetail" id="updateSubmitorDetail">
+                        @csrf
                         <div class="row">
-                            <table class="table table-striped table-bordered" id="votersTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Voter</th>
-                                        <th>Vote Up</th>
-                                        <th>Vote Down</th>
-                                        <th>Created At</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="text-bold-700" for="name">Name</label>
+                                    <p id="name"></p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                       
+                        <div class="form-actions center pb-0">
+                            <input type="hidden" id="id" name="id">
+                            <button type="reset" data-dismiss="modal" class="btn btn-raised btn-danger mr-1">
+                                <i class="icon-trash"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn btn-raised btn-success">
+                                <i class="icon-note"></i> Update
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -420,8 +454,10 @@
             { data: 'user.name' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenges/${full.id}" class="info success" title="View">
-                                            <i class="ft-eye font-medium-3"></i>
+                // console.log(full);
+                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal" 
+                                        data-keyboard="false" data-target="#editSubmitorDetail">
+                                            <i class="ft-edit font-medium-3"></i>
                                         </a>`;
                                 }
             }
@@ -429,6 +465,53 @@
         columnDefs: [
             { orderable: false, targets: [-1, -2] }
         ],
+    });
+
+    $('#editSubmitorDetail').on('show.bs.modal',function(event){
+
+        const button = $(event.relatedTarget);
+        const id = button.data('id');
+        var datas = null;
+        $.ajax({
+            url: '{{ route("challenges.getSubmitor", $challenge->id) }}', 
+            data: {id:id},
+            success: function(data){
+                console.log(data);
+            }
+        });
+        // var type = jQuery.type(value);
+        // if(type == 'number'){
+        //     $("#valueDiv").html('<input type="number" class="form-control border-primary" id="value" name="value" value="" novalidate required>');
+        // } else if (type == 'string'){
+        //     $("#valueDiv").html('<textarea class="form-control border-primary" id="value" name="value" novalidate required></textarea>');
+        // } 
+        // const id = button.data('id');
+        // const modal = $(this);
+        // $(this).find('.modal-body #name').text(name);
+        // $(this).find('.modal-body #value').val(valueOriginal);
+        // $(this).find('.modal-body #id').val(id);
+    });
+
+    $('#updateSubmitorDetail').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "PUT",
+            url: "/settings/"+$('.modal-body #id').val(),
+            data: {
+                value: $('.modal-body #value').val()
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success:function(data){
+                swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
+                $('#dTable').DataTable().ajax.reload();
+                $('#editSubmitorDetail').modal('hide');
+            },
+            error: function (e) {
+                swal("Error!", "There has been some error!", "error");
+            }
+        });
     });
     
     $('#votersTable').DataTable({

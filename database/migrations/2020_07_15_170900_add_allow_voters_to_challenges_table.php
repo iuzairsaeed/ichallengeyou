@@ -14,7 +14,7 @@ class AddAllowVotersToChallengesTable extends Migration
     public function up()
     {
         Schema::table('challenges', function (Blueprint $table) {
-            $table->enum('allowVoter', ['donators','premiumUsers'])->default('donators');
+            $table->enum('allowVoter', ['donators','premiumUsers','admin'])->default('donators');
         });
     }
 

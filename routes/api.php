@@ -75,5 +75,10 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{challenge}', 'BidController@store');
         });
         Route::get('user/list', 'UserController@getAllUsers');
+        Route::group(['prefix' => 'ask'], function () {
+            Route::get('/', 'AskCandidateController@index');
+            Route::post('{challenge}', 'AskCandidateController@store');
+            Route::get('{challenge}/result', 'AskCandidateController@result');
+        });
     });
 });
