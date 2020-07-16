@@ -36,7 +36,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->user_id, 
                     'title' => 'Congratulation! ♥', 
-                    'body' => 'By using '.config('global.PREMIUM_COST').' You\'re Premium User Now!', 
+                    'body' => 'By using $'.config('global.PREMIUM_COST').' You\'re Premium User Now!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
