@@ -17,6 +17,7 @@ class NotificationCollection extends JsonResource
         return [
             'data_id' => $this->data_id ?? 0,
             'title' => $this->title,
+            'serial' => $this->serial,
             'body' => $this->body,
             'type' => $this->notifiable_type,
             'file' => $this->file ?? '',

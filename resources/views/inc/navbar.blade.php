@@ -21,6 +21,9 @@
               <div class="arrow_box_right">
                 <div class="noti-list">
                   @foreach ($notifications ?? '' as $item)
+                    @if($item->click_action == '')
+                    
+                    @endif
                     <a class="dropdown-item noti-container py-2">
                       <div class="row noti-wrapper">
                         <span class="noti-wrapper">
