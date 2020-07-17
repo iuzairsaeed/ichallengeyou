@@ -2,20 +2,22 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
-use App\Console\Commands\ModelMakeCommand;
+use View;
 use App\Models\User;
 use App\Models\Vote;
 use App\Models\Setting;
 use App\Models\Constant;
 use App\Models\Transaction;
+use App\Models\Notification;
 use App\Models\SubmitChallenge;
 use App\Observers\UserObserver;
 use App\Observers\VoteObserver;
 use App\Observers\AmountObserver;
 use App\Observers\TransactionObserver;
 use App\Observers\SubmitChallengeObserver;
+use App\Console\Commands\ModelMakeCommand;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -68,5 +70,6 @@ class AppServiceProvider extends ServiceProvider
         Vote::observe(VoteObserver::class);
         // For Transaction CRUD observer
         Transaction::observe(TransactionObserver::class);
+        View::share('notifications', Notification::latest()->limit(8)->get());
     }
 }

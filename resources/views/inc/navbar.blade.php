@@ -14,6 +14,27 @@
     <div class="navbar-container">
       <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav">
+          <li class="dropdown nav-item mt-1"><a id="dropdownBasic2" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle"><i class="ft-bell blue-grey darken-4">
+          </i><span class="notification badge badge-pill badge-danger">{{ $notifications->count() }}</span>
+            <p class="d-none">Notifications</p></a>
+            <div class="notification-dropdown dropdown-menu dropdown-menu-right" style="width: 450px">
+              <div class="arrow_box_right">
+                <div class="noti-list">
+                  @foreach ($notifications ?? '' as $item)
+                    <a class="dropdown-item noti-container py-2">
+                      <div class="row noti-wrapper">
+                        <span class="noti-wrapper">
+                          <span class="noti-title line-height-1 d-block text-bold-400 info">{{$item->title}}</span>
+                          <span class="noti-text">{{$item->body}}</span>
+                        </span>
+                      </div>
+                    </a>
+                  @endforeach
+                </div>
+                <a href="notifications" class="noti-footer primary text-center d-block border-top border-top-blue-grey border-top-lighten-4 text-bold-400 py-1">See All</a>
+              </div>
+            </div>
+          </li>
           <li class="dropdown nav-item mr-0">
             <a id="dropdownBasic3" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-user-link dropdown-toggle">
               <span class="avatar avatar-online">
@@ -31,6 +52,7 @@
               </div>
             </div>
           </li>
+
         </ul>
       </div>
     </div>

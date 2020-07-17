@@ -27,9 +27,12 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('settingsList', 'SettingController@getList')->name('settings.getList');
         Route::resource('amounts','AmountController');
         Route::get('amountsList', 'AmountController@getList')->name('amounts.getList');
+        Route::resource('votes','VoteController');
+        Route::get('getNotifications','NotificationController@getNotifications')->name('notification.getNotifications');
+        Route::resource('notifications','NotificationController');
     });
-
-    Route::resource('votes','VoteController');
+    
+    
 
 });
 

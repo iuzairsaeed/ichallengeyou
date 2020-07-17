@@ -99,7 +99,7 @@ class ChallengeController extends Controller
                     }
                 }
             }
-            $winner = optional($data['data'])->where('isWinner',1)->first();
+            $winner = optional($data['data'])->where('isWinner','Winner')->first();
             $challenge = $challenge->where('id' , $challenge->id)->first();
             return view('challenges.show', compact('challenge','winner'));
         } catch (\Throwable $th) {
@@ -247,7 +247,7 @@ class ChallengeController extends Controller
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
-            $item['isWinner'] = $item->submitChallenge->first()->isWinner ? 'Winner' : '-';
+            $item['isWinner'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
             $item['serial'] = $serial++;
             return $item;
         });

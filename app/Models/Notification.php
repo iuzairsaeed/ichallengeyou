@@ -10,10 +10,6 @@ class Notification extends Model
          'user_id', 'title', 'body', 'click_action','data_id'
     ];
 
-    protected $hidden = [
-        'user_id'
-    ];
-
     protected $with = [
         'challenge'
     ];
@@ -26,6 +22,11 @@ class Notification extends Model
     public function challenge()
     {
         return $this->belongsTo(Challenge::class);
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function vote()

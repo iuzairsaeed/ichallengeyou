@@ -19,7 +19,7 @@ class NotificationCollection extends JsonResource
             'title' => $this->title,
             'body' => $this->body,
             'type' => $this->notifiable_type,
-            'file' => $this->file ?? 0,
+            'file' => $this->file ?? '',
             'click_action' => $this->click_action,
             'created_at' => $this->created_at,
         ];

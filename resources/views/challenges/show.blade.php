@@ -10,6 +10,7 @@
                         <h4 class="card-title">Challenge Detail</h4>
                     </div>
                 </div>
+                {{-- {{dd($notifications[0]->notifiable->acceptedChallenge->challenge->file)}} --}}
                 <div class="card-body px-4">
                     <div class="border-bottom mb-4">
                         <div class="align-self-center halfway-fab text-center mb-4">
