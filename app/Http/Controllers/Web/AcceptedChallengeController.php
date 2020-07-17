@@ -96,4 +96,14 @@ class AcceptedChallengeController extends Controller
         });
         return response($data, 200);
     }
+
+    public function updateWinner(Request $request) {
+        if($request->value == 'yes'){
+            $acceptedChallenge = AcceptedChallenge::findOrFail($request->id);
+            $submitChallenge = $acceptedChallenge->submitChallenge;
+            $submitChallenge->isWinner = true;
+            $submitChallenge->update();
+        }
+        return true;
+    }
 }

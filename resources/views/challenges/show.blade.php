@@ -292,8 +292,8 @@
         </div>
     </div>
     
-    <div class="modal fade text-left" id="editSubmitorDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade text-left " id="editSubmitorDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+        <div class="modal-lg modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-success">
                     <h3 class="modal-title" id="myModalLabel3">Submitted Challenge Detial</h3>
@@ -305,11 +305,79 @@
                     <form action="POST" name="updateSubmitorDetail" id="updateSubmitorDetail">
                         @csrf
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="text-bold-700" for="name">Name</label>
-                                    <p id="name"></p>
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="card-title">Submitted Challenge</h4>
+                                            <input type="hidden" name="submit_challenge_id" id="submitedChallengeID">
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="card-block">
+                                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner" role="listbox">
+                                                {{-- Submited MEdia --}}
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carousel-example-generic" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carousel-example-generic" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="card-title">Submitted Date Time</h4>
+                                            <div class="submit_date">
+                                                {{-- Submited Date --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="card-title">Submitor Detail</h4>
+                                            <div class="submitor">
+                                                {{-- Submitor Detail  --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="card-title">Marked As Winner</h4>
+                                            <div class="winner">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="custom-control custom-radio display-inline-block" style="margin:0px 10px">
+                                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner2" value="no">
+                                                                <label class="custom-control-label" for="is_winner2"> No </label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio display-inline-block pr-3" style="margin:0px 20px">
+                                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner1" value="yes">
+                                                                <label class="custom-control-label" for="is_winner1"> Yes </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                        
@@ -454,7 +522,6 @@
             { data: 'user.name' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                // console.log(full);
                                 return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal" 
                                         data-keyboard="false" data-target="#editSubmitorDetail">
                                             <i class="ft-edit font-medium-3"></i>
@@ -471,34 +538,62 @@
 
         const button = $(event.relatedTarget);
         const id = button.data('id');
+        $('#submitedChallengeID')[0].value = id;
         var datas = null;
         $.ajax({
             url: '{{ route("challenges.getSubmitor", $challenge->id) }}', 
             data: {id:id},
-            success: function(data){
-                console.log(data);
+            dataType: "json",
+            success: function(res){
+                let submit_files = res.data[0].submit_files;
+                let submitted_date = res.data[0].submit_challenge.created_at;
+                let user = res.data[0].user;
+                console.log(res.data)
+                if(res.data[0].submit_challenge.isWinner == true ){
+                    $('#is_winner1')[0].checked= true;
+                } else {
+                    $('#is_winner2')[0].checked= true;
+                }
+
+                $('.carousel-inner').empty();
+                for(let i=0 ; i < submit_files.length ; i++){
+                    $('.carousel-inner').append(
+                        `<div class="carousel-item">
+                            <iframe src="/`+submit_files[i].file+`" width="100%" height="300px"></iframe>
+                        </div>`
+                    );
+                }
+                $(".carousel-inner").find( "div" ).eq( 0 ).addClass( "active" );
+                $('.submit_date').html(
+                    `<p>`+submitted_date+`</p>`
+                );
+                $('.submitor').html(
+                    `<div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <img src="/`+user.avatar+`" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
+                                <p style="margin:10px" >`+user.name+`</p>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
+                
+
+
             }
         });
-        // var type = jQuery.type(value);
-        // if(type == 'number'){
-        //     $("#valueDiv").html('<input type="number" class="form-control border-primary" id="value" name="value" value="" novalidate required>');
-        // } else if (type == 'string'){
-        //     $("#valueDiv").html('<textarea class="form-control border-primary" id="value" name="value" novalidate required></textarea>');
-        // } 
-        // const id = button.data('id');
-        // const modal = $(this);
-        // $(this).find('.modal-body #name').text(name);
-        // $(this).find('.modal-body #value').val(valueOriginal);
-        // $(this).find('.modal-body #id').val(id);
     });
 
     $('#updateSubmitorDetail').submit(function(e){
         e.preventDefault();
         $.ajax({
-            type: "PUT",
-            url: "/settings/"+$('.modal-body #id').val(),
+            url: "{{ route('submitor.winner') }}",
+            method: "POST",
+            dataType: 'json',
             data: {
-                value: $('.modal-body #value').val()
+                id : $('#submitedChallengeID').val(),
+                value : $('input[name="is_winner"]:checked').val()
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

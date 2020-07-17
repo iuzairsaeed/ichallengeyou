@@ -38,8 +38,7 @@ class NotificationController extends Controller
                 #ModelType = SubmitedChallenge
                 $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->accepted_challenge_id;
-            } else { 
-                #ModelType = Vote
+            } elseif(optional(optional($item->notifiable)->submitChallenges)->challenge) { 
                 $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
             }
