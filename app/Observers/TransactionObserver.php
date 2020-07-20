@@ -80,13 +80,15 @@ class TransactionObserver
                 ]);
                 break;
             case 'donate':
+                // TO USER
                 Notification::create([
-                    'user_id' => auth()->id() ?? 1,
+                    'user_id' => auth()->id() ?? 2,
                     'title' => 'You have Donated Successfully!',
                     'body' => $transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
+                // TO Challenge Owner
                 $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id));
                 Notification::create([
                     'user_id' => $transaction->challenge->user->id,
@@ -96,6 +98,14 @@ class TransactionObserver
                     'data_id' => $transaction->challenge_id, 
                 ]);
                 $transaction->challenge->user->notify(new DonateNotification('creater',$transaction->challenge_id,$transaction->challenge->title));
+                // TO ADMIN
+                Notification::create([
+                    'user_id' => 1,
+                    'title' => ($transaction->user->name ?? 'Seeder Test User' ).' have Donated on Challenge '.$transaction->challenge->title,
+                    'body' => $transaction->amount.' has been donated', 
+                    'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
+                    'data_id' => $transaction->challenge_id, 
+                ]);
                 break;
             
             default:
