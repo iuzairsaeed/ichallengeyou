@@ -40,6 +40,7 @@ class TransactionController extends Controller
                     ];
                     $this->model->create($transaction);
                     $data['message'] = 'You have withdrown $'.$amount.'. Your total balance is '.($user->balance ?? '$0') ;
+                    $data['balance'] =  $user->balance ?? '$0';
                     $res = 200;
                 }
             }

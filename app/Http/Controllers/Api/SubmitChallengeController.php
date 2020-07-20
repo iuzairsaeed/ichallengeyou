@@ -113,7 +113,6 @@ class SubmitChallengeController extends Controller
                                 ->where('notifiable_type', 'App\Models\SubmitChallenge' )
                                 ->where('click_action', 'ASK_RESULT_DIALOG' )
                                 ->exists();
-                            // dd(!$isNotification );
                             if(!$isNotification){
                                 foreach ($data['data'] as $challenger) {
                                     $notification = new Notification([
