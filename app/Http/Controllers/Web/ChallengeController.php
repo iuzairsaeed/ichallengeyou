@@ -155,9 +155,9 @@ class ChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
         $orderableCols = ['user_id', 'amount', 'created_at'];
         $searchableCols = [];
-        $whereChecks = ['challenge_id'];
-        $whereOps = ['='];
-        $whereVals = [$id];
+        $whereChecks = ['challenge_id', 'type'];
+        $whereOps = ['=','='];
+        $whereVals = [$id, 'donation'];
         $with = ['user'];
         $withCount = [];
         $currentStatus = [];
