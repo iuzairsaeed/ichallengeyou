@@ -26,7 +26,7 @@ class TransactionController extends Controller
         try {
             $res = 400;
             $data['message'] = "Please Enter any Amount";
-            if(!$amount){
+            if($amount){
                 $data['message'] = "Your withdrwal amount can not be greater than your current Balance.";
                 if($amount <= (float)$user->getAttributes()['balance']){
                     $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
