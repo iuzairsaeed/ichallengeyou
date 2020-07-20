@@ -117,13 +117,20 @@ class SubmitChallengeController extends Controller
                                 foreach ($data['data'] as $challenger) {
                                     $notification = new Notification([
                                         'user_id' => $challenger->user->id,
-                                        'title' => 'Challenge Submited', 
+                                        'title' => 'Result has been tied', 
                                         'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
                                         'click_action' => 'ASK_RESULT_DIALOG', 
                                     ]);
                                     $challenger->user->notify(new AskCandidate);
                                     $challenger->submitChallenge->notifications()->save($notification);
                                 }
+                                $adminNotification = new Notification([
+                                    'user_id' => 1,
+                                    'title' => 'Result has been tied', 
+                                    'body' => 'Result has been tied on the challenge ',
+                                    'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
+                                ]);
+                                $challenger->submitChallenge->notifications()->save($adminNotification);
                             }
                         }
                     }
