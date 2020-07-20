@@ -94,7 +94,7 @@
             { data: 'name' },
             { data: 'value' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-valueOriginal="${full.valueOriginal}" data-value="${full.value}"  data-toggle="modal" data-keyboard="false" data-target="#editSetting">
+                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-type="${full.type}" data-name="${full.name}" data-valueOriginal="${full.valueOriginal}" data-value="${full.value}"  data-toggle="modal" data-keyboard="false" data-target="#editSetting">
                                             <i class="ft-edit font-medium-3"></i>
                                         </a>`;  }
             }
@@ -109,12 +109,15 @@
         const button = $(event.relatedTarget);
         const name = button.data('name');
         const value = button.data('value');
+        const type = button.data('type');
+        console.log(type);
         const valueOriginal = button.data('valueoriginal');
-        var type = jQuery.type(value);
         if(type == 'number'){
             $("#valueDiv").html('<input type="number" class="form-control border-primary" id="value" name="value" value='+valueOriginal+' novalidate required>');
-        } else if (type == 'string'){
+        } else if (type == 'textarea'){
             $("#valueDiv").html('<textarea class="form-control border-primary" id="value" name="value" novalidate required>'+valueOriginal+'</textarea>');
+        } else if (type == 'text'){
+            $("#valueDiv").html('<input type="text" class="form-control border-primary" id="value" name="value" value='+valueOriginal+' novalidate required>');
         } 
         const id = button.data('id');
         const modal = $(this);

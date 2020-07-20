@@ -45,7 +45,7 @@ class AskCandidateController extends Controller
     public function store(Challenge $challenge,Request $request)
     {
         $message['message'] = 'You\'re out of time!';
-        if( now() <= $challenge->start_time->addMinutes(config('global.ASK_CANDIDATES_DURATION_IN_HOURS')) ) {
+        if( now() <= $challenge->after_date->addHours(config('global.ASK_CANDIDATES_DURATION_IN_HOURS')) ) {
             $isVote = AskCandidate::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
             $message['message'] = 'Thanks, We have already got your Recommendation';
             if(!$isVote){
@@ -54,6 +54,7 @@ class AskCandidateController extends Controller
                     'user_id' => auth()->id(),
                     'challenge_id' => $challenge->id,
                     'vote' => $request->vote,
+                    'updated_at' => now()->addHours(config('global.ASK_CANDIDATES_DURATION_IN_HOURS')),
                 ]; 
                 $this->model->create($data);
             }

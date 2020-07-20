@@ -13,7 +13,7 @@ class getCandidatesResult extends Command
      *
      * @var string
      */
-    protected $signature = 'result:get';
+    protected $signature = 'get:result';
 
     /**
      * The console command description.
@@ -39,7 +39,12 @@ class getCandidatesResult extends Command
      */
     public function handle()
     {
-        dd($this->result(1));
+        $challenges = AskCandidate::where('updated_at' , '>=' , now())->latest()->get()->unique('challenge_id');
+        foreach ($challenges as $value) {
+            $challenge = Challenge::findOrFail($value->challenge_id);
+            $res = $this->result($challenge);
+            $this->info($res['message']);
+        }
     }
 
     public function result(Challenge $challenge) {

@@ -11,6 +11,6 @@ class AskCandidate extends Model
         'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
     ];
 
-    protected $fillable = ['user_id','challenge_id','vote'];
+    protected $fillable = ['user_id','challenge_id','vote','updated_at'];
 
 }
