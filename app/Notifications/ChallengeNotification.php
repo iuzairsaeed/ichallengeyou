@@ -8,20 +8,22 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class LoadNotification extends Notification implements ShouldQueue
+class ChallengeNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $amount;
+    protected $challenge_id;
+    protected $challenge_name;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($amount)
+    public function __construct($challenge_id, $challenge_name)
     {
-        $this->amount = $amount;
+        $this->challenge_id = $challenge_id;
+        $this->challenge_name = $challenge_name;
     }
 
     /**
@@ -41,19 +43,19 @@ class LoadNotification extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return  Benwilkins\FCM\FcmMessage;
      */
-    public function toFcm($notifiable) 
+    public function toFcm($notifiable)
     {
-        $message = new FcmMessage();
+        $message = new FcmMessage(); 
         $message->content([
-            'title' => 'Balance Loaded Successfully!', 
-            'body' => '$'.$this->amount.' has been Successfully Added to your Account!', 
-            'sound'        => '', // Optional 
-            'icon'         => 'favicon.ico', // Optional
-            'click_action' =>'HOME_SCREEN', // Optional
+            'title' => 'New Challenge Created',
+            'body' => 'You have Created The Challenge '.$this->challenge_name, 
+            'sound' => '', // Optional
+            'icon' => 'favicon.ico', // Optional
+            'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
         ])->data([
-            'data_id' => auth()->id() // Optional
+            'data_id' => $this->challenge_id // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
-        
+
         return $message;
     }
 

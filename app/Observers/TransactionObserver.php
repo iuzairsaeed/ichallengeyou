@@ -50,7 +50,7 @@ class TransactionObserver
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
-                $transaction->user->notify(new MiscellaneousNotification());
+                $transaction->user->notify(new MiscellaneousNotification);
                 // TO ADMIN
                 Notification::create([
                     'user_id' => 1,
@@ -89,7 +89,7 @@ class TransactionObserver
                     'data_id' => $transaction->challenge_id, 
                 ]);
                 // TO Challenge Owner
-                $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id));
+                $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
                 Notification::create([
                     'user_id' => $transaction->challenge->user->id,
                     'title' => (auth()->user()->name ?? 'Seeder Test User' ).' have Donated on Your Challenge '.$transaction->challenge->title,
@@ -97,7 +97,7 @@ class TransactionObserver
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
-                $transaction->challenge->user->notify(new DonateNotification('creater',$transaction->challenge_id,$transaction->challenge->title));
+                $transaction->challenge->user->notify(new DonateNotification('creater',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
                 // TO ADMIN
                 Notification::create([
                     'user_id' => 1,
