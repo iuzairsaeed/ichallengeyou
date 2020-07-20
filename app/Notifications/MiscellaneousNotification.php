@@ -47,7 +47,7 @@ class MiscellaneousNotification extends Notification implements ShouldQueue
             'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').'. You\'re Premium User Now!',
             'sound'        => '', // Optional 
             'icon'         => 'favicon.ico', // Optional
-            'click_action' =>'HOME_SCREEN', // Optional
+            'click_action' => 'TRANSACTION_LIST', // Optional
         ])->data([
             'data_id' => auth()->id() // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.

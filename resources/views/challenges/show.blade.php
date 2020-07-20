@@ -395,7 +395,6 @@
             </div>
         </div>
     </div>
-    
 </section>
 @endsection
 
@@ -430,6 +429,7 @@
                                 }
             }
         ],
+        order: [0 , 'desc'],
         columnDefs: [
             { orderable: false, targets: [-1, -2] }
         ],

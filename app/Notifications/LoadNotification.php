@@ -49,7 +49,7 @@ class LoadNotification extends Notification implements ShouldQueue
             'body' => config('global.CURRENCY').' '.$this->amount.' has been Successfully Added to your Account!', 
             'sound'        => '', // Optional 
             'icon'         => 'favicon.ico', // Optional
-            'click_action' =>'HOME_SCREEN', // Optional
+            'click_action' => 'TRANSACTION_LIST', // Optional
         ])->data([
             'data_id' => auth()->id() // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.

@@ -28,7 +28,7 @@ class TransactionObserver
                     'user_id' => $transaction->user_id,
                     'title' => 'Balance Loaded Successfully!', 
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been Successfully Added to your Account!', 
-                    'click_action' =>'HOME_SCREEN', 
+                    'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new LoadNotification($transaction->amount));
@@ -37,7 +37,7 @@ class TransactionObserver
                     'user_id' => 1,
                     'title' => 'Load Balance', 
                     'body' => $transaction->user->name.' has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
-                    'click_action' =>'HOME_SCREEN', 
+                    'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
                 break;
@@ -47,7 +47,7 @@ class TransactionObserver
                     'user_id' => $transaction->user_id, 
                     'title' => 'Congratulation! ♥', 
                     'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' You\'re Premium User Now!', 
-                    'click_action' =>'HOME_SCREEN', 
+                    'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new MiscellaneousNotification);
@@ -56,7 +56,7 @@ class TransactionObserver
                     'user_id' => 1,
                     'title' => 'Miscellaneous Amount', 
                     'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' '.$transaction->user->name.' is Premium User Now!', 
-                    'click_action' =>'HOME_SCREEN', 
+                    'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
                 break;
@@ -66,7 +66,7 @@ class TransactionObserver
                     'user_id' => $transaction->user_id,
                     'title' => 'Withdrawal Transaction',
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been debited', 
-                    'click_action' =>'HOME_SCREEN', 
+                    'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new WithdrawalNotification($transaction->amount));
@@ -75,7 +75,7 @@ class TransactionObserver
                     'user_id' => 1,
                     'title' => 'Withdrawal Transaction',
                     'body' => $transaction->user->name.' has been debited '.config('global.CURRENCY').' '.$transaction->amount, 
-                    'click_action' =>'HOME_SCREEN', 
+                    'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
                 break;

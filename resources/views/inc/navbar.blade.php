@@ -15,27 +15,25 @@
       <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="dropdown nav-item mt-1"><a id="dropdownBasic2" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle"><i class="ft-bell blue-grey darken-4">
-          </i><span class="notification badge badge-pill badge-danger">{{ $notifications->count() }}</span>
+            </i><span class="notification badge badge-pill badge-danger">{{ $notifications->count() }}</span>
             <p class="d-none">Notifications</p></a>
-            <div class="notification-dropdown dropdown-menu dropdown-menu-right" style="width: 450px">
-              <div class="arrow_box_right">
-                <div class="noti-list">
+            <div class="notification-dropdown dropdown-menu dropdown-menu-right" style="width: 500px; height:500px">
+              <div class="arrow_box_right" >
+                <div class="noti-list" style="width: 500px; height:450px" >
                   @foreach ($notifications ?? '' as $item)
-                    @if($item->click_action == 'SUBMITED_CHALLENGE_DETAIL_SCREEN')
-                      <a href='' class="dropdown-item noti-container py-2">
-                    @endif
                     <a class="dropdown-item noti-container py-2">
                       <div class="row noti-wrapper">
                         <span class="noti-wrapper">
+                          <i class="ft-navigation info float-left d-block font-medium-4 mt-2 mr-2"></i>
                           <span class="noti-title line-height-1 d-block text-bold-400 info">{{$item->title}}</span>
-                          <span class="noti-text">{{$item->body}}</span>
+                          <p class="noti-text">{{$item->body}}</p>
                         </span>
                       </div>
                     </a>
                   @endforeach
                 </div>
-                <a href="notifications" class="noti-footer primary text-center d-block border-top border-top-blue-grey border-top-lighten-4 text-bold-400 py-1">See All</a>
               </div>
+              <a href="notifications" class="noti-footer primary text-center d-block border-top border-top-blue-grey border-top-lighten-1 text-bold-400 py-1">See All</a>
             </div>
           </li>
           <li class="dropdown nav-item mr-0">
