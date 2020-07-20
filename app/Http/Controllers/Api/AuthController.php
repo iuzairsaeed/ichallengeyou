@@ -32,7 +32,7 @@ class AuthController extends Controller
                 'avatar' => $user->avatar,
                 'is_premium' => $user->is_premium ?? false,
                 'is_admin' => $user->is_admin ?? false,
-                'balance' => $user->balance ?? '$0',
+                'balance' => $user->balance ?? config('global.CURRENCY').'0',
             ],
             'token' => $token,
             'expiration_minutes' => (int)config('sanctum.expiration')

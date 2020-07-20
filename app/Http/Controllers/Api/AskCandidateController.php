@@ -107,7 +107,6 @@ class AskCandidateController extends Controller
     }
 
     public function result(Challenge $challenge) {
-
         $admin = AskCandidate::where('challenge_id',$challenge->id)
                 ->where('vote','admin')->count();
         $premiumUsers = AskCandidate::where('challenge_id',$challenge->id)

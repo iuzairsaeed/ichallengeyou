@@ -46,7 +46,7 @@ class WithdrawalNotification extends Notification implements ShouldQueue
         $message = new FcmMessage();
         $message->content([
             'title' => 'Withdrawal Transaction',
-            'body' => '$'.$this->amount.' has been debited', 
+            'body' => config('global.CURRENCY').$this->amount.' has been debited', 
             'sound'        => '', // Optional 
             'icon'         => 'favicon.ico', // Optional
             'click_action' =>'HOME_SCREEN', // Optional

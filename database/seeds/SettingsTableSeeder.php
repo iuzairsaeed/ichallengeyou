@@ -15,7 +15,7 @@ class SettingsTableSeeder extends Seeder
         Setting::insert([
             [
                 'name' => 'CURRENCY',
-                'value' => '$',
+                'value' => 'USD',
                 'type' => 'text',
             ],
             [

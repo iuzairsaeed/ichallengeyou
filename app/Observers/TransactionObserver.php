@@ -27,7 +27,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->user_id,
                     'title' => 'Balance Loaded Successfully!', 
-                    'body' => '$'.$transaction->amount.' has been Successfully Added to your Account!', 
+                    'body' => config('global.CURRENCY').$transaction->amount.' has been Successfully Added to your Account!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -65,7 +65,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->user_id,
                     'title' => 'Withdrawal Transaction',
-                    'body' => '$'.$transaction->amount.' has been debited', 
+                    'body' => config('global.CURRENCY').$transaction->amount.' has been debited', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
