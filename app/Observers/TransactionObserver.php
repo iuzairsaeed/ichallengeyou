@@ -36,7 +36,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => 1,
                     'title' => 'Load Balance', 
-                    'body' => $transaction->user->name.'has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
+                    'body' => $transaction->user->name.' has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
