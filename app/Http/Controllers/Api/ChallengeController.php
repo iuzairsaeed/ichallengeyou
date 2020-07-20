@@ -324,7 +324,6 @@ class ChallengeController extends Controller
      */
     public function comment(Challenge $challenge, CreateCommentRequest $request)
     {
-        // dd($request->parent_id);
         $comment = new Comment([
             'parent_id' => $request->parent_id ?? 0,
             'user_id' => auth()->id(),
