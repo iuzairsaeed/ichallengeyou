@@ -24,11 +24,21 @@ class VoteObserver
             $voter = $vote->user;
             $user = $vote->submitChallenges->acceptedChallenge->user;
             $challenge = $vote->submitChallenges->acceptedChallenge->challenge;
-            $notificationModels = [];
+            // Challenger
             $notification = new Notification([
                 'user_id' => $user->id,
                 'title' => 'Check Your Votes', 
                 'body' => $voter->name.' has Vote You on the Submited Challenge '.$challenge->title, 
+                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
+                'data_id' => $vote->submitChallenges->accepted_challenge_id, 
+            ]);
+            $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+            $vote->notifications()->save($notification);
+            // Admin
+            $notification = new Notification([
+                'user_id' => 1,
+                'title' => 'Votes', 
+                'body' => $voter->name.' has Vote '.$user->name.' on the Submited Challenge of '.$challenge->title, 
                 'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
                 'data_id' => $vote->submitChallenges->accepted_challenge_id, 
             ]);
