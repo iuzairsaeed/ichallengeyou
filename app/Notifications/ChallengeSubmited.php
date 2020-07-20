@@ -63,7 +63,6 @@ class ChallengeSubmited extends Notification implements ShouldQueue
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
-
         }
         
         if($this->action === 'toDonator&Creator'){

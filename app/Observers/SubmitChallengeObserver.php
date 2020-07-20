@@ -24,6 +24,7 @@ class SubmitChallengeObserver
             $submitor = $submitChallenge->acceptedChallenge->user;
             $creater = $submitChallenge->acceptedChallenge->challenge->user;
             $challenge = $submitChallenge->acceptedChallenge->challenge;   
+            // Donators Notification
             foreach ($donators as $donator) {
                 $notification[] = new Notification([
                     'user_id' => $donator->user->id,
@@ -35,9 +36,19 @@ class SubmitChallengeObserver
                 $donator->user->notify(new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $donator, $submitor, $creater, $challenge));
             }
             $submitChallenge->notifications()->saveMany($notification);
-
+            // Creater Notification
             $createrNotification = new Notification([
                 'user_id' => $creater->id,
+                'title' => 'Challenge Submited', 
+                'body' => $submitor->name.' has been Submited the Challenge '.$challenge->title, 
+                'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
+                'data_id' => $submitChallenge->accepted_challenge_id, 
+            ]);
+            $submitChallenge->notifications()->save($createrNotification);  
+            $creater->notify(new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $donator, $submitor, $creater, $challenge));
+            // Admin Notification
+            $createrNotification = new Notification([
+                'user_id' => 1,
                 'title' => 'Challenge Submited', 
                 'body' => $submitor->name.' has been Submited the Challenge '.$challenge->title, 
                 'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 

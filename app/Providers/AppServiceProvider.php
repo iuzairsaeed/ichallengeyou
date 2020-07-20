@@ -70,6 +70,6 @@ class AppServiceProvider extends ServiceProvider
         Vote::observe(VoteObserver::class);
         // For Transaction CRUD observer
         Transaction::observe(TransactionObserver::class);
-        View::share('notifications', Notification::latest()->limit(8)->get());
+        View::share('notifications', Notification::where('user_id' , 1 )->latest()->limit(8)->get());
     }
 }
