@@ -103,7 +103,7 @@ class AuthController extends Controller
         $user->notify(new ForgotPasswordNotification($newPassword));
 
         return response([
-            'message' => 'An email has been sent to your account with new password. You should receive it within 5 minutes.'
+            'message' => 'An email has been sent to your account with new password.'
         ], 200);
     }
 
