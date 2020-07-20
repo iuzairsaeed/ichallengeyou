@@ -27,7 +27,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->user_id,
                     'title' => 'Balance Loaded Successfully!', 
-                    'body' => $transaction->amount.' has been Successfully Added to your Account!', 
+                    'body' => '$'.$transaction->amount.' has been Successfully Added to your Account!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -36,7 +36,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => 1,
                     'title' => 'Load Balance', 
-                    'body' => $transaction->user->name.'has Loaded '.$transaction->amount.' Balance Successfully!', 
+                    'body' => $transaction->user->name.'has Loaded $'.$transaction->amount.' Balance Successfully!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -61,14 +61,23 @@ class TransactionObserver
                 ]);
                 break;
             case 'withdraw':
+                // TO USER
                 Notification::create([
                     'user_id' => $transaction->user_id,
                     'title' => 'Withdrawal Transaction',
-                    'body' => $transaction->amount.' has been debited', 
+                    'body' => '$'.$transaction->amount.' has been debited', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new WithdrawalNotification($transaction->amount));
+                // TO ADMIN
+                Notification::create([
+                    'user_id' => 1,
+                    'title' => 'Withdrawal Transaction',
+                    'body' => $transaction->user->name.' has been debited $'.$transaction->amount, 
+                    'click_action' =>'HOME_SCREEN', 
+                    'data_id' => $transaction->user_id, 
+                ]);
                 break;
             case 'donate':
                 Notification::create([
