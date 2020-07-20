@@ -23,6 +23,7 @@ class TransactionObserver
         $transaction_type = $transaction->type;
         switch ($transaction_type) {
             case 'load':
+                // TO USER
                 Notification::create([
                     'user_id' => $transaction->user_id,
                     'title' => 'Balance Loaded Successfully!', 
@@ -31,8 +32,17 @@ class TransactionObserver
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new LoadNotification($transaction->amount));
+                // TO ADMIN
+                Notification::create([
+                    'user_id' => 1,
+                    'title' => 'Load Balance', 
+                    'body' => $transaction->user->name.'has Loaded '.$transaction->amount.' Balance Successfully!', 
+                    'click_action' =>'HOME_SCREEN', 
+                    'data_id' => $transaction->user_id, 
+                ]);
                 break;
             case 'miscellaneous':
+                // TO USER
                 Notification::create([
                     'user_id' => $transaction->user_id, 
                     'title' => 'Congratulation! ♥', 
@@ -41,6 +51,14 @@ class TransactionObserver
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new MiscellaneousNotification());
+                // TO ADMIN
+                Notification::create([
+                    'user_id' => 1,
+                    'title' => 'Miscellaneous Amount', 
+                    'body' => 'By using $'.config('global.PREMIUM_COST').' '.$transaction->user->name.' is Premium User Now!', 
+                    'click_action' =>'HOME_SCREEN', 
+                    'data_id' => $transaction->user_id, 
+                ]);
                 break;
             case 'withdraw':
                 Notification::create([
