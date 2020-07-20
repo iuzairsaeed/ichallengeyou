@@ -56,6 +56,7 @@ class PaymentController extends Controller
             $data = [
                 'message' => config('global.CURRENCY').$amount.' has been credited to your account \n Your Total Amount is '.$user->balance,
                 'amount' => $user->balance,
+                'is_premium' => $user->is_premium,
             ];
             return response($data , 200);
         }

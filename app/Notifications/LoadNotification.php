@@ -46,7 +46,7 @@ class LoadNotification extends Notification implements ShouldQueue
         $message = new FcmMessage();
         $message->content([
             'title' => 'Balance Loaded Successfully!', 
-            'body' => config('global.CURRENCY').$this->amount.' has been Successfully Added to your Account!', 
+            'body' => config('global.CURRENCY').' '.$this->amount.' has been Successfully Added to your Account!', 
             'sound'        => '', // Optional 
             'icon'         => 'favicon.ico', // Optional
             'click_action' =>'HOME_SCREEN', // Optional

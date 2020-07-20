@@ -40,7 +40,7 @@ class TransactionController extends Controller
                     ];
                     $this->model->create($transaction);
                     $data['message'] = 'You have withdrown $'.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').'0') ;
-                    $data['balance'] =  $user->balance ?? config('global.CURRENCY').'0';
+                    $data['amount'] =  $user->balance ?? config('global.CURRENCY').'0';
                     $res = 200;
                 }
             }

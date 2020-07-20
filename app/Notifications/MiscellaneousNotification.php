@@ -44,7 +44,7 @@ class MiscellaneousNotification extends Notification implements ShouldQueue
         $message = new FcmMessage();
         $message->content([
             'title' => 'Congratulation! ♥', 
-            'body' => 'By using $'.config('global.PREMIUM_COST').'. You\'re Premium User Now!',
+            'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').'. You\'re Premium User Now!',
             'sound'        => '', // Optional 
             'icon'         => 'favicon.ico', // Optional
             'click_action' =>'HOME_SCREEN', // Optional
