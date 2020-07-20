@@ -21,8 +21,8 @@
               <div class="arrow_box_right">
                 <div class="noti-list">
                   @foreach ($notifications ?? '' as $item)
-                    @if($item->click_action == '')
-                    
+                    @if($item->click_action == 'SUBMITED_CHALLENGE_DETAIL_SCREEN')
+                      <a href='' class="dropdown-item noti-container py-2">
                     @endif
                     <a class="dropdown-item noti-container py-2">
                       <div class="row noti-wrapper">
