@@ -27,7 +27,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->user_id,
                     'title' => 'Balance Loaded Successfully!', 
-                    'body' => config('global.CURRENCY').$transaction->amount.' has been Successfully Added to your Account!', 
+                    'body' => config('global.CURRENCY').' '.$transaction->amount.' has been Successfully Added to your Account!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -36,7 +36,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => 1,
                     'title' => 'Load Balance', 
-                    'body' => $transaction->user->name.'has Loaded $'.$transaction->amount.' Balance Successfully!', 
+                    'body' => $transaction->user->name.'has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -46,7 +46,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->user_id, 
                     'title' => 'Congratulation! ♥', 
-                    'body' => 'By using $'.config('global.PREMIUM_COST').' You\'re Premium User Now!', 
+                    'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' You\'re Premium User Now!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -55,7 +55,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => 1,
                     'title' => 'Miscellaneous Amount', 
-                    'body' => 'By using $'.config('global.PREMIUM_COST').' '.$transaction->user->name.' is Premium User Now!', 
+                    'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' '.$transaction->user->name.' is Premium User Now!', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -65,7 +65,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->user_id,
                     'title' => 'Withdrawal Transaction',
-                    'body' => config('global.CURRENCY').$transaction->amount.' has been debited', 
+                    'body' => config('global.CURRENCY').' '.$transaction->amount.' has been debited', 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -74,7 +74,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => 1,
                     'title' => 'Withdrawal Transaction',
-                    'body' => $transaction->user->name.' has been debited $'.$transaction->amount, 
+                    'body' => $transaction->user->name.' has been debited '.config('global.CURRENCY').' '.$transaction->amount, 
                     'click_action' =>'HOME_SCREEN', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -84,7 +84,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => auth()->id() ?? 2,
                     'title' => 'You have Donated Successfully!',
-                    'body' => $transaction->amount.' has been donated', 
+                    'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
@@ -93,7 +93,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => $transaction->challenge->user->id,
                     'title' => (auth()->user()->name ?? 'Seeder Test User' ).' have Donated on Your Challenge '.$transaction->challenge->title,
-                    'body' => $transaction->amount.' has been donated', 
+                    'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
@@ -102,7 +102,7 @@ class TransactionObserver
                 Notification::create([
                     'user_id' => 1,
                     'title' => ($transaction->user->name ?? 'Seeder Test User' ).' have Donated on Challenge '.$transaction->challenge->title,
-                    'body' => $transaction->amount.' has been donated', 
+                    'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
