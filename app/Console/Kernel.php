@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\getCandidatesResult::class,
     ];
 
     /**
@@ -26,8 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
-        // s$schedule->command('get:result')->hourly();
+        $schedule->command('get:result')->everyTwoHours()->runInBackground();
     }
 
     /**
