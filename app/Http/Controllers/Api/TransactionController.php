@@ -25,20 +25,23 @@ class TransactionController extends Controller
         $amount = (float)$request->amount;
         try {
             $res = 400;
-            $data['message'] = "Your withdrwal amount can not be greater than your current Balance.";
-            if($amount <= (float)$user->getAttributes()['balance']){
-                $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
-                $user->update();
-                $transaction = [
-                    'user_id' => $user->id,
-                    'challenge_id' => null,
-                    'amount' => $amount,
-                    'type' => 'withdraw',
-                    'invoice_id' => $pay_id,
-                ];
-                $this->model->create($transaction);
-                $data['message'] = 'You have withdrown $'.$amount.'. Your total balance is '.($user->balance ?? '$0') ;
-                $res = 200;
+            $data['message'] = "Please Enter any Amount";
+            if(!$amount){
+                $data['message'] = "Your withdrwal amount can not be greater than your current Balance.";
+                if($amount <= (float)$user->getAttributes()['balance']){
+                    $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
+                    $user->update();
+                    $transaction = [
+                        'user_id' => $user->id,
+                        'challenge_id' => null,
+                        'amount' => $amount,
+                        'type' => 'withdraw',
+                        'invoice_id' => $pay_id,
+                    ];
+                    $this->model->create($transaction);
+                    $data['message'] = 'You have withdrown $'.$amount.'. Your total balance is '.($user->balance ?? '$0') ;
+                    $res = 200;
+                }
             }
         } catch (\Throwable $th) {
             return response(['message'=>'Invalid Transaction'], 400);
