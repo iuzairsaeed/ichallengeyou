@@ -347,6 +347,17 @@ class ChallengeController extends Controller
         return response(['message' => 'Comment has been submitted.'], 200);
     }
 
+    public function deleteComment(Comment $comment) {
+        $replies = $comment->replies;
+        if($replies->first()){
+            foreach ($replies as $reply ) {
+                $reply->delete();
+            }
+        }
+        $comment->delete();
+        return response(['message'=>'Your Comment has been deleted Successfully!']);
+    }
+
     /**
      * Like the specified resource.
      *
