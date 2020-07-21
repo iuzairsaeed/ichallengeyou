@@ -149,11 +149,36 @@ class SubmitChallengeController extends Controller
                             'title' => 'Result has been tied', 
                             'body' => 'Result has been tied on the challenge ',
                             'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
-                            'data_id' => $challenger->id,
+                            'data_id' => $challenge->id,
                         ]);
                         $challenger->submitChallenge->notifications()->save($adminNotification);
                     }
-                }
+                } 
+            }
+        } else {
+            $isNotification = Notification::where('notifiable_id', $data['data'][0]->submitChallenge->id )
+                ->where('notifiable_type', 'App\Models\SubmitChallenge' )
+                ->where('click_action', 'ASK_RESULT_DIALOG' )
+                ->exists();
+            if(!$isNotification){
+                $notification = new Notification([
+                    'user_id' => $challenge->user->id,
+                    'title' => 'Result Still Pending', 
+                    'body' => 'Due to No Votes, Do you want to ask The App Admin to Evaluate or The Public?',
+                    'click_action' => 'ASK_RESULT_DIALOG', 
+                    'data_id' => $challenge->id,
+                ]);
+                $challenge->user->notify(new AskCandidate);
+                $challenge->acceptedChallenges[0]->submitChallenge->notifications()->save($notification);
+                $adminNotification = new Notification([
+                    'user_id' => 1,
+                    'title' => 'Result Still Pending', 
+                    'body' => 'Submitor will ask The App Admin to Evaluate or The Public?',
+                    'body' => 'Result has been tied on the challenge ',
+                    'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
+                    'data_id' => $challenge->id,
+                ]);
+                $challenge->acceptedChallenges[0]->submitChallenge->notifications()->save($adminNotification);
             }
         }
         return $data;
