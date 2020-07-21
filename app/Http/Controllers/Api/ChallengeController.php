@@ -272,24 +272,16 @@ class ChallengeController extends Controller
                 if((float)$request->amount > (float)$user->getAttributes()['balance']){
                     return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
                 }
-                $message['message'] = 'You are out of time!';
-                if(now() <= $challenge->after_date){
-                    $donation = new Amount([
-                        'user_id' => $user->id,
-                        'amount' => $request->amount,
-                        'type' => 'donation'
-                    ]);
-                    $challenge->amounts()->save($donation);
-                    $transaction = new Transaction([
-                        'user_id' => $user->id,
-                        'challenge_id' => $challenge->id,
-                        'amount' => $request->amount,
-                        'type' => 'donate',
-                        'invoice_id' => null,
-                    ]);
-                    $challenge->transactions()->save($transaction);
-                    $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
-                    $user->update();
+                if($challenge->allowVoter == 'donators'){
+                    if(now() <= $challenge->after_date){
+                        $message['message'] = 'You are out of time!';
+                        $donation = $this->donating($challenge,$request);
+                    }
+                } else if($challenge->allowVoter == 'premiumUsers'){
+                    $message['message'] = 'You are out of time!';
+                    if(now() <= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
+                        $donation = $this->donating($challenge,$request);
+                    }
                 }
                 return response([
                     'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
@@ -299,6 +291,28 @@ class ChallengeController extends Controller
         } catch (\Throwable $th) {
             return response($message,400);
         }
+    }
+
+    public function donating(Challenge $challenge, CreateDonationRequest $request) {
+        $user = auth()->user();
+        $donation = new Amount([
+            'user_id' => $user->id,
+            'amount' => $request->amount,
+            'type' => 'donation'
+        ]);
+        $challenge->amounts()->save($donation);
+        $transaction = new Transaction([
+            'user_id' => $user->id,
+            'challenge_id' => $challenge->id,
+            'amount' => $request->amount,
+            'type' => 'donate',
+            'invoice_id' => null,
+        ]);
+        $challenge->transactions()->save($transaction);
+        $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
+        $user->update();
+        
+        return $donation;
     }
 
     /**

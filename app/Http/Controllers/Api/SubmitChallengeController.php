@@ -83,57 +83,15 @@ class SubmitChallengeController extends Controller
                 $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();
                 $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
             });
-            if(now() > $challenge->after_date) {
-                $count = 0; $isWinner = 0;
-                $results = $this->result($challenge)->original;
-                if($results){
-                    foreach ($results as $result) {
-                        if(($result['result'] >= 40 && $result['result'] <= 60) || $result['result'] >= 51 ){
-                            $count++;   
-                        }
-                    }
-                    foreach ($data['data'] as $d) {
-                        if($d->submitChallenge->isWinner){
-                            $isWinner++;
-                        }
-                    }
-                    if($isWinner <> 1){
-                        if($count == 1){
-                            foreach ($data['data'] as $value) {
-                                foreach ($results as $result) {
-                                    if($value->user_id == $result['id'] && $result['result'] >= 51){
-                                        $submitedChallenge = $value->submitChallenge;
-                                        $this->saveWinner($submitedChallenge);
-                                        $value['isWinner'] = true;
-                                    }
-                                }
-                            }
-                        } else {
-                            $isNotification = Notification::where('notifiable_id', $data['data'][0]->submitChallenge->id )
-                                ->where('notifiable_type', 'App\Models\SubmitChallenge' )
-                                ->where('click_action', 'ASK_RESULT_DIALOG' )
-                                ->exists();
-                            if(!$isNotification){
-                                foreach ($data['data'] as $challenger) {
-                                    $notification = new Notification([
-                                        'user_id' => $challenger->user->id,
-                                        'title' => 'Result has been tied', 
-                                        'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
-                                        'click_action' => 'ASK_RESULT_DIALOG', 
-                                    ]);
-                                    $challenger->user->notify(new AskCandidate);
-                                    $challenger->submitChallenge->notifications()->save($notification);
-                                }
-                                $adminNotification = new Notification([
-                                    'user_id' => 1,
-                                    'title' => 'Result has been tied', 
-                                    'body' => 'Result has been tied on the challenge ',
-                                    'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
-                                ]);
-                                $challenger->submitChallenge->notifications()->save($adminNotification);
-                            }
-                        }
-                    }
+            if($challenge->allowVoter == 'donators'){
+                $message['message'] = 'You are out of time!';
+                if(now() >= $challenge->after_date){
+                    $data = $this->submitorList($challenge,$data);
+                }
+            } else if($challenge->allowVoter == 'premiumUsers'){
+                $message['message'] = 'You are out of time!';
+                if(now() >= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
+                    $data = $this->submitorList($challenge,$data) ?? $data;
                 }
             }
             $data['title'] = $challenge->title ?? '-';
@@ -141,6 +99,60 @@ class SubmitChallengeController extends Controller
             return response($data,$data['response']);
         } catch (\Throwable $th) {
             return response(['message'=>$th->getMessage()],400);
+        }
+    }
+
+    public function submitorList($challenge,$data) {
+        $count = 0; $isWinner = 0;
+        $results = $this->result($challenge)->original;
+        if($results){
+            foreach ($results as $result) {
+                if(($result['result'] >= 40 && $result['result'] <= 60) || $result['result'] >= 51 ){
+                    $count++;   
+                }
+            }
+            foreach ($data['data'] as $d) {
+                if($d->submitChallenge->isWinner){
+                    $isWinner++;
+                }
+            }
+            if($isWinner <> 1){
+                if($count == 1){
+                    foreach ($data['data'] as $value) {
+                        foreach ($results as $result) {
+                            if($value->user_id == $result['id'] && $result['result'] >= 51){
+                                $submitedChallenge = $value->submitChallenge;
+                                $this->saveWinner($submitedChallenge);
+                                $value['isWinner'] = true;
+                            }
+                        }
+                    }
+                } else {
+                    $isNotification = Notification::where('notifiable_id', $data['data'][0]->submitChallenge->id )
+                        ->where('notifiable_type', 'App\Models\SubmitChallenge' )
+                        ->where('click_action', 'ASK_RESULT_DIALOG' )
+                        ->exists();
+                    if(!$isNotification){
+                        foreach ($data['data'] as $challenger) {
+                            $notification = new Notification([
+                                'user_id' => $challenger->user->id,
+                                'title' => 'Result has been tied', 
+                                'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
+                                'click_action' => 'ASK_RESULT_DIALOG', 
+                            ]);
+                            $challenger->user->notify(new AskCandidate);
+                            $challenger->submitChallenge->notifications()->save($notification);
+                        }
+                        $adminNotification = new Notification([
+                            'user_id' => 1,
+                            'title' => 'Result has been tied', 
+                            'body' => 'Result has been tied on the challenge ',
+                            'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
+                        ]);
+                        $challenger->submitChallenge->notifications()->save($adminNotification);
+                    }
+                }
+            }
         }
     }
 
