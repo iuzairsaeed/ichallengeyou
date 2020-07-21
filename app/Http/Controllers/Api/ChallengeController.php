@@ -328,13 +328,15 @@ class ChallengeController extends Controller
         $this->model = new ChallengeRepository($model);
         $with = ['user','replies'];
         $comments = $this->model->comments($request,$with,$id);
-        collect($comments['data'])->map(function ($item) use ($user_id) {
-            if($item->user_id == $user_id){
-                $item['isDeletable'] = true;
-            } else {
-                $item['isDeletable'] = false;
-            }
-        });
+        if($user_id){
+            collect($comments['data'])->map(function ($item) use ($user_id) {
+                if($item->user_id == $user_id){
+                    $item['isDeletable'] = true;
+                } else {
+                    $item['isDeletable'] = false;
+                }
+            });
+        }
         return response($comments,200);
     }
 
