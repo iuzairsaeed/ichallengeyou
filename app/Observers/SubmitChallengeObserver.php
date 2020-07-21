@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SubmitChallenge;
 use App\Models\Challenge;
 use App\Models\Notification;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\ChallengeSubmited;
 
@@ -113,7 +114,7 @@ class SubmitChallengeObserver
             // TO WINNER
             $winnerNotification = new Notification([
                 'user_id' => $winner->id,
-                'title' => 'Congratulations!! You have Won The Challenge', 
+                'title' => 'Congratulations! You have Won The Challenge ★', 
                 'body' => $winner->name.' WIN the Challenge '.$challenge->title, 
                 'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN', 
                 'data_id' => $challenge->id, 

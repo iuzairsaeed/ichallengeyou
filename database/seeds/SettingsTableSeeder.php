@@ -66,6 +66,11 @@ class SettingsTableSeeder extends Seeder
                 'value' => 2,
                 'type' => 'number',
             ],
+            [
+                'name' => 'TAX_IN_PERCENT',
+                'value' => 25,
+                'type' => 'number',
+            ],
         ]);
     }
 }
