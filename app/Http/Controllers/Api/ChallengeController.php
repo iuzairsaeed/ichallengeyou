@@ -370,7 +370,16 @@ class ChallengeController extends Controller
         } catch (\Throwable $th) {
            return false;
         }
-        
+    }
+
+    public function restoreComment($id){
+        try {
+            $comment = Comment::withTrashed()->find($id);
+            $comment->restore();
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     /**

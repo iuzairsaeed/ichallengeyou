@@ -38,6 +38,7 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{comment}/unlikeComment', 'ChallengeController@unlikeComment');
         });
         Route::post('{comment}/deleteComment', 'ChallengeController@deleteComment');
+        Route::post('{comment}/restoreComment', 'ChallengeController@restoreComment');
 
         Route::resource('categories', 'CategoryController', ['except' => ['index']]);
         Route::resource('favorites', 'FavoriteController');
