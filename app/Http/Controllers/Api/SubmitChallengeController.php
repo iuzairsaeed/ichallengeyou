@@ -156,6 +156,7 @@ class SubmitChallengeController extends Controller
                 }
             }
         }
+        return $data;
     }
 
     public function getSubmitChallengeDetail(AcceptedChallenge $acceptedChallenge){
