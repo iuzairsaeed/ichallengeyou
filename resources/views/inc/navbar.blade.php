@@ -18,7 +18,7 @@
                 <div class="noti-list" style="width: 500px; height:450px" >
                   @foreach ($notifications ?? '' as $item)
                     @if ($item->click_action == 'SUBMITED_CHALLENGE_LIST_SCREEN' || $item->click_action == 'CHALLENGE_DETAIL_SCREEN' || $item->click_action == 'SUBMITED_CHALLENGE_DETAIL_SCREEN') 
-                      <a href="{{route('challenges.show',['challenge'=>$item->data_id, 'modal'=>$item->click_action] )}}" class="dropdown-item noti-container py-2">
+                      <a href="/challenges/{{$item->data_id}}" class="dropdown-item noti-container py-2">
                     @elseif ($item->click_action == 'TRANSACTION_LIST' ) 
                       <a href="/users/{{$item->data_id}}" class="dropdown-item noti-container py-2">
                     @else
