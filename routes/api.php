@@ -82,5 +82,8 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('{challenge}', 'AskCandidateController@store');
             Route::get('{challenge}/result', 'AskCandidateController@result');
         });
+        Route::get('/test/btc' , function () {
+            btcAuth();
+        });
     });
 });

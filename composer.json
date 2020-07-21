@@ -43,6 +43,7 @@
 			"app/Helpers/FileManager.php",
 			"app/Helpers/Helper.php",
 			"app/Helpers/Paypal.php",
+			"app/Helpers/Bitcoin.php",
 			"app/Helpers/ChallengeStatuses.php"
 		],
 		"psr-4": {

@@ -54,7 +54,7 @@ class PaymentController extends Controller
             ]);
             $user->transactions()->save($transaction);
             $data = [
-                'message' => config('global.CURRENCY').$amount.' has been credited to your account \n Your Total Amount is '.$user->balance,
+                'message' => config('global.CURRENCY').$amount.' has been credited to your account & Your Total Amount is '.$user->balance,
                 'amount' => $user->balance,
                 'is_premium' => $user->is_premium,
             ];
