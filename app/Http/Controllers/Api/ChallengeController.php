@@ -21,6 +21,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use DB;
+use Auth;
 
 class ChallengeController extends Controller
 {
@@ -323,10 +324,17 @@ class ChallengeController extends Controller
      */
     public function comments(Comment $model, Request $request, $id)
     {
+        $user_id = $request->user_id;
         $this->model = new ChallengeRepository($model);
         $with = ['user','replies'];
         $comments = $this->model->comments($request,$with,$id);
-        
+        collect($comments['data'])->map(function ($item) use ($user_id) {
+            if($item->user_id == $user_id){
+                $item['isDeletable'] = true;
+            } else {
+                $item['isDeletable'] = false;
+            }
+        });
         return response($comments,200);
     }
 
@@ -348,14 +356,19 @@ class ChallengeController extends Controller
     }
 
     public function deleteComment(Comment $comment) {
-        $replies = $comment->replies;
-        if($replies->first()){
-            foreach ($replies as $reply ) {
-                $reply->delete();
+        try {
+            $replies = $comment->replies;
+            if($replies->first()){
+                foreach ($replies as $reply ) {
+                    $reply->delete();
+                }
             }
+            $comment->delete();
+            return true;
+        } catch (\Throwable $th) {
+           return false;
         }
-        $comment->delete();
-        return response(['message'=>'Your Comment has been deleted Successfully!']);
+        
     }
 
     /**

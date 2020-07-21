@@ -548,7 +548,6 @@
                 let submit_files = res.data[0].submit_files;
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
-                console.log(res.data)
                 if(res.data[0].submit_challenge.isWinner == true ){
                     $('#is_winner1')[0].checked= true;
                 } else {

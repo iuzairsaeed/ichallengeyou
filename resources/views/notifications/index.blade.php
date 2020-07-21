@@ -33,8 +33,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Title</th>
-                                        <th>Body</th>
-                                        <th>Created By</th>
+                                        <th>Message</th>
+                                        <th>Created At</th>
                                     </tr>
                                 </thead>
                             </table>

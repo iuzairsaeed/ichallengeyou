@@ -139,6 +139,7 @@ class SubmitChallengeController extends Controller
                                 'title' => 'Result has been tied', 
                                 'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
                                 'click_action' => 'ASK_RESULT_DIALOG', 
+                                'data_id' => $challenger->id,
                             ]);
                             $challenger->user->notify(new AskCandidate);
                             $challenger->submitChallenge->notifications()->save($notification);
@@ -148,6 +149,7 @@ class SubmitChallengeController extends Controller
                             'title' => 'Result has been tied', 
                             'body' => 'Result has been tied on the challenge ',
                             'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
+                            'data_id' => $challenger->id,
                         ]);
                         $challenger->submitChallenge->notifications()->save($adminNotification);
                     }

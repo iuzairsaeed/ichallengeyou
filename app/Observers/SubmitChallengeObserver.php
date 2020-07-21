@@ -127,7 +127,7 @@ class SubmitChallengeObserver
                 'title' => $winner->name.' - THE WINNER ★', 
                 'body' => $winner->name.' WIN the Challenge '.$challenge->title, 
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
-                'data_id' => $transaction->challenge_id, 
+                'data_id' =>  $challenge->id, 
             ]);
         }
     }
