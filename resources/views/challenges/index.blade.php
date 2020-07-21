@@ -80,6 +80,7 @@
                                 }
             }
         ],
+        order: [0 , 'desc'],
         columnDefs: [
             { width: "10%", "targets": [-1, 0] },
             { orderable: false, targets: [-2, -1] }

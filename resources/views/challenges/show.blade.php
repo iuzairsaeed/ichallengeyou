@@ -464,6 +464,7 @@
             }
             
         ],
+        order: [0 , 'desc'],
         columnDefs: [
             { orderable: false, targets: [-1, -2] }
         ],
@@ -496,6 +497,7 @@
                                 }
             }
         ],
+        order: [0 , 'desc'],
         columnDefs: [
             { orderable: false, targets: [-1, -2] }
         ],
@@ -529,6 +531,7 @@
                                 }
             }
         ],
+        order: [0 , 'desc'],
         columnDefs: [
             { orderable: false, targets: [-1, -2] }
         ],
@@ -637,6 +640,7 @@
                                 }
             }
         ],
+        order: [0 , 'desc'],
         columnDefs: [
             { orderable: false, targets: [-1, -2] }
         ],
