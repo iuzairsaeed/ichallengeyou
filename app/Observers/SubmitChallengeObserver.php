@@ -25,6 +25,16 @@ class SubmitChallengeObserver
             $submitor = $submitChallenge->acceptedChallenge->user;
             $creater = $submitChallenge->acceptedChallenge->challenge->user;
             $challenge = $submitChallenge->acceptedChallenge->challenge;   
+            // TO CURRENT USER Notification
+            $userNotification = new Notification([
+                'user_id' => auth()->id(),
+                'title' => 'Challenge Submited', 
+                'body' => 'You has been Submited the Challenge '.$challenge->title, 
+                'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
+                'data_id' => $submitChallenge->accepted_challenge_id, 
+            ]);
+            $submitChallenge->notifications()->save($userNotification);  
+            $creater->notify(new ChallengeSubmited('onUser',$submitChallenge->accepted_challenge_id, $donator, $submitor, $creater, $challenge));
             // Donators Notification
             foreach ($donators as $donator) {
                 $notification[] = new Notification([

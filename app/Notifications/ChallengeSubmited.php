@@ -64,6 +64,18 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
         }
+        if($this->action === 'onUser'){
+            $message = new FcmMessage();
+            $message->content([
+                'title' => 'Challengse Submited', 
+                'body' => 'You has been Submited the Challenge '.$this->challenge->title,
+                'sound'        => '', // Optional 
+                'icon'         => 'favicon.ico', // Optional
+                'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
+            ])->data([
+                'data_id' => $this->data_id // Optional
+            ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
+        }
         
         if($this->action === 'toDonator&Creator'){
             $message = new FcmMessage();
