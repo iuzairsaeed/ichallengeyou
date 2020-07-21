@@ -274,8 +274,8 @@ class ChallengeController extends Controller
                     return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
                 }
                 if($challenge->allowVoter == 'donators'){
+                    $message['message'] = 'You are out of time!';
                     if(now() <= $challenge->after_date){
-                        $message['message'] = 'You are out of time!';
                         $donation = $this->donating($challenge,$request);
                     }
                 } else if($challenge->allowVoter == 'premiumUsers'){
@@ -284,6 +284,7 @@ class ChallengeController extends Controller
                         $donation = $this->donating($challenge,$request);
                     }
                 }
+                
                 return response([
                     'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
                     'balanace' => $user->balance
