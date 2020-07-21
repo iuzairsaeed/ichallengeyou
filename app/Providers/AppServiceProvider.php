@@ -6,13 +6,17 @@ use View;
 use App\Models\User;
 use App\Models\Vote;
 use App\Models\Setting;
+use App\Models\Comment;
 use App\Models\Constant;
+use App\Models\Challenge;
 use App\Models\Transaction;
 use App\Models\Notification;
 use App\Models\SubmitChallenge;
 use App\Observers\UserObserver;
 use App\Observers\VoteObserver;
 use App\Observers\AmountObserver;
+use App\Observers\CommentObserver;
+use App\Observers\ChallengeObserver;
 use App\Observers\TransactionObserver;
 use App\Observers\SubmitChallengeObserver;
 use App\Console\Commands\ModelMakeCommand;
@@ -70,6 +74,12 @@ class AppServiceProvider extends ServiceProvider
         Vote::observe(VoteObserver::class);
         // For Transaction CRUD observer
         Transaction::observe(TransactionObserver::class);
+        // For Challenge CRUD observer
+        Challenge::observe(ChallengeObserver::class);
+        // For Comment CRUD observer
+        Comment::observe(CommentObserver::class);
+
+        // View Notifications on Admin Web
         View::share('notifications', Notification::where('user_id' , 1 )->latest()->limit(8)->get());
     }
 }

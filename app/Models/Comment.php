@@ -48,4 +48,9 @@ class Comment extends Model
     {
         return $this->morphMany(Reaction::class, 'reactionable')->select(['reactionable_id','like','unlike']);
     }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
+    }
 }
