@@ -139,6 +139,7 @@ class SubmitChallengeObserver
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                 'data_id' =>  $challenge->id, 
             ]);
+            
         }
     }
 
