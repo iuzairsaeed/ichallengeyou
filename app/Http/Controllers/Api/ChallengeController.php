@@ -69,7 +69,7 @@ class ChallengeController extends Controller
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
-            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            $item['amounts_sum'] = config('global.CURRENCY').' '.$item->amounts_sum;
             return $item;
         });
         $data['data'] = ChallengeCollection::collection($data['data']);
@@ -158,7 +158,7 @@ class ChallengeController extends Controller
         $addWithSums = [];
 
         $data = $this->model->showChallenge($request,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
-        $data['data']->amounts_sum = config('global.CURRENCY').$data['data']->amounts_sum;
+        $data['data']->amounts_sum = config('global.CURRENCY').' '.$data['data']->amounts_sum;
 
         if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
             $data['data']['acceptBtn'] = false;
@@ -336,6 +336,10 @@ class ChallengeController extends Controller
                 } else {
                     $item['isDeletable'] = false;
                 }
+            });
+        } else {
+            collect($comments['data'])->map(function ($item) {
+                $item['isDeletable'] = false;
             });
         }
         return response($comments,200);
@@ -515,7 +519,7 @@ class ChallengeController extends Controller
         $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item){
-            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            $item['amounts_sum'] = config('global.CURRENCY').' '.$item->amounts_sum;
             return $item;
         });
         $data['data'] = ChallengeList::collection($data['data']);

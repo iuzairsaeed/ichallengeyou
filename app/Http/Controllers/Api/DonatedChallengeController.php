@@ -37,7 +37,7 @@ class DonatedChallengeController extends Controller
         $data = $this->model->getDonated($request, $with, $withCount,$sums ,$sumCol,$groupByVals, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                 $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item) {
-            $item['sum'] = config('global.CURRENCY').$item->sum;
+            $item['sum'] = config('global.CURRENCY').' '.$item->sum;
             return $item;
         });
         $data['data'] = ChallengeDonated::collection($data['data']);

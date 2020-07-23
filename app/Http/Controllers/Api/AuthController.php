@@ -32,7 +32,7 @@ class AuthController extends Controller
                 'avatar' => $user->avatar,
                 'is_premium' => $user->is_premium ?? false,
                 'is_admin' => $user->is_admin ?? false,
-                'balance' => $user->balance ?? config('global.CURRENCY').'0',
+                'balance' => $user->balance ?? config('global.CURRENCY').' 0',
             ],
             'token' => $token,
             'expiration_minutes' => (int)config('sanctum.expiration')
@@ -103,7 +103,7 @@ class AuthController extends Controller
         $user->notify(new ForgotPasswordNotification($newPassword));
 
         return response([
-            'message' => 'An email has been sent to your account with new password.'
+            'message' => 'An email has been sent to your account with new password. (If you cannot find Check in Spam/Junk)'
         ], 200);
     }
 

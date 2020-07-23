@@ -41,7 +41,7 @@ class User extends Authenticatable
 
     public function getBalanceAttribute($value)
     {
-        return $value ? config('global.CURRENCY').$value : null;
+        return $value ? config('global.CURRENCY').' '.$value : null;
     }
 
     /**

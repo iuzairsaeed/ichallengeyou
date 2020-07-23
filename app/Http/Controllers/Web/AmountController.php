@@ -32,7 +32,7 @@ class AmountController extends Controller
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
-            $item['amount'] = config('global.CURRENCY').$item->amount;
+            $item['amount'] = config('global.CURRENCY').' '.$item->amount;
             $item['challenge_title'] = $item->challenge->title ?? '';
             switch ($item->type) {
                 case 'load':
@@ -98,7 +98,7 @@ class AmountController extends Controller
      */
     public function show(Transaction $amount)
     {
-        $amount['amount'] = config('global.CURRENCY').$amount->amount;
+        $amount['amount'] = config('global.CURRENCY').' '.$amount->amount;
         $amount['challenge_title'] = $amount->challenge->title ?? '';
         switch ($amount->type) {
             case 'load':

@@ -40,7 +40,7 @@ class FavoriteController extends Controller
         $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item) use (&$serial) {
-            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            $item['amounts_sum'] = config('global.CURRENCY').' '.$item->amounts_sum;
         });
 
         $data['data'] = FavouriteCollection::collection($data['data']);

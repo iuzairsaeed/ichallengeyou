@@ -48,7 +48,7 @@ class ChallengeController extends Controller
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
-            $item['amounts_sum'] = config('global.CURRENCY').$item->amounts_sum;
+            $item['amounts_sum'] = config('global.CURRENCY').' '.$item->amounts_sum;
             return $item;
         });
         return response($data, 200);

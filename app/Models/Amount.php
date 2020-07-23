@@ -31,6 +31,6 @@ class Amount extends Model
 
     public function getAmountAttribute($value)
     {
-        return $value ? config('global.CURRENCY').$value : null;
+        return $value ? config('global.CURRENCY').' '.$value : null;
     }
 }

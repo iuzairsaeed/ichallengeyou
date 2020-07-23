@@ -42,7 +42,7 @@ class BidController extends Controller
         $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item) {
-            $item['bid_amount'] = config('global.CURRENCY').$item->bid_amount;
+            $item['bid_amount'] = config('global.CURRENCY').' '.$item->bid_amount;
         });
         $data['data'] = BidCollection::collection($data['data']);
         return response($data, 200);

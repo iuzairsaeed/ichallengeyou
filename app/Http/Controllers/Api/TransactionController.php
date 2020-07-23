@@ -39,8 +39,8 @@ class TransactionController extends Controller
                         'invoice_id' => $pay_id,
                     ];
                     $this->model->create($transaction);
-                    $data['message'] = 'You have withdrown $'.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').'0') ;
-                    $data['amount'] =  $user->balance ?? config('global.CURRENCY').'0';
+                    $data['message'] = 'You have withdrown $'.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').' 0') ;
+                    $data['amount'] =  $user->balance ?? config('global.CURRENCY').' 0';
                     $res = 200;
                 }
             }
@@ -71,7 +71,7 @@ class TransactionController extends Controller
                 $item['year'] = $item->created_at->year;
                 $item['month'] = $item->created_at->format('F');
                 $item['day'] = $item->created_at->day;
-                $item['amount'] = config('global.CURRENCY').$item->amount;
+                $item['amount'] = config('global.CURRENCY').' '.$item->amount;
                 switch ($item->type) {
                     case 'load':
                         $item['reason'] = 'Load Balance';
