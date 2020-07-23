@@ -17,6 +17,18 @@ class FavoriteController extends Controller
         $this->model = new ChallengeRepository($reaction);
     }
 
+    
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -46,17 +58,7 @@ class FavoriteController extends Controller
         $data['data'] = FavouriteCollection::collection($data['data']);
         return response($data, $data['response']);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
