@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
-/public/storage
+/public/storage/avatars
+/public/storage/challenges
+/public/storage/submitted
 /storage/*.key
 /vendor
 .env
