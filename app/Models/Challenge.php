@@ -57,6 +57,10 @@ class Challenge extends Model
         return $after_date;
     }
 
+    public function getAmountSumAttribute() {
+        return $this->amounts->sum('amount');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class)->select(['id','name','username','avatar']);

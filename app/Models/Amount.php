@@ -29,8 +29,4 @@ class Amount extends Model
         return $this->belongsTo(User::class)->select(['id','name','avatar']);
     }
 
-    public function getAmountAttribute($value)
-    {
-        return $value ? config('global.CURRENCY').' '.$value : null;
-    }
 }
