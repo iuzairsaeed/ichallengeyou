@@ -39,7 +39,7 @@ class TransactionController extends Controller
                         'invoice_id' => $pay_id,
                     ];
                     $this->model->create($transaction);
-                    $data['message'] = 'You have withdrown $'.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').' 0') ;
+                    $data['message'] = 'You have withdrown '.config('global.CURRENCY').' '.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').' 0') ;
                     $data['amount'] =  $user->balance ?? config('global.CURRENCY').' 0';
                     $res = 200;
                 }
