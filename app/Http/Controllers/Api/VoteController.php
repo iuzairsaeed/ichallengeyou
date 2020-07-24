@@ -39,6 +39,7 @@ class VoteController extends Controller
     }
 
     public function voteUp(SubmitChallenge $submitedChallenge) {
+        $challenge = $submitedChallenge->acceptedChallenge->challenge;
         $challenger = $submitedChallenge->acceptedChallenge->where('user_id',auth()->id())->first();
         $data['message'] = 'Challenger Can\'t Vote!';$res = 400;
         if(!$challenger){
@@ -51,14 +52,18 @@ class VoteController extends Controller
                     $data['message'] = 'The result of this Challenge is not based on Vote';
                     if($submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'){
                         if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'donators'){
-                            $data['message'] = 'You\'re out of time.';
-                            if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date){
-                                $data = $this->votingUp($submitedChallenge);
+                            $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
+                            $data['message'] = 'Only Donator can Vote on this Challenge';
+                            if($donator){
+                                $data['message'] = 'You\'re out of time.';
+                                if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date){
+                                    $data = $this->votingUp($submitedChallenge);$res = 200;
+                                }
                             }
                         } else if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'premiumUsers'){
                             $data['message'] = 'You\'re out of time.';
                             if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
-                                $data = $this->votingUp($submitedChallenge);
+                                $data = $this->votingUp($submitedChallenge);$res = 200;
                             }
                         } else {
                             $data['message'] = 'Admin will decide the Winner';
@@ -71,49 +76,44 @@ class VoteController extends Controller
         return response($data, $res);
     }
 
-    public function votingUp($submitedChallenge) {
-        $challenge = $submitedChallenge->acceptedChallenge->challenge;
-        $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
-        $data['message'] = 'Only Donator can Vote on this Challenge';
-        if($donator){
-            $res = 200;
-            $sub_id  = $submitedChallenge->id;
-            $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
-            $isVoted = 0;
-            $voters = Vote::where('user_id',auth()->id())->get();
-            if($voters->first()) {
-                foreach($acceptedChallenges as $acceptedChallenge){
-                    foreach($voters as $voter){
-                        if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
-                            $isVoted++;
-                        }
-                    }
+    function votingUp($submitedChallenge) {
+        $res = 200;
+        $sub_id  = $submitedChallenge->id;
+        $isVoted = 0;
+        $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
+        $voters = Vote::where('user_id',auth()->id())->get();
+        foreach($acceptedChallenges as $acceptedChallenge){
+            foreach($voters as $voter){
+                if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
+                    $isVoted++;
                 }
-                if($isVoted >= 1){
-                    $data['message'] = 'You have already voted to challenger!';
-                }
-                $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)->first();
-                if($voted){
-                    $vote_up = $voted->vote_up = ($voted->vote_up == false) ? true : false ;
-                    ($vote_up == true) ? true : $voted->delete();
-                    $vote_down = $voted->vote_down = false ;
-                    $voted->update();
-                    $data['message'] = ($vote_up == true) ? 'Your Vote has been casted Positive on this challenge.' : 'Your Vote has been removed' ;
-                    $res = 200;
-                    $data['vote_up'] = $vote_up;
-                    $data['vote_down'] = $vote_down;
-                }
-            } else {
-                $data['message'] = 'Your Vote has been casted Positive on this Challenge!';
-                $data['vote_up'] = true;
-                $data['vote_down'] = false;
-                $vote = [
-                    'user_id' => auth()->id(),
-                    'submited_challenge_id' => $sub_id,
-                    'vote_up' => true,
-                ];
-                $this->model->create($vote);    
             }
+        }
+        if($isVoted >= 1){
+            $data['message'] = 'You have already voted to challenger!';
+            $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)
+            ->where('user_id',auth()->id())
+            ->first();
+            if($voted){
+                $vote_up = $voted->vote_up = ($voted->vote_up == false) ? true : false ;
+                ($vote_up == true) ? true : $voted->delete();
+                $vote_down = $voted->vote_down = false ;
+                $voted->update();
+                $data['message'] = ($vote_up == true) ? 'Your Vote has been casted Positive on this challenge.' : 'Your Vote has been removed' ;
+                $res = 200;
+                $data['vote_up'] = $vote_up;
+                $data['vote_down'] = $vote_down;
+            }
+        } else {
+            $data['message'] = 'Your Vote has been casted Positive on this Challenge!';
+            $data['vote_up'] = true;
+            $data['vote_down'] = false;
+            $vote = [
+                'user_id' => auth()->id(),
+                'submited_challenge_id' => $sub_id,
+                'vote_up' => true,
+            ];
+            $this->model->create($vote);    
         }
         return $data;
     }
@@ -135,12 +135,16 @@ class VoteController extends Controller
                         if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'donators'){
                             $data['message'] = 'You\'re out of time.';
                             if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date){
-                                $data = $this->votingDown($submitedChallenge);
+                                $data = $this->votingDown($submitedChallenge);$res = 200;
                             }
                         } else if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'premiumUsers'){
-                            $data['message'] = 'You\'re out of time.';
-                            if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
-                                $data = $this->votingDown($submitedChallenge);
+                            $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
+                            $data['message'] = 'Only Donator can Vote on this Challenge';
+                            if($donator){
+                                $data['message'] = 'You\'re out of time.';
+                                if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
+                                    $data = $this->votingDown($submitedChallenge);$res = 200;
+                                }
                             }
                         } else {
                             $data['message'] = 'Admin will decide the Winner';
@@ -152,50 +156,44 @@ class VoteController extends Controller
         return response($data, $res);
     }
 
-    public function votingDown($submitedChallenge) {
-        $challenge = $submitedChallenge->acceptedChallenge->challenge;
-        $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
-        $data['message'] = 'Only Donator can Vote on this Challenge';
-        if($donator){
-            if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date){
-                $res = 200;
-                $sub_id  = $submitedChallenge->id;
-                $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
-                $isVoted = 0;
-                $voters = Vote::where('user_id',auth()->id())->get();
-                if($voters->first()) {
-                    foreach($acceptedChallenges as $acceptedChallenge){
-                        foreach($voters as $voter){
-                            if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
-                                $isVoted++;
-                            }
-                        }
-                    }
-                    if($isVoted >= 1){
-                        $data['message'] = 'You have already voted to challenger!';
-                    }
-                    $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)->first();
-                    if($voted){
-                        $vote_down = $voted->vote_down = ($voted->vote_down == false) ? true : false ;
-                        ($vote_down == true) ? true : $voted->delete();
-                        $vote_up = $voted->vote_up = false ;
-                        $voted->update();
-                        $data['message'] = ($vote_down == true) ? 'Your Vote has been casted Negative on this challenge.' : 'Your Vote has been removed' ;
-                        $data['vote_up'] = $vote_up;
-                        $data['vote_down'] = $vote_down;
-                    }
-                } else {
-                    $data['message'] = 'Your Vote has been casted Negative on this Challenge!';
-                    $data['vote_down'] = true;
-                    $data['vote_up'] = false;
-                    $vote = [
-                        'user_id' => auth()->id(),
-                        'submited_challenge_id' => $sub_id,
-                        'vote_down' => true,
-                    ];
-                    $this->model->create($vote);    
+    function votingDown($submitedChallenge) {
+        $res = 200;
+        $sub_id  = $submitedChallenge->id;
+        $isVoted = 0;
+        $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
+        $voters = Vote::where('user_id',auth()->id())->get();
+        foreach($acceptedChallenges as $acceptedChallenge){
+            foreach($voters as $voter){
+                if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
+                    $isVoted++;
                 }
             }
         }
+        if($isVoted >= 1) {
+            $data['message'] = 'You have already voted to challenger!';
+            $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)
+            ->where('user_id',auth()->id())
+            ->first();
+            if($voted){
+                $vote_down = $voted->vote_down = ($voted->vote_down == false) ? true : false ;
+                ($vote_down == true) ? true : $voted->delete();
+                $vote_up = $voted->vote_up = false ;
+                $voted->update();
+                $data['message'] = ($vote_down == true) ? 'Your Vote has been casted Negative on this challenge.' : 'Your Vote has been removed' ;
+                $data['vote_up'] = $vote_up;
+                $data['vote_down'] = $vote_down;
+            }
+        } else {
+            $data['message'] = 'Your Vote has been casted Negative on this Challenge!';
+            $data['vote_down'] = true;
+            $data['vote_up'] = false;
+            $vote = [
+                'user_id' => auth()->id(),
+                'submited_challenge_id' => $sub_id,
+                'vote_down' => true,
+            ];
+            $this->model->create($vote);    
+        }
+        return $data;
     }
 }
