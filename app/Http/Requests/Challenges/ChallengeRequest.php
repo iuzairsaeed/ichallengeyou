@@ -64,6 +64,8 @@ class ChallengeRequest extends FormRequest
             'title.unique' => 'Challenge with the provided title already exists.',
             'start_time.after' => 'Challenge start time must be greater than the current time.',
             'category_id.exists' => 'Kindly select a category of your challenge.',
+            'duration_hours.max' => 'Maximum Limit is 24.',
+            'duration_minutes.max' => 'Maximum Limit is 60.',
         ];
     }
 

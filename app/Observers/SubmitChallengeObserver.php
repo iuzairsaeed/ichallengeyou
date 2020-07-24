@@ -139,7 +139,10 @@ class SubmitChallengeObserver
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                 'data_id' =>  $challenge->id, 
             ]);
-            
+            $amount_sum = $challenge->amount_sum;
+            $winner_amount = $amount_sum * 0.25;
+            $winner->balance = $winner->balance + $winner_amount;
+            $winner->update();
         }
     }
 
