@@ -87,6 +87,14 @@ class SubmitChallengeObserver
             $creater = $submitChallenge->acceptedChallenge->challenge->user;
             $challenge = $submitChallenge->acceptedChallenge->challenge; 
             $submitors =  $submitChallenge->acceptedChallenge->challenge->acceptedChallenges;
+
+            // Give Winner Amount of doing challenge
+            (float) $amount_sum = $challenge->amount_sum;
+            (float)$winning_amount = $amount_sum * 0.25;
+            $winning_amount = round($winning_amount,2);
+            $winner->balance = (float)$winner->getRawOriginal('balance') + $winning_amount;
+            $winner->update();
+
             // TO DONATORS
             foreach ($donators as $donator) {
                 $notification[] = new Notification([
@@ -139,10 +147,6 @@ class SubmitChallengeObserver
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                 'data_id' =>  $challenge->id, 
             ]);
-            $amount_sum = $challenge->amount_sum;
-            $winner_amount = $amount_sum * 0.25;
-            $winner->balance = $winner->balance + $winner_amount;
-            $winner->update();
         }
     }
 

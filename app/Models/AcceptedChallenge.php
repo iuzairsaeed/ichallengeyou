@@ -18,7 +18,7 @@ class AcceptedChallenge extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->select(['id','name','username','avatar']);
+        return $this->belongsTo(User::class)->select(['id','name','username','balance','avatar']);
     }
 
     public function challenge()
