@@ -104,6 +104,14 @@ class ChallengeController extends Controller
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
             $data['user_id'] = auth()->id();
+            if($data['duration_hours'] == 24){
+                $data['duration_days'] =$data['duration_days'] + 1;
+                $data['duration_hours'] = 0;
+            }
+            if($data['duration_minutes'] == 60){
+                $data['duration_hours'] =$data['duration_hours'] + 1;
+                $data['duration_minutes'] = 0;
+            }
             $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
