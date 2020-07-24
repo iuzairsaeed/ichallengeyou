@@ -126,12 +126,17 @@ class ChallengeController extends Controller
         try {
             if($request->is_active == 'pending'){
                 $challenge->setStatus(Pending());
-                $message = 'Pending';
             } else {
-                $message = 'Approved';
                 $challenge->setStatus(Approved());
             }
-            return redirect()->back()->with('success', 'Challenge '.$message.' Successfully');
+            if($request->is_voter == 'premiumUsers'){
+                $challenge->allowVoter = 'premiumUsers';
+                $challenge->update();
+            } else {
+                $challenge->allowVoter = 'donators';
+                $challenge->update();
+            }
+            return redirect()->back()->with('success', 'Challenge Updated Successfully!');
         } catch (\Throwable $th) {
             throw $th;
         }
