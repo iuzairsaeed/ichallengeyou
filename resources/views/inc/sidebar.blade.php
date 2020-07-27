@@ -27,7 +27,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ $segment1 === 'amounts' ? 'active' : null }}"><a href="/amounts"><i class="icon-wallet"></i><span data-i18n="" class="menu-title">Amount</span></a>
+                <li class="nav-item {{ $segment1 === 'amounts' ? 'active' : null }}"><a href="/amounts"><i class="icon-wallet"></i><span data-i18n="" class="menu-title">Transactions</span></a>
                 </li>
                 <li class="nav-item {{ $segment1 === 'users' ? 'active' : null }}"><a href="/users"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>
                 </li>
