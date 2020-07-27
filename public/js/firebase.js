@@ -19,7 +19,7 @@ const messaging = firebase.messaging();
                     console.log("Notification permission granted.");
                     return messaging.getToken();
             }).then(function (token) {
-                // $('#device_token').val(token);
+                $('#device_token').val(token);
                 console.log(token)
             }).
             catch(function (err) {
