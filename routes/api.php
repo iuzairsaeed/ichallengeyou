@@ -90,6 +90,6 @@ Route::group(['namespace' => 'Api'], function () {
         });
     });
             Route::get('/inquery' , function () {
-                dd($_REQUEST);
+                return ($_REQUEST);
             });
 });
