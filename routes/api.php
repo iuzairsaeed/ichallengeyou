@@ -1,8 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api'], function () {
+    Route::get('inquery', function (Request $request) {
+        return $request;
+    });
+
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
         Route::post('register', 'AuthController@register');
@@ -11,11 +16,11 @@ Route::group(['namespace' => 'Api'], function () {
 
     Route::resource('challenges', 'ChallengeController', ['except' => ['create', 'update', 'destroy']]);
     Route::get('categories', 'CategoryController@index', ['only' => ['index']]);
-    
+
     Route::group(['prefix' => 'challenge'], function () {
         Route::get('{challenge}/comments', 'ChallengeController@comments');
     });
-   
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::group(['prefix' => 'auth'], function () {
             Route::get('user', 'AuthController@user');
@@ -53,7 +58,7 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post('withdraw', 'TransactionController@withdraw');
             Route::post('paypal/addBalance', 'PaymentController@loadBalance');
         });
-        
+
         Route::group(['prefix' => 'submit'], function () {
             Route::get('{acceptedChallenge}/detail', 'SubmitChallengeController@getSubmitChallengeDetail');
             Route::get('{challenge}', 'SubmitChallengeController@getSubmitChallengerList');
@@ -71,7 +76,7 @@ Route::group(['namespace' => 'Api'], function () {
         });
 
         Route::resource('notification', 'NotificationController');
-        
+
         Route::group(['prefix' => 'bid'], function () {
             Route::get('{challenge}/list', 'BidController@index');
             Route::post('{challenge}', 'BidController@store');
