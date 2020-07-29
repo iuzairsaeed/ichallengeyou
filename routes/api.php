@@ -88,5 +88,8 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post('/btc/invoice' , function () {
             btcInvoice();
         });
+        Route::get('/inquery' , function () {
+            dd($_REQUEST);
+        });
     });
 });

@@ -32,7 +32,8 @@ function btcInvoice(){
         $postData = json_encode([
         'currency' => 'EUR',
         'price' => 10,
-        'token' => '2Z1oKcdDjMDBgUFHMJDcUoVaoa5oc7iFaF7G7RbuYu98'
+        'token' => '2Z1oKcdDjMDBgUFHMJDcUoVaoa5oc7iFaF7G7RbuYu98',
+        'redirectURL' => 'https://google.com',
         ]);
         
         $curlCli = curl_init($resourceUrl);
