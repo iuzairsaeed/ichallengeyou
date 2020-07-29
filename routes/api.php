@@ -88,8 +88,8 @@ Route::group(['namespace' => 'Api'], function () {
             Route::get('{challenge}/result', 'AskCandidateController@result');
         });
         Route::group(['prefix' => 'btc'], function () {
-            Route::resource('/btc/invoice' , 'BitcoinController@invoice');
-            Route::post('/btc/confirm' , 'BitcoinController@confirm');
+            Route::post('invoice' , 'BitcoinController@invoice');
+            Route::post('confirm' , 'BitcoinController@confirm');
         });
     });
 });
