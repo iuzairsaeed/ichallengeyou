@@ -44,9 +44,12 @@ class BitcoinController extends Controller
         return response($data,200);
     }
 
-    public function confirm()
+    public function confirm(Request $request)
     {
-        
+        $transaction = Transaction::where('invoice_id' , $request->invoice_id)->first();
+        $transaction->status = 'paid';
+        $transaction->update();
+        return $transaction;
     }
 
 
