@@ -98,7 +98,7 @@ class ChallengeController extends Controller
         $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
             $message['premiumBtn'] = false;
-            $message['message'] = 'Challenge has been Created!'; $res = 200;
+            $message['message'] = 'Challenge will be reviewed and once its approved it will be seen on the time-line'; $res = 200;
             $data = $request->all();
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
@@ -167,6 +167,7 @@ class ChallengeController extends Controller
 
         $data = $this->model->showChallenge($request,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').' '.$data['data']->amounts_sum;
+        $data['data']->initialAmount->amount = config('global.CURRENCY').' '.$data['data']->initialAmount->amount;
 
         if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
             $data['data']['acceptBtn'] = false;
@@ -286,7 +287,7 @@ class ChallengeController extends Controller
                     if(now() <= $challenge->after_date){
                         $donation = $this->donating($challenge,$request);
                     }
-                } else if($challenge->allowVoter == 'premiumUsers'){
+                } else if($challenge->allowVoter == 'premiumUsers' || $challenge->allowVoter == 'admin' ){
                     $message['message'] = 'You are out of time!';
                     if(now() <= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
                         $donation = $this->donating($challenge,$request);

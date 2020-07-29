@@ -53,6 +53,7 @@ class PaymentController extends Controller
                 'invoice_id' => $pay_id,
             ]);
             $user->transactions()->save($transaction);
+            
             $data = [
                 'message' => config('global.CURRENCY').' '.$amount.' has been credited to your account & Your Total Amount is '.$user->balance,
                 'amount' => $user->balance,
