@@ -13,7 +13,7 @@ function btcInvoice($request){
    CURLOPT_FOLLOWLOCATION => true,
    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
    CURLOPT_CUSTOMREQUEST => "POST",
-   CURLOPT_POSTFIELDS => "token=2Z1oKcdDjMDBgUFHMJDcUoVaoa5oc7iFaF7G7RbuYu98&currency=".$request->currency."&price=".$request->price,
+   CURLOPT_POSTFIELDS => "token=2Z1oKcdDjMDBgUFHMJDcUoVaoa5oc7iFaF7G7RbuYu98&currency=".config('global.CURRENCY')."&price=".$request->price,
    CURLOPT_HTTPHEADER => array(
       "Content-Type: application/x-www-form-urlencoded",
       "x-accept-version: 2.0.0",
