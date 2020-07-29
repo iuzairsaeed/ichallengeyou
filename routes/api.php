@@ -1,8 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api'], function () {
+    Route::get('inquery', function (Request $request) {
+        return $request;
+    });
+
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
         Route::post('register', 'AuthController@register');
@@ -89,7 +94,4 @@ Route::group(['namespace' => 'Api'], function () {
             btcInvoice();
         });
     });
-            Route::get('/inquery' , function (\Request $request ) {
-                dd($request);
-            });
 });
