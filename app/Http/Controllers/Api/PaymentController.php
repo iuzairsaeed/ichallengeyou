@@ -38,6 +38,8 @@ class PaymentController extends Controller
                     'amount' => config('global.PREMIUM_COST'),
                     'type' => 'miscellaneous',
                     'invoice_id' => $pay_id,
+                    'invoice_type' => 'PAYPAL',
+                    'status' => 'paid',
                 ]);
                 $user->transactions()->save($transaction);
                 $amount = $amount - config('global.PREMIUM_COST');
@@ -51,9 +53,11 @@ class PaymentController extends Controller
                 'amount' => $amount,
                 'type' => 'load',
                 'invoice_id' => $pay_id,
+                'invoice_type' => 'PAYPAL',
+                'status' => 'paid',
             ]);
             $user->transactions()->save($transaction);
-            
+
             $data = [
                 'message' => config('global.CURRENCY').' '.$amount.' has been credited to your account & Your Total Amount is '.$user->balance,
                 'amount' => $user->balance,

@@ -37,6 +37,7 @@ class BitcoinController extends Controller
             'type' => 'load',
             'invoice_id' => $invoice['data']['data']['id'],
             'invoice_type' => "BITCOIN",
+            'status' => "pending",
             'created_at' => now(),
         ];
         $this->model->create($transaction);
