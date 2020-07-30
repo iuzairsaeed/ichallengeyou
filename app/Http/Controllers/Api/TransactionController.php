@@ -20,36 +20,39 @@ class TransactionController extends Controller
 
     public function withdraw(Request $request)
     {
-        
         $user = auth()->user();
         $amount = (float)$request->amount;
+        $email = $request->email;
         try {
             $res = 400;
-            $data['message'] = "Please Enter any Amount";
-            if($amount){
-                $data['message'] = "Your withdrwal amount can not be greater than your current Balance.";
-                if($amount <= (float)$user->getAttributes()['balance']){
-                    $auth = paypalAuth();
-                    (string)$token = $auth['access_token'];
-                    if(!$token){
-                        return response('Token is not Verified' , 401);
+            $data['message'] = "Please Enter an Email";
+            if($email){
+                $data['message'] = "Please Enter any Amount";
+                if($amount){
+                    $data['message'] = "Your withdrwal amount can not be greater than your current Balance.";
+                    if($amount <= (float)$user->getAttributes()['balance']){
+                        $auth = paypalAuth();
+                        (string)$token = $auth['access_token'];
+                        if(!$token){
+                            return response('Token is not Verified' , 401);
+                        }
+                        $response = sendMoney($email,$amount,$token);
+                        $pay_id = $response['batch_header']['payout_batch_id'];
+                        
+                        $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
+                        $user->update();
+                        $transaction = [
+                            'user_id' => $user->id,
+                            'challenge_id' => null,
+                            'amount' => $amount,
+                            'type' => 'withdraw',
+                            'invoice_id' => $pay_id,
+                        ];
+                        $this->model->create($transaction);
+                        $data['message'] = 'You have withdrown '.config('global.CURRENCY').' '.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').' 0') ;
+                        $data['amount'] =  $user->balance ?? config('global.CURRENCY').' 0';
+                        $res = 200;
                     }
-                    $response = sendMoney($request->email,$request->amount,$token);
-                    $pay_id = $response['batch_header']['payout_batch_id'];
-                    
-                    $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
-                    $user->update();
-                    $transaction = [
-                        'user_id' => $user->id,
-                        'challenge_id' => null,
-                        'amount' => $amount,
-                        'type' => 'withdraw',
-                        'invoice_id' => $pay_id,
-                    ];
-                    $this->model->create($transaction);
-                    $data['message'] = 'You have withdrown '.config('global.CURRENCY').' '.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').' 0') ;
-                    $data['amount'] =  $user->balance ?? config('global.CURRENCY').' 0';
-                    $res = 200;
                 }
             }
         } catch (\Throwable $th) {
