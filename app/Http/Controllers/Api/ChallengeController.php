@@ -97,7 +97,7 @@ class ChallengeController extends Controller
         $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
             $message['premiumBtn'] = false;
-            $message['message'] = 'Challenge will be reviewed and once its approved it will be seen on the time-line'; $res = 200;
+            $message['message'] = 'Challenge has been created & It will be reviewed and once its approved it will be seen on the time-line'; $res = 200;
             $data = $request->all();
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
