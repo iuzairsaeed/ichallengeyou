@@ -55,9 +55,9 @@ class TransactionController extends Controller
         try {
             $orderableCols = ['created_at'];
             $searchableCols = ['type'];
-            $whereChecks = ['user_id'];
-            $whereOps = ['='];
-            $whereVals = [auth()->id()];
+            $whereChecks = ['user_id','status'];
+            $whereOps = ['=','='];
+            $whereVals = [auth()->id(),'paid'];
             $with = ['challenge'];
             $withCount = [];
             $currentStatus = [];
