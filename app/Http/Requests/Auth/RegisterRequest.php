@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['bail', 'required', 'string', 'max:255', 'min:3'],
+            'name' => ['bail', 'string', 'max:255', 'min:3'],
             'username' => ['bail', 'required', 'string', 'alpha_dash', 'max:255', 'min:3', 'unique:users', new AllowedUsername],
             'email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
