@@ -73,10 +73,10 @@ class BitcoinController extends Controller
             $btc_info = btcInfo($request);
             if($btc_info['data']['status'] == 'paid' || $btc_info['data']['status'] == 'confirmed'){
                 $data = $this->createTransaction($invoice_id,$amount);
+                return response($data,200);
             }
-            return response($data,200);
+            return response(['message'=>'Kindly pay from your wallet.']);
         } catch (\Throwable $th) {
-            return $th;
             return response(['message'=>'Kindly pay from your wallet.']);
         }
         

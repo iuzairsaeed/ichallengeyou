@@ -36,26 +36,30 @@ class TransactionController extends Controller
                         if(!$token){
                             return response('Token is not Verified' , 401);
                         }
-                        $response = sendMoney($email,$amount,$token);
-                        $pay_id = $response['batch_header']['payout_batch_id'];
-                        
-                        $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
-                        $user->update();
-                        $transaction = [
-                            'user_id' => $user->id,
-                            'challenge_id' => null,
-                            'amount' => $amount,
-                            'type' => 'withdraw',
-                            'invoice_id' => $pay_id,
-                        ];
-                        $this->model->create($transaction);
-                        $data['message'] = 'You have withdrown '.config('global.CURRENCY').' '.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').' 0') ;
-                        $data['amount'] =  $user->balance ?? config('global.CURRENCY').' 0';
-                        $res = 200;
+                        $sentResponse = sendMoney($email,$amount,$token);
+                        $pay_id = $sentResponse['batch_header']['payout_batch_id'];sleep(5);
+                        $checkPayment = checkPayment($pay_id,$token);
+                        $data['message'] = array_key_exists('errors',$checkPayment["items"][0]) ? 'The recipient for this payout does not have an account.' : 'success';
+                        if($data['message'] == 'success'){
+                            $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
+                            $user->update();
+                            $transaction = [
+                                'user_id' => $user->id,
+                                'challenge_id' => null,
+                                'amount' => $amount,
+                                'type' => 'withdraw',
+                                'invoice_id' => $pay_id,
+                            ];
+                            $this->model->create($transaction);
+                            $data['message'] = 'You have withdrown '.config('global.CURRENCY').' '.$amount.'. Your total balance is '.($user->balance ?? config('global.CURRENCY').' 0') ;
+                            $data['amount'] =  $user->balance ?? config('global.CURRENCY').' 0';
+                            $res = 200;
+                        }
                     }
                 }
             }
         } catch (\Throwable $th) {
+            return response($th, 400);
             return response(['message'=>'Invalid Transaction'], 400);
         }
         return response($data, $res);
