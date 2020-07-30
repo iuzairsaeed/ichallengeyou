@@ -29,6 +29,7 @@ class AuthController extends Controller
                 'username' => $user->username,
                 'email' => $user->email,
                 'contact_number' => $user->contact_number ?? '',
+                'currency' => config('global.CURRENCY') ?? '',
                 'avatar' => $user->avatar,
                 'is_premium' => $user->is_premium ?? false,
                 'is_admin' => $user->is_admin ?? false,
