@@ -30,6 +30,8 @@ Route::group(['namespace' => 'Web'], function () {
         Route::resource('votes','VoteController');
         Route::get('getNotifications','NotificationController@getNotifications')->name('notification.getNotifications');
         Route::resource('notifications','NotificationController');
+        Route::get('getCategories','CategoryController@getList')->name('category.getList');
+        Route::resource('categories','CategoryController');
     });
     
     

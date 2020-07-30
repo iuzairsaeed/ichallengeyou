@@ -31,6 +31,8 @@
                 </li>
                 <li class="nav-item {{ $segment1 === 'users' ? 'active' : null }}"><a href="/users"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>
                 </li>
+                <li class="nav-item {{ $segment1 === 'categories' ? 'active' : null }}"><a href="/categories"><i class="icon-grid"></i><span data-i18n="" class="menu-title">Category</span></a>
+                </li>
                 <li class="nav-item {{ $segment1 === 'notifications' ? 'active' : null }}"><a href="/notifications"><i class="icon-bell"></i><span data-i18n="" class="menu-title">Notifications</span></a>
                 </li>
                 <li class="nav-item {{ $segment1 === 'settings' ? 'active' : null }}"><a href="/settings"><i class="icon-wrench"></i><span data-i18n="" class="menu-title">Settings</span></a>
