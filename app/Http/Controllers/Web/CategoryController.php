@@ -58,4 +58,14 @@ class CategoryController extends Controller
         $this->model->update($data, $category);
         return response('success');
     }
+
+    public function destroy(Setting $setting)
+    {
+        try {
+            $this->model->delete($setting);
+            return redirect('/category')->with('success', 'Category Deleted Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+        } 
+    }
 }

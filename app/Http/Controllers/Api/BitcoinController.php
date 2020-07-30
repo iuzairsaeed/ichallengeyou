@@ -64,9 +64,8 @@ class BitcoinController extends Controller
     {
         try {
             $user = auth()->user();
-            (float)$amount= $request->price; 
             $invoice_id = $request->invoice_id;
-
+            (float)$amount= Transaction::where('invoice_id' , $invoice_id)->sum('amount'); 
             $transaction = Transaction::where('invoice_id' , $invoice_id)->where('status' , 'paid')->first();
             if($transaction){
                 return response(['message'=>'You have already loaded your balance'] , 402 ); 
@@ -77,6 +76,7 @@ class BitcoinController extends Controller
             }
             return response($data,200);
         } catch (\Throwable $th) {
+            return $th;
             return response(['message'=>'Kindly pay from your wallet.']);
         }
         

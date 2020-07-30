@@ -28,7 +28,7 @@
         </div>
     </div>
 </section>
-<div class="modal fade text-left" id="editSetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+<div class="modal fade text-left" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-success">
@@ -37,8 +37,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form id="deleteForm" action="/challenges/{{$challenge->id}}" method="POST">
+                @method('Delete')
+                @csrf
+            </form>
             <div class="modal-body">
-                <form action="POST" name="updateSetting" id="updateSetting">
+                <form action="POST" name="updateCategory" id="updateCategory">
                     @csrf
                     <div class="row">
                         <div class="col-md-12" >
@@ -84,7 +88,7 @@
             { data: 'serial'},
             { data: 'name' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-toggle="modal" data-keyboard="false" data-target="#editSetting">
+                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-toggle="modal" data-keyboard="false" data-target="#editCategory">
                                             <i class="ft-edit font-medium-3"></i>
                                         </a>`;  }
             }
@@ -96,7 +100,7 @@
         ],
     });
 
-    $('#editSetting').on('show.bs.modal',function(event){
+    $('#editCategory').on('show.bs.modal',function(event){
         const button = $(event.relatedTarget);
         const name = button.data('name');
         $("#valueDiv").html('<input type="text" class="form-control border-primary" id="value" name="name" value='+name+' novalidate required>');
@@ -106,7 +110,7 @@
         $(this).find('.modal-body #id').val(id);
     });
 
-    $('#updateSetting').submit(function(e){
+    $('#updateCategory').submit(function(e){
         e.preventDefault();
         $.ajax({
             type: "PUT",
@@ -120,7 +124,29 @@
             success:function(data){
                 swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
                 $('#dTable').DataTable().ajax.reload();
-                $('#editSetting').modal('hide');
+                $('#editCategory').modal('hide');
+            },
+            error: function (e) {
+                swal("Error!", "There has been some error!", "error");
+            }
+        });
+    });
+
+    $('#deleteCategory').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "PUT",
+            url: "/categories/"+$('.modal-body #id').val(),
+            data: {
+                value: $('.modal-body #value').val()
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success:function(data){
+                swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
+                $('#dTable').DataTable().ajax.reload();
+                $('#editCategory').modal('hide');
             },
             error: function (e) {
                 swal("Error!", "There has been some error!", "error");
