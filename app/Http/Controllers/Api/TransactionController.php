@@ -20,7 +20,7 @@ class TransactionController extends Controller
 
     public function withdraw(Request $request)
     {
-        $pay_id = 'PAY-231456789456321dUZ';
+        
         $user = auth()->user();
         $amount = (float)$request->amount;
         try {
@@ -29,6 +29,14 @@ class TransactionController extends Controller
             if($amount){
                 $data['message'] = "Your withdrwal amount can not be greater than your current Balance.";
                 if($amount <= (float)$user->getAttributes()['balance']){
+                    $auth = paypalAuth();
+                    (string)$token = $auth['access_token'];
+                    if(!$token){
+                        return response('Token is not Verified' , 401);
+                    }
+                    $response = sendMoney($request->email,$request->amount,$token);
+                    $pay_id = $response['batch_header']['payout_batch_id'];
+                    
                     $user->balance = ((float)$user->getAttributes()['balance'] - $amount);
                     $user->update();
                     $transaction = [
