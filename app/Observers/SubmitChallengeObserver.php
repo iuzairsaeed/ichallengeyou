@@ -90,10 +90,13 @@ class SubmitChallengeObserver
 
             // Give Winner Amount of doing challenge
             (float) $amount_sum = $challenge->amount_sum;
-            (float)$winning_amount = $amount_sum * 0.25;
-            $winning_amount = round($winning_amount,2);
-            $winner->balance = (float)$winner->getRawOriginal('balance') + $winning_amount;
+            (float) $creater_amount = $amount_sum * 0.15;  
+            (float) $winner_amount = $amount_sum * 0.75;  
+            $winner_amount = round($winner_amount,2);
+            $winner->balance = (float)$winner->getRawOriginal('balance') + $winner_amount;
             $winner->update();
+            $creater->balance = (float)$creater->getRawOriginal('balance') + $creater_amount;
+            $creater->update();
 
             // TO DONATORS
             foreach ($donators as $donator) {
