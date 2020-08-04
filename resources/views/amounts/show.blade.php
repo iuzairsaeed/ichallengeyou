@@ -44,7 +44,6 @@
                                     <div class="col-md-4">
                                         <label class="text-bold-700">Challenge</label><br>
                                         <p style="margin:10px" > {{$amount->challenge_title}}</p>
-                                        {{-- <p style="margin:10px" > {{$amount->challenge->status}}</p> --}}
                                     </div>
                                 @endif
                                 @if ($amount->invoice_id)
@@ -78,45 +77,6 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title-wrap">
-                        <h4 class="card-title">Bids</h4>
-                        <p class="card-text">Here you can see the list of bids that users made on this challenge.</p>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-block table-responsive">
-                        <div class="row">
-                            <table class="table table-striped table-bordered" id="donationsTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>User</th>
-                                        <th>Bid Amount</th>
-                                        <th>Created At</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($challenge->bids as $key => $item)
-                                    <tr>
-                                        <td>{{$key + 1}}</td>
-                                        <td>{{$item->user->name}}</td>
-                                        <td>{{config('global.CURRENCY').$item->bid_amount}}</td>
-                                        <td>{{$item->created_at->format(config('global.DATE_FORMAT') ?? '')}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
 </section>
 @endsection

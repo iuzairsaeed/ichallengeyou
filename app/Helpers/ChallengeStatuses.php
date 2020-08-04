@@ -44,3 +44,8 @@ function Dispute()
 {
     return 'Dispute';
 }
+
+function Deleted()
+{
+    return 'Deleted';
+}

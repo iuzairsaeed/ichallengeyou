@@ -37,12 +37,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="deleteForm" action="/challenges/{{$challenge->id}}" method="POST">
+            <form id="deleteCategory" name="deleteCategory" method="POST">
                 @method('Delete')
+                <input type="hidden" id="id" name="id">
                 @csrf
             </form>
             <div class="modal-body">
-                <form action="POST" name="updateCategory" id="updateCategory">
+                <form method="POST" name="updateCategory" id="updateCategory">
                     @csrf
                     <div class="row">
                         <div class="col-md-12" >
@@ -56,9 +57,6 @@
                     </div>
                     <div class="form-actions center pb-0">
                         <input type="hidden" id="id" name="id">
-                        <button type="reset" data-dismiss="modal" class="btn btn-raised btn-danger mr-1">
-                            <i class="icon-trash"></i> Cancel
-                        </button>
                         <button type="submit" class="btn btn-raised btn-success">
                             <i class="icon-note"></i> Update
                         </button>
@@ -135,7 +133,7 @@
     $('#deleteCategory').submit(function(e){
         e.preventDefault();
         $.ajax({
-            type: "PUT",
+            type: "DELETE",
             url: "/categories/"+$('.modal-body #id').val(),
             data: {
                 value: $('.modal-body #value').val()
@@ -144,7 +142,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success:function(data){
-                swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
+                swal("Updated!", "Category has been deleted successfully!", "success").catch(swal.noop);
                 $('#dTable').DataTable().ajax.reload();
                 $('#editCategory').modal('hide');
             },
