@@ -37,11 +37,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="deleteCategory" name="deleteCategory" method="POST">
-                @method('Delete')
-                <input type="hidden" id="id" name="id">
-                @csrf
-            </form>
+            
             <div class="modal-body">
                 <form method="POST" name="updateCategory" id="updateCategory">
                     @csrf
@@ -55,13 +51,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-actions center pb-0">
-                        <input type="hidden" id="id" name="id">
-                        <button type="submit" class="btn btn-raised btn-success">
-                            <i class="icon-note"></i> Update
-                        </button>
-                    </div>
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-3">
+                            <input type="hidden" id="id" name="id">
+                            <button type="submit" class="btn btn-raised btn-success">
+                                <i class="icon-note"></i> Update
+                            </button>
+                        </div>
                 </form>
+                        <div class="col-4">
+                            <form id="deleteCategory" name="deleteCategory" method="POST">
+                                @method('Delete')
+                                @csrf
+                                <button class="btn btn-raised btn-danger">
+                                    <i class="icon-note"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -101,10 +109,10 @@
     $('#editCategory').on('show.bs.modal',function(event){
         const button = $(event.relatedTarget);
         const name = button.data('name');
-        $("#valueDiv").html('<input type="text" class="form-control border-primary" id="value" name="name" value='+name+' novalidate required>');
+        $("#valueDiv").html('<input type="text" class="form-control border-primary" id="value" name="name" value="'+name+'" novalidate required>');
         const id = button.data('id');
         const modal = $(this);
-        $(this).find('.modal-body #name').text(name);
+        $(this).find('.modal-body #name').val(name);
         $(this).find('.modal-body #id').val(id);
     });
 
@@ -120,7 +128,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success:function(data){
-                swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
+                swal("Deleted!", "Category has been updated successfully!", "success").catch(swal.noop);
                 $('#dTable').DataTable().ajax.reload();
                 $('#editCategory').modal('hide');
             },
