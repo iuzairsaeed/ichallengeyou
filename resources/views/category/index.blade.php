@@ -3,7 +3,31 @@
 @section('content')
 <section id="dom">
     <div class="row">
-        <div class="col-12">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap">
+                        <h4 class="card-title">Add Category</h4>
+                        <p class="card-text">Here you can add the category.</p>
+                    </div>
+                </div>
+                <div class="card-body collapse show">
+                    <div class="card-block card-dashboard table-responsive">
+                        <form action="/categories" method="POST">
+                            @csrf
+                            <div class="row">
+                                <input class="form-control" type="text" placeholder="Add Category" />
+                            </div>
+                            <br>
+                            <div class="row">
+                                <input class="form-control btn btn-success" type="submit" value="Add Category" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-wrap">
