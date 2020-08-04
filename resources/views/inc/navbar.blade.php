@@ -26,11 +26,12 @@
                     @endif
                       <div class="row noti-wrapper">
                         <span class="noti-wrapper">
-                          <i class="ft-navigation info float-left d-block font-medium-4 mt-2 mr-2"></i>
+                          <i class="ft-check-circle info float-left d-block font-medium-4 mt-2 mr-2"></i>
                           <span class="noti-title line-height-1 d-block text-bold-400 info">{{$item->title}}</span>
-                          <p class="noti-text">{{$item->body}}</p>
+                          <p class="noti-text danger">{{$item->body}}</p>
                         </span>
                       </div>
+                      <span class="noti-text d-block text-bold-400 info" style="float: right">{{$item->created_at}}</span>
                     </a>
                   @endforeach
                 </div>
