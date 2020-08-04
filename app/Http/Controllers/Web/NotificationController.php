@@ -20,7 +20,7 @@ class NotificationController extends Controller
     public function getNotifications(Request $request)
     {
         $orderableCols = ['created_at'];
-        $searchableCols = [];
+        $searchableCols = ['title'];
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];
@@ -46,7 +46,7 @@ class NotificationController extends Controller
             return $item;
         });
         $data['data'] = NotificationCollection::collection($data['data']);
-        return response($data, $data['response']);
+        return response($data, 200);
     }
 
     /**

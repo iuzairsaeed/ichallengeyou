@@ -423,7 +423,7 @@
             { data: 'amount' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenges/${full.id}" class="info success" title="View">
+                                return `<a href="/users/${full.user.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
                                 }
@@ -457,7 +457,7 @@
             { data: 'bid_amount' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenges/${full.id}" class="info success" title="View">
+                                return `<a href="/users/${full.user.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
                                 }
@@ -491,7 +491,7 @@
             { data: 'user.name' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenge/${full.id}" class="info success" title="View">
+                                return `<a href="/users/${full.user.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
                                 }

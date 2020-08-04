@@ -36,7 +36,7 @@ class SettingController extends Controller
             return $item;
         });
 
-        return response($data, $data['response']);
+        return response($data, 200);
     }
 
     /**

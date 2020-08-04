@@ -73,8 +73,8 @@
         ],
         order: [0 , 'desc'],
         columnDefs: [
-            { width: "10%", "targets": [-1, 0] },
-            { orderable: false, targets: [-2, -1] }
+            { width: "10%", targets: [-1, 0] },
+            { orderable: false, targets: [-2, -1, -3] }
         ],
     });
     $('#date_from, #date_to').change(function(){
