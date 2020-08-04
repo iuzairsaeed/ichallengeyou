@@ -101,7 +101,6 @@ class ChallengeController extends Controller
                 }
             }
             $winner = optional($data['data'])->where('isWinner','Winner')->first();
-            
             return view('challenges.show', compact('challenge','winner'));
         } catch (\Throwable $th) {
             throw $th;
@@ -205,7 +204,7 @@ class ChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
-        $withTrash = true;
+        $withTrash = false;
 
         $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
@@ -255,7 +254,7 @@ class ChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = 'submitChallenge';
-        $withTrash = true;
+        $withTrash = false;
 
         $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);

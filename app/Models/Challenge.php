@@ -103,7 +103,7 @@ class Challenge extends Model
 
     public function donations()
     {
-        return $this->hasMany(Amount::class)->where('type', 'donation')->select('amount','user_id','challenge_id','created_at');
+        return $this->hasMany(Amount::class)->withTrashed()->where('type', 'donation')->select('amount','user_id','challenge_id','created_at');
     }
 
     public function amounts()
