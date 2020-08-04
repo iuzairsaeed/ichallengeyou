@@ -33,7 +33,7 @@ class AcceptedChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = 'submitChallenge';
-        $withTrash = false;
+        $withTrash = true;
 
         $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
@@ -60,7 +60,7 @@ class AcceptedChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
-        $withTrash = false;
+        $withTrash = true;
 
         $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
@@ -86,7 +86,7 @@ class AcceptedChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = 'submitChallenge';
-        $withTrash = false;
+        $withTrash = true;
 
         $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);

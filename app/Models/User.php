@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     public function donations()
     {
-        return $this->hasMany(Amount::class)->where('type', 'donation');
+        return $this->hasMany(Amount::class)->withTrashed()->where('type', 'donation');
     }
 
     public function transactions()

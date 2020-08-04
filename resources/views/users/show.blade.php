@@ -120,7 +120,7 @@
                                     @foreach ($user->challenges as $key => $item)
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$item->title}}</td>
+                                            <td>{{$item->title }}</td>
                                             <td>{{$item->start_time->format(config('global.DATE_FORMAT'))}}</td>
                                             <td>{{$item->status}}</td>
                                             <td>
@@ -161,12 +161,12 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($user->donations as $key => $item)
-                                        <tr>
-                                            <td>{{$key + 1}}</td>
-                                            <td>{{$item->challenge->title}}</td>
-                                            <td>{{$item->amount}}</td>
-                                            <td>{{$item->created_at->format(config('global.DATE_FORMAT'))}}</td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{$key + 1}}</td>
+                                        <td>{{$item->challenge->title  ?? ''}}</td>
+                                        <td>{{config('global.CURRENCY').' '.$item->amount}}</td>
+                                        <td>{{$item->created_at->format(config('global.DATE_FORMAT'))}}</td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -202,7 +202,7 @@
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$item->type}}</td>
-                                            <td>{{$item->amount}}</td>
+                                            <td>{{config('global.CURRENCY').' '.$item->amount}}</td>
                                             <td>{{$item->created_at->format(config('global.DATE_FORMAT'))}}</td>
                                         </tr>
                                     @endforeach
