@@ -85,8 +85,8 @@ class ChallengeRepository implements RepositoryInterface
         }
     }
 
-    // Get data for datatable
-    public function getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
+    // Get data for Api
+    public function getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus)
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
@@ -154,7 +154,11 @@ class ChallengeRepository implements RepositoryInterface
         }else{
             $records->latest();
         }
-        
+
+        if($withTrash){
+            $records->withTrashed();
+        }
+
         $recordsFiltered = $records->count();
         $records = $records->limit($length)->offset($start)->get();
         $message = 'Success';

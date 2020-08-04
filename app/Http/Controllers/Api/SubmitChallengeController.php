@@ -76,8 +76,10 @@ class SubmitChallengeController extends Controller
             $withSumsCol = [];
             $addWithSums = [];
             $whereHas = 'submitChallenge';
-            $data = $this->model->getData($request, $with, $withCount,$whereHas , $withSums, $withSumsCol, $addWithSums, $whereChecks,
-            $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+            $withTrash = false;
+
+            $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             collect($data['data'])->map(function ($item) {
                 $item['isWinner'] = $item->submitChallenge->isWinner;
                 $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();

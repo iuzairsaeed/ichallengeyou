@@ -38,8 +38,9 @@ class BidController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item) {
             $item['bid_amount'] = config('global.CURRENCY').' '.$item->bid_amount;

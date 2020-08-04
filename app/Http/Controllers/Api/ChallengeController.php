@@ -62,8 +62,9 @@ class ChallengeController extends Controller
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
@@ -261,6 +262,7 @@ class ChallengeController extends Controller
      */
     public function destroy(Challenge $challenge)
     {
+        $challenge->setStatus(Deleted());
         return $this->model->delete($challenge);
     }
 
@@ -523,8 +525,9 @@ class ChallengeController extends Controller
         $withSumsCol = ['amount'];
         $addWithSums = [];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         collect($data['data'])->map(function ($item){
             $item['amounts_sum'] = config('global.CURRENCY').' '.$item->amounts_sum;

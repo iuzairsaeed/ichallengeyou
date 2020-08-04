@@ -33,8 +33,9 @@ class AcceptedChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = 'submitChallenge';
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         $serial = ($request->start ?? 0) + 1;
         collect($data["data"])->map(function ($item) use (&$serial) {
@@ -59,10 +60,10 @@ class AcceptedChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
-
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
@@ -85,8 +86,9 @@ class AcceptedChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = 'submitChallenge';
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {

@@ -39,10 +39,11 @@ class ChallengeController extends Controller
         $currentStatus = [];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
-        $addWithSums = ['trend'];
+        $addWithSums = [];
         $whereHas = null;
+        $withTrash = true;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
@@ -74,10 +75,10 @@ class ChallengeController extends Controller
         // return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 
-    public function show(Challenge $challenge,Request $request)
+    public function show($id,Request $request)
     {
         try {
-
+            $challenge = Challenge::withTrashed()->findOrFail($id);
             $count = 0; $isWinner = 0;
             $data = $this->getSubmitors($challenge,$request)->original;
             $results = $this->result($challenge)->original;
@@ -100,20 +101,11 @@ class ChallengeController extends Controller
                 }
             }
             $winner = optional($data['data'])->where('isWinner','Winner')->first();
-            $challenge = $challenge->where('id' , $challenge->id)->first();
+            
             return view('challenges.show', compact('challenge','winner'));
         } catch (\Throwable $th) {
             throw $th;
         }
-        $with = array(
-            'donations' => function($query) {
-                $query->with('user');
-            },
-            'initialAmount',
-            'bids',
-        );
-        $challenge = $challenge->with($with)->where('id' , $challenge->id)->first();
-        return view('challenges.show', compact('challenge'));
     }
 
     public function edit(Challenge $challenge)
@@ -146,8 +138,22 @@ class ChallengeController extends Controller
     public function destroy(Challenge $challenge)
     {
         try {
+            $challenge->setStatus(Deleted());
             $this->model->delete($challenge);
-            return redirect('/challenges')->with('success', 'Challenge Deleted Successfully');
+            return redirect()->back()->with('success', 'Challenge Deleted Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+        } 
+
+    }
+
+    public function restore($id)
+    {
+        try {
+            $challenge = Challenge::withTrashed()->findOrFail($id);
+            $challenge->restore();
+            $challenge->setStatus(Approved());
+            return redirect()->back()->with('success', 'Challenge Restore Successfully');
         } catch (\Throwable $th) {
             throw $th;
         } 
@@ -170,8 +176,9 @@ class ChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
@@ -198,8 +205,9 @@ class ChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0) + 1;
@@ -247,8 +255,9 @@ class ChallengeController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = 'submitChallenge';
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         $serial = ($request->start ?? 0) + 1;
         collect($data['data'])->map(function ($item) use (&$serial) {
