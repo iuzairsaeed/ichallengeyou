@@ -6,11 +6,10 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-					<div class="card-title-wrap bar-info">
-						<h5 class="form-section">
-                            Category </h5>
-					</div>
-					<p class="mb-0">Here you can add the category.</p>
+                    <div class="card-title-wrap">
+                        <h4 class="card-title">Add Category</h4>
+                        <p class="card-text">Here you can add the category.</p>
+                    </div>
                 </div>
                 <div class="card-body">
 					<div class="px-3">
@@ -45,7 +44,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-wrap">
-                        <h4 class="card-title">Category</h4>
+                        <h4 class="card-title">Category List</h4>
                         <p class="card-text">Here you can see the list of configurable category.</p>
                     </div>
                 </div>
