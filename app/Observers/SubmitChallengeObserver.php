@@ -90,8 +90,8 @@ class SubmitChallengeObserver
 
             // Give Winner Amount of doing challenge
             (float) $amount_sum = $challenge->amount_sum;
-            (float) $creater_amount = $amount_sum * 0.15;  
-            (float) $winner_amount = $amount_sum * 0.75;  
+            (float) $creater_amount = $amount_sum * ((int)config('global.CREATER_AMOUNT_IN_PERCENTAGE') / 100 );  
+            (float) $winner_amount = $amount_sum * ((int)config('global.WINNING_AMOUNT_IN_PERCENTAGE') / 100 );  
             $winner_amount = round($winner_amount,2);
             $winner->balance = (float)$winner->getRawOriginal('balance') + $winner_amount;
             $winner->update();
