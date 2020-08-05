@@ -9,6 +9,7 @@
                     <div class="card-title-wrap">
                         <h4 class="card-title">Transaction</h4>
                         <p class="card-text">Here you can see the list of existing transactions.</p>
+                        <span class="card-text float-right">Total Amount on the App ( {{config('global.CURRENCY').' '.$net_total}} )</span>
                     </div>
                 </div>
                 <div class="card-body">
