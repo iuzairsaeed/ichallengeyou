@@ -68,7 +68,7 @@ class Challenge extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class)->select(['id','name']);
+        return $this->belongsTo(Category::class)->withTrashed()->select(['id','name']);
     }
 
     public function comments()

@@ -34,6 +34,6 @@ class Category extends Model
 
     public function challenges()
     {
-        return $this->hasMany(Challenge::class);
+        return $this->hasMany(Challenge::class)->withTrashed();
     }
 }

@@ -28,10 +28,10 @@
                         <span class="noti-wrapper">
                           <i class="ft-check-circle info float-left d-block font-medium-4 mt-2 mr-2"></i>
                           <span class="noti-title line-height-1 d-block text-bold-400 info">{{$item->title}}</span>
-                          <p class="noti-text danger">{{$item->body}}</p>
+                          <p class="noti-text">{{$item->body}}</p>
                         </span>
                       </div>
-                      <span class="noti-text d-block text-bold-400 info" style="float: right">{{$item->created_at}}</span>
+                      <span class="noti-text d-block text-bold-400 info" style="float: right; right:0px">{{$item->created_at}}</span>
                     </a>
                   @endforeach
                 </div>
