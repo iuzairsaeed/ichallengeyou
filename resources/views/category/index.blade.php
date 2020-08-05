@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-wrap">
-                        <h4 class="card-title">category</h4>
+                        <h4 class="card-title">Category</h4>
                         <p class="card-text">Here you can see the list of configurable category.</p>
                     </div>
                 </div>
