@@ -26,9 +26,6 @@
                         @method('Delete')
                         @csrf
                     </form>
-                    <form id="restoreForm" action="/challenges/{{$challenge->id}}/restore" method="POST">
-                        @csrf
-                    </form>
                     <form id="updateForm" action="/challenges/{{$challenge->id}}" method="POST">
                         @method('PUT')
                         @csrf
@@ -161,30 +158,20 @@
                             @endif
                         </div>
                     </form>
-                    @if ($challenge->status == Deleted())    
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-actions left">
-                                    <button form="restoreForm" class="btn btn-raised btn-info">
-                                        <i class="ft-rotate-ccw"></i> Restore
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-actions left">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-actions left">
+                                @if ($challenge->status != Deleted())
                                     <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
                                         <i class="icon-check"></i> Upadate Challenge
                                     </button>
                                     <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
                                         <i class="icon-trash"></i> Delete
                                     </button>
-                                </div>
+                                @endif
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>

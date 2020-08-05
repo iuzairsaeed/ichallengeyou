@@ -138,6 +138,10 @@ class ChallengeController extends Controller
     {
         try {
             $challenge->setStatus(Deleted());
+            $creator = $challenge->user;
+            (float)$amount = $challenge->amounts->where('type' , 'initial')->first()->amount;
+            $creator->balance = $creator->getAttributes()['balance'] + $amount;
+            $creator->update();
             $this->model->delete($challenge);
             return redirect()->back()->with('success', 'Challenge Deleted Successfully');
         } catch (\Throwable $th) {

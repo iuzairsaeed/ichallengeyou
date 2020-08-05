@@ -63,7 +63,7 @@ class Challenge extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->select(['id','name','username','avatar']);
+        return $this->belongsTo(User::class)->select(['id','name','username','avatar','balance']);
     }
 
     public function category()

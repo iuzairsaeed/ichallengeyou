@@ -107,11 +107,13 @@ class ChallengeController extends Controller
             }
             $user->balance = $user->getAttributes()['balance'] - (float)$data['amount'];
             $user->update();
-
+            $message['balance'] = $user->balance;
+            
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
             $data['user_id'] = auth()->id();
+
             if($data['duration_hours'] == 24){
                 $data['duration_days'] =$data['duration_days'] + 1;
                 $data['duration_hours'] = 0;
@@ -242,6 +244,7 @@ class ChallengeController extends Controller
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $user = auth()->user();
         $data['premiumBtn'] = true;
         if(auth()->user()->is_premium){
             $data['premiumBtn'] = false;
@@ -256,6 +259,7 @@ class ChallengeController extends Controller
             $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->update($data , $challenge );
         }
+        $message['balance'] = $user->balance;
         return response($message, $res);
 
 
@@ -306,7 +310,7 @@ class ChallengeController extends Controller
                 
                 return response([
                     'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
-                    'balanace' => $user->balance ?? config('global.CURRENCY')." 0.00"
+                    'balance' => $user->balance ?? config('global.CURRENCY')." 0.00"
                 ], 200);
             }
         } catch (\Throwable $th) {
