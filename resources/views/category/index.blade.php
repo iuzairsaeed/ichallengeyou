@@ -16,7 +16,7 @@
                         <form action="/categories" method="POST">
                             @csrf
                             <div class="row">
-                                <input class="form-control" type="text" placeholder="Add Category" />
+                                <input class="form-control" name="name" type="text" placeholder="Add Category" />
                             </div>
                             <br>
                             <div class="row">
@@ -152,7 +152,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success:function(data){
-                swal("Deleted!", "Category has been updated successfully!", "success").catch(swal.noop);
+                swal("Updated!", "Category has been updated successfully!", "success").catch(swal.noop);
                 $('#dTable').DataTable().ajax.reload();
                 $('#editCategory').modal('hide');
             },
@@ -174,7 +174,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success:function(data){
-                swal("Updated!", "Category has been deleted successfully!", "success").catch(swal.noop);
+                swal("Deleted!", "Category has been deleted successfully!", "success").catch(swal.noop);
                 $('#dTable').DataTable().ajax.reload();
                 $('#editCategory').modal('hide');
             },

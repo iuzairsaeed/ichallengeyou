@@ -47,6 +47,15 @@ class CategoryController extends Controller
         return view('category.index');
     }
 
+    public function store(Request $request, Category $category)
+    {
+        $data = [
+            'name' => $request->name,
+        ];
+        $this->model->create($data);
+        return redirect('/categories')->with('success', 'Category Added Successfully');
+    }
+
     public function update(Request $request, Category $category)
     {
         $this->validate($request, [
