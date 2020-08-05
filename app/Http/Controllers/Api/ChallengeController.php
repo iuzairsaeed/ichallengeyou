@@ -96,10 +96,18 @@ class ChallengeController extends Controller
     {
         $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
         $message['premiumBtn'] = true;
-        if(auth()->user()->is_premium){
+        $user = auth()->user();
+        if($user->is_premium){
             $message['premiumBtn'] = false;
             $message['message'] = 'Challenge has been created & It will be reviewed and once its approved it will be seen on the time-line'; $res = 200;
             $data = $request->all();
+            (float)$balance = $user->getAttributes()['balance'];
+            if($balance < (float)$data['amount'] ){
+                return response(['message' => 'Not Enough Balance']);
+            }
+            $user->balance = $user->getAttributes()['balance'] - (float)$data['amount'];
+            $user->update();
+
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
@@ -115,19 +123,20 @@ class ChallengeController extends Controller
             $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
             $challenge = $this->model->create($data);
             $challenge->setStatus(Pending());
-            $donation = new Amount([
+            $amount = new Amount([
                 'user_id' => auth()->id(),
                 'amount' => $request->amount,
                 'type' => 'initial',
                 'created_at' => now()
             ]);
-            $challenge->amounts()->save($donation);
+            $challenge->amounts()->save($amount);
             $transaction = new Transaction([
                 'user_id' => auth()->id(),
                 'challenge_id' => $challenge->id,
                 'amount' => $request->amount,
                 'type' => 'create_challenge',
                 'invoice_id' => null,
+                'status' => 'paid',
             ]);
             $challenge->transactions()->save($transaction);
         }
@@ -319,6 +328,7 @@ class ChallengeController extends Controller
             'amount' => $request->amount,
             'type' => 'donate',
             'invoice_id' => null,
+            'status' => 'paid',
         ]);
         $challenge->transactions()->save($transaction);
         $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;

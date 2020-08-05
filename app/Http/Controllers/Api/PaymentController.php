@@ -44,7 +44,6 @@ class PaymentController extends Controller
                 $user->transactions()->save($transaction);
                 $amount = $amount - config('global.PREMIUM_COST');
             }
-            
             $user->balance = (float)$user->getAttributes()['balance'] + $amount;
             $user->update();
             $transaction = new Transaction([

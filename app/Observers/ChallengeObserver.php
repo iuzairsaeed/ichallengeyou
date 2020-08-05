@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Challenge;
 use App\Models\Notification;
+use App\Models\Transaction;
 use App\Notifications\ChallengeNotification;
 
 class ChallengeObserver
@@ -25,6 +26,7 @@ class ChallengeObserver
             'data_id' => $challenge->id, 
         ]);
         $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+        
         // TO ADMIN
         Notification::create([
             'user_id' => 1, 
