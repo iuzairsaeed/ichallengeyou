@@ -6,25 +6,39 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title-wrap">
-                        <h4 class="card-title">Add Category</h4>
-                        <p class="card-text">Here you can add the category.</p>
-                    </div>
+					<div class="card-title-wrap bar-info">
+						<h5 class="form-section">
+                            Category </h5>
+					</div>
+					<p class="mb-0">Here you can add the category.</p>
                 </div>
-                <div class="card-body collapse show">
-                    <div class="card-block card-dashboard table-responsive">
-                        <form action="/categories" class="" method="POST">
+                <div class="card-body">
+					<div class="px-3">
+						<form action="/categories" class="" method="POST">
                             @csrf
-                            <div class="row">
-                                <input class="form-control" name="name" type="text" placeholder="Category" />
-                            </div>
-                            <br>
-                            <div class="row">
-                                <input class="form-control btn btn-success" type="submit" value="Add Category" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
+							<div class="form-body">
+								<h4 class="form-section"> Add Category</h4>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="projectinput1">Category Name</label>
+											<input type="text" id="name" class="form-control" name="name" placeholder="Category" />
+										</div>
+									</div>
+								</div>
+                                <div class="form-actions">
+                                    <button type="reset" class="btn btn-danger mr-1">
+                                        <i class="icon-trash"></i> Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="icon-note"></i> Save
+                                    </button>
+                                </div>
+							</div>
+						</form>
+					</div>
+				</div>
+                
             </div>
         </div>
         <div class="col-8">
