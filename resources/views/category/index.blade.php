@@ -13,10 +13,10 @@
                 </div>
                 <div class="card-body collapse show">
                     <div class="card-block card-dashboard table-responsive">
-                        <form action="/categories" method="POST">
+                        <form action="/categories" class="" method="POST">
                             @csrf
                             <div class="row">
-                                <input class="form-control" name="name" type="text" placeholder="Add Category" />
+                                <input class="form-control" name="name" type="text" placeholder="Category" />
                             </div>
                             <br>
                             <div class="row">
@@ -85,13 +85,9 @@
                         </div>
                 </form>
                         <div class="col-4">
-                            <form id="deleteCategory" name="deleteCategory" method="POST">
-                                @method('Delete')
-                                @csrf
-                                <button class="btn btn-raised btn-danger">
-                                    <i class="icon-note"></i> Delete
-                                </button>
-                            </form>
+                            <button type="button" class="delete btn btn-raised btn-danger">
+                                <i class="icon-note"></i> Delete
+                            </button>
                         </div>
                     </div>
             </div>
@@ -182,6 +178,39 @@
                 swal("Error!", "There has been some error!", "error");
             }
         });
+    });
+    $('.delete').click(function () {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0CC27E',
+            cancelButtonColor: '#FF586B',
+            confirmButtonText: 'Yes, Delete it',
+            cancelButtonText: "No, Cancel"
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/categories/"+$('.modal-body #id').val(),
+                    data: {
+                        value: $('.modal-body #value').val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success:function(data){
+                        swal("Deleted!", "Category has been deleted successfully!", "success").catch(swal.noop);
+                        $('#dTable').DataTable().ajax.reload();
+                        $('#editCategory').modal('hide');
+                    },
+                    error: function (e) {
+                        swal("Error!", "There has been some error!", "error");
+                    }
+                });
+            }
+        }).catch(swal.noop);
     });
 </script>
 @endsection
