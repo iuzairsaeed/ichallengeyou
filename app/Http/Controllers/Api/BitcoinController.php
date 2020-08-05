@@ -106,7 +106,7 @@ class BitcoinController extends Controller
         $transaction->update();
         $data = [
             'message' => config('global.CURRENCY').' '.number_format($amount,2).' has been credited to your account & Your Total Amount is '.$user->balance,
-            'amount' => $user->balance,
+            'amount' => $user->balance ?? config('global.CURRENCY')." 0.00",
             'is_premium' => $user->is_premium,
         ];
         return $data;

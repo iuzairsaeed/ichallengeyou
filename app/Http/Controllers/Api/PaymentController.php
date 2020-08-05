@@ -15,7 +15,7 @@ class PaymentController extends Controller
         $user = Auth::User();
         $data = [
             'message' => 'Your Amount has not been credited to your account & Your Total Amount is '.$user->balance,
-            'amount' => $user->balance,
+            'amount' => $user->balance ?? config('global.CURRENCY')." 0.00",
         ];
         $pay_id = $request->response['id'];
         $auth = paypalAuth();
@@ -60,7 +60,7 @@ class PaymentController extends Controller
 
             $data = [
                 'message' => config('global.CURRENCY').' '.number_format($amount,2).' has been credited to your account & Your Total Amount is '.$user->balance,
-                'amount' => $user->balance,
+                'amount' => $user->balance ?? config('global.CURRENCY')." 0.00",
                 'is_premium' => $user->is_premium,
             ];
             return response($data , 200);

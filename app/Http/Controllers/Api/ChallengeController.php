@@ -297,7 +297,7 @@ class ChallengeController extends Controller
                 
                 return response([
                     'message' => 'Your donation of '.$donation->amount.' has been contributed to the '.$challenge->title,
-                    'balanace' => $user->balance
+                    'balanace' => $user->balance ?? config('global.CURRENCY')." 0.00"
                 ], 200);
             }
         } catch (\Throwable $th) {
