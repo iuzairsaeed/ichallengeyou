@@ -22,4 +22,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Challenge::class)->select(['id','title','user_id']);
     }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
+    }
 }

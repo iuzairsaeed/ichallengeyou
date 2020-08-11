@@ -24,7 +24,7 @@ class TransactionObserver
         switch ($transaction_type) {
             case 'load':
                 // TO USER
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => $transaction->user_id,
                     'title' => 'Balance Loaded Successfully!', 
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been Successfully Added to your Account!', 
@@ -32,18 +32,20 @@ class TransactionObserver
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new LoadNotification($transaction->amount));
+                $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Load Balance', 
                     'body' => $transaction->user->name.' has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
+                $transaction->notifications()->save($transactionArray);
                 break;
             case 'miscellaneous':
                 // TO USER
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => $transaction->user_id, 
                     'title' => 'Congratulation! ♥', 
                     'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' You\'re Premium User Now!', 
@@ -51,18 +53,20 @@ class TransactionObserver
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new MiscellaneousNotification);
+                $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Miscellaneous Amount', 
                     'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' '.$transaction->user->name.' is Premium User Now!', 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
+                $transaction->notifications()->save($transactionArray);
                 break;
             case 'withdraw':
                 // TO USER
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => $transaction->user_id,
                     'title' => 'Withdrawal Transaction',
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been debited', 
@@ -70,27 +74,30 @@ class TransactionObserver
                     'data_id' => $transaction->user_id, 
                 ]);
                 $transaction->user->notify(new WithdrawalNotification($transaction->amount));
+                $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Withdrawal Transaction',
                     'body' => $transaction->user->name.' has been debited '.config('global.CURRENCY').' '.$transaction->amount, 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
+                $transaction->notifications()->save($transactionArray);
                 break;
             case 'donate':
                 // TO USER
-                Notification::create([
-                    'user_id' => auth()->id() ?? 2,
+                $transactionArray = new Notification([
+                    'user_id' =>  $transaction->user_id,
                     'title' => 'You have Donated Successfully!',
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
+                $transaction->notifications()->save($transactionArray);
                 // TO Challenge Owner
                 $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => $transaction->challenge->user->id,
                     'title' => (auth()->user()->name ?? 'Seeder Test User' ).' have Donated on Your Challenge '.$transaction->challenge->title,
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
@@ -98,14 +105,16 @@ class TransactionObserver
                     'data_id' => $transaction->challenge_id, 
                 ]);
                 $transaction->challenge->user->notify(new DonateNotification('creater',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+                $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
-                Notification::create([
+                $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => ($transaction->user->name ?? 'Seeder Test User' ).' have Donated on Challenge '.$transaction->challenge->title,
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
+                $transaction->notifications()->save($transactionArray);
                 break;
             
             default:

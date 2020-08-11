@@ -18,7 +18,7 @@ class ChallengeObserver
     public function created(Challenge $challenge)
     {
         // TO CHALLENGE OWNER
-        Notification::create([
+        $notification = new Notification([
             'user_id' => $challenge->user_id, 
             'title' => 'New Challenge Created', 
             'body' => 'You have Created The Challenge '.$challenge->name, 
@@ -26,15 +26,17 @@ class ChallengeObserver
             'data_id' => $challenge->id, 
         ]);
         $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+        $challenge->notifications()->save($notification);
         
         // TO ADMIN
-        Notification::create([
+        $notification = new Notification([
             'user_id' => 1, 
             'title' => 'New Challenge Created', 
             'body' => $challenge->user->name.' have Created The Challenge '.$challenge->name, 
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $challenge->id, 
         ]);
+        $challenge->notifications()->save($notification);
     }
 
     /**

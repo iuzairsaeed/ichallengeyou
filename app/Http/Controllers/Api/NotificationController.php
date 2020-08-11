@@ -46,6 +46,14 @@ class NotificationController extends Controller
                 $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
             }
+            if($item['type'] == `App\Models\Challenge`){
+                $item['file'] = $item->user->avatar;
+                $item['data_id'] = $item->data_id;
+            }
+            if($item['type'] == `App\Models\Transaction`){
+                $item['file'] = $item->user->avatar;
+                $item['data_id'] = $item->data_id;
+            }
         });
         $data['data'] = NotificationCollection::collection($data['data']);
         return response($data, $data['response']);
