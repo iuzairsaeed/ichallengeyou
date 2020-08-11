@@ -71,8 +71,9 @@ class AcceptedChallengeController extends Controller
         $withSumsCol = ['amount'];
         $addWithSums = [];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                 $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         $serial = ($request->start ?? 0);

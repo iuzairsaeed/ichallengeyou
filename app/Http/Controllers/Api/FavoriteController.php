@@ -35,9 +35,11 @@ class FavoriteController extends Controller
         $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
+        $withTrash = false;
 
-        $data = $this->model->getData($request, $with, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
-                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['amounts_sum'] = config('global.CURRENCY').' '.$item->challenge->amount_sum;
         });
