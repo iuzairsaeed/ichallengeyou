@@ -81,6 +81,8 @@ Route::group(['namespace' => 'Api'], function () {
             Route::get('{challenge}/list', 'BidController@index');
             Route::post('{challenge}', 'BidController@store');
         });
+        Route::get('donor/{challenge}', 'DonatedChallengeController@index');
+
         Route::get('user/list', 'UserController@getAllUsers');
         Route::group(['prefix' => 'ask'], function () {
             Route::get('/', 'AskCandidateController@index');

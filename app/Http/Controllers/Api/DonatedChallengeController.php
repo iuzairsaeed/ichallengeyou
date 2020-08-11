@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\ChallengeRepository;
 use App\Http\Resources\ChallengeDonated;
+use App\Http\Resources\DonorCollection;
 use Illuminate\Http\Request;
 use App\Models\Amount;
+use App\Models\Challenge;
+use App\Models\User;
+use App\Models\Bid;
 
 class DonatedChallengeController extends Controller
 {
@@ -49,9 +53,29 @@ class DonatedChallengeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Challenge $challenge, Request $request)
     {
-        //
+        $orderableCols = [];
+        $searchableCols = [];
+        $whereChecks = ['challenge_id'];
+        $whereOps = ['='];
+        $whereVals = [$challenge->id];
+        $with = ['user'];
+        $withCount = [];
+        $currentStatus = [];
+        $withSums = [];
+        $withSumsCol = [];
+        $addWithSums = [];
+        $whereHas = null;
+        $withTrash = false;
+
+        $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
+                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+        collect($data['data'])->map(function ($item) {
+            $item['amount'] = config('global.CURRENCY').' '.$item->amount ?? "0.00";
+        });
+        $data['data'] = DonorCollection::collection($data['data']);
+        return response($data, 200);
     }
 
     /**

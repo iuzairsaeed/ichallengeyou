@@ -12,6 +12,8 @@ class Amount extends Model
 
     protected $guarded = [];
 
+    protected $with = ['user'];
+
     protected $casts = [
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,
         'updated_at' => 'datetime:'.Constant::DATE_FORMAT,
