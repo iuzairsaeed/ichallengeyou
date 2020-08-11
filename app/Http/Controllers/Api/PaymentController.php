@@ -14,7 +14,7 @@ class PaymentController extends Controller
     {
         $user = Auth::User();
         $data = [
-            'message' => 'Your Amount has not been credited to your account & Your Total Amount is '.$user->balance,
+            'message' => config('global.LOAD_BALANCE_MESSAGE').' & Your Total Amount is '.$user->balance,
             'amount' => $user->balance ?? config('global.CURRENCY')." 0.00",
         ];
         $pay_id = $request->response['id'];

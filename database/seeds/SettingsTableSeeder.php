@@ -76,6 +76,197 @@ class SettingsTableSeeder extends Seeder
                 'value' => 15,
                 'type' => 'number',
             ],
+            [
+                'name' => 'PREMIUM_USER_MESSAGE',
+                'value' => 'It\'s 1 USD for god sake. Don’t be so cheap!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'TIMEOUT_MESSAGE',
+                'value' => 'You are out of time!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHALLENGE_CREATED_MESSAGE',
+                'value' => 'Challenge has been created & It will be reviewed and once its approved it will be seen on the time-line',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHALLENGE_AMOUNT_MESSAGE',
+                'value' => 'Not Enough Balance',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHALLENGE_CANNOT_EDIT_MESSAGE',
+                'value' => 'You cannot edit your challenge, It has been approved by Admin!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHALLENGE_UPDATE_MESSAGE',
+                'value' => 'Challenge has been Updated!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHALLENGE_CANNOT_DONATE_MESSAGE',
+                'value' => 'Donation amount cannot be greater than current account balance.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHALLENGE_CANNOT_DONATE_MESSAGE',
+                'value' => 'Donation amount cannot be greater than current account balance.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CANNOT_ACCEPT_DONATOR_MESSAGE',
+                'value' => 'You\'re Donator! You Can\'t Accept This Challenge!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CANNOT_ACCEPT_OWN_CHALLENGE_MESSAGE',
+                'value' => 'You Can\'t Accept Your Own Challenge!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CANNOT_ACCEPT_ALREADY_CHALLENGE_MESSAGE',
+                'value' => 'You have Already accepted This Challenge!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CANNOT_ACCEPT_ALREADY_CHALLENGE_MESSAGE',
+                'value' => 'You have Already accepted This Challenge!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'ACCEPT_CHALLENGE_MESSAGE',
+                'value' => 'You have successfully accepted the challenge!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'ASK_ADMIN_APPROVAL_MESSAGE',
+                'value' => 'Thanks for your Vote',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'LOGIN_CREDENTIAL_MESSAGE',
+                'value' => 'These credentials is incorrect.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'LOGIN_DISABLE_MESSAGE',
+                'value' => 'Your account has been disabled. Please contact support.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'LOGIN_MESSAGE',
+                'value' => 'You have successfully logged in!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'LOGOUT_MESSAGE',
+                'value' => 'You have logged out successfully.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'REGISTER_MESSAGE',
+                'value' => 'You have registered successfully.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'FORGET_PASSWORD_INCORRECT_EMAIL_MESSAGE',
+                'value' => 'No user exists with provided email.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'FORGET_PASSWORD_CORRECT_EMAIL_MESSAGE',
+                'value' => 'An email has been sent to your account with new password. (If you cannot find Check in Spam/Junk)',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHANGE_PASSWORD_MESSAGE',
+                'value' => 'Password has been updated successfully',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'LOAD_BALANCE_MESSAGE',
+                'value' => 'Your Amount has not been credited to your account',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'SUBMIT_CHALLENGE_MESSAGE',
+                'value' => 'You have Successfuly Submitted the Challenge!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'VIDEO_ADD_MESSAGE',
+                'value' => 'Video has been Added!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'VIDEO_DELETE_MESSAGE',
+                'value' => 'Video is Deleted!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'PROVIDE_EMAIL_IN_WITHDRAWAL_MESSAGE',
+                'value' => 'Please Enter an Email',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'PROVIDE_AMOUNT_IN_WITHDRAWAL_MESSAGE',
+                'value' => 'Please Enter any Amount',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'INVALID_AMOUNT_IN_WITHDRAWAL_MESSAGE',
+                'value' => 'Your withdrwal amount can not be greater than your current Balance.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CHALLENGER_CANNOT_VOTE_MESSAGE',
+                'value' => 'Challenger Can\'t Vote!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'CANNOT_VOTE_OWN_CHALLENGE_MESSAGE',
+                'value' => 'You can\'t Vote, your own Challenge',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'VOTE_CHALLENGE_TYPE_MESSAGE',
+                'value' => 'The result of this Challenge is not based on Vote',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'DONATOR_CAN_VOTE_MESSAGE',
+                'value' => 'Only Donator can Vote on this Challenge',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'ADMIN_DECIDE_WINNER_MESSAGE',
+                'value' => 'Admin will decide the Winner',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'ALREADY_VOTE_MESSAGE',
+                'value' => 'You have already voted to challenger!',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'VOTE_REMOVED_MESSAGE',
+                'value' => 'Your Vote has been removed',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'VOTE_CAST_POSITIVE_MESSAGE',
+                'value' => 'Your Vote has been casted Positive on this challenge.',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'VOTE_CAST_NEGATIVE_MESSAGE',
+                'value' => 'Your Vote has been casted Negative on this challenge.',
+                'type' => 'text',
+            ],
+            
         ]);
     }
 }
