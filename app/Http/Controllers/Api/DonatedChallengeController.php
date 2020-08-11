@@ -57,9 +57,9 @@ class DonatedChallengeController extends Controller
     {
         $orderableCols = [];
         $searchableCols = [];
-        $whereChecks = ['challenge_id'];
-        $whereOps = ['='];
-        $whereVals = [$challenge->id];
+        $whereChecks = ['challenge_id','type'];
+        $whereOps = ['=','='];
+        $whereVals = [$challenge->id,'donation'];
         $with = ['user'];
         $withCount = [];
         $currentStatus = [];

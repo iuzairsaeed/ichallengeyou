@@ -309,7 +309,7 @@ class ChallengeController extends Controller
                 }
                 
                 return response([
-                    'message' => 'Your donation of '.config('global.CURRENCY').' '.$donation->amount.' has been contributed to the '.$challenge->title,
+                    'message' => 'Your Donation of '.config('global.CURRENCY').' '.$donation->amount.' has been contributed to the '.$challenge->title,
                     'balance' => $user->balance ?? config('global.CURRENCY')." 0.00"
                 ], 200);
             }
