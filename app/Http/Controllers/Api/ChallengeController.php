@@ -243,28 +243,28 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
-        $user = auth()->user();
-        $data['premiumBtn'] = true;
-        if(auth()->user()->is_premium){
-            $data['premiumBtn'] = false;
-            $message['message'] = 'Challenge has been Updated!'; $res = 200;
-            $res = 200;
-            $data = $request->all();
-            if($request->hasFile('file')){
-                $deleteFile = $challenge->getAttributes()['file'] != 'no-image.png' ? $challenge->file : null;
-                $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
+        $message['message'] = 'You cannot edit your challenge, It has been approved by Admin!'; $res = 400;
+        if($challenge->status == Pending()){
+            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $user = auth()->user();
+            $data['premiumBtn'] = true;
+            if(auth()->user()->is_premium){
+                $data['premiumBtn'] = false;
+                $message['message'] = 'Challenge has been Updated!'; $res = 200;
+                $res = 200;
+                $data = $request->all();
+                if($request->hasFile('file')){
+                    $deleteFile = $challenge->getAttributes()['file'] != 'no-image.png' ? $challenge->file : null;
+                    $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
+                }
+                $data['user_id'] = auth()->id();
+                $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
+                $challenge = $this->model->update($data , $challenge );
             }
-            $data['user_id'] = auth()->id();
-            $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
-            $challenge = $this->model->update($data , $challenge );
+            $message['balance'] = $user->balance;
         }
-        $message['balance'] = $user->balance;
         return response($message, $res);
 
-
-        // $this->model->update($request->only($this->model->getModel()->fillable), $challenge);
-        // return $this->model->find($challenge->id);
     }
 
     /**
