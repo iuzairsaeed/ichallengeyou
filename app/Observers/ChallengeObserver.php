@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Models\Challenge;
 use App\Models\Notification;
-use App\Models\Transaction;
 use App\Notifications\ChallengeNotification;
 
 class ChallengeObserver
@@ -47,7 +46,32 @@ class ChallengeObserver
      */
     public function updated(Challenge $challenge)
     {
-        //
+        # APPROVED CHALLENGE
+        if ($challenge->status == Approved()) {
+            // TO CHALLENGE OWNER
+            $notification = new Notification([
+                'user_id' => $challenge->user_id, 
+                'title' => 'Challenge Approved', 
+                'body' => 'Congratulation! Your Challenge '.$challenge->name.' has been Approved', 
+                'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
+                'data_id' => $challenge->id, 
+            ]);
+            $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+            $challenge->notifications()->save($notification);
+        }
+        # DENIED CHALLENGE
+        if ($challenge->status == Denied()) {
+            // TO CHALLENGE OWNER
+            $notification = new Notification([
+                'user_id' => $challenge->user_id, 
+                'title' => 'Challenge Rejected', 
+                'body' => 'Your Challenge '.$challenge->name.' has been Rejected by admin', 
+                'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
+                'data_id' => $challenge->id, 
+            ]);
+            $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+            $challenge->notifications()->save($notification);
+        }
     }
 
     /**
@@ -58,7 +82,16 @@ class ChallengeObserver
      */
     public function deleted(Challenge $challenge)
     {
-        //
+        // TO CHALLENGE OWNER
+        $notification = new Notification([
+            'user_id' => $challenge->user_id, 
+            'title' => 'Challenge Rejected', 
+            'body' => 'Your Challenge '.$challenge->name.' has been rejected by admin', 
+            'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
+            'data_id' => $challenge->id, 
+        ]);
+        $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+        $challenge->notifications()->save($notification);
     }
 
     /**

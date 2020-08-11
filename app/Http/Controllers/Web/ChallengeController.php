@@ -117,8 +117,10 @@ class ChallengeController extends Controller
         try {
             if($request->is_active == 'pending'){
                 $challenge->setStatus(Pending());
-            } else {
+            } elseif ($request->is_active == 'approved')  {
                 $challenge->setStatus(Approved());
+            } elseif ($request->is_active == 'denied')  {
+                $challenge->setStatus(Denied());
             }
             if($request->is_voter == 'premiumUsers'){
                 $challenge->allowVoter = 'premiumUsers';
