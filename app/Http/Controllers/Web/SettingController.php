@@ -20,9 +20,9 @@ class SettingController extends Controller
     {
         $orderableCols = ['created_at', 'name', 'value'];
         $searchableCols = ['name'];
-        $whereChecks = [];
-        $whereOps = [];
-        $whereVals = [];
+        $whereChecks = ['setting_type'];
+        $whereOps = ['='];
+        $whereVals = ['setting'];
         $with = [];
         $withCount = [];
 

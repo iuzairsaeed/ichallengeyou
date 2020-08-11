@@ -58,7 +58,7 @@ class getCandidatesResult extends Command
             $challenge->allowVoter = 'premiumUsers';
             $challenge->update();
         } elseif ($result == 0 || $result == 1 ) {
-            $message['message'] = 'Admin will decide the Winner';
+            $message['message'] = config('global.ADMIN_DECIDE_WINNER_MESSAGE');
             $challenge->allowVoter = 'admin';
             $challenge->update();
         }

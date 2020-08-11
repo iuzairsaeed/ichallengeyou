@@ -94,16 +94,16 @@ class ChallengeController extends Controller
      */
     public function store(ChallengeRequest $request)
     {
-        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+        $message['message'] = config('global.PREMIUM_USER_MESSAGE'); $res = 400;
         $message['premiumBtn'] = true;
         $user = auth()->user();
         if($user->is_premium){
             $message['premiumBtn'] = false;
-            $message['message'] = 'Challenge has been created & It will be reviewed and once its approved it will be seen on the time-line'; $res = 200;
+            $message['message'] = config('global.CHALLENGE_CREATED_MESSAGE'); $res = 200;
             $data = $request->all();
             (float)$balance = $user->getAttributes()['balance'];
             if($balance < (float)$data['amount'] ){
-                return response(['message' => 'Not Enough Balance']);
+                return response(['message' => config('global.CHALLENGE_AMOUNT_MESSAGE')]);
             }
             $user->balance = $user->getAttributes()['balance'] - (float)$data['amount'];
             $user->update();
@@ -243,14 +243,14 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $message['message'] = 'You cannot edit your challenge, It has been approved by Admin!'; $res = 400;
+        $message['message'] = config('global.CHALLENGE_CANNOT_EDIT_MESSAGE'); $res = 400;
         if($challenge->status == Pending()){
-            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $message['message'] = config('global.PREMIUM_USER_MESSAGE'); $res = 400;
             $user = auth()->user();
             $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
                 $data['premiumBtn'] = false;
-                $message['message'] = 'Challenge has been Updated!'; $res = 200;
+                $message['message'] = config('global.CHALLENGE_UPDATE_MESSAGE'); $res = 200;
                 $res = 200;
                 $data = $request->all();
                 if($request->hasFile('file')){
@@ -288,21 +288,21 @@ class ChallengeController extends Controller
     public function donation(Challenge $challenge, CreateDonationRequest $request)
     {
         try {
-            $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $data['message'] = config('global.PREMIUM_USER_MESSAGE'); $res = 400;
             $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
                 $data['premiumBtn'] = false;
                 $user = auth()->user();
                 if((float)$request->amount > (float)$user->getAttributes()['balance']){
-                    return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
+                    return response(['message' => config('global.CHALLENGE_CANNOT_DONATE_MESSAGE')], 400);
                 }
                 if($challenge->allowVoter == 'donators'){
-                    $message['message'] = 'You are out of time!';
+                    $message['message'] = config('global.TIMEOUT_MESSAGE');
                     if(now() <= $challenge->after_date){
                         $donation = $this->donating($challenge,$request);
                     }
                 } else if($challenge->allowVoter == 'premiumUsers' || $challenge->allowVoter == 'admin' ){
-                    $message['message'] = 'You are out of time!';
+                    $message['message'] = config('global.TIMEOUT_MESSAGE');
                     if(now() <= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
                         $donation = $this->donating($challenge,$request);
                     }

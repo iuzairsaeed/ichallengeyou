@@ -47,18 +47,18 @@ class AuthController extends Controller
         $user = User::where('username', $request->username)->orWhere('email', $request->username)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message' => 'These credentials do not match our records.'
+                'message' => config('global.LOGIN_CREDENTIAL_MESSAGE')
             ], 400);
         }elseif(!$user->is_active){
             return response([
-                'message' => 'Your account has been disabled. Please contact support.'
+                'message' => config('global.LOGIN_DISABLE_MESSAGE')
             ], 400);
         }
 
         $user->platform = $request->platform;
         $user->device_token = $request->device_token;
         $user->update();
-        return $this->response($user, 200, 'You have successfully logged in.');
+        return $this->response($user, 200, config('global.LOGIN_MESSAGE'));
     }
 
     function user()
@@ -71,7 +71,7 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
 
         return response([
-            'message' => 'You have logged out successfully.'
+            'message' => config('global.LOGOUT_MESSAGE')
         ], 200);
     }
 
@@ -79,7 +79,7 @@ class AuthController extends Controller
     {
         $user = $register->create($request->all());
 
-        return $this->response($user, 201, 'You have registered successfully');
+        return $this->response($user, 201, config('global.REGISTER_MESSAGE'));
     }
 
     function forgotPassword(ForgotPasswordRequest $request)
@@ -88,12 +88,12 @@ class AuthController extends Controller
 
         if(!$user){
             return response([
-                'message' => 'No user exists with provided email.'
+                'message' => config('global.FORGET_PASSWORD_INCORRECT_EMAIL_MESSAGE')
             ], 404);
         }
         if (!$user->is_active){
             return response([
-                'message' => 'Your account has been disabled. Please contact support.'
+                'message' => config('global.LOGIN_DISABLE_MESSAGE')
             ], 404);
         }
 
@@ -104,7 +104,7 @@ class AuthController extends Controller
         $user->notify(new ForgotPasswordNotification($newPassword));
 
         return response([
-            'message' => 'An email has been sent to your account with new password. (If you cannot find Check in Spam/Junk)'
+            'message' => config('global.FORGET_PASSWORD_CORRECT_EMAIL_MESSAGE')
         ], 200);
     }
 
@@ -114,6 +114,6 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return $this->response($user, 200, 'Password has been updated successfully.');
+        return $this->response($user, 200, config('global.CHANGE_PASSWORD_MESSAGE'));
     }
 }

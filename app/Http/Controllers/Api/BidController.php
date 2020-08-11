@@ -67,7 +67,7 @@ class BidController extends Controller
      */
     public function store(Challenge $challenge,BidRequest $request)
     {
-        $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';
+        $message['message'] = config('global.PREMIUM_USER_MESSAGE');
         $message['premiumBtn'] = true;
         if(auth()->user()->is_premium){
             $message['premiumBtn'] = false;
@@ -75,7 +75,7 @@ class BidController extends Controller
             if($challenge->user_id != auth()->id()) {
                 $message['message'] = 'You have already Bid on This Challenge!';
                 if(!$challenge->bids()->where('user_id',auth()->id())->exists()){
-                    $message['message'] = 'You are out of time!';
+                    $message['message'] = config('global.TIMEOUT_MESSAGE');
                     $after_date = $challenge->after_date;
                     if(now() <= $after_date){
                         $bid = new Bid([

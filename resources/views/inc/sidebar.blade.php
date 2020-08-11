@@ -35,6 +35,8 @@
                 </li>
                 <li class="nav-item {{ $segment1 === 'notifications' ? 'active' : null }}"><a href="/notifications"><i class="icon-bell"></i><span data-i18n="" class="menu-title">Notifications</span></a>
                 </li>
+                <li class="nav-item {{ $segment1 === 'message' ? 'active' : null }}"><a href="/message"><i class="icon-speech"></i><span data-i18n="" class="menu-title">Custom Message</span></a>
+                </li>
                 <li class="nav-item {{ $segment1 === 'settings' ? 'active' : null }}"><a href="/settings"><i class="icon-wrench"></i><span data-i18n="" class="menu-title">Settings</span></a>
                 </li>
                 

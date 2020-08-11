@@ -49,7 +49,7 @@ class AskCandidateController extends Controller
             $isVote = AskCandidate::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
             $message['message'] = 'Thanks, We have already got your Recommendation';
             if(!$isVote){
-                $message['message'] = 'Thanks for your Vote';
+                $message['message'] = config('global.ASK_ADMIN_APPROVAL_MESSAGE');
                 $data = [
                     'user_id' => auth()->id(),
                     'challenge_id' => $challenge->id,
@@ -118,7 +118,7 @@ class AskCandidateController extends Controller
             $challenge->allowVoter = 'premiumUsers';
             $challenge->update();
         } elseif ($result == 0 || $result == 1 ) {
-            $message['message'] = 'Admin will decide the Winner';
+            $message['message'] = config('global.ADMIN_DECIDE_WINNER_MESSAGE');
             $challenge->allowVoter = 'admin';
             $challenge->update();
         }

@@ -25,11 +25,11 @@ class TransactionController extends Controller
         $email = $request->email;
         try {
             $res = 400;
-            $data['message'] = "Please Enter an Email";
+            $data['message'] = config('global.PROVIDE_EMAIL_IN_WITHDRAWAL_MESSAGE');
             if($email){
-                $data['message'] = "Please Enter any Amount";
+                $data['message'] =  config('global.PROVIDE_AMOUNT_IN_WITHDRAWAL_MESSAGE');
                 if($amount){
-                    $data['message'] = "Your withdrwal amount can not be greater than your current Balance.";
+                    $data['message'] =  config('global.INVALID_AMOUNT_IN_WITHDRAWAL_MESSAGE');
                     if($amount <= (float)$user->getAttributes()['balance']){
                         $auth = paypalAuth();
                         (string)$token = $auth['access_token'];

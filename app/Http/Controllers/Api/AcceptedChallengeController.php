@@ -22,26 +22,26 @@ class AcceptedChallengeController extends Controller
     public function accept(Challenge $challenge)
     {
         try {
-            $message['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!';$res = 400;
+            $message['message'] = config('global.PREMIUM_USER_MESSAGE');$res = 400;
             $message['premiumBtn'] = true;
             $message['submitBtn'] = false;
             if(auth()->user()->is_premium){
                 $message['premiumBtn'] = false;
                 $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
-                $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';
+                $message['message'] = config('global.CANNOT_ACCEPT_DONATOR_MESSAGE');
                 if(!$isDonator){
-                    $message['message'] = 'You Can\'t Accept Your Own Challenge!';
+                    $message['message'] = config('global.CANNOT_ACCEPT_OWN_CHALLENGE_MESSAGE');
                     if ($challenge->user_id != auth()->id()) {
-                        $message['message'] = 'You have Already accepted This Challenge!';
+                        $message['message'] = config('global.CANNOT_ACCEPT_ALREADY_CHALLENGE_MESSAGE');
                         if($challenge->user_id != auth()->id() && !$challenge->acceptedChallenges()->where('user_id', auth()->id())->exists()){
-                            $message['message'] = 'You are out of time!';
+                            $message['message'] = config('global.TIMEOUT_MESSAGE');
                             $after_date = $challenge->after_date;
                             if(now() <= $after_date){
                                 $acceptedChallenge = new AcceptedChallenge([
                                     'user_id' => auth()->id(),
                                 ]);
                                 $challenge->acceptedChallenges()->save($acceptedChallenge);
-                                $message['message'] = 'You have successfully accepted the challenge!';$res = 200;
+                                $message['message'] = config('global.ACCEPT_CHALLENGE_MESSAGE');$res = 200;
                                 if(now() >=  $challenge->start_time && now() <= $challenge->after_date){
                                     $message['submitBtn'] = true;
                                 }

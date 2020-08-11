@@ -17,7 +17,7 @@ class CheckRole
     public function handle($request, Closure $next, $role = '')
     {
         $user = $request->user();
-        $disabledMessage = 'Your account has been disabled. Please contact support.';
+        $disabledMessage = config('global.LOGIN_DISABLE_MESSAGE');
         if($user && $user->is_active)
         {
             if($user->role == $role){

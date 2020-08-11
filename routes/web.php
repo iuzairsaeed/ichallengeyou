@@ -22,16 +22,25 @@ Route::group(['namespace' => 'Web'], function () {
         Route::get('{challenge}/challengesSubmitor', 'AcceptedChallengeController@getSubmitors')->name('challenges.getSubmitor');
         Route::post('winner', 'AcceptedChallengeController@updateWinner')->name('submitor.winner');
         Route::get('{challenge}/voters', 'AcceptedChallengeController@voters')->name('challenges.voters');
+
         Route::resource('users','UserController');
         Route::get('usersList', 'UserController@getList')->name('users.getList');
+
         Route::resource('settings','SettingController');
         Route::get('settingsList', 'SettingController@getList')->name('settings.getList');
+
+        Route::get('message','MessageController@index');
+        Route::get('messagesList', 'MessageController@getList')->name('messages.getList');
+        
         Route::resource('amounts','AmountController');
         Route::get('amountsList', 'AmountController@getList')->name('amounts.getList');
+
         Route::resource('votes','VoteController');
         Route::get('getNotifications','NotificationController@getNotifications')->name('notification.getNotifications');
+
         Route::resource('notifications','NotificationController');
         Route::get('getCategories','CategoryController@getList')->name('category.getList');
+
         Route::resource('categories','CategoryController');
     });
     

@@ -41,19 +41,19 @@ class VoteController extends Controller
     public function voteUp(SubmitChallenge $submitedChallenge) {
         $challenge = $submitedChallenge->acceptedChallenge->challenge;
         $challenger = $submitedChallenge->acceptedChallenge->where('user_id',auth()->id())->first();
-        $data['message'] = 'Challenger Can\'t Vote!';$res = 400;
+        $data['message'] = config('global.CHALLENGER_CANNOT_VOTE_MESSAGE');$res = 400;
         if(!$challenger){
-            $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; 
+            $data['message'] = config('global.PREMIUM_USER_MESSAGE'); 
             $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
                 $data['premiumBtn'] = false;
-                $data['message'] = 'You can\'t Vote, your own Challenge';
+                $data['message'] = config('global.CANNOT_VOTE_OWN_CHALLENGE_MESSAGE');
                 if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 
-                    $data['message'] = 'The result of this Challenge is not based on Vote';
+                    $data['message'] =config('global.VOTE_CHALLENGE_TYPE_MESSAGE');
                     if($submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'){
                         if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'donators'){
                             $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
-                            $data['message'] = 'Only Donator can Vote on this Challenge';
+                            $data['message'] = config('global.DONATOR_CAN_VOTE_MESSAGE');
                             if($donator){
                                 $data['message'] = 'You\'re out of time.';
                                 if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date){
@@ -66,7 +66,7 @@ class VoteController extends Controller
                                 $data = $this->votingUp($submitedChallenge);$res = 200;
                             }
                         } else {
-                            $data['message'] = 'Admin will decide the Winner';
+                            $data['message'] = config('global.ADMIN_DECIDE_WINNER_MESSAGE');
                         }
                     }
                     
@@ -90,7 +90,7 @@ class VoteController extends Controller
             }
         }
         if($isVoted >= 1){
-            $data['message'] = 'You have already voted to challenger!';
+            $data['message'] = config('global.ALREADY_VOTE_MESSAGE');
             $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)
             ->where('user_id',auth()->id())
             ->first();
@@ -99,7 +99,7 @@ class VoteController extends Controller
                 ($vote_up == true) ? true : $voted->delete();
                 $vote_down = $voted->vote_down = false ;
                 $voted->update();
-                $data['message'] = ($vote_up == true) ? 'Your Vote has been casted Positive on this challenge.' : 'Your Vote has been removed' ;
+                $data['message'] = ($vote_up == true) ? config('global.VOTE_CAST_POSITIVE_MESSAGE') : config('global.VOTE_REMOVED_MESSAGE') ;
                 $res = 200;
                 $data['vote_up'] = $vote_up;
                 $data['vote_down'] = $vote_down;
@@ -121,16 +121,16 @@ class VoteController extends Controller
     public function voteDown(SubmitChallenge $submitedChallenge) {
         $challenge = $submitedChallenge->acceptedChallenge->challenge;
         $challenger = $submitedChallenge->acceptedChallenge->where('user_id',auth()->id())->first();
-        $data['message'] = 'Challenger Can\'t Vote!';$res = 400;
+        $data['message'] = config('global.CHALLENGER_CANNOT_VOTE_MESSAGE');$res = 400;
         if(!$challenger){
             $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
-            $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; 
+            $data['message'] = config('global.PREMIUM_USER_MESSAGE'); 
             $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
                 $data['premiumBtn'] = false;
-                $data['message'] = 'You can\'t Vote, your own Challenge';
+                $data['message'] = config('global.CANNOT_VOTE_OWN_CHALLENGE_MESSAGE');
                 if(auth()->id() <> $submitedChallenge->acceptedChallenge->user->id){ 
-                    $data['message'] = 'The result of this Challenge is not based on Vote';
+                    $data['message'] =config('global.VOTE_CHALLENGE_TYPE_MESSAGE');
                     if($submitedChallenge->acceptedChallenge->challenge->result_type === 'vote'  ){
                         if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'donators'){
                             $data['message'] = 'You\'re out of time.';
@@ -139,7 +139,7 @@ class VoteController extends Controller
                             }
                         } else if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'premiumUsers'){
                             $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
-                            $data['message'] = 'Only Donator can Vote on this Challenge';
+                            $data['message'] = config('global.DONATOR_CAN_VOTE_MESSAGE');
                             if($donator){
                                 $data['message'] = 'You\'re out of time.';
                                 if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
@@ -147,7 +147,7 @@ class VoteController extends Controller
                                 }
                             }
                         } else {
-                            $data['message'] = 'Admin will decide the Winner';
+                            $data['message'] = config('global.ADMIN_DECIDE_WINNER_MESSAGE');
                         }
                     }
                 }
@@ -170,7 +170,7 @@ class VoteController extends Controller
             }
         }
         if($isVoted >= 1) {
-            $data['message'] = 'You have already voted to challenger!';
+            $data['message'] = config('global.ALREADY_VOTE_MESSAGE');
             $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)
             ->where('user_id',auth()->id())
             ->first();
@@ -179,7 +179,7 @@ class VoteController extends Controller
                 ($vote_down == true) ? true : $voted->delete();
                 $vote_up = $voted->vote_up = false ;
                 $voted->update();
-                $data['message'] = ($vote_down == true) ? 'Your Vote has been casted Negative on this challenge.' : 'Your Vote has been removed' ;
+                $data['message'] = ($vote_down == true) ? config('global.VOTE_CAST_NEGATIVE_MESSAGE') : config('global.VOTE_REMOVED_MESSAGE') ;
                 $data['vote_up'] = $vote_up;
                 $data['vote_down'] = $vote_down;
             }

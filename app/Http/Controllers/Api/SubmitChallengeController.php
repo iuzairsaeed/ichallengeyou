@@ -86,12 +86,12 @@ class SubmitChallengeController extends Controller
                 $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
             });
             if($challenge->allowVoter == 'donators'){
-                $message['message'] = 'You are out of time!';
+                $message['message'] = config('global.TIMEOUT_MESSAGE');
                 if(now() >= $challenge->after_date){
                     $data = $this->submitorList($challenge,$data);
                 }
             } else if($challenge->allowVoter == 'premiumUsers'){
-                $message['message'] = 'You are out of time!';
+                $message['message'] = config('global.TIMEOUT_MESSAGE');
                 if(now() >= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
                     $data = $this->submitorList($challenge,$data) ?? $data;
                 }
@@ -216,7 +216,7 @@ class SubmitChallengeController extends Controller
     public function postSubmitChallenge(Challenge $challenge)
     {
         try {
-            $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $data['message'] = config('global.PREMIUM_USER_MESSAGE'); $res = 400;
             $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
                 $data['premiumBtn'] = false;
@@ -224,13 +224,13 @@ class SubmitChallengeController extends Controller
                 if(!$challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitChallenge()->exists()){
                     $data['message'] = 'No Video Uploaded!';
                     if ($challenge->acceptedChallenges->where('user_id', auth()->id())->first()->submitFiles()->exists()) {
-                        $data['message'] = 'You are out of time!';
+                        $data['message'] = config('global.TIMEOUT_MESSAGE');
                         $after_date = $challenge->after_date;
                         if(now() >=  $challenge->start_time && now() <= $after_date){
                             $data['accepted_challenge_id'] = $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id;
                             $this->model->create($data);
                             $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->setStatus(Submitted());
-                            $data['message']='You have Successfuly Submitted the Challenge!'; $res = 200;
+                            $data['message']=config('global.SUBMIT_CHALLENGE_MESSAGE'); $res = 200;
                         }
                     }
                 }
@@ -257,18 +257,18 @@ class SubmitChallengeController extends Controller
     public function addVideo(Challenge $challenge, SubmitChallengeRequest $request)
     {
         try {
-            $data['message'] = 'It\'s 1 USD for god sake. Don’t be so cheap!'; $res = 400;
+            $data['message'] = config('global.PREMIUM_USER_MESSAGE'); $res = 400;
             $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
                 $data['premiumBtn'] = false;
                 $isDonator = Amount::where('user_id', auth()->id())->where('challenge_id', $challenge->id)->exists();
-                $message['message'] = 'You\'re Donator! You Can\'t Accept This Challenge!';
+                $message['message'] = config('global.CANNOT_ACCEPT_DONATOR_MESSAGE');
                 if(!$isDonator){
                     $data['message'] = 'You can\'t add video due to Submited Challenge!'; $res = 400;
                     if(!optional($challenge->acceptedChallenges()->where('user_id', auth()->id())->first())->submitChallenge){
                         $files = $request->file;
                         $after_date = $challenge->after_date;
-                        $data['message'] = 'You are out of time!'; $res = 400;
+                        $data['message'] = config('global.TIMEOUT_MESSAGE'); $res = 400;
                         if(now() >=  $challenge->start_time && now() <= $after_date){
                             $file = uploadFile($files, SubmitChallengesPath(), null);
                             $records = new SubmitFile ([
@@ -277,7 +277,7 @@ class SubmitChallengeController extends Controller
                                 'created_at' => now(),
                             ]); 
                             $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitFiles()->save($records);
-                            $data['message'] = 'Video has been Added!';$res = 200;
+                            $data['message'] = config('global.VIDEO_ADD_MESSAGE');$res = 200;
                         }
                     }
                 }
@@ -296,7 +296,7 @@ class SubmitChallengeController extends Controller
             $file_name = $file->file;
             deleteFile($file_name, SubmitChallengesPath());
             $file->delete();
-            return response(['message'=>'Video is Deleted!']);
+            return response(['message'=>config('global.VIDEO_DELETE_MESSAGE')]);
         }
         return response(['message'=>'You\'re out of time !']);
     }
