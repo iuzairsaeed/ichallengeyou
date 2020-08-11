@@ -16,6 +16,7 @@ class ChallengeCollection extends JsonResource
     {
         return [
             'id' => $this->id,
+            'status' => $this->status,
             'title' => $this->title,
             'description' => $this->description,
             'file' => $this->file,

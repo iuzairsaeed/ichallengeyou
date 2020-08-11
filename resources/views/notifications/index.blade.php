@@ -73,12 +73,20 @@
         ],
         order: [0 , 'desc'],
         columnDefs: [
-            { width: "10%", targets: [-1, 0] },
+            { width: "40%", targets: [-2,-3] },
             { orderable: false, targets: [-2, -1, -3] }
         ],
     });
     $('#date_from, #date_to').change(function(){
         $('#dTable').DataTable().ajax.reload();
-    })
+    });
+    $('#dTable tbody').on('click', 'tr', function () {
+        var data = table.row( this ).data();
+        if(data.click_action == 'SUBMITED_CHALLENGE_LIST_SCREEN' || data.click_action == 'CHALLENGE_DETAIL_SCREEN' || data.click_action == 'SUBMITED_CHALLENGE_DETAIL_SCREEN'){
+            window.location.href = "/challenges/"+data.data_id;
+        } else if (data.click_action == 'TRANSACTION_LIST' ) {
+            window.location.href = "/users/"+data.data_id;
+        }
+    } );
 </script>
 @endsection
