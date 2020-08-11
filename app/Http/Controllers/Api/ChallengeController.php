@@ -179,6 +179,7 @@ class ChallengeController extends Controller
         $data = $this->model->showChallenge($request,$with,$withSums, $withSumsCol,$whereChecks, $whereOps, $whereVals);
         $data['data']->amounts_sum = config('global.CURRENCY').' '.$data['data']->amounts_sum;
         $data['data']->initialAmount->amount = config('global.CURRENCY').' '.$data['data']->initialAmount->amount;
+        $data['data']['status'] = $data['data']->status;
 
         if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
             $data['data']['acceptBtn'] = false;
@@ -243,14 +244,14 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $message['message'] = config('global.CHALLENGE_CANNOT_EDIT_MESSAGE'); $res = 400;
+        $message['message'] = 'You cannot edit your challenge, It has been approved by Admin!'; $res = 400;
         if($challenge->status == Pending()){
             $message['message'] = config('global.PREMIUM_USER_MESSAGE'); $res = 400;
             $user = auth()->user();
             $data['premiumBtn'] = true;
             if(auth()->user()->is_premium){
                 $data['premiumBtn'] = false;
-                $message['message'] = config('global.CHALLENGE_UPDATE_MESSAGE'); $res = 200;
+                $message['message'] = 'Challenge has been Updated!'; $res = 200;
                 $res = 200;
                 $data = $request->all();
                 if($request->hasFile('file')){
@@ -294,7 +295,7 @@ class ChallengeController extends Controller
                 $data['premiumBtn'] = false;
                 $user = auth()->user();
                 if((float)$request->amount > (float)$user->getAttributes()['balance']){
-                    return response(['message' => config('global.CHALLENGE_CANNOT_DONATE_MESSAGE')], 400);
+                    return response(['message' => 'Donation amount cannot be greater than current account balance.'], 400);
                 }
                 if($challenge->allowVoter == 'donators'){
                     $message['message'] = config('global.TIMEOUT_MESSAGE');
