@@ -104,7 +104,8 @@ class TransactionObserver
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
-                $transaction->challenge->user->notify(new DonateNotification('creater',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+                $user_name = auth()->user()->name;
+                $transaction->challenge->user->notify(new DonateNotification($user_name,$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
                 $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
                 $transactionArray = new Notification([

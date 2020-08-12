@@ -12,7 +12,7 @@ class DonateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $to;
+    protected $user_name;
     protected $challenge_id;
     protected $challenge_title;
     protected $amount;
@@ -22,9 +22,9 @@ class DonateNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($to, $challenge_id, $challenge_title = null, $amount)
+    public function __construct($user_name, $challenge_id, $challenge_title = null, $amount)
     {
-        $this->to = $to;
+        $this->user_name = $user_name;
         $this->challenge_id = $challenge_id;
         $this->challenge_title = $challenge_title;
         $this->amount = $amount;
@@ -49,11 +49,11 @@ class DonateNotification extends Notification implements ShouldQueue
      */
     public function toFcm($notifiable) 
     {
-        if($this->to === 'current_user'){
+        if($this->user_name == 'current_user'){
             $message = new FcmMessage();
             $message->content([
                 'title' => 'You have Donated Successfully!',
-                'body' => $this->amount.' has been debited', 
+                'body' => config('global.CURRENCY').$this->amount.' has been debited', 
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional 
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', // Optional 
@@ -63,8 +63,8 @@ class DonateNotification extends Notification implements ShouldQueue
         } else {
             $message = new FcmMessage();
             $message->content([
-                'title' => auth()->user()->name.' have Donated on Your Challenge '.$this->challenge_title,
-                'body' => $this->amount.' has been donated', 
+                'title' => $this->user_name.' have Donated on Your Challenge '.$this->challenge_title,
+                'body' => config('global.CURRENCY').$this->amount.' has been donated', 
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', // Optional

@@ -15,7 +15,7 @@ class ChallengeUpdateNotification extends Notification implements ShouldQueue
 
     protected $challenge_id;
     protected $challenge_name;
-    protected $message;
+    protected $body;
 
     /**
      * Create a new notification instance.
@@ -50,7 +50,7 @@ class ChallengeUpdateNotification extends Notification implements ShouldQueue
     {
         $message = new FcmMessage(); 
         $message->content([
-            'title' => 'New Challenge Created',
+            'title' => $this->challenge_name,
             'body' => $this->body, 
             'sound' => '', // Optional
             'icon' => 'favicon.ico', // Optional

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Notifications\ChallengeUpdateNotification;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\ChallengeRepository;
 use App\Repositories\VoteRepository;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
+use App\Models\Notification;
 use App\Models\Challenge;
 use App\Models\Amount;
 use App\Models\Bid;
@@ -128,6 +130,34 @@ class ChallengeController extends Controller
             } else {
                 $challenge->allowVoter = 'donators';
                 $challenge->update();
+            }
+             # APPROVED CHALLENGE
+            if ($challenge->status == 'Approved') {
+                $body = 'Congratulation! Your Challenge '.$challenge->title.' has been Approved';
+                // TO CHALLENGE OWNER
+                $notification = new Notification([
+                    'user_id' => $challenge->user_id, 
+                    'title' => 'Challenge Approved', 
+                    'body' => $body, 
+                    'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
+                    'data_id' => $challenge->id, 
+                ]);
+                $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+                $challenge->notifications()->save($notification);
+            }
+            # DENIED CHALLENGE
+            if ($challenge->status == 'Denied') {
+                $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
+                // TO CHALLENGE OWNER
+                $notification = new Notification([
+                    'user_id' => $challenge->user_id, 
+                    'title' => 'Challenge Rejected', 
+                    'body' => $body, 
+                    'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
+                    'data_id' => $challenge->id, 
+                ]);
+                $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+                $challenge->notifications()->save($notification);
             }
             return redirect()->back()->with('success', 'Challenge Updated Successfully!');
         } catch (\Throwable $th) {
