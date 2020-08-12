@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriesTableSeeder::class);
         $this->call(ChallengesTableSeeder::class);
         $this->call(SettingsTableSeeder::class);
-        $this->call(TransactionTableSeeder::class);
+        // $this->call(TransactionTableSeeder::class);
         // $this->call(AcceptedChallengeSeeder::class);
         // $this->call(NotificationTableSeeder::class);
         // $this->call(BidTableSeeder::class);
