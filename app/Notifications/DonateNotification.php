@@ -53,7 +53,7 @@ class DonateNotification extends Notification implements ShouldQueue
             $message = new FcmMessage();
             $message->content([
                 'title' => 'You have Donated Successfully!',
-                'body' => config('global.CURRENCY').' '.$this->amount.' has been debited', 
+                'body' => $this->amount.' has been debited', 
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional 
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', // Optional 
@@ -64,7 +64,7 @@ class DonateNotification extends Notification implements ShouldQueue
             $message = new FcmMessage();
             $message->content([
                 'title' => auth()->user()->name.' have Donated on Your Challenge '.$this->challenge_title,
-                'body' => config('global.CURRENCY').' '.$this->amount.' has been donated', 
+                'body' => $this->amount.' has been donated', 
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', // Optional
