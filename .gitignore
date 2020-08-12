@@ -1,6 +1,6 @@
 /node_modules
 /public/hot
-/public/storage/avatars
+# /public/storage/avatars
 # /public/storage/challengess
 /public/storage/submitted
 /storage/*.key
