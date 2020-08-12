@@ -15,7 +15,7 @@ class SubmitChallengeCollection extends JsonResource
     public function toArray($request)
     {
         return  [
-            'accepted_challenge_id' => $this->id,
+            'submited_challenge_id' => $this->submitChallenge->id,
             'user' => $this->user,
             'submit_date' => $this->created_at->format('Y-m-d H:i A'),
             'voteUp' => $this->voteUp ?? 0,
