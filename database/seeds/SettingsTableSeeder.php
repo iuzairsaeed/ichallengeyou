@@ -45,12 +45,6 @@ class SettingsTableSeeder extends Seeder
                 'setting_type' => 'setting'
             ],
             [
-                'name' => 'FCM_SECRET_KEY',
-                'value' => 'AAAAcG2KUA8:APA91bGODgsELMbG2xAMvAwddZ4WIQJhQHyBbs7sLb15hJUvLUkaLPm8YpY2_nSoG1iPERqyWOkIZI8A4v6II7I-NzyxkBhtZqtnLXYVotqW1p7m_6O6p4Lk2x8d0nLPHkwNMw986WQC',
-                'type' => 'textarea',
-                'setting_type' => 'setting'
-            ],
-            [
                 'name' => 'PAYPAL_CLIENT_ID',
                 'value' => 'Ab53_-WMeShRUNx6lvevKNgqpJYIvM46DRTAuuTzIN_l2QXBPi4d11xgkVRn67bspowmWc6WFClmTv_N',
                 'type' => 'text',
