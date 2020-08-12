@@ -204,48 +204,6 @@ class ChallengesTableSeeder extends Seeder
             'created_at' => now()
         ]);
         $challenge->amounts()->save($donation);
-        
-        # 20 Fake DATA
-        for ($i = 0; $i <= 20; $i++) {
-            $challenge = Challenge::create([
-                'user_id' => $faker->randomElement([1,2]),
-                'category_id' => $faker->randomElement([1,2]),
-                'title' => $faker->unique()->word . ' ' . $faker->unique()->word,
-                'description' => $faker->paragraph(),
-                'start_time' => now(),
-                'result_type' => $faker->randomElement(['first_win','vote']),
-                'file' => 'no-image.png',
-                'location' => $faker->country,
-                'duration_days' => $faker->numberBetween(0, 10),
-                'duration_hours' => $faker->numberBetween(0, 24),
-                'duration_minutes' => $faker->numberBetween(0, 60),
-                'created_at' => now()
-            ]);
-            $challenge->setStatus(Approved());
-            $donation = new Amount([
-                'user_id' => $faker->randomElement([1,2]),
-                'amount' => $faker->randomNumber(2),
-                'type' => 'initial',
-                'created_at' => now()
-            ]);
-            $challenge->amounts()->save($donation);
-
-            $donation = new Amount([
-                'user_id' => $faker->randomElement([1,2]),
-                'amount' => $faker->randomNumber(2),
-                'type' => 'donation',
-                'created_at' => now()
-            ]);
-            $challenge->amounts()->save($donation);
-
-            $donation = new Amount([
-                'user_id' => $faker->randomElement([1,2]),
-                'amount' => $faker->randomNumber(2),
-                'type' => 'donation',
-                'created_at' => now()
-            ]);
-            $challenge->amounts()->save($donation);
-        }
 
     }
 }
