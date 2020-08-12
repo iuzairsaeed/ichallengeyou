@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Challenge;
 use App\Models\Notification;
 use App\Notifications\ChallengeNotification;
+use App\Notifications\ChallengeUpdateNotification;
 
 class ChallengeObserver
 {
@@ -47,29 +48,31 @@ class ChallengeObserver
     public function updated(Challenge $challenge)
     {
         # APPROVED CHALLENGE
-        if ($challenge->status == Approved()) {
+        if ($challenge->status == 'Approved') {
+            $body = 'Congratulation! Your Challenge '.$challenge->name.' has been Approved';
             // TO CHALLENGE OWNER
             $notification = new Notification([
                 'user_id' => $challenge->user_id, 
                 'title' => 'Challenge Approved', 
-                'body' => 'Congratulation! Your Challenge '.$challenge->name.' has been Approved', 
+                'body' => $body, 
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                 'data_id' => $challenge->id, 
             ]);
-            $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+            $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->name,$body));
             $challenge->notifications()->save($notification);
         }
         # DENIED CHALLENGE
-        if ($challenge->status == Denied()) {
+        if ($challenge->status == 'Denied') {
+            $body = 'Your Challenge '.$challenge->name.' has been Rejected by admin';
             // TO CHALLENGE OWNER
             $notification = new Notification([
                 'user_id' => $challenge->user_id, 
                 'title' => 'Challenge Rejected', 
-                'body' => 'Your Challenge '.$challenge->name.' has been Rejected by admin', 
+                'body' => $body, 
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                 'data_id' => $challenge->id, 
             ]);
-            $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+            $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->name,$body));
             $challenge->notifications()->save($notification);
         }
     }
