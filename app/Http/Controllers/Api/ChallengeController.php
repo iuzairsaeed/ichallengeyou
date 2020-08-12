@@ -255,7 +255,7 @@ class ChallengeController extends Controller
                 $res = 200;
                 $data = $request->all();
                 if($request->hasFile('file')){
-                    $deleteFile = $challenge->getAttributes()['file'] != 'no-image.png' ? $challenge->file : null;
+                    $deleteFile = $challenge->getAttributes()['file'] == 'no-image.png' ? null : $challenge->file;
                     $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
                 }
                 $data['user_id'] = auth()->id();

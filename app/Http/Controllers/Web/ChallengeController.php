@@ -14,6 +14,7 @@ use App\Models\Challenge;
 use App\Models\Amount;
 use App\Models\Bid;
 use App\Models\Vote;
+use DB;
 
 class ChallengeController extends Controller
 {
@@ -169,14 +170,21 @@ class ChallengeController extends Controller
     public function destroy(Challenge $challenge)
     {
         try {
+            DB::beginTransaction();
             $challenge->setStatus(Deleted());
             $creator = $challenge->user;
             (float)$amount = $challenge->amounts->where('type' , 'initial')->first()->amount;
             $creator->balance = $creator->getAttributes()['balance'] + $amount;
             $creator->update();
             $this->model->delete($challenge);
+            // Notification
+            $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
+            $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+            DB::commit();
+
             return redirect()->back()->with('success', 'Challenge Deleted Successfully');
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         } 
 

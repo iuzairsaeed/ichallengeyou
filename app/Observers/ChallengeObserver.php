@@ -48,8 +48,7 @@ class ChallengeObserver
     public function updated(Challenge $challenge)
     {
        
-        $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->name,"sssss"));
-        }
+    }
 
     /**
      * Handle the challenges "deleted" event.
