@@ -98,19 +98,19 @@ class TransactionController extends Controller
                         break;
                     case 'withdraw':
                         $item['reason'] = 'Withdraw Balance';
-                        $item['amount'] = '-'.$item['amount'];
+                        $item['amount'] = '- '.$item['amount'];
                         break;
                     case 'donate':
                         $item['reason'] = 'Donate on Challenge';
-                        $item['amount'] = '-'.$item['amount'];
+                        $item['amount'] = '- '.$item['amount'];
                         break;
                     case 'create_challenge':
                         $item['reason'] = 'Created Challenge';
-                        $item['amount'] = '-'.$item['amount'];
+                        $item['amount'] = '- '.$item['amount'];
                         break;
                     case 'miscellaneous':
                         $item['reason'] = 'Premium Cost';
-                        $item['amount'] = '-'.$item['amount'];
+                        $item['amount'] = '- '.$item['amount'];
                         break;
                 }
                 $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
