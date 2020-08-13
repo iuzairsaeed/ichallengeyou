@@ -88,6 +88,7 @@ class SubmitChallengeObserver
             $challenge = $submitChallenge->acceptedChallenge->challenge; 
             $submitors =  $submitChallenge->acceptedChallenge->challenge->acceptedChallenges;
 
+            $challenge->setStatus(Completed());
             // Give Winner Amount of doing challenge
             (float) $amount_sum = $challenge->amount_sum;
             (float) $creater_amount = $amount_sum * ((int)config('global.CREATER_AMOUNT_IN_PERCENTAGE') / 100 );  
@@ -97,6 +98,25 @@ class SubmitChallengeObserver
             $winner->update();
             $creater->balance = (float)$creater->getRawOriginal('balance') + $creater_amount;
             $creater->update();
+
+            # TRANSACTION FOR WINNER
+            $transaction = new Transaction([
+                'user_id' => $winner->id,
+                'challenge_id' => $challenge->id,
+                'amount' => $winner_amount,
+                'type' => 'won_challenge',
+                'invoice_id' => null,
+                'status' => 'paid',
+            ]);
+            # TRANSACTION FOR ADMIN
+            $transaction = new Transaction([
+                'user_id' => 1,
+                'challenge_id' => $challenge->id,
+                'amount' => $winner_amount,
+                'type' => 'won_challenge',
+                'invoice_id' => null,
+                'status' => 'paid',
+            ]);
 
             // TO DONATORS
             foreach ($donators as $donator) {
