@@ -83,6 +83,7 @@ class BitcoinController extends Controller
 
     public function createTransaction($invoice_id,$amount)
     {
+        $balance = 0;
         $user = auth()->user();
         $transaction = Transaction::where('invoice_id' , $invoice_id)->first();
         if(!$user->is_premium){
@@ -95,7 +96,8 @@ class BitcoinController extends Controller
             $balance = $amount - config('global.PREMIUM_COST');      
         }
         
-        $user->balance = (float)$user->getAttributes()['balance'] + $balance;
+        $user->balance = (float)$user->getAttributes()['balance'] + ($balance >= 1 ? $balance : $amount );
+
         $user->update();
 
         $transaction = Transaction::where('invoice_id' , $invoice_id)

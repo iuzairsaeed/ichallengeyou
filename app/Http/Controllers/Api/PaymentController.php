@@ -12,6 +12,7 @@ class PaymentController extends Controller
 {
     public function loadBalance(Request $request)
     {
+        $balance = 0;
         $user = Auth::User();
         $data = [
             'message' => config('global.LOAD_BALANCE_MESSAGE').' & Your Total Amount is '.$user->balance,
@@ -44,7 +45,7 @@ class PaymentController extends Controller
                 $user->transactions()->save($transaction);
                 $balance = $amount - config('global.PREMIUM_COST');
             }
-            $user->balance = (float)$user->getAttributes()['balance'] + $balance;
+            $user->balance = (float)$user->getAttributes()['balance'] + ($balance >= 1 ? $balance : $amount );
             $user->update();
             $transaction = new Transaction([
                 'user_id' => $user->id,
