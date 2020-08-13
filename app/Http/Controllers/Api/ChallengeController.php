@@ -314,6 +314,10 @@ class ChallengeController extends Controller
                     'balance' => $user->balance ?? config('global.CURRENCY')." 0.00"
                 ], 200);
             }
+            return response([
+                'message' =>  $data['message'] ,
+                'balance' => $user->balance ?? config('global.CURRENCY')." 0.00"
+            ], 200);
         } catch (\Throwable $th) {
             return response($message,400);
         }

@@ -13,21 +13,19 @@ class ChallengeSubmited extends Notification implements ShouldQueue
     use Queueable;
 
     protected $action;
-    protected $donator;
+    protected $data_id;
     protected $winner;
     protected $creater;
     protected $challenge;
-    protected $data_id;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($action, $data_id, $donator=null, $winner=null, $creater=null, $challenge=null)
+    public function __construct($action, $data_id, $winner, $creater, $challenge)
     {
         $this->action = $action;
         $this->data_id = $data_id;
-        $this->donator = $donator;
         $this->winner = $winner;
         $this->creater = $creater;
         $this->challenge = $challenge;
@@ -52,10 +50,10 @@ class ChallengeSubmited extends Notification implements ShouldQueue
      */
     public function toFcm($notifiable) 
     {
-        if($this->action === 'onCreated'){
+        if($this->action == 'onCreated'){
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challengse Submited', 
+                'title' => 'Challenge Submited', 
                 'body' => $this->winner->name.' has been Submited the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
@@ -64,10 +62,10 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
         }
-        if($this->action === 'onUser'){
+        if($this->action == 'onUser'){
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challengse Submited', 
+                'title' => 'Challenge Submited', 
                 'body' => 'You has been Submited the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
@@ -77,10 +75,10 @@ class ChallengeSubmited extends Notification implements ShouldQueue
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
         }
         
-        if($this->action === 'toDonator&Creator'){
+        if($this->action == 'toDonator&Creator'){
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challengse Submited', 
+                'title' => 'Win Challenge', 
                 'body' => $this->winner->name.' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
@@ -89,10 +87,10 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
 
-        } elseif ($action === 'toSubmitor') {
+        } elseif ($this->action == 'toSubmitor') {
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challengse Submited', 
+                'title' => 'Challenge Submited', 
                 'body' => $this->winner->name.' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
@@ -101,7 +99,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
 
-        } elseif ($action === 'toWinner') {
+        } elseif ($this->action == 'toWinner') {
             $message = new FcmMessage();
             $message->content([
                 'title' => 'Congratulations!! You have Won The Challenge', 
@@ -122,7 +120,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @par`am`  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)

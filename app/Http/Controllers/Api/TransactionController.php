@@ -22,7 +22,7 @@ class TransactionController extends Controller
     {
         $user = auth()->user();
         $amount = (float)$request->amount;
-        $email = $request->email;
+        $email = $request->paypal_id;
         try {
             $res = 400;
             $data['message'] = config('global.PROVIDE_EMAIL_IN_WITHDRAWAL_MESSAGE');
