@@ -91,9 +91,11 @@ class TransactionController extends Controller
                 switch ($item->type) {
                     case 'load':
                         $item['reason'] = 'Load Balance';
+                        $item['amount'] = config('global.CURRENCY').' '.$item['amount']; 
                         break;
                     case 'won_challenge':
                         $item['reason'] = 'Won Challange';
+                        $item['amount'] = config('global.CURRENCY').' '.$item['amount']; 
                         break;
                     case 'withdraw':
                         $item['reason'] = 'Withdraw Balance';
