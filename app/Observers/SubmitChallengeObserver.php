@@ -145,7 +145,7 @@ class SubmitChallengeObserver
                     $submitor->user->notify(new ChallengeSubmited('toSubmitor', $challenge->id, $winner, $creater, $challenge));
                 }
             }
-            if($submitorNotification){
+            if($submitorNotification != null){
                 $submitChallenge->notifications()->saveMany($submitorNotification); 
             }
             // TO WINNER
@@ -157,7 +157,7 @@ class SubmitChallengeObserver
                 'data_id' => $challenge->id, 
             ]);
             $submitChallenge->notifications()->save($winnerNotification);  
-            $creater->notify(new ChallengeSubmited('toWinner', $challenge->id, $winner, $creater, $challenge));
+            $winner->notify(new ChallengeSubmited('toWinner', $challenge->id, $winner, $creater, $challenge));
             // TO ADMIN
             Notification::create([
                 'user_id' => 1,
