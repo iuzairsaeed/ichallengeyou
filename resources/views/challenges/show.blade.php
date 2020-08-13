@@ -139,7 +139,7 @@
                             </div>
                             @if ($challenge->status != Deleted())
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="text-bold-700">Status</label>
                                             <div class="input-group">
@@ -154,6 +154,10 @@
                                                 <div class="custom-control custom-radio display-inline-block ml-2">
                                                     <input type="radio" class="custom-control-input" name="is_active" id="is_active3" value='denied' {{($challenge->status == 'Denied') ? 'checked' :'' }}>
                                                     <label class="custom-control-label" for="is_active3">Reject</label>
+                                                </div>
+                                                <div class="custom-control custom-radio display-inline-block ml-2">
+                                                    <input type="radio" class="custom-control-input" name="is_active" id="is_active4" value='completed' {{($challenge->status == 'Completed') ? 'checked' :'' }}>
+                                                    <label class="custom-control-label" for="is_active4">Completed</label>
                                                 </div>
                                             </div>
                                         </div>
