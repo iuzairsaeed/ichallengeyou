@@ -43,7 +43,6 @@ class BitcoinController extends Controller
                 'created_at' => now(),
             ];
             $this->model->create($transaction);
-            $amount = $amount - config('global.PREMIUM_COST');
         }
         $transaction = [
             "user_id" => auth()->id(),
@@ -93,10 +92,10 @@ class BitcoinController extends Controller
             ->first();
             $transaction->status = 'paid';
             $transaction->update();      
-            $amount = $amount - config('global.PREMIUM_COST');      
+            $balance = $amount - config('global.PREMIUM_COST');      
         }
         
-        $user->balance = (float)$user->getAttributes()['balance'] + $amount;
+        $user->balance = (float)$user->getAttributes()['balance'] + $balance;
         $user->update();
 
         $transaction = Transaction::where('invoice_id' , $invoice_id)
