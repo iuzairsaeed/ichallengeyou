@@ -88,7 +88,6 @@ class TransactionController extends Controller
                 $item['year'] = $item->created_at->year;
                 $item['month'] = $item->created_at->format('F');
                 $item['day'] = $item->created_at->day;
-                $item['amount'] = config('global.CURRENCY').' '.$item->amount;
                 switch ($item->type) {
                     case 'load':
                         $item['reason'] = 'Load Balance';
@@ -98,19 +97,19 @@ class TransactionController extends Controller
                         break;
                     case 'withdraw':
                         $item['reason'] = 'Withdraw Balance';
-                        $item['amount'] = '- '.$item['amount'];
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
                         break;
                     case 'donate':
                         $item['reason'] = 'Donate on Challenge';
-                        $item['amount'] = '- '.$item['amount'];
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
                         break;
                     case 'create_challenge':
                         $item['reason'] = 'Created Challenge';
-                        $item['amount'] = '- '.$item['amount'];
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
                         break;
                     case 'miscellaneous':
                         $item['reason'] = 'Premium Cost';
-                        $item['amount'] = '- '.$item['amount'];
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
                         break;
                 }
                 $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
