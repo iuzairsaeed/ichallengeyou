@@ -42,9 +42,9 @@ class PaymentController extends Controller
                     'status' => 'paid',
                 ]);
                 $user->transactions()->save($transaction);
-                $amount = $amount - config('global.PREMIUM_COST');
+                $balance = $amount - config('global.PREMIUM_COST');
             }
-            $user->balance = (float)$user->getAttributes()['balance'] + $amount;
+            $user->balance = (float)$user->getAttributes()['balance'] + $balance;
             $user->update();
             $transaction = new Transaction([
                 'user_id' => $user->id,
