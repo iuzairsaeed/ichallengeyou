@@ -171,7 +171,7 @@
                             <div class="form-actions left">
                                 @if ($challenge->status != Deleted())
                                     <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
-                                        <i class="icon-check"></i> Upadate Challenge
+                                        <i class="icon-check"></i> Upadate
                                     </button>
                                     <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
                                         <i class="icon-trash"></i> Delete
