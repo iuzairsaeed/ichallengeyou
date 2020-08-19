@@ -62,7 +62,7 @@ class ChallengeRequest extends FormRequest
     {
         return [
             'title.unique' => 'Challenge with the provided title already exists.',
-            'start_time.after' => 'Challenges minimum starting time must be 24 hours or greater.',
+            'start_time.after' => config('global.START_TIME_MESSAGE'),
             'category_id.exists' => 'Kindly Select a category of your challenge.',
             'duration_hours.max' => 'Maximum Hour Limit is 24.',
             'duration_minutes.max' => 'Maximum Minute Limit is 60.',
