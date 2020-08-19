@@ -18,4 +18,9 @@ class SubmitFile extends Model
     {
         return mime_content_type($this->file);
     }
+
+    public function acceptedChallenge()
+    {
+        return $this->belongsTo(AcceptedChallenge::class);
+    }
 }

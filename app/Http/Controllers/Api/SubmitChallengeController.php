@@ -292,7 +292,7 @@ class SubmitChallengeController extends Controller
     
     public function deleteVideo(SubmitFile $file)
     {
-        if(now() >=  $challenge->start_time && now() <= $after_date){
+        if(now() >=  $file->acceptedChallenge->challenge->start_time && now() <= $file->acceptedChallenge->challenge->after_date){
             $file_name = $file->file;
             deleteFile($file_name, SubmitChallengesPath());
             $file->delete();
