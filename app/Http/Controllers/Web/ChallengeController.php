@@ -118,13 +118,17 @@ class ChallengeController extends Controller
     public function update(Challenge $challenge, Request $request)
     {
         try {
+            # CHANGE STATUS
             if($request->is_active == 'pending'){
                 $challenge->setStatus(Pending());
             } elseif ($request->is_active == 'approved')  {
                 $challenge->setStatus(Approved());
             } elseif ($request->is_active == 'denied')  {
                 $challenge->setStatus(Denied());
+            } elseif ($request->is_active == 'expired')  {
+                $challenge->setStatus(Expired());
             }
+            # VOTER DECIDE
             if($request->is_voter == 'premiumUsers'){
                 $challenge->allowVoter = 'premiumUsers';
                 $challenge->update();

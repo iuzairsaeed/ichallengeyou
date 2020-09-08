@@ -54,3 +54,8 @@ function Deleted()
 {
     return 'Deleted';
 }
+
+function Expired()
+{
+    return 'Expired';
+}

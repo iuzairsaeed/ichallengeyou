@@ -124,12 +124,12 @@
                                                 <label class="text-bold-700">Voters on this challenge </label>
                                                 <div class="input-group">
                                                     <div class="custom-control custom-radio display-inline-block pr-3">
-                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_active3" value='donators' {{($challenge->allowVoter == 'donators') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="is_active3">Donators</label>
+                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_voter1" value='donators' {{($challenge->allowVoter == 'donators') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label" for="is_voter1">Donators</label>
                                                     </div>
                                                     <div class="custom-control custom-radio display-inline-block">
-                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_active4" value='premiumUsers' {{($challenge->allowVoter == 'premiumUsers') ? 'checked' :'' }}>
-                                                        <label class="custom-control-label" for="is_active4">Premium Users</label>
+                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_voter2" value='premiumUsers' {{($challenge->allowVoter == 'premiumUsers') ? 'checked' :'' }}>
+                                                        <label class="custom-control-label" for="is_voter2">Premium Users</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,6 +158,10 @@
                                                 <div class="custom-control custom-radio display-inline-block ml-2">
                                                     <input type="radio" class="custom-control-input" name="is_active" id="is_active4" value='completed' {{($challenge->status == 'Completed') ? 'checked' :'' }}>
                                                     <label class="custom-control-label" for="is_active4">Completed</label>
+                                                </div>
+                                                <div class="custom-control custom-radio display-inline-block ml-2">
+                                                    <input type="radio" class="custom-control-input" name="is_active" id="is_active5" value='expired' {{($challenge->status == 'Expired') ? 'checked' :'' }}>
+                                                    <label class="custom-control-label" for="is_active5">Expired</label>
                                                 </div>
                                             </div>
                                         </div>
