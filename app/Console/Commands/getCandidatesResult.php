@@ -40,6 +40,15 @@ class getCandidatesResult extends Command
     public function handle()
     {
         $challenges = AskCandidate::where('updated_at' , '>=' , now())->latest()->get()->unique('challenge_id');
+        $all_chellenges = Challenge::get();
+        foreach($all_chellenges as $item){
+            if($item->status == Approved() && $item->acceptedChallenges->first() == null){
+                if(now() <= $item->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS'))){
+                    $item->setStatus(Expired());
+                    dd($item->status);
+                }    
+            }
+        }   
         foreach ($challenges as $value) {
             $challenge = Challenge::findOrFail($value->challenge_id);
             $res = $this->result($challenge);
