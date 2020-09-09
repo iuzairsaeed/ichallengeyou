@@ -25,10 +25,10 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['bail', 'regex:/[A-za-z0-9 ]/', 'max:200', 'min:3'],
-            'username' => ['bail', 'required', 'regex:/^(?=[a-zA-Z0-9._]{3,50}$)(?!.*[_.]{2})[^_.].*[^_.]$/','string', 'max:255', 'min:3', 'unique:users', new AllowedUsername],
-            'email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
+            'name' => ['bail', 'regex:/[A-za-z0-9 ]/', 'max:100', 'min:3'],
+            'username' => ['bail', 'required', 'regex:/^(?=[a-zA-Z0-9._]{3,50}$)(?!.*[_.]{2})[^_.].*[^_.]$/','string', 'max:100', 'min:3', 'unique:users', new AllowedUsername],
+            'email' => ['bail', 'required', 'string', 'email', 'max:150', 'unique:users'],
+            'password' => ['bail', 'required', 'string', 'min:8', 'max:150', 'confirmed'],
             'contact_number' => ['required','regex:/[0-9+*-*]/','min:8','max:15'],
         ];
     }
