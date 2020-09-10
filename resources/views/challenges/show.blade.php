@@ -89,7 +89,7 @@
                                     <label class="text-bold-700">Creater</label><br>
                                     <div class="row" >
                                         <img src="{{ asset($challenge->user->avatar) }}" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
-                                        <p style="margin:10px" > {{$challenge->user->name}}</p>
+                                        <p style="margin:10px" > {{$challenge->user->name ?? $challenge->user->username }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -175,7 +175,7 @@
                             <div class="form-actions left">
                                 @if ($challenge->status != Deleted())
                                     <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
-                                        <i class="icon-check"></i> Upadate
+                                        <i class="icon-check"></i> Update
                                     </button>
                                     <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
                                         <i class="icon-trash"></i> Delete
