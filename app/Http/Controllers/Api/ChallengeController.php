@@ -244,7 +244,7 @@ class ChallengeController extends Controller
      */
     public function update(ChallengeRequest $request, Challenge $challenge)
     {
-        $message['message'] = 'You cannot edit your challenge, It has been approved by Admin!'; $res = 400;
+        $message['message'] = 'You cannot edit your challenge, It has been '.$challenge->status.' by Admin!'; $res = 400;
         if($challenge->status == Pending()){
             $message['message'] = config('global.PREMIUM_USER_MESSAGE'); $res = 400;
             $user = auth()->user();
