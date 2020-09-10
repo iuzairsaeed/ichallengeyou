@@ -218,36 +218,6 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title-wrap">
-                        <h4 class="card-title">Bids</h4>
-                        <p class="card-text">Here you can see the list of bids that users made on this challenge.</p>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-block table-responsive">
-                        <div class="row">
-                            <table class="table table-striped table-bordered" id="bidsTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>User</th>
-                                        <th>Bid Amount</th>
-                                        <th>Created At</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <div class="row">
         <div class="col-12">
