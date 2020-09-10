@@ -31,7 +31,7 @@ class ChallengeRequest extends FormRequest
             'duration_days' => ['required', 'integer', 'min:0'],
             'duration_hours' => ['required', 'integer', 'min:0', 'max:24'],
             'duration_minutes' => ['required', 'integer', 'min:0', 'max:60'],
-            'location' => ['required', 'string', 'max:75'],
+            'location' => ['nullable', 'string', 'max:75'],
             'amount' => ['required', 'numeric', 'min:1'],
             'category_id' => ['required', 'exists:categories,id'],
         ];

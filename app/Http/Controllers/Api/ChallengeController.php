@@ -112,6 +112,9 @@ class ChallengeController extends Controller
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
+            if($request->location == null || $request->location == "" ){
+                $data['location'] = "Anywhere";
+            }
             $data['user_id'] = auth()->id();
 
             if($data['duration_hours'] == 24){
@@ -257,6 +260,9 @@ class ChallengeController extends Controller
                 if($request->hasFile('file')){
                     $deleteFile = $challenge->getAttributes()['file'] == 'no-image.png' ? null : $challenge->file;
                     $data['file'] = uploadFile($request->file, challengesPath(), $deleteFile);
+                }
+                if($request->location == null || $request->location == "" ){
+                    $data['location'] = "Anywhere";
                 }
                 $data['user_id'] = auth()->id();
                 $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
