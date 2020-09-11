@@ -264,7 +264,6 @@ class ChallengeController extends Controller
                 if($request->location == null || $request->location == "" ){
                     $data['location'] = "Anywhere";
                 }
-                $data['user_id'] = auth()->id();
                 $data['start_time'] = Carbon::createFromFormat('Y-m-d H:i', $request->start_time)->toDateTimeString();
                 $challenge = $this->model->update($data , $challenge );
             }
