@@ -208,14 +208,15 @@ class ChallengeController extends Controller
             $isSubmited = 0;
             $isDonator = false;
             foreach($acceptedChallenges as $acceptedChallenge){
-                if($acceptedChallenge->submitChallenge){
+                // dd($acceptedChallenge->where('user_id' , $id)->first()->submitChallenge);
+                if($acceptedChallenge->where('user_id' , $id)->first()->submitChallenge){
                     $isSubmited++;
                 }
                 if($challenge->donations->where('user_id',  $id)->first()){
                     $isDonator = true;
                 }
             }
-            if($isDonator && $isSubmited > 0){
+            if($isDonator || $isSubmited > 0){
                 $data['data']['reviewBtn'] = true;
             }
         }
