@@ -82,8 +82,8 @@ class SubmitChallengeController extends Controller
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             collect($data['data'])->map(function ($item) {
                 $item['isWinner'] = $item->submitChallenge->isWinner;
-                $item['voteUp'] =  $item->submitChallenge->first()->votes()->where('vote_up' , true)->count();
-                $item['voteDown'] =  $item->submitChallenge->first()->votes()->where('vote_down' , true)->count();
+                $item['voteUp'] =  $item->submitChallenge->votes()->where('vote_up' , true)->count();
+                $item['voteDown'] =  $item->submitChallenge->votes()->where('vote_down' , true)->count();
             });
             if($challenge->allowVoter == 'donators'){
                 $message['message'] = config('global.TIMEOUT_MESSAGE');
