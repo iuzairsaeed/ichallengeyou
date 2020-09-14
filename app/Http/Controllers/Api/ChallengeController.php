@@ -208,7 +208,6 @@ class ChallengeController extends Controller
             $isSubmited = 0;
             $isDonator = false;
             foreach($acceptedChallenges as $acceptedChallenge){
-                // dd($acceptedChallenge->where('user_id' , $id)->first()->submitChallenge);
                 if($acceptedChallenge->where('user_id' , $id)->first()->submitChallenge){
                     $isSubmited++;
                 }
