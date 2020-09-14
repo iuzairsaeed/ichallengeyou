@@ -90,7 +90,6 @@ class VoteController extends Controller
                 }
             }
         }
-
         if($isVoted >= 1){
             $data['message'] = config('global.ALREADY_VOTE_MESSAGE');
             $voted = $voter->where('submited_challenge_id',$submitedChallenge->id)
@@ -102,7 +101,6 @@ class VoteController extends Controller
                 $vote_down = $voted->vote_down = false ;
                 $voted->update();
                 $data['message'] = ($vote_up == true) ? config('global.VOTE_CAST_POSITIVE_MESSAGE') : config('global.VOTE_REMOVED_MESSAGE') ;
-                $res = 200;
                 $data['vote_up'] = $vote_up;
                 $data['vote_down'] = $vote_down;
             }
@@ -166,7 +164,7 @@ class VoteController extends Controller
         $voters = Vote::where('user_id',auth()->id())->get();
         foreach($acceptedChallenges as $acceptedChallenge){
             foreach($voters as $voter){
-                if($voter->submited_challenge_id === $acceptedChallenge->submitChallenge->id){
+                if($voter->submited_challenge_id == $acceptedChallenge->submitChallenge->id){
                     $isVoted++;
                 }
             }
