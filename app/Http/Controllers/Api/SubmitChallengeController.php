@@ -196,15 +196,13 @@ class SubmitChallengeController extends Controller
                     $item['description'] = $item->challenge->description;
                     $item['submit_date'] = $item->submitChallenge->created_at->format('Y-m-d H:i A');
                     $item['files'] = $item->submitFiles->pluck('file');
-                    $item['voteUp'] = $item->submitChallenge->votes()
-                    ->where('user_id',auth()->id())
+                    $item['voteUp'] = $item->submitChallenge->votes()->where('user_id',auth()->id())
                     ->where('vote_up',true)->first();
-                    $item['voteDown'] = $item->submitChallenge->votes()
-                    ->where('user_id',auth()->id())
+                    $item['voteDown'] = $item->submitChallenge->votes()->where('user_id',auth()->id())
                     ->where('vote_down',true)->first();
                     $item['voteBtn'] = ($item->challenge->result_type === 'vote') ? true : false;
                 });
-                   $data = SubmitChallengeDetailCollection::collection($data);
+                $data = SubmitChallengeDetailCollection::collection($data);
                 return response($data,200);
             }
             return response(['message'=>'There is No Submited Challenge'], 207);
