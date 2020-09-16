@@ -29,7 +29,7 @@
                     <form id="updateForm" action="/challenges/{{$challenge->id}}" method="POST">
                         @method('PUT')
                         @csrf
-                    
+
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -41,7 +41,7 @@
                                 <div class="col-md-4">
                                     <label class="text-bold-700">Initial Amount</label><br>
                                     <p> {{$challenge->initialAmount->amount}}</p>
-                                </div>  
+                                </div>
                                 <div class="col-md-4">
                                     <label class="text-bold-700">Start Time</label><br>
                                     <p> {{$challenge->start_time->format(config('global.DATE_FORMAT')) ?? '' }}</p>
@@ -83,7 +83,7 @@
                                     <p>{{$challenge->location}}</p>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="text-bold-700">Creater</label><br>
@@ -106,7 +106,7 @@
                                         <label class="text-bold-700">Description</label>
                                         <p class="font"> {{ print(nl2br($challenge->description)??'-') }}  </p>
                                     </div>
-                                </div>   
+                                </div>
                             </div>
 
                             <div class="row">
@@ -114,7 +114,7 @@
                                     @if ($winner)
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="text-bold-700">Winner </label> 
+                                                <label class="text-bold-700">Winner </label>
                                                 <p class="font text-bold-500"> {{ (optional(optional($winner)->user)->name)?? ' ' }}  <i class="icon-trophy"></i></p>
                                             </div>
                                         </div>
@@ -157,7 +157,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
                             @endif
                         </div>
@@ -167,7 +167,7 @@
                             <div class="form-actions left">
                                 @if ($challenge->status != Deleted())
                                     <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
-                                        <i class="icon-check"></i> Upadate Challenge
+                                        <i class="icon-check"></i> Update Challenge
                                     </button>
                                     <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
                                         <i class="icon-trash"></i> Delete
@@ -240,7 +240,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -298,7 +298,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade text-left " id="editSubmitorDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
         <div class="modal-lg modal-dialog" role="document">
             <div class="modal-content">
@@ -349,7 +349,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title-wrap bar-success">
@@ -360,7 +360,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title-wrap bar-success">
@@ -387,7 +387,7 @@
 
                             </div>
                         </div>
-                       
+
                         <div class="form-actions center pb-0">
                             <input type="hidden" id="id" name="id">
                             <button type="reset" data-dismiss="modal" class="btn btn-raised btn-danger mr-1">
@@ -406,7 +406,7 @@
 @endsection
 
 @section('afterScript')
-<script>    
+<script>
 
     $('#donationsTable').DataTable({
         processing: true,
@@ -469,7 +469,7 @@
                                         </a>`;
                                 }
             }
-            
+
         ],
         order: [0 , 'desc'],
         columnDefs: [
@@ -531,7 +531,7 @@
             { data: 'user.name' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal" 
+                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
                                         data-keyboard="false" data-target="#editSubmitorDetail">
                                             <i class="ft-edit font-medium-3"></i>
                                         </a>`;
@@ -551,7 +551,7 @@
         $('#submitedChallengeID')[0].value = id;
         var datas = null;
         $.ajax({
-            url: '{{ route("challenges.getSubmitor", $challenge->id) }}', 
+            url: '{{ route("challenges.getSubmitor", $challenge->id) }}',
             data: {id:id},
             dataType: "json",
             success: function(res){
@@ -587,7 +587,7 @@
                     </div>
                     `
                 );
-                
+
 
 
             }
@@ -617,7 +617,7 @@
             }
         });
     });
-    
+
     $('#votersTable').DataTable({
         processing: true,
         serverSide: true,
@@ -652,10 +652,10 @@
             { orderable: false, targets: [-1, -2] }
         ],
     });
-    
-    
 
-    
+
+
+
 
 </script>
 @endsection
