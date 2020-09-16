@@ -23,7 +23,7 @@ class AcceptedChallenge extends Model
 
     public function challenge()
     {
-        return $this->belongsTo(Challenge::class)->select(['id','title','description','start_time','file','result_type','user_id','duration_days', 'duration_hours', 'duration_minutes', 'allowVoter']);
+        return $this->belongsTo(Challenge::class)->withTrashed()->select(['id','title','description','start_time','file','result_type','user_id','duration_days', 'duration_hours', 'duration_minutes', 'allowVoter']);
     }
 
     function amounts()
