@@ -43,7 +43,7 @@ class getCandidatesResult extends Command
         $all_chellenges = Challenge::get();
         foreach($all_chellenges as $item){
             if($item->status == Approved() && $item->acceptedChallenges->first() == null){
-                if(now() <= $item->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS'))){
+                if(now() >= $item->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS'))){
                     $item->setStatus(Expired());
                 }    
             }
