@@ -17,7 +17,7 @@ class BidCollection extends JsonResource
         return [
             'id'=> $this->id,
             'user_id'=> $this->user->id,
-            'user_name'=> $this->user->name,
+            'user_name'=> $this->user->name ?? $this->user->username,
             'user_avatar'=> $this->user->avatar,
             'bid_amount'=> $this->bid_amount,
         ];

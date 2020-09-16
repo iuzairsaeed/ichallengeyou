@@ -96,7 +96,7 @@ class VoteRepository implements RepositoryInterface
             ->where('vote_down',true)
             ->count();
             $data[$key]['id'] = $value->user->id;
-            $data[$key]['name'] = $value->user->name;
+            $data[$key]['name'] = $value->user->name ?? $value->user->username ;
             $data[$key]['votes'] = $total_vote_up - $total_vote_down;
             $result = (int)((($total_vote_up - $total_vote_down) / $total_votes)*100);
             $data[$key]['result'] = ( $result < 0 ? 0 : $result  );

@@ -37,7 +37,7 @@ class TransactionObserver
                 $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Load Balance', 
-                    'body' => $transaction->user->name.' has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
+                    'body' => $transaction->user->name ?? $transaction->user->username.' has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -58,7 +58,7 @@ class TransactionObserver
                 $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Miscellaneous Amount', 
-                    'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' '.$transaction->user->name.' is Premium User Now!', 
+                    'body' => 'By using '.config('global.CURRENCY').' '.config('global.PREMIUM_COST').' '.$transaction->user->name ?? $transaction->user->username.' is Premium User Now!', 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -79,7 +79,7 @@ class TransactionObserver
                 $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Withdrawal Transaction',
-                    'body' => $transaction->user->name.' has been debited '.config('global.CURRENCY').' '.$transaction->amount, 
+                    'body' => $transaction->user->name ?? $transaction->user->username.' has been debited '.config('global.CURRENCY').' '.$transaction->amount, 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -110,7 +110,7 @@ class TransactionObserver
                 // TO ADMIN
                 $transactionArray = new Notification([
                     'user_id' => 1,
-                    'title' => ($transaction->user->name ?? 'Seeder Test User' ).' have Donated on Challenge '.$transaction->challenge->title,
+                    'title' => (($transaction->user->name ?? $transaction->user->username) ?? 'Seeder Test User' ).' have Donated on Challenge '.$transaction->challenge->title,
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 

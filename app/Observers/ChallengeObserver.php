@@ -32,7 +32,7 @@ class ChallengeObserver
         $notification = new Notification([
             'user_id' => 1, 
             'title' => 'New Challenge Created', 
-            'body' => $challenge->user->name.' have Created The Challenge '.$challenge->name, 
+            'body' => $challenge->user->name ?? $challenge->user->username.' have Created The Challenge '.$challenge->name, 
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $challenge->id, 
         ]);

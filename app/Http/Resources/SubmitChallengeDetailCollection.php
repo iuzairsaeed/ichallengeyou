@@ -21,7 +21,7 @@ class SubmitChallengeDetailCollection extends JsonResource
             'submit_date' => $this->submit_date,
             'user' => [
                 'id' => $this->user->id,
-                'name' => $this->user->name,
+                'name' => $this->user->name ?? $this->user->username,
                 'avatar' => $this->user->avatar,
             ],
             'file' => $this->files,

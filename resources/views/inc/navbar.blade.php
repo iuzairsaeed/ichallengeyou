@@ -47,7 +47,7 @@
             </a>
             <div aria-labelledby="dropdownBasic3" class="dropdown-menu dropdown-menu-right">
               <div class="arrow_box_right">
-                <a href="{{ route('profile') }}" class="dropdown-item py-1"><i class="icon-user mr-2"></i><span>{{$user->name}}</span></a>
+                <a href="{{ route('profile') }}" class="dropdown-item py-1"><i class="icon-user mr-2"></i><span>{{$user->name ?? $user->username}}</span></a>
                 <a href="{{ route('changePassword') }}" class="dropdown-item py-1"><i class="ft-lock mr-2"></i><span>Change Password</span></a>
                 <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="ft-power mr-2"></i><span>Logout</span></a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

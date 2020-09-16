@@ -35,7 +35,7 @@
                                     <label class="text-bold-700">User</label><br>
                                     <div class="row" >
                                         <img src="{{ asset($amount->user->avatar) }}" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
-                                        <p style="margin:10px" > {{$amount->user->name}}</p>
+                                        <p style="margin:10px" > {{$amount->user->name ?? $amount->user->username}}</p>
                                     </div>
                                 </div>
                             </div>

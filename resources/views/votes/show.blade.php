@@ -24,7 +24,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="text-bold-700">Voter Name</label>
-                                        <p>{{$vote->user->name ?? '-'}}</p>
+                                        <p>{{($vote->user->name ?? $vote->user->username) ?? '-'}}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
