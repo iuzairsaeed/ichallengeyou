@@ -85,7 +85,7 @@ class VoteController extends Controller
 
         foreach($acceptedChallenges as $acceptedChallenge){
             foreach($voters as $voter){
-                if($voter->submited_challenge_id == $acceptedChallenge->submitChallenge->id){
+                if($voter->submited_challenge_id == optional($acceptedChallenge->submitChallenge)->id){
                     $isVoted++;
                 }
             }
@@ -162,9 +162,10 @@ class VoteController extends Controller
         $isVoted = 0;
         $acceptedChallenges = $submitedChallenge->acceptedChallenge->challenge->acceptedChallenges;
         $voters = Vote::where('user_id',auth()->id())->get();
+        
         foreach($acceptedChallenges as $acceptedChallenge){
             foreach($voters as $voter){
-                if($voter->submited_challenge_id == $acceptedChallenge->submitChallenge->id){
+                if($voter->submited_challenge_id == optional($acceptedChallenge->submitChallenge)->id){
                     $isVoted++;
                 }
             }
