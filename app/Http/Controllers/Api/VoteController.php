@@ -40,8 +40,9 @@ class VoteController extends Controller
 
     public function voteUp(SubmitChallenge $submitedChallenge) {
         $challenge = $submitedChallenge->acceptedChallenge->challenge;
-        $challenger = $submitedChallenge->acceptedChallenge->where('user_id',auth()->id())->first();
+        $challenger = $submitedChallenge->acceptedChallenge->where('user_id',auth()->id())->where('challenge_id', $challenge->id )->first();
         $data['message'] = config('global.CHALLENGER_CANNOT_VOTE_MESSAGE');$res = 400;
+
         if(!$challenger){
             $data['message'] = config('global.PREMIUM_USER_MESSAGE'); 
             $data['premiumBtn'] = true;
@@ -120,7 +121,7 @@ class VoteController extends Controller
 
     public function voteDown(SubmitChallenge $submitedChallenge) {
         $challenge = $submitedChallenge->acceptedChallenge->challenge;
-        $challenger = $submitedChallenge->acceptedChallenge->where('user_id',auth()->id())->first();
+        $challenger = $submitedChallenge->acceptedChallenge->where('user_id',auth()->id())->where('challenge_id', $challenge->id )->first();
         $data['message'] = config('global.CHALLENGER_CANNOT_VOTE_MESSAGE');$res = 400;
         if(!$challenger){
             $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
