@@ -54,7 +54,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
             $message = new FcmMessage();
             $message->content([
                 'title' => 'Challenge Submited', 
-                'body' => $this->winner->name.' has been Submited the Challenge '.$this->challenge->title,
+                'body' => ($this->winner->name ?? $this->winner->username) .' has been Submited the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
@@ -79,7 +79,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
             $message = new FcmMessage();
             $message->content([
                 'title' => 'Win Challenge', 
-                'body' => $this->winner->name.' WIN the Challenge '.$this->challenge->title,
+                'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
@@ -91,7 +91,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
             $message = new FcmMessage();
             $message->content([
                 'title' => 'Challenge Submited', 
-                'body' => $this->winner->name.' WIN the Challenge '.$this->challenge->title,
+                'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
@@ -103,7 +103,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
             $message = new FcmMessage();
             $message->content([
                 'title' => 'Congratulations!! You have Won The Challenge', 
-                'body' => $this->winner->name.' WIN the Challenge '.$this->challenge->title,
+                'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional

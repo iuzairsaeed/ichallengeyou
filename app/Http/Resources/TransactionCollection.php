@@ -24,7 +24,7 @@ class TransactionCollection extends JsonResource
             "year" => $this->year,
             "challenge_id" => $this->challenge->id ?? 0,
             "title" => $this->challenge->title ?? "",
-            "created_at" => $this->created_at->format('Y-m-d H:i A'),
+            "created_at" => $this->created_at->format('Y-m-d h:i A'),
         ];
     }
 }

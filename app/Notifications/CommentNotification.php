@@ -44,7 +44,7 @@ class CommentNotification extends Notification implements ShouldQueue
         $message = new FcmMessage();
         $message->content([
             'title' => 'You got comments on your Challenge', 
-            'body' => $this->comment->user->name ?? $this->user->username.' has been Commented on the Challenge '.$this->comment->challenge->title,
+            'body' => ($this->comment->user->name ?? $this->user->username).' has been Commented on the Challenge '.$this->comment->challenge->title,
             'sound'        => '', // Optional 
             'icon'         => 'favicon.ico', // Optional
             'click_action' => 'CHALLENGE_DETAIL_SCREEN', // Optional

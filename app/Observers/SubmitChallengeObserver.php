@@ -40,7 +40,7 @@ class SubmitChallengeObserver
                 $notification[] = new Notification([
                     'user_id' => $donator->user->id,
                     'title' => 'Challenge Submited', 
-                    'body' => $submitor->name.' has been Submited the Challenge '.$challenge->title, 
+                    'body' => $submitor->name ?? $submitor->username ?? $submitor->username.' has been Submited the Challenge '.$challenge->title, 
                     'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $submitChallenge->accepted_challenge_id, 
                 ]);
@@ -51,7 +51,7 @@ class SubmitChallengeObserver
             $createrNotification = new Notification([
                 'user_id' => $creater->id,
                 'title' => 'Challenge Submited', 
-                'body' => $submitor->name.' has been Submited the Challenge '.$challenge->title, 
+                'body' => $submitor->name ?? $submitor->username.' has been Submited the Challenge '.$challenge->title, 
                 'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
                 'data_id' => $submitChallenge->accepted_challenge_id, 
             ]);
@@ -61,7 +61,7 @@ class SubmitChallengeObserver
             $createrNotification = new Notification([
                 'user_id' => 1,
                 'title' => 'Challenge Submited', 
-                'body' => $submitor->name.' has been Submited the Challenge '.$challenge->title, 
+                'body' => $submitor->name ?? $submitor->username.' has been Submited the Challenge '.$challenge->title, 
                 'click_action' =>'SUBMITED_CHALLENGE_DETAIL_SCREEN', 
                 'data_id' => $submitChallenge->accepted_challenge_id, 
             ]);

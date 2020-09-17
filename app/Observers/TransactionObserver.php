@@ -95,16 +95,16 @@ class TransactionObserver
                     'data_id' => $transaction->challenge_id, 
                 ]);
                 $transaction->notifications()->save($transactionArray);
-                // TO Challenge Owner
                 $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+                // TO Challenge Owner
                 $transactionArray = new Notification([
                     'user_id' => $transaction->challenge->user->id,
-                    'title' => (auth()->user()->name ?? 'Seeder Test User' ).' have Donated on Your Challenge '.$transaction->challenge->title,
+                    'title' => ((auth()->user()->name ?? auth()->user()->username )?? 'Seeder Test User' ).' have Donated on Your Challenge '.$transaction->challenge->title,
                     'body' => config('global.CURRENCY').' '.$transaction->amount.' has been donated', 
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $transaction->challenge_id, 
                 ]);
-                $user_name = auth()->user()->name;
+                $user_name = auth()->user()->name ?? auth()->user()->username ;
                 $transaction->challenge->user->notify(new DonateNotification($user_name,$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
                 $transaction->notifications()->save($transactionArray);
                 // TO ADMIN

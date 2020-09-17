@@ -180,7 +180,7 @@ class SubmitChallengeController extends Controller
                     'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $challenge->id,
                 ]);
-                $data['data'][0]->submitChallenge->notifications()->save($adminNotification);
+                $challenge->acceptedChallenges[0]->submitChallenge->notifications()->save($adminNotification);
             }
         }
         return $data;
@@ -194,7 +194,7 @@ class SubmitChallengeController extends Controller
                     $item['submited_challenge_id'] = $item->submitChallenge->id;
                     $item['title'] = $item->challenge->title;
                     $item['description'] = $item->challenge->description;
-                    $item['submit_date'] = $item->submitChallenge->created_at->format('Y-m-d H:i A');
+                    $item['submit_date'] = $item->submitChallenge->created_at->format('Y-m-d h:i A');
                     $item['files'] = $item->submitFiles->pluck('file');
                     $item['voteUp'] = $item->submitChallenge->votes()->where('user_id',auth()->id())
                     ->where('vote_up',true)->first();

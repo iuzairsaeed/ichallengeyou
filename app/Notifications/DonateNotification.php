@@ -63,7 +63,7 @@ class DonateNotification extends Notification implements ShouldQueue
         } else {
             $message = new FcmMessage();
             $message->content([
-                'title' => $this->user_name.' have Donated on Your Challenge '.$this->challenge_title,
+                'title' => ($this->user_name ?? $this->user_name).' have Donated on Your Challenge '.$this->challenge_title,
                 'body' => config('global.CURRENCY').$this->amount.' has been donated', 
                 'sound'        => '', // Optional 
                 'icon'         => 'favicon.ico', // Optional
