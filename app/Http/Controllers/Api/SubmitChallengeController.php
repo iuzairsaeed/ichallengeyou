@@ -171,7 +171,7 @@ class SubmitChallengeController extends Controller
                     'data_id' => $challenge->id,
                 ]);
                 $challenge->user->notify(new AskCandidate);
-                $challenge->acceptedChallenges[0]->submitChallenge->notifications()->save($notification);
+                $data['data'][0]->submitChallenge->notifications()->save($notification);
                 $adminNotification = new Notification([
                     'user_id' => 1,
                     'title' => 'Result Still Pending', 
@@ -180,7 +180,7 @@ class SubmitChallengeController extends Controller
                     'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $challenge->id,
                 ]);
-                $challenge->acceptedChallenges[0]->submitChallenge->notifications()->save($adminNotification);
+                $data['data'][0]->submitChallenge->notifications()->save($adminNotification);
             }
         }
         return $data;
