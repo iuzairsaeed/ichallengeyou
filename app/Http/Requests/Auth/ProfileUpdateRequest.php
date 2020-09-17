@@ -24,7 +24,8 @@ class ProfileUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['bail', 'required', 'string', 'max:255', 'min:3']
+            'name' => ['bail', 'required', 'string', 'max:255', 'min:3'],
+            'contact_number' => ['required','regex:/[0-9+*-*]/','min:8','max:15'],
         ];
     }
 }
