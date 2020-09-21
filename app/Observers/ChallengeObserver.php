@@ -5,7 +5,6 @@ namespace App\Observers;
 use App\Models\Challenge;
 use App\Models\Notification;
 use App\Notifications\ChallengeNotification;
-use App\Notifications\ChallengeUpdateNotification;
 
 class ChallengeObserver
 {
