@@ -139,7 +139,7 @@ class SubmitChallengeController extends Controller
                             $notification = new Notification([
                                 'user_id' => $challenger->user->id,
                                 'title' => 'Result has been tied', 
-                                'body' => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
+                                'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask the App Admin to Evaluate or The Public?',
                                 'click_action' => 'ASK_RESULT_DIALOG', 
                                 'data_id' => $challenger->id,
                             ]);
@@ -149,7 +149,7 @@ class SubmitChallengeController extends Controller
                         $adminNotification = new Notification([
                             'user_id' => 1,
                             'title' => 'Result has been tied', 
-                            'body' => 'Result has been tied on the challenge ',
+                            'body' => 'Result has been tied of the challenge '.$challenge->title,
                             'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
                             'data_id' => $challenge->id,
                         ]);
@@ -178,7 +178,7 @@ class SubmitChallengeController extends Controller
                     'user_id' => 1,
                     'title' => 'Result Still Pending', 
                     'body' => 'Submitor will ask The App Admin to Evaluate or The Public?',
-                    'body' => 'Result has been tied on the challenge ',
+                    'body' => 'Result has been tied of the challenge '.$challenge->title,
                     'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $challenge->id,
                 ]);
