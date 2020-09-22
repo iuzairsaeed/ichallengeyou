@@ -28,10 +28,9 @@ class Amount extends Model
         return $this->belongsTo(Challenge::class)->withTrashed();
     }
 
-
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed()->select(['id','name','avatar']);
+        return $this->belongsTo(User::class)->withTrashed()->select(['id','username','avatar']);
     }
 
 }

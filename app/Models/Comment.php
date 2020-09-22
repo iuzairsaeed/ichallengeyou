@@ -32,7 +32,7 @@ class Comment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->select(['id', 'name', 'avatar']);
+        return $this->belongsTo(User::class)->select(['id', 'name',"username", 'avatar']);
     }
 
     public function challenge()
