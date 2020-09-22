@@ -163,14 +163,16 @@ class SubmitChallengeController extends Controller
                 ->where('click_action', 'ASK_RESULT_DIALOG' )
                 ->exists();
             if(!$isNotification){
+                # Send notification to creator & Submitor
                 $notification = new Notification([
                     'user_id' => $challenge->user->id,
                     'title' => 'Result Still Pending', 
-                    'body' => 'Due to No Votes, Do you want to ask The App Admin to Evaluate or The Public?',
+                    'body' => 'Do you want to ask The App Admin to Evaluate or The Public?',
                     'click_action' => 'ASK_RESULT_DIALOG', 
                     'data_id' => $challenge->id,
                 ]);
                 $challenge->user->notify(new AskCandidate);
+                $challenge->notifications()->save($notification);
                 $data['data'][0]->submitChallenge->notifications()->save($notification);
                 $adminNotification = new Notification([
                     'user_id' => 1,
