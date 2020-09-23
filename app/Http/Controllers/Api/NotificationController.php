@@ -33,7 +33,6 @@ class NotificationController extends Controller
         $withCount = [];
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
-       
         collect($data['data'])->map(function ($item) {
             if($item->notifiable_type == ''){
                 $item['file'] = $item->user->avatar;
@@ -46,13 +45,17 @@ class NotificationController extends Controller
                 $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
             }
-            if($item['type'] == `App\Models\Challenge`){
+            if($item['type'] == "App\Models\Challenge"){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->data_id;
             }
             if($item['type'] == `App\Models\Transaction`){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->data_id;
+            }
+            if($item['click_action'] == "ASK_RESULT_DIALOG"){
+                $item['file'] = $item->user->avatar;
+                $item['data_id'] = $item->notifiable->id;
             }
         });
         $data['data'] = NotificationCollection::collection($data['data']);
