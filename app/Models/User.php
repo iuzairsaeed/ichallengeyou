@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function getNameAttribute($value)
     {
-        return $value ?? $this->username;
+        return $value == "" || $value == null  ? $this->username : $value;
     }
 
     /**
