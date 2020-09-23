@@ -202,7 +202,7 @@ class SubmitChallengeController extends Controller
                     ->where('vote_up',true)->first();
                     $item['voteDown'] = $item->submitChallenge->votes()->where('user_id',auth()->id())
                     ->where('vote_down',true)->first();
-                    $item['voteBtn'] = ($item->challenge->result_type === 'vote') ? true : false;
+                    $item['voteBtn'] = ($item->challenge->result_type == 'vote') ? true : false;
                 });
                 $data = SubmitChallengeDetailCollection::collection($data);
                 return response($data,200);
