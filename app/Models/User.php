@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $value ? config('global.CURRENCY').' '.number_format($value,2) : null;
     }
 
+    public function getNameAttribute($value)
+    {
+        return $value ?? $this->username;
+    }
+
     /**
      * Route notifications for the FCM channel.
      *
