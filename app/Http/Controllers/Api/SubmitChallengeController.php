@@ -97,6 +97,7 @@ class SubmitChallengeController extends Controller
                 }
             }
             $data['title'] = $challenge->title ?? '-';
+            $data['result_type'] = $challenge->result_type ?? '-';
             $data['data'] = SubmitChallengeCollection::collection($data['data']);
             return response($data,$data['response']);
         } catch (\Throwable $th) {
