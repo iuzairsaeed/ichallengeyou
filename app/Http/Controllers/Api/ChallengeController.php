@@ -156,7 +156,7 @@ class ChallengeController extends Controller
      */
     public function show(Challenge $challenge, Request $request)
     {
-        $id = $request->user_id;
+        $id = (int)$request->user_id;
         $user = User::where('id',$id)->first();
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
@@ -205,8 +205,10 @@ class ChallengeController extends Controller
                 }
             }
             $acceptedChallenges = $data['data']->acceptedChallenges()->where('challenge_id', $challenge_id)->with('submitChallenge')->get();
-            $isSubmited = 0;
-            $isDonator = false;
+            $isSubmited = 0; $isDonator = false; $isCreator = false;
+            if($challenge->user->id == $id){
+                $isCreator = true;
+            }
             foreach($acceptedChallenges as $acceptedChallenge){
                 if($acceptedChallenge->user_id == $id){
                     $isSubmited++;
@@ -215,7 +217,7 @@ class ChallengeController extends Controller
                     $isDonator = true;
                 }
             }
-            if($isDonator || $isSubmited > 0){
+            if( $isCreator || $isDonator || $isSubmited > 0 ){
                 $data['data']['reviewBtn'] = true;
             }
         }
