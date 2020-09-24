@@ -53,6 +53,12 @@ class AuthController extends Controller
             return response([
                 'message' => config('global.LOGIN_DISABLE_MESSAGE')
             ], 400);
+        }elseif(!$user->email_verified_at) {
+            $user->sendEmailVerificationNotification();
+
+            return response([
+                'message' => config('global.EMAIL_VERIFY_MESSAGE')
+            ], 202);
         }
 
         $user->platform = $request->platform;
@@ -78,6 +84,12 @@ class AuthController extends Controller
     function register(RegisterRequest $request, RegisterController $register)
     {
         $user = $register->create($request->all());
+
+        if(!$user->email_verified_at) {
+            return response([
+                'message' => config('global.EMAIL_VERIFY_MESSAGE')
+            ], 202);
+        }
 
         return $this->response($user, 201, config('global.REGISTER_MESSAGE'));
     }
