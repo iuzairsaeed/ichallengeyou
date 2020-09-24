@@ -27,7 +27,7 @@ class AuthController extends Controller
         $date = date('Y-m-d g:i:s');
         $user->email_verified_at = $date;
         $user->save();
-        return response()->json('Email verified!');
+        return response()->json('You email has been verified. Now you can login through the I Challenge You app.');
     }
 
     protected function response($user, $statusCode, $message)
