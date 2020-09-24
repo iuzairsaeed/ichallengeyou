@@ -171,6 +171,12 @@ class SettingsTableSeeder extends Seeder
                 'setting_type' => 'dialog'
             ],
             [
+                'name' => 'EMAIL_VERIFY_MESSAGE',
+                'value' => 'A verification email has been sent on your email. Kindly verify your email to login on the app!',
+                'type' => 'text',
+                'setting_type' => 'dialog'
+            ],
+            [
                 'name' => 'LOGOUT_MESSAGE',
                 'value' => 'You have logged out successfully.',
                 'type' => 'text',
@@ -296,6 +302,7 @@ class SettingsTableSeeder extends Seeder
                 'type' => 'text',
                 'setting_type' => 'dialog'
             ],
+<<<<<<< HEAD
             [
                 'name' => 'START_TIME_MESSAGE',
                 'value' => 'Challenges minimum starting time must be 24 hours or greater.',
@@ -303,6 +310,9 @@ class SettingsTableSeeder extends Seeder
                 'setting_type' => 'dialog'
             ],
             
+=======
+
+>>>>>>> 0c0e981... Email verification is required now
         ]);
     }
 }
