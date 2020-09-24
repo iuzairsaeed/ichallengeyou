@@ -53,7 +53,7 @@ class ForgotPasswordNotification extends Notification
                     ->line('Now in order to access your account kindly use the following credentials:')
                     ->line("Username: $notifiable->username")
                     ->line("Password: $this->password")
-                    ->line('Thank you for using our application!');
+                    ->line('Thank you for using our application!')->markdown('vendor.notifications.customEmail');
     }
 
     /**

@@ -83,12 +83,12 @@ class Challenge extends Model
 
     public function likes()
     {
-        return $this->hasMany(Reaction::class)->where('like', true);
+        return $this->morphMany(Reaction::class, 'reactionable')->where('like', true);
     }
 
     public function unlikes()
     {
-        return $this->hasMany(Reaction::class)->where('unlike', true);
+        return $this->morphMany(Reaction::class, 'reactionable')->where('unlike', true);
     }
 
     public function favorites()
@@ -129,5 +129,5 @@ class Challenge extends Model
     {
         return $this->hasMany(Bid::class);
     }
-    
+
 }

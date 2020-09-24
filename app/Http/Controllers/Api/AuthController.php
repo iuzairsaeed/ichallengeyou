@@ -73,14 +73,12 @@ class AuthController extends Controller
                 'message' => config('global.LOGIN_DISABLE_MESSAGE')
             ], 400);
         }elseif(!$user->hasVerifiedEmail()) {
-            // $user->sendEmailVerificationNotification();
             $user->sendApiEmailVerificationNotification();
 
             return response([
                 'message' => config('global.EMAIL_VERIFY_MESSAGE')
             ], 202);
         }
-
         $user->platform = $request->platform;
         $user->device_token = $request->device_token;
         $user->update();
