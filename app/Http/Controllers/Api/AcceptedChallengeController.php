@@ -54,7 +54,7 @@ class AcceptedChallengeController extends Controller
         } catch (\Throwable $th) {
             return response($th->getMessage(), 422);
         }
-        
+
     }
 
     public function acceptedChallenge(Request $request)
@@ -84,7 +84,7 @@ class AcceptedChallengeController extends Controller
         });
         $data['data'] = ChallengeAccepted::collection($data['data']);
         return response($data, $data['response']);
-        
+
     }
     /**
      * Display a listing of the resource.
@@ -93,7 +93,7 @@ class AcceptedChallengeController extends Controller
      */
     public function index()
     {
-        
+
     }
 
     /**
