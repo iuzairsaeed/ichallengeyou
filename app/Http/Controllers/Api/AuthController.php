@@ -12,9 +12,14 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Setting;
 use Hash;
+use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Auth\Events\Verified;
 
 class AuthController extends Controller
 {
+    use VerifiesEmails;
+    public $successStatus = 200;
+
     protected function response($user, $statusCode, $message)
     {
         // Revoke previous tokens...
@@ -57,8 +62,9 @@ class AuthController extends Controller
             return response([
                 'message' => config('global.LOGIN_DISABLE_MESSAGE')
             ], 400);
-        }elseif(!$user->email_verified_at) {
-            $user->sendEmailVerificationNotification();
+        }elseif(!$user->hasVerifiedEmail()) {
+            // $user->sendEmailVerificationNotification();
+            $user->sendApiEmailVerificationNotification();
 
             return response([
                 'message' => config('global.EMAIL_VERIFY_MESSAGE')
@@ -90,6 +96,7 @@ class AuthController extends Controller
         $user = $register->create($request->all());
 
         if(!$user->email_verified_at) {
+            $user->sendApiEmailVerificationNotification();
             return response([
                 'message' => config('global.EMAIL_VERIFY_MESSAGE')
             ], 202);

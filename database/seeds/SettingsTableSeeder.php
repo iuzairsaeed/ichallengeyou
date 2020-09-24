@@ -302,17 +302,12 @@ class SettingsTableSeeder extends Seeder
                 'type' => 'text',
                 'setting_type' => 'dialog'
             ],
-<<<<<<< HEAD
             [
                 'name' => 'START_TIME_MESSAGE',
                 'value' => 'Challenges minimum starting time must be 24 hours or greater.',
                 'type' => 'text',
                 'setting_type' => 'dialog'
             ],
-            
-=======
-
->>>>>>> 0c0e981... Email verification is required now
         ]);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Constant;
+use App\Notifications\VerifyApiEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -32,6 +33,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $with = [
 
     ];
+
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyApiEmail);
+    }
 
     public function getAvatarAttribute($value)
     {
