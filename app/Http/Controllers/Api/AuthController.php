@@ -20,6 +20,16 @@ class AuthController extends Controller
     use VerifiesEmails;
     public $successStatus = 200;
 
+    function verify(Request $request)
+    {
+        $userID = $request->id;
+        $user = User::findOrFail($userID);
+        $date = date('Y-m-d g:i:s');
+        $user->email_verified_at = $date;
+        $user->save();
+        return response()->json('Email verified!');
+    }
+
     protected function response($user, $statusCode, $message)
     {
         // Revoke previous tokens...

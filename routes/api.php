@@ -8,8 +8,8 @@ Route::group(['namespace' => 'Api'], function () {
         return $request;
     });
 
-    Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verificationapi.verify');
-    Route::get('email/resend', 'VerificationApiController@resend')->name('verificationapi.resend');
+    Route::get('email/verify/{id}', 'AuthController@verify')->name('verificationapi.verify');
+    Route::get('email/resend', 'AuthController@resend')->name('verificationapi.resend');
 
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
