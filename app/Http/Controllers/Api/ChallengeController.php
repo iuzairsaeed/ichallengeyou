@@ -448,7 +448,8 @@ class ChallengeController extends Controller
         }
         return response([
             'like' => $reaction->like,
-            'like_count' => format_number_in_k_notation($challenge->likes->count())
+            'like_count' => format_number_in_k_notation($challenge->likes->count()),
+            'unlike_count' => format_number_in_k_notation($challenge->unlikes->count()),
         ], 200);
     }
 
@@ -497,6 +498,7 @@ class ChallengeController extends Controller
         }
         return response([
             'unlike' => $reaction->unlike,
+            'like_count' => format_number_in_k_notation($challenge->likes->count()),
             'unlike_count' => format_number_in_k_notation($challenge->unlikes->count()),
         ], 200);
     }
