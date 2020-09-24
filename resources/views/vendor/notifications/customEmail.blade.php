@@ -179,7 +179,7 @@
                   <td>
                       <div class="main-body">
                           <img class="logo" alt="I Challenge You" width="500" height="281"
-                              src="{{ asset('storage/logo.gif') }}" />
+                              src="{{ asset('storage/logo.gif') }}" style="width: 100% ; height: auto;" />
 
 
                           <table style="text-align: center; width: 100%; font-size: 20px;">
@@ -200,8 +200,10 @@
                           <table style="text-align: center; width: 100%; font-size: 20px;">
                               <tr>
                                   <th><a href="https://ichallengeyou.mtpixels.com/api/email/verify/570?expires=1600948148&signature=1d2f5e066a2a619bb152fa1fd40205bb34c183d194d5ca4c6afc7de0daa83965"
-                                          target="_blank" class="button"
-                                          style="padding: 80px; background-image: url(images/Button.png); line-height: 5em; background-size: contain; background-position: center; background-repeat: no-repeat; color: #fff; text-decoration: none;">Verify
+                                          target="_blank" class="button" style="padding: 80px; background-image:
+                                          url({{ asset('storage/Button.png') }}); line-height: 5em; background-size:
+                                          contain; background-position: center; background-repeat: no-repeat; color:
+                                          #fff; text-decoration: none;">Verify
                                           Email Address </a></th>
                               </tr>
                           </table>

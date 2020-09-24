@@ -1,6 +1,6 @@
 @component('mail::message')
-
-<img src="{{ asset('storage/logo.gif') }}">
+<img class="logo" alt="I Challenge You" width="500" height="281" src="{{ asset('storage/logo.gif') }}"
+    style="width: 100% ; height: auto;" />
 
 {{-- Greeting --}}
 @if (! empty($greeting))

@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 
-class VerifyApiEmail extends VerifyEmailBase
+class VerifyEmail extends VerifyEmailBase
 {
     use Queueable;
 
