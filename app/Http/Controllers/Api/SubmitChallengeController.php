@@ -41,7 +41,7 @@ class SubmitChallengeController extends Controller
                 $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
                 ->where('vote_up', true)
                 ->count();
-            }   
+            }
             $data = $this->model->getResult($challenge,$total_votes);
             return response($data,200);
         } catch (\Throwable $th) {
@@ -111,7 +111,7 @@ class SubmitChallengeController extends Controller
         if($results){
             foreach ($results as $result) {
                 if(($result['result'] >= 40 && $result['result'] <= 60) || $result['result'] >= 51 ){
-                    $count++;   
+                    $count++;
                 }
             }
             foreach ($data['data'] as $d) {
@@ -139,24 +139,24 @@ class SubmitChallengeController extends Controller
                         foreach ($data['data'] as $challenger) {
                             $notification = new Notification([
                                 'user_id' => $challenger->user->id,
-                                'title' => 'Result has been tied', 
+                                'title' => 'Result has been tied',
                                 'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask the App Admin to Evaluate or The Public?',
-                                'click_action' => 'ASK_RESULT_DIALOG', 
+                                'click_action' => 'ASK_RESULT_DIALOG',
                                 'data_id' => $challenger->id,
                             ]);
-                            $challenger->user->notify(new AskCandidate);
+                            $challenger->user->notify(new AskCandidate($challenger->id));
                             $challenger->submitChallenge->notifications()->save($notification);
                         }
                         $adminNotification = new Notification([
                             'user_id' => 1,
-                            'title' => 'Result has been tied', 
+                            'title' => 'Result has been tied',
                             'body' => 'Result has been tied of the challenge '.$challenge->title,
-                            'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
+                            'click_action' => 'CHALLENGE_DETAIL_SCREEN',
                             'data_id' => $challenge->id,
                         ]);
                         $challenger->submitChallenge->notifications()->save($adminNotification);
                     }
-                } 
+                }
             }
         } else {
             $isNotification = Notification::where('notifiable_id', $data['data'][0]->submitChallenge->id )
@@ -167,20 +167,20 @@ class SubmitChallengeController extends Controller
                 # Send notification to creator & Submitor
                 $notification = new Notification([
                     'user_id' => $challenge->user->id,
-                    'title' => 'Result Still Pending', 
+                    'title' => 'Result Still Pending',
                     'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask The App Admin to Evaluate or The Public?',
-                    'click_action' => 'ASK_RESULT_DIALOG', 
+                    'click_action' => 'ASK_RESULT_DIALOG',
                     'data_id' => $challenge->id,
                 ]);
-                $challenge->user->notify(new AskCandidate);
+                $challenge->user->notify(new AskCandidate($challenger->id));
                 $challenge->notifications()->save($notification);
                 $data['data'][0]->submitChallenge->notifications()->save($notification);
                 $adminNotification = new Notification([
                     'user_id' => 1,
-                    'title' => 'Result Still Pending', 
+                    'title' => 'Result Still Pending',
                     'body' => 'Submitor will ask The App Admin to Evaluate or The Public?',
                     'body' => 'Result has been tied of the challenge '.$challenge->title,
-                    'click_action' => 'CHALLENGE_DETAIL_SCREEN', 
+                    'click_action' => 'CHALLENGE_DETAIL_SCREEN',
                     'data_id' => $challenge->id,
                 ]);
                 $challenge->acceptedChallenges[0]->submitChallenge->notifications()->save($adminNotification);
@@ -276,7 +276,7 @@ class SubmitChallengeController extends Controller
                                 'accepted_challenge_id' => $challenge->acceptedChallenges->where('user_id', auth()->id())->first()->id,
                                 'file' => $file,
                                 'created_at' => now(),
-                            ]); 
+                            ]);
                             $challenge->acceptedChallenges()->where('user_id', auth()->id())->first()->submitFiles()->save($records);
                             $data['message'] = config('global.VIDEO_ADD_MESSAGE');$res = 200;
                         }
@@ -287,10 +287,10 @@ class SubmitChallengeController extends Controller
             return response($th, $res);
             $data['message'] = 'You need to accept challenge first';
             $res = 400;
-        }    
+        }
         return response($data, $res);
     }
-    
+
     public function deleteVideo(SubmitFile $file)
     {
         if(now() >=  $file->acceptedChallenge->challenge->start_time && now() <= $file->acceptedChallenge->challenge->after_date){
