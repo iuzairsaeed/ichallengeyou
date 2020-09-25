@@ -16,7 +16,7 @@ class HeadersMiddleware
     public function handle($request, Closure $next)
     {
         $response = $next($request);
-        // $response->header('X-Frame-Options', 'SAMEORIGIN');
+        $response->header('X-Frame-Options', 'SAMEORIGIN');
         return $response;
     }
 }
