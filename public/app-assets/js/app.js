@@ -46,9 +46,9 @@ for (const el of inputs) {
 // document.oninput = setEnabled;
 // document.onchange = setEnabled;
 
-$('form').submit(function () {
-	$(this).find(':input[type=submit]').prop('disabled', true);
-});
+// $('form').submit(function () {
+// 	$(this).find(':input[type=submit]').prop('disabled', true);
+// });
 
 var elem = document.documentElement;
 $('#navbar-fullscreen').on('click', () => {
