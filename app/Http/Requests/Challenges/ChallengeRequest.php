@@ -27,9 +27,9 @@ class ChallengeRequest extends FormRequest
         $rules = [
             'description' => ['bail', 'required', 'max:500'],
             'result_type' => ['bail', 'required'],
-            'start_time' => ['required', 'date_format:Y-m-d H:i', 'after:'.date(DATE_ATOM, time() + (24 * 60 * 60 ))],
-            'duration_days' => ['required', 'integer', 'min:0'],
-            'duration_hours' => ['required', 'integer', 'min:0', 'max:24'],
+            'start_time' => ['bail', 'required', 'date_format:Y-m-d H:i', 'after:'.date(DATE_ATOM, time() + (24 * 60 * 60 ))],
+            'duration_days' => ['bail', 'required', 'integer', 'min:0'],
+            'duration_hours' => ['bail', 'required', 'integer', 'min:0', 'max:24'],
             'duration_minutes' => ['required', 'integer', 'min:0', 'max:60'],
             'location' => ['nullable', 'string', 'max:75'],
             'amount' => ['required', 'numeric', 'min:1'],
