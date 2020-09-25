@@ -26,7 +26,7 @@ class Challenge extends Model
     ];
 
     protected $appends = [
-        'status', 'file_mime'
+        'status', 'file_mime', 'amount_sum'
     ];
 
     protected $with = [
@@ -110,6 +110,7 @@ class Challenge extends Model
     {
         return $this->hasMany(Amount::class);
     }
+
     public function acceptedChallenges()
     {
         return $this->hasMany(AcceptedChallenge::class,'challenge_id');

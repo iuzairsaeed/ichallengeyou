@@ -64,11 +64,11 @@ class AcceptedChallengeController extends Controller
         $whereChecks = ['user_id'];
         $whereOps = ['='];
         $whereVals = [auth()->id()];
-        $with = [];
+        $with = ['challenge'];
         $withCount = [];
         $currentStatus = [];
-        $withSums = ['amounts'];
-        $withSumsCol = ['amount'];
+        $withSums = [];
+        $withSumsCol = [];
         $addWithSums = [];
         $whereHas = null;
         $withTrash = false;
@@ -79,7 +79,8 @@ class AcceptedChallengeController extends Controller
         $serial = ($request->start ?? 0);
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
-            $item['amounts_sum'] = config('global.CURRENCY').' '.$item->amounts_sum;
+            $amount_sum = number_format($item->challenge->amount_sum, 2, '.', '') ?? '0.00';
+            $item['amounts_sum'] = config('global.CURRENCY').' '.$amount_sum;
             return $item;
         });
         $data['data'] = ChallengeAccepted::collection($data['data']);
