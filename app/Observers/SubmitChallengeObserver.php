@@ -116,9 +116,9 @@ class SubmitChallengeObserver
                     'title' => 'Win Challenge',
                     'body' => $winner->name.' WIN the Challenge '.$challenge->title,
                     'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN',
-                    'data_id' => $submitChallenge->accepted_challenge_id,
+                    'data_id' => $challenge->id,
                 ]);
-                $donator->user->notify(new ChallengeSubmited('toDonator&Creator', $submitChallenge->accepted_challenge_id, $winner, $creater, $challenge));
+                $donator->user->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
             }
             $submitChallenge->notifications()->saveMany($notification);
             // TO CREATER --
@@ -127,10 +127,10 @@ class SubmitChallengeObserver
                 'title' => 'Win Challenge',
                 'body' => $winner->name.' WIN the Challenge '.$challenge->title,
                 'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN',
-                'data_id' => $submitChallenge->accepted_challenge_id,
+                'data_id' => $challenge->id,
             ]);
             $submitChallenge->notifications()->save($createrNotification);
-            $creater->notify(new ChallengeSubmited('toDonator&Creator', $submitChallenge->accepted_challenge_id, $winner, $creater, $challenge));
+            $creater->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
             // TO SUBMItORS
             $submitorNotification = [];
             foreach ($submitors as $submitor) {
@@ -140,9 +140,9 @@ class SubmitChallengeObserver
                         'title' => 'Win Challenge',
                         'body' => $winner->name.' WIN the Challenge A '.$challenge->title,
                         'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN',
-                        'data_id' => $submitChallenge->accepted_challenge_id,
+                        'data_id' => $challenge->id,
                     ]);
-                    $submitor->user->notify(new ChallengeSubmited('toSubmitor', $submitChallenge->accepted_challenge_id, $winner, $creater, $challenge));
+                    $submitor->user->notify(new ChallengeSubmited('toSubmitor', $challenge->id, $winner, $creater, $challenge));
                 }
             }
             if($submitorNotification != null){
@@ -154,10 +154,10 @@ class SubmitChallengeObserver
                 'title' => 'Congratulations! You have Won The Challenge ★',
                 'body' => $winner->name.' WIN the Challenge '.$challenge->title,
                 'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN',
-                'data_id' => $submitChallenge->accepted_challenge_id,
+                'data_id' => $challenge->id,
             ]);
             $submitChallenge->notifications()->save($winnerNotification);
-            $winner->notify(new ChallengeSubmited('toWinner', $submitChallenge->accepted_challenge_id, $winner, $creater, $challenge));
+            $winner->notify(new ChallengeSubmited('toWinner', $challenge->id, $winner, $creater, $challenge));
             // TO ADMIN
             Notification::create([
                 'user_id' => 1,

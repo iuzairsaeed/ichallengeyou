@@ -26,25 +26,25 @@ for (const el of inputs) {
 }
 
 // Declares function and call it directly
-var setEnabled;
-(setEnabled = function () {
-	var e = true;
-	for (const el of inputs) {
-		if (el.oldValue !== el.value + el.checked) {
-			e = false;
-			break;
-		}
-	}
-	if ($('button[type="submit"]').length) {
-		document.querySelector("button[type='submit']").disabled = e;
-	}
-	if ($('input[type="submit"]').length) {
-		document.querySelector("input[type='submit']").disabled = e;
-	}
-})();
+// var setEnabled;
+// (setEnabled = function () {
+// 	var e = true;
+// 	for (const el of inputs) {
+// 		if (el.oldValue !== el.value + el.checked) {
+// 			e = false;
+// 			break;
+// 		}
+// 	}
+// 	if ($('button[type="submit"]').length) {
+// 		document.querySelector("button[type='submit']").disabled = e;
+// 	}
+// 	if ($('input[type="submit"]').length) {
+// 		document.querySelector("input[type='submit']").disabled = e;
+// 	}
+// })();
 
-document.oninput = setEnabled;
-document.onchange = setEnabled;
+// document.oninput = setEnabled;
+// document.onchange = setEnabled;
 
 $('form').submit(function () {
 	$(this).find(':input[type=submit]').prop('disabled', true);
