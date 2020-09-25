@@ -200,7 +200,7 @@ class ChallengeController extends Controller
                 $data['data']['acceptBtn'] = false;
                 $data['data']['donateBtn'] = false;
                 $data['data']['bidBtn'] = false;
-                if(now() <= $challenge->start_time ){
+                if(now() <= $challenge->start_time && $challenge->status === Pending()){
                     $data['data']['editBtn'] =  true;
                 }
             }
