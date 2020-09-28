@@ -57,7 +57,7 @@ class ChallengeController extends Controller
             'comments',
         );
         $withCount = [];
-        $currentStatus = [Approved()];
+        $currentStatus = [Approved(), Completed(), ResultPending()];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];

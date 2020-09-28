@@ -104,7 +104,7 @@ class ChallengeRepository implements RepositoryInterface
             $records->has($whereHas);
         }
         if($currentStatus){
-            $records->currentStatus([Approved(),Completed()]);
+            $records->currentStatus($currentStatus);
         }
         if($withSums){
             foreach($withSums as $key => $withSum){
@@ -143,7 +143,7 @@ class ChallengeRepository implements RepositoryInterface
                 }
             });
         }
-        
+
         if($dir){
             if(in_array($sort, $orderableCols)){
                 $orderBy = $sort;
@@ -194,7 +194,7 @@ class ChallengeRepository implements RepositoryInterface
 
 
         $records = $this->model->with($with)->withCount($withCount)->groupBy('challenge_id')->selectRaw('sum(amount) as sum, id, user_id, challenge_id,type');
-        
+
         if($withSums){
             foreach($withSums as $key => $withSum){
                 $records->withCount([
@@ -214,8 +214,8 @@ class ChallengeRepository implements RepositoryInterface
                 $records->where($check, $whereOps[$key] ?? '=', $whereVals[$key]);
             }
         }
-        
-         
+
+
 
         if($groupByVals){
             foreach($groupByVals as $val){
@@ -237,7 +237,7 @@ class ChallengeRepository implements RepositoryInterface
                 }
             });
         }
-        
+
 
         if($dir){
             if(in_array($sort, $orderableCols)){
@@ -249,7 +249,7 @@ class ChallengeRepository implements RepositoryInterface
         }else{
             $records->latest();
         }
-        $recordsTotal = $records->get()->count(); 
+        $recordsTotal = $records->get()->count();
         $records = $records->limit($length)->offset($start)->get();
         $recordsFiltered = $records->count();
 
@@ -287,7 +287,7 @@ class ChallengeRepository implements RepositoryInterface
             foreach($whereChecks as $key => $check){
                 $records->where($check, $whereOps[$key] ?? '=', $whereVals[$key]);
             }
-        }        
+        }
         $records = $records->limit($length)->offset($start)->first();
         return [
             'data' => $records,
@@ -298,7 +298,7 @@ class ChallengeRepository implements RepositoryInterface
     {
         $start = $request->start ?? 0;
         $length = $request->length ?? 10;
-        $records = $this->model->with($with)->where(['challenge_id'=>$id,'parent_id'=>0])->orderBy('created_at' , 'DESC');     
+        $records = $this->model->with($with)->where(['challenge_id'=>$id,'parent_id'=>0])->orderBy('created_at' , 'DESC');
         $recordsTotal = $records->count();
         $records = $records->limit($length)->offset($start)->get();
         $recordsFiltered = $records->count();
@@ -313,7 +313,7 @@ class ChallengeRepository implements RepositoryInterface
 
     public function getSubmitedVideo($request,$with,$id)
     {
-        $records = $this->model->with($with)->where('challenge_id' , $id)->orderBy('created_at' , 'DESC');     
+        $records = $this->model->with($with)->where('challenge_id' , $id)->orderBy('created_at' , 'DESC');
         $records = $records->limit($length)->offset($start)->get();
         return  $records;
     }
