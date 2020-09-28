@@ -57,7 +57,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'body' => ($this->winner->name ?? $this->winner->username) .' has been Submited the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -69,7 +69,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'body' => 'You has been Submited the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -82,7 +82,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -94,7 +94,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -106,7 +106,7 @@ class ChallengeSubmited extends Notification implements ShouldQueue
                 'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
