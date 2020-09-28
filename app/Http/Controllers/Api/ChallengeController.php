@@ -221,7 +221,7 @@ class ChallengeController extends Controller
                 $data['data']['reviewBtn'] = true;
             }
         }
-        if(in_array($data['data']->status, Expired(), Completed(), Deleted())) {
+        if(in_array($data['data']->status, [Expired(), Completed(), Deleted()])) {
             $data['data']['acceptBtn'] = false;
             $data['data']['editBtn'] = false;
             $data['data']['submitBtn'] = false;
