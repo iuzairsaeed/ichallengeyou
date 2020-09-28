@@ -49,10 +49,6 @@ class NotificationController extends Controller
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->data_id;
             }
-            if($item['type'] == "App\Models\SubmitChallenge"){
-                $item['file'] = $item->user->avatar;
-                $item['data_id'] = $item->data_id;
-            }
             if($item['type'] == `App\Models\Transaction`){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->data_id;
@@ -60,6 +56,9 @@ class NotificationController extends Controller
             if($item['click_action'] == "ASK_RESULT_DIALOG"){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->notifiable->id;
+            }else if($item['click_action'] == "SUBMITED_CHALLENGE_DETAIL_SCREEN"){
+                $item['file'] = $item->user->avatar;
+                $item['data_id'] = $item->data_id;
             }
         });
         $data['data'] = NotificationCollection::collection($data['data']);
