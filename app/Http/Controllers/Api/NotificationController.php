@@ -38,9 +38,8 @@ class NotificationController extends Controller
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->user_id;
             } else if(optional(optional($item->notifiable)->acceptedChallenge)->challenge){
-                #ModelType = SubmitedChallenge
                 $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
-                $item['data_id'] = $item->notifiable->accepted_challenge_id;
+                $item['data_id'] = $item->data_id;
             } else if(optional(optional($item->notifiable)->submitChallenges)->challenge) {
                 $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
@@ -56,9 +55,6 @@ class NotificationController extends Controller
             if($item['click_action'] == "ASK_RESULT_DIALOG"){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->notifiable->id;
-            }else if($item['click_action'] == "SUBMITED_CHALLENGE_DETAIL_SCREEN"){
-                $item['file'] = $item->user->avatar;
-                $item['data_id'] = $item->data_id;
             }
         });
         $data['data'] = NotificationCollection::collection($data['data']);
