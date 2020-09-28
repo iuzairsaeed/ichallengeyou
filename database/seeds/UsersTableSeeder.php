@@ -23,7 +23,6 @@ class UsersTableSeeder extends Seeder
                 'username' => 'admin',
                 'email' => 'admin@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => true,
                 'created_at' => now(),
                 'email_verified_at' => now()
             ], [
@@ -34,7 +33,6 @@ class UsersTableSeeder extends Seeder
                 'username' => 'user1',
                 'email' => 'user1@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => false,
                 'created_at' => now(),
                 'email_verified_at' => now()
             ], [
@@ -45,7 +43,6 @@ class UsersTableSeeder extends Seeder
                 'username' => 'user2',
                 'email' => 'user2@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => false,
                 'created_at' => now(),
                 'email_verified_at' => now()
             ], [
@@ -56,7 +53,6 @@ class UsersTableSeeder extends Seeder
                 'username' => 'user3',
                 'email' => 'user3@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => false,
                 'created_at' => now(),
                 'email_verified_at' => now()
             ]

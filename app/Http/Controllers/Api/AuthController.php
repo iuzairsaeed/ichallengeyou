@@ -47,7 +47,7 @@ class AuthController extends Controller
                 'currency' => config('global.CURRENCY') ?? '',
                 'avatar' => $user->avatar,
                 'is_premium' => $user->is_premium ?? false,
-                'is_admin' => $user->is_admin ?? false,
+                'is_admin' => $user->role ===  Admin() ? true : false,
                 'balance' => $user->balance ?? config('global.CURRENCY').' 0.00',
             ],
             'token' => $token,

@@ -23,7 +23,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'is_premium' => 'boolean',
         'is_active' => 'boolean',
-        'is_admin' => 'boolean',
         'is_dummy' => 'boolean',
         'email_verified_at' => 'datetime:'.Constant::DATE_FORMAT,
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,
