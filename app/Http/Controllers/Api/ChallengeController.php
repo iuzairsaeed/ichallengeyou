@@ -221,8 +221,12 @@ class ChallengeController extends Controller
                 $data['data']['reviewBtn'] = true;
             }
         }
-        if($data['data']->status === Completed()) {
+        if(in_array($data['data']->status, Expired(), Completed(), Deleted())) {
+            $data['data']['acceptBtn'] = false;
+            $data['data']['editBtn'] = false;
             $data['data']['submitBtn'] = false;
+            $data['data']['donateBtn'] = false;
+            $data['data']['bidBtn'] = false;
         }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
