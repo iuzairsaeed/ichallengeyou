@@ -221,6 +221,9 @@ class ChallengeController extends Controller
                 $data['data']['reviewBtn'] = true;
             }
         }
+        if($data['data']->status === Completed()) {
+            $data['data']['submitBtn'] = false;
+        }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
     }
