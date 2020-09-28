@@ -66,15 +66,17 @@ class AmountController extends Controller
      */
     public function index()
     {
-        (float)$debit = Transaction::all()
+        $transactions = Transaction::all();
+        (float)$debit = $transactions
         ->where('type' , 'miscellaneous')
         ->where('type' , 'load')
         ->where('type' , 'create_challenge')
         ->sum('amount');
-        (float)$credit = Transaction::all()
+        (float)$credit = $transactions
         ->where('type' , 'withdraw')
         ->sum('amount');
         (float)$net_total = $debit - $credit;
+        $net_total = number_format($net_total, 2, '.', '') ?? '0.00';
         return view('amounts.index', compact('net_total'));
     }
 
@@ -168,6 +170,6 @@ class AmountController extends Controller
             return redirect('/amounts')->with('success', 'Transaction Deleted Successfully');
         } catch (\Throwable $th) {
             throw $th;
-        } 
+        }
     }
 }
