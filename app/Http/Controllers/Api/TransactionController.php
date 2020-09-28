@@ -86,7 +86,7 @@ class TransactionController extends Controller
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             collect($data['data'])->map(function ($item) {
                 $item['year'] = $item->created_at->year;
-                $item['month'] = $item->created_at->format('M');
+                $item['month'] = strtoupper($item->created_at->format('M'));
                 $item['day'] = $item->created_at->day;
                 switch ($item->type) {
                     case 'load':
