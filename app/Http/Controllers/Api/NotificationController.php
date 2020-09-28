@@ -37,15 +37,19 @@ class NotificationController extends Controller
             if($item->notifiable_type == ''){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->user_id;
-            } else if(optional(optional($item->notifiable)->acceptedChallenge)->challenge){ 
+            } else if(optional(optional($item->notifiable)->acceptedChallenge)->challenge){
                 #ModelType = SubmitedChallenge
                 $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->accepted_challenge_id;
-            } else if(optional(optional($item->notifiable)->submitChallenges)->challenge) { 
+            } else if(optional(optional($item->notifiable)->submitChallenges)->challenge) {
                 $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
             }
             if($item['type'] == "App\Models\Challenge"){
+                $item['file'] = $item->user->avatar;
+                $item['data_id'] = $item->data_id;
+            }
+            if($item['type'] == "App\Models\SubmitChallenge"){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->data_id;
             }
