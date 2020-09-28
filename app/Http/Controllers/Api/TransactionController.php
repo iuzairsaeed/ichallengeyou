@@ -86,32 +86,32 @@ class TransactionController extends Controller
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             collect($data['data'])->map(function ($item) {
                 $item['year'] = $item->created_at->year;
-                $item['month'] = $item->created_at->format('F');
+                $item['month'] = $item->created_at->format('M');
                 $item['day'] = $item->created_at->day;
                 switch ($item->type) {
                     case 'load':
                         $item['reason'] = 'Load Balance';
-                        $item['amount'] = config('global.CURRENCY').' '.$item['amount']; 
+                        $item['amount'] = config('global.CURRENCY').' '.$item['amount'];
                         break;
                     case 'won_challenge':
                         $item['reason'] = 'Won Challange';
-                        $item['amount'] = config('global.CURRENCY').' '.$item['amount']; 
+                        $item['amount'] = config('global.CURRENCY').' '.$item['amount'];
                         break;
                     case 'withdraw':
                         $item['reason'] = 'Withdraw Balance';
-                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount'];
                         break;
                     case 'donate':
                         $item['reason'] = 'Donate on Challenge';
-                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount'];
                         break;
                     case 'create_challenge':
                         $item['reason'] = 'Created Challenge';
-                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount'];
                         break;
                     case 'miscellaneous':
                         $item['reason'] = 'Premium Cost';
-                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount']; 
+                        $item['amount'] = config('global.CURRENCY').' -'.$item['amount'];
                         break;
                 }
                 $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
