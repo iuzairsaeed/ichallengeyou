@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class CommentNotification extends Notification implements ShouldQueue
+class CommentNotification extends Notification
 {
     use Queueable;
 
@@ -39,19 +39,19 @@ class CommentNotification extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return  Benwilkins\FCM\FcmMessage;
      */
-    public function toFcm($notifiable) 
+    public function toFcm($notifiable)
     {
         $message = new FcmMessage();
         $message->content([
-            'title' => 'You got comments on your Challenge', 
+            'title' => 'You got comments on your Challenge',
             'body' => ($this->comment->user->name ?? $this->user->username).' has been Commented on the Challenge '.$this->comment->challenge->title,
-            'sound'        => '', // Optional 
+            'sound'        => '', // Optional
             'icon'         => 'favicon.ico', // Optional
             'click_action' => 'CHALLENGE_DETAIL_SCREEN', // Optional
         ])->data([
             'data_id' => $this->comment->challenge_id, // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
-        
+
         return $message;
     }
 

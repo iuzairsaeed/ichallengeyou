@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class VoteNotification extends Notification implements ShouldQueue
+class VoteNotification extends Notification
 {
     use Queueable;
 

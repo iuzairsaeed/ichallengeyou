@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class LoadNotification extends Notification implements ShouldQueue
+class LoadNotification extends Notification
 {
     use Queueable;
 
@@ -41,19 +41,19 @@ class LoadNotification extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return  Benwilkins\FCM\FcmMessage;
      */
-    public function toFcm($notifiable) 
+    public function toFcm($notifiable)
     {
         $message = new FcmMessage();
         $message->content([
-            'title' => 'Balance Loaded Successfully!', 
-            'body' => config('global.CURRENCY').' '.$this->amount.' has been Successfully Added to your Account!', 
-            'sound'        => '', // Optional 
+            'title' => 'Balance Loaded Successfully!',
+            'body' => config('global.CURRENCY').' '.$this->amount.' has been Successfully Added to your Account!',
+            'sound'        => '', // Optional
             'icon'         => 'favicon.ico', // Optional
             'click_action' => 'TRANSACTION_LIST', // Optional
         ])->data([
             'data_id' => auth()->id() // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
-        
+
         return $message;
     }
 

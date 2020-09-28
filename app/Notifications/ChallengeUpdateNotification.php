@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class ChallengeUpdateNotification extends Notification implements ShouldQueue
+class ChallengeUpdateNotification extends Notification
 {
     use Queueable;
 
@@ -48,10 +48,10 @@ class ChallengeUpdateNotification extends Notification implements ShouldQueue
      */
     public function toFcm($notifiable)
     {
-        $message = new FcmMessage(); 
+        $message = new FcmMessage();
         $message->content([
             'title' => $this->challenge_name,
-            'body' => $this->body, 
+            'body' => $this->body,
             'sound' => '', // Optional
             'icon' => 'favicon.ico', // Optional
             'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
