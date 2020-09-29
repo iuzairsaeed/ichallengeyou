@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class MiscellaneousNotification extends Notification
+class MiscellaneousNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

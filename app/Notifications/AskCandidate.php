@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class AskCandidate extends Notification
+class AskCandidate extends Notification implements ShouldQueue
 {
     use Queueable;
     protected $challenge_id;

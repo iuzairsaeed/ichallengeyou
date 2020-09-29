@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class ChallengeNotification extends Notification
+class ChallengeNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -25,7 +25,7 @@ class ChallengeNotification extends Notification
         $this->challenge_id = $challenge_id;
         $this->challenge_name = $challenge_name;
     }
-
+    
     /**
      * Get the notification's delivery channels.
      *
@@ -36,7 +36,7 @@ class ChallengeNotification extends Notification
     {
         return ['fcm'];
     }
-
+    
     /**
      * Get the mail representation of the notification.
      *
