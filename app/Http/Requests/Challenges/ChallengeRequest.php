@@ -39,7 +39,7 @@ class ChallengeRequest extends FormRequest
             case 'POST': {
                 $rules['title'] = ['bail', 'required', 'unique:challenges', 'string', 'max:75', 'min:3'];
                 $rules['terms_accepted'] = ['required', Rule::in(['true'])];
-                $rules['file'] = ['required', 'mimes:jpg,jpeg,png,mp4,webm', 'max:500000'];
+                $rules['file'] = ['required', 'mimes:jpg,jpeg,png,mp4,webm,3gp', 'max:500000'];
                 break;
             }
             case 'PUT' || 'PATCH': {

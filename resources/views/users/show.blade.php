@@ -83,7 +83,7 @@
                                             <i class="icon-trash"></i> Cancel
                                         </button>
                                         <button type="submit" class="btn btn-raised btn-success">
-                                            <i class="icon-check"></i> Upadate User
+                                            <i class="icon-check"></i> Update User
                                         </button>
                                     </div>
                                 </div>

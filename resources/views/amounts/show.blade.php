@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="card-body px-4">
-                    
+
                     <form id="deleteForm" action="/amounts/{{$amount->id}}" method="POST">
                         @method('Delete')
                         @csrf
@@ -19,9 +19,9 @@
                     <form id="updateForm" action="/amounts/{{$amount->id}}" method="POST">
                         @method('PUT')
                         @csrf
-                    
+
                         <div class="form-body">
-                            
+
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="text-bold-700">Transaction Type</label><br>
@@ -64,7 +64,7 @@
                         <div class="col-md-8">
                             <div class="form-actions left">
                                 <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
-                                    <i class="icon-check"></i> Upadate Challenge
+                                    <i class="icon-check"></i> Update Challenge
                                 </button>
                                 <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
                                     <i class="icon-trash"></i> Delete
