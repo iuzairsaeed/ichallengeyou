@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class DonateNotification extends Notification implements ShouldQueue
+class DonateNotification extends Notification
 {
-    use Queueable;
-
     protected $user_name;
     protected $challenge_id;
     protected $challenge_title;

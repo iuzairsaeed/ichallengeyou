@@ -2,12 +2,15 @@
 
 namespace App\Observers;
 
+use App\Models\User;
 use App\Models\Challenge;
 use App\Models\Notification;
 use App\Notifications\ChallengeNotification;
+use Notification as Notifications;
 
 class ChallengeObserver
 {
+    protected $users = [];
     /**
      * Handle the challenges "created" event.
      *
@@ -24,9 +27,11 @@ class ChallengeObserver
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $challenge->id, 
         ]);
-        $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+        // $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+        $user = $challenge->user;
+        $notify_user = User::find($user->id);
+        Notifications::send($notify_user, new ChallengeNotification($challenge->id,$challenge->title));
         $challenge->notifications()->save($notification);
-        
         // TO ADMIN
         $notification = new Notification([
             'user_id' => 1, 
@@ -65,7 +70,8 @@ class ChallengeObserver
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $challenge->id, 
         ]);
-        $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+        // $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
+        Notifications::send($challenge->user, new ChallengeNotification($challenge->id,$challenge->name));
         $challenge->notifications()->save($notification);
     }
 

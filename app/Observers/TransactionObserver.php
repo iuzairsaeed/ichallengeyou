@@ -7,6 +7,7 @@ use App\Notifications\LoadNotification;
 use App\Notifications\MiscellaneousNotification;
 use App\Notifications\WithdrawalNotification;
 use App\Notifications\DonateNotification;
+use Notification as Notifications;
 
 
 class TransactionObserver
@@ -31,7 +32,9 @@ class TransactionObserver
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
-                $transaction->user->notify(new LoadNotification($transaction->amount));
+                // $transaction->user->notify(new LoadNotification($transaction->amount));
+                Notifications::send($transaction->user, new LoadNotification($transaction->amount));       
+
                 $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
                 $transactionArray = new Notification([
@@ -52,7 +55,9 @@ class TransactionObserver
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
-                $transaction->user->notify(new MiscellaneousNotification);
+                // $transaction->user->notify(new MiscellaneousNotification);
+                Notifications::send($transaction->user, new MiscellaneousNotification);       
+
                 $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
                 $transactionArray = new Notification([
@@ -73,7 +78,9 @@ class TransactionObserver
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
-                $transaction->user->notify(new WithdrawalNotification($transaction->amount));
+                // $transaction->user->notify(new WithdrawalNotification($transaction->amount));
+                Notifications::send($transaction->user, new WithdrawalNotification($transaction->amount));       
+
                 $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
                 $transactionArray = new Notification([
@@ -95,7 +102,9 @@ class TransactionObserver
                     'data_id' => $transaction->challenge_id, 
                 ]);
                 $transaction->notifications()->save($transactionArray);
-                $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+                // $transaction->user->notify(new DonateNotification('current_user',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+                Notifications::send($transaction->user, new DonateNotification('current_user',$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+
                 // TO Challenge Owner
                 $transactionArray = new Notification([
                     'user_id' => $transaction->challenge->user->id,
@@ -105,7 +114,9 @@ class TransactionObserver
                     'data_id' => $transaction->challenge_id, 
                 ]);
                 $user_name = auth()->user()->name ?? auth()->user()->username ;
-                $transaction->challenge->user->notify(new DonateNotification($user_name,$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+                // $transaction->challenge->user->notify(new DonateNotification($user_name,$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+                Notifications::send($transaction->challenge->user, new DonateNotification($user_name,$transaction->challenge_id,$transaction->challenge->title,$transaction->amount));
+
                 $transaction->notifications()->save($transactionArray);
                 // TO ADMIN
                 $transactionArray = new Notification([

@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\ProfileUpdateRequest;
+use App\Notifications\ChallengeNotification;
+use App\Models\Challenge;
 use Hash;
+use Notification;
 
 class ProfileController extends Controller
 {
     public function showProfileForm()
     {
+        Notification::send(auth()->user(), new ChallengeNotification(1,"Uzair Saee Sufwan"));
         $user = auth()->user();
         return view('auth.profile', compact('user'));
     }

@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class ChallengeNotification extends Notification implements ShouldQueue
+class ChallengeNotification extends Notification
 {
-    use Queueable;
-
     protected $challenge_id;
     protected $challenge_name;
 
@@ -55,7 +51,6 @@ class ChallengeNotification extends Notification implements ShouldQueue
         ])->data([
             'data_id' => $this->challenge_id // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
-
         return $message;
     }
 

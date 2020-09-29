@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class CommentNotification extends Notification implements ShouldQueue
+class CommentNotification extends Notification 
 {
-    use Queueable;
-
     protected $comment;
     /**
      * Create a new notification instance.

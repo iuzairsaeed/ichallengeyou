@@ -9,6 +9,7 @@ use App\Models\Challenge;
 use App\Models\Notification;
 use App\Models\User;
 use App\Notifications\VoteNotification;
+use Notification as Notifications;
 
 class VoteObserver
 {
@@ -32,7 +33,9 @@ class VoteObserver
                 'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
                 'data_id' => $vote->submitChallenges->accepted_challenge_id, 
             ]);
-            $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+            // $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+            Notifications::send($user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+
             $vote->notifications()->save($notification);
             // Admin
             $notification = new Notification([
@@ -42,7 +45,9 @@ class VoteObserver
                 'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
                 'data_id' => $vote->submitChallenges->accepted_challenge_id, 
             ]);
-            $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+            // $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+            // Notifications::send($user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+
             $vote->notifications()->save($notification);
         } catch (\Throwable $th) {
             return response('No Votes Found' , 404);

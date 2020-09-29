@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class WithdrawalNotification extends Notification implements ShouldQueue
+class WithdrawalNotification extends Notification 
 {
-    use Queueable;
-
     protected $amount;
 
     /**

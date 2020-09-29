@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Benwilkins\FCM\FcmMessage;
 
-class VoteNotification extends Notification implements ShouldQueue
+class VoteNotification extends Notification 
 {
-    use Queueable;
-
     protected $accepted_challenge_id;
     /**
      * Create a new notification instance.

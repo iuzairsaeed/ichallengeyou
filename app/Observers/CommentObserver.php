@@ -4,8 +4,8 @@ namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Challenge;
-use App\Models\Notification;
 use App\Notifications\CommentNotification;
+use Notification as Notifications;
 
 class CommentObserver
 {
@@ -26,7 +26,9 @@ class CommentObserver
             'data_id' => $comment->challenge_id, 
         ]);
         $comment->notifications()->save($userNotification);
-        $comment->challenge->user->notify(new CommentNotification($comment));
+        // $comment->challenge->user->notify(new CommentNotification($comment));
+        Notifications::send($comment->challenge->user, new CommentNotification($comment));
+
         // TO ADMIN
         $userNotification = new Notification([
             'user_id' => 1,
