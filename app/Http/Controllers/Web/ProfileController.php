@@ -15,7 +15,6 @@ class ProfileController extends Controller
 {
     public function showProfileForm()
     {
-        Notification::send(auth()->user(), new ChallengeNotification(1,"Uzair Saee Sufwan"));
         $user = auth()->user();
         return view('auth.profile', compact('user'));
     }
