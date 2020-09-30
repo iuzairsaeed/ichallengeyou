@@ -15,6 +15,7 @@ use App\Models\Amount;
 use App\Models\Bid;
 use App\Models\Vote;
 use DB;
+use Notification as Notifications;
 
 class ChallengeController extends Controller
 {
@@ -147,7 +148,9 @@ class ChallengeController extends Controller
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $challenge->id, 
                 ]);
-                $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+                // $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+                $notify_user = User::find($challenge->user->id);
+                Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
                 $challenge->notifications()->save($notification);
             }
             # DENIED CHALLENGE
@@ -161,7 +164,9 @@ class ChallengeController extends Controller
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $challenge->id, 
                 ]);
-                $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+                // $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+                $notify_user = User::find($challenge->user->id);
+                Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
                 $challenge->notifications()->save($notification);
             }
             return redirect()->back()->with('success', 'Challenge Updated Successfully!');
@@ -183,7 +188,9 @@ class ChallengeController extends Controller
             $this->model->delete($challenge);
             // Notification
             $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
-            $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+            // $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+            $notify_user = User::find($challenge->user->id);
+            Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
             DB::commit();
 
             return redirect()->back()->with('success', 'Challenge Deleted Successfully');

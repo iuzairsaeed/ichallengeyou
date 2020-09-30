@@ -19,6 +19,7 @@ use App\Models\SubmitFile;
 use App\Models\SubmitChallenge;
 use App\Models\AcceptedChallenge;
 use App\Models\Notification;
+use Notification as Notifications;
 
 class SubmitChallengeController extends Controller
 {
@@ -144,7 +145,9 @@ class SubmitChallengeController extends Controller
                                 'click_action' => 'ASK_RESULT_DIALOG',
                                 'data_id' => $challenger->id,
                             ]);
-                            $challenger->user->notify(new AskCandidate($challenger->id));
+                            // $challenger->user->notify(new AskCandidate($challenger->id));
+                            $notify_user = User::find($challenger->user->id);
+                            Notifications::send($notify_user, new AskCandidate($challenge->id));
                             $challenger->submitChallenge->notifications()->save($notification);
                         }
                         $adminNotification = new Notification([
@@ -172,7 +175,9 @@ class SubmitChallengeController extends Controller
                     'click_action' => 'ASK_RESULT_DIALOG',
                     'data_id' => $challenge->id,
                 ]);
-                $challenge->user->notify(new AskCandidate($challenger->id));
+                // $challenge->user->notify(new AskCandidate($challenger->id));
+                $notify_user = User::find($challenge->user->id);
+                Notifications::send($notify_user, new AskCandidate($challenge->id));
                 $challenge->notifications()->save($notification);
                 $data['data'][0]->submitChallenge->notifications()->save($notification);
                 $adminNotification = new Notification([

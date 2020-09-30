@@ -34,7 +34,8 @@ class VoteObserver
                 'data_id' => $vote->submitChallenges->accepted_challenge_id, 
             ]);
             // $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
-            Notifications::send($user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+            $notify_user = User::find($user->id);
+            Notifications::send($notify_user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
 
             $vote->notifications()->save($notification);
             // Admin

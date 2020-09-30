@@ -27,7 +27,9 @@ class CommentObserver
         ]);
         $comment->notifications()->save($userNotification);
         // $comment->challenge->user->notify(new CommentNotification($comment));
-        Notifications::send($comment->challenge->user, new CommentNotification($comment));
+        $user = $comment->challenge->user;
+        $notify_user = User::find($user->id);
+        Notifications::send($notify_user, new CommentNotification($comment));
 
         // TO ADMIN
         $userNotification = new Notification([

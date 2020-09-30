@@ -36,7 +36,8 @@ class SubmitChallengeObserver
             ]);
             $submitChallenge->notifications()->save($userNotification);
             // $creater->notify(new ChallengeSubmited('onUser',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
-            Notifications::send($creater, new ChallengeSubmited('onUser',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
+            $notify_user = User::find($creater->id);
+            Notifications::send($notify_user, new ChallengeSubmited('onUser',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
 
             // Donators Notification
             foreach ($donators as $donator) {
@@ -48,7 +49,8 @@ class SubmitChallengeObserver
                     'data_id' => $submitChallenge->accepted_challenge_id,
                 ]);
                 // $donator->user->notify(new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
-                Notifications::send( $donator->user, new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
+                $notify_user = User::find($donator->user->id);
+                Notifications::send( $notify_user, new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
             }
             $submitChallenge->notifications()->saveMany($notification);
             // Creater Notification
@@ -61,7 +63,8 @@ class SubmitChallengeObserver
             ]);
             $submitChallenge->notifications()->save($createrNotification);
             // $creater->notify(new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
-            Notifications::send($creater, new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
+            $notify_user = User::find($creater->id);
+            Notifications::send($notify_user, new ChallengeSubmited('onCreated',$submitChallenge->accepted_challenge_id, $submitor, $creater, $challenge));
 
             // Admin Notification
             $createrNotification = new Notification([
@@ -126,7 +129,8 @@ class SubmitChallengeObserver
                 ]);
                 
                 // $donator->user->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
-                Notifications::send($donator->user, new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
+                $notify_user = User::find($donator->user->id);
+                Notifications::send($notify_user, new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
 
             }
             $submitChallenge->notifications()->saveMany($notification);
@@ -140,7 +144,8 @@ class SubmitChallengeObserver
             ]);
             $submitChallenge->notifications()->save($createrNotification);
             // $creater->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
-            Notifications::send($creater, new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
+            $notify_user = User::find($creater->id);
+            Notifications::send($notify_user, new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
 
             // TO SUBMItORS
             $submitorNotification = [];
@@ -154,7 +159,8 @@ class SubmitChallengeObserver
                         'data_id' => $challenge->id,
                     ]);
                     // $submitor->user->notify(new ChallengeSubmited('toSubmitor', $challenge->id, $winner, $creater, $challenge));
-                    Notifications::send($submitor->user, new ChallengeSubmited('toSubmitor', $challenge->id, $winner, $creater, $challenge));
+                    $notify_user = User::find($submitor->id);
+                    Notifications::send($notify_user, new ChallengeSubmited('toSubmitor', $challenge->id, $winner, $creater, $challenge));
 
                 }
             }
@@ -171,7 +177,8 @@ class SubmitChallengeObserver
             ]);
             $submitChallenge->notifications()->save($winnerNotification);
             // $winner->notify(new ChallengeSubmited('toWinner', $challenge->id, $winner, $creater, $challenge));
-            Notifications::send($winner, new ChallengeSubmited('toWinner', $challenge->id, $winner, $creater, $challenge));
+            $notify_user = User::find($winner->id);
+            Notifications::send($notify_user, new ChallengeSubmited('toWinner', $challenge->id, $winner, $creater, $challenge));
 
             // TO ADMIN
             Notification::create([

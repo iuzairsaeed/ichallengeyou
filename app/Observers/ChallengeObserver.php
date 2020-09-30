@@ -71,7 +71,9 @@ class ChallengeObserver
             'data_id' => $challenge->id, 
         ]);
         // $challenge->user->notify(new ChallengeNotification($challenge->id,$challenge->name));
-        Notifications::send($challenge->user, new ChallengeNotification($challenge->id,$challenge->name));
+        $user = $challenge->user;
+        $notify_user = User::find($user->id);
+        Notifications::send($notify_user, new ChallengeNotification($challenge->id,$challenge->title));
         $challenge->notifications()->save($notification);
     }
 
