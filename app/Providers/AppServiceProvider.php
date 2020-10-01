@@ -80,8 +80,8 @@ class AppServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
 
         // View Notifications on Admin Web
-        if (Schema::hasTable('notifications')) {
-            View::share('notifications', Notification::where('user_id' , auth()-id())->latest()->limit(8)->get());
-        }
+        view()->composer('inc.navbar', function($view){
+            $view->with('notifications', Notification::where('user_id' , auth()->id() )->latest()->limit(8)->get());
+        });
     }
 }
