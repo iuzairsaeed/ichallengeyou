@@ -129,7 +129,7 @@ class SubmitChallengeObserver
             ]);
             $winner->transactions()->save($transaction);
             // TO DONATORS --
-            if($donators){
+            if($donators->first()){
                 foreach ($donators as $donator) {
                     $notification[] = new Notification([
                         'user_id' => $donator->user->id,
