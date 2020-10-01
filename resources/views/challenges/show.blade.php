@@ -10,15 +10,15 @@
                         <h4 class="card-title">Challenge Detail</h4>
                     </div>
                 </div>
-                    <div class="card-body px-4">
+                <div class="card-body px-4">
                     <div class="border-bottom mb-4">
                         <div class="align-self-center halfway-fab text-center mb-4">
                             @if(strstr($challenge->file_mime, "video/"))
-                                <video class="width-400" controls>
-                                    <source src="{{ asset($challenge->file) }}" type="{{$challenge->file_mime}}">
-                                </video>
+                            <video class="width-400" controls>
+                                <source src="{{ asset($challenge->file) }}" type="{{$challenge->file_mime}}">
+                            </video>
                             @elseif(strstr($challenge->file_mime, "image/"))
-                                <img src="{{ asset($challenge->file) }}" class="width-400" alt="File not available.">
+                            <img src="{{ asset($challenge->file) }}" class="width-400" alt="File not available.">
                             @endif
                         </div>
                     </div>
@@ -87,9 +87,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="text-bold-700">Creater</label><br>
-                                    <div class="row" >
-                                        <img src="{{ asset($challenge->user->avatar) }}" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
-                                        <p style="margin:10px" > {{$challenge->user->name ?? $challenge->user->username }}</p>
+                                    <div class="row">
+                                        <img src="{{ asset($challenge->user->avatar) }}" style="margin-left: 12px"
+                                            class="width-50 margin-50" alt="File not available.">
+                                        <p style="margin:10px">
+                                            {{$challenge->user->name ?? $challenge->user->username }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -104,65 +106,81 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="text-bold-700">Description</label>
-                                        <p class="font"> {{ print(nl2br($challenge->description)??'-') }}  </p>
+                                        <p class="font"> {{ print(nl2br($challenge->description)??'-') }} </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 @if (now() > $challenge->after_date )
-                                    @if ($winner)
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="text-bold-700">Winner </label>
-                                                <p class="font text-bold-500"> {{ (optional(optional($winner)->user)->name)?? ' ' }}  <i class="icon-trophy"></i></p>
+                                @if ($winner)
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Winner </label>
+                                        <p class="font text-bold-500">
+                                            {{ (optional(optional($winner)->user)->name)?? ' ' }} <i
+                                                class="icon-trophy"></i></p>
+                                    </div>
+                                </div>
+                                @else
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Voters on this challenge </label>
+                                        <div class="input-group">
+                                            <div class="custom-control custom-radio display-inline-block pr-3">
+                                                <input type="radio" class="custom-control-input" name="is_voter"
+                                                    id="is_voter1" value='donators'
+                                                    {{($challenge->allowVoter == 'donators') ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="is_voter1">Donators</label>
                                             </div>
-                                        </div>
-                                    @else
-                                        <div class="col-md-8">
-                                            <div class="form-group">
-                                                <label class="text-bold-700">Voters on this challenge </label>
-                                                <div class="input-group">
-                                                    <div class="custom-control custom-radio display-inline-block pr-3">
-                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_voter1" value='donators' {{($challenge->allowVoter == 'donators') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="is_voter1">Donators</label>
-                                                    </div>
-                                                    <div class="custom-control custom-radio display-inline-block">
-                                                        <input type="radio" class="custom-control-input" name="is_voter" id="is_voter2" value='premiumUsers' {{($challenge->allowVoter == 'premiumUsers') ? 'checked' :'' }}>
-                                                        <label class="custom-control-label" for="is_voter2">Premium Users</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endif
-                            </div>
-                            @if (
-                                $challenge->status == Pending() || 
-                                $challenge->status == Approved() || 
-                                $challenge->status == Denied()
-                            )
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="text-bold-700">Status</label>
-                                            <div class="input-group">
-                                                <div class="custom-control custom-radio display-inline-block">
-                                                    <input type="radio" class="custom-control-input" name="is_active" id="is_active2" value='pending' {{($challenge->status == 'Pending') ? 'checked' :''}} {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
-                                                    <label class="custom-control-label" for="is_active2">Pending</label>
-                                                </div>
-                                                <div class="custom-control custom-radio display-inline-block ml-2">
-                                                    <input type="radio" class="custom-control-input" name="is_active" id="is_active1" value='approved' {{($challenge->status == 'Approved') ? 'checked' : ''}} {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
-                                                    <label class="custom-control-label" for="is_active1">Approved</label>
-                                                </div>
-                                                <div class="custom-control custom-radio display-inline-block ml-2">
-                                                    <input type="radio" class="custom-control-input" name="is_active" id="is_active3" value='denied' {{($challenge->status == 'Denied') ? 'checked' :''}} {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
-                                                    <label class="custom-control-label" for="is_active3">Reject</label>
-                                                </div>
+                                            <div class="custom-control custom-radio display-inline-block">
+                                                <input type="radio" class="custom-control-input" name="is_voter"
+                                                    id="is_voter2" value='premiumUsers'
+                                                    {{($challenge->allowVoter == 'premiumUsers') ? 'checked' :'' }}>
+                                                <label class="custom-control-label" for="is_voter2">Premium
+                                                    Users</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
+                                @endif
+                            </div>
+                            @if (
+                            $challenge->status == Pending() ||
+                            $challenge->status == Approved() ||
+                            $challenge->status == Denied()
+                            )
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Status</label>
+                                        <div class="input-group">
+                                            <div class="custom-control custom-radio display-inline-block">
+                                                <input type="radio" class="custom-control-input" name="is_active"
+                                                    id="is_active2" value='pending'
+                                                    {{($challenge->status == 'Pending') ? 'checked' :''}}
+                                                    {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
+                                                <label class="custom-control-label" for="is_active2">Pending</label>
+                                            </div>
+                                            <div class="custom-control custom-radio display-inline-block ml-2">
+                                                <input type="radio" class="custom-control-input" name="is_active"
+                                                    id="is_active1" value='approved'
+                                                    {{($challenge->status == 'Approved') ? 'checked' : ''}}
+                                                    {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
+                                                <label class="custom-control-label" for="is_active1">Approved</label>
+                                            </div>
+                                            <div class="custom-control custom-radio display-inline-block ml-2">
+                                                <input type="radio" class="custom-control-input" name="is_active"
+                                                    id="is_active3" value='denied'
+                                                    {{($challenge->status == 'Denied') ? 'checked' :''}}
+                                                    {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
+                                                <label class="custom-control-label" for="is_active3">Reject</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @else
                             <div class="row">
                                 <div class="col-md-12">
@@ -179,16 +197,16 @@
                         <div class="col-md-8">
                             <div class="form-actions left">
                                 @if (
-                                    $challenge->status == Pending() || 
-                                    $challenge->status == Approved() || 
-                                    $challenge->status == Denied()
+                                $challenge->status == Pending() ||
+                                $challenge->status == Approved() ||
+                                $challenge->status == Denied()
                                 )
-                                    <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
-                                        <i class="icon-check"></i> Update
-                                    </button>
-                                    <button type="button" class="btn btn-raised btn-danger delete">
-                                        <i class="icon-trash"></i> Delete
-                                    </button>
+                                <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
+                                    <i class="icon-check"></i> Update
+                                </button>
+                                <button type="button" class="btn btn-raised btn-danger delete">
+                                    <i class="icon-trash"></i> Delete
+                                </button>
                                 @endif
                             </div>
                         </div>
@@ -204,7 +222,8 @@
                 <div class="card-header">
                     <div class="card-title-wrap">
                         <h4 class="card-title">Donations</h4>
-                        <p class="card-text">Here you can see the list of donations that users made on this challenge.</p>
+                        <p class="card-text">Here you can see the list of donations that users made on this challenge.
+                        </p>
                     </div>
                 </div>
                 <div class="card-body">
@@ -227,7 +246,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -286,7 +305,8 @@
         </div>
     </div>
 
-    <div class="modal fade text-left " id="editSubmitorDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+    <div class="modal fade text-left " id="editSubmitorDetail" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel3" aria-hidden="true">
         <div class="modal-lg modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-success">
@@ -309,18 +329,21 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="card-block">
-                                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                                            <div class="carousel-inner" role="listbox">
-                                                {{-- Submited MEdia --}}
-                                            </div>
-                                            <a class="carousel-control-prev" href="#carousel-example-generic" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#carousel-example-generic" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
+                                            <div id="carousel-example-generic" class="carousel slide"
+                                                data-ride="carousel">
+                                                <div class="carousel-inner" role="listbox">
+                                                    {{-- Submited MEdia --}}
+                                                </div>
+                                                <a class="carousel-control-prev" href="#carousel-example-generic"
+                                                    role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a class="carousel-control-next" href="#carousel-example-generic"
+                                                    role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -382,161 +405,193 @@
 
 @section('afterScript')
 <script>
-    
     $('#donationsTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax:
-        {
+        ajax: {
             url: '{{ route("challenges.getDonations", $challenge->id) }}',
             type: 'GET',
             dataType: 'JSON',
-            data:function(data){
-                data.date_from= $('#date_from').val();
-                data.date_to= $('#date_to').val();
+            data: function (data) {
+                data.date_from = $('#date_from').val();
+                data.date_to = $('#date_to').val();
             },
             error: function (reason) {
                 return reason;
             }
         },
-        columns: [
-            { data: 'serial' },
-            { data: 'user.name' },
-            { data: 'amount' },
-            { data: 'created_at' },
-            { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/users/${full.user.id}" class="info success" title="View">
+        columns: [{
+                data: 'serial'
+            },
+            {
+                data: 'user.name'
+            },
+            {
+                data: 'amount'
+            },
+            {
+                data: 'created_at'
+            },
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
+                    return `<a href="/users/${full.user.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
-                                }
+                }
             }
         ],
-        order: [0 , 'desc'],
-        columnDefs: [
-            { orderable: false, targets: [-1, -2] }
-        ],
+        order: [0, 'desc'],
+        columnDefs: [{
+            orderable: false,
+            targets: [-1, -2]
+        }],
     });
 
     $('#bidsTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax:
-        {
+        ajax: {
             url: '{{ route("challenges.getBids", $challenge->id) }}',
             type: 'GET',
             dataType: 'JSON',
-            data:function(data){
-                data.date_from= $('#date_from').val();
-                data.date_to= $('#date_to').val();
+            data: function (data) {
+                data.date_from = $('#date_from').val();
+                data.date_to = $('#date_to').val();
             },
             error: function (reason) {
                 return reason;
             }
         },
-        columns: [
-            { data: 'serial' },
-            { data: 'user.name' },
-            { data: 'bid_amount' },
-            { data: 'created_at' },
-            { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/users/${full.user.id}" class="info success" title="View">
+        columns: [{
+                data: 'serial'
+            },
+            {
+                data: 'user.name'
+            },
+            {
+                data: 'bid_amount'
+            },
+            {
+                data: 'created_at'
+            },
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
+                    return `<a href="/users/${full.user.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
-                                }
+                }
             }
 
         ],
-        order: [0 , 'desc'],
-        columnDefs: [
-            { orderable: false, targets: [-1, -2] }
-        ],
+        order: [0, 'desc'],
+        columnDefs: [{
+            orderable: false,
+            targets: [-1, -2]
+        }],
     });
 
     $('#acceptorsTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax:
-        {
+        ajax: {
             url: '{{ route("challenges.getAcceptors", $challenge->id) }}',
             type: 'GET',
             dataType: 'JSON',
-            data:function(data){
-                data.date_from= $('#date_from').val();
-                data.date_to= $('#date_to').val();
+            data: function (data) {
+                data.date_from = $('#date_from').val();
+                data.date_to = $('#date_to').val();
             },
             error: function (reason) {
                 return reason;
             }
         },
-        columns: [
-            { data: 'serial' },
-            { data: 'user.name' },
-            { data: 'created_at' },
-            { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/users/${full.user.id}" class="info success" title="View">
+        columns: [{
+                data: 'serial'
+            },
+            {
+                data: 'user.name'
+            },
+            {
+                data: 'created_at'
+            },
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
+                    return `<a href="/users/${full.user.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
-                                }
+                }
             }
         ],
-        order: [0 , 'desc'],
-        columnDefs: [
-            { orderable: false, targets: [-1, -2] }
-        ],
+        order: [0, 'desc'],
+        columnDefs: [{
+            orderable: false,
+            targets: [-1, -2]
+        }],
     });
 
     $('#submitorsTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax:
-        {
+        ajax: {
             url: '{{ route("challenges.getSubmitors", $challenge->id) }}',
             type: 'GET',
             dataType: 'JSON',
-            data:function(data){
-                data.date_from= $('#date_from').val();
-                data.date_to= $('#date_to').val();
+            data: function (data) {
+                data.date_from = $('#date_from').val();
+                data.date_to = $('#date_to').val();
             },
             error: function (reason) {
                 return reason;
             }
         },
-        columns: [
-            { data: 'serial' },
-            { data: 'user.name' , render:function (data, type, full, meta) {
-                    if(full.showTrophy != "Winner"){
-                        return `<p>`+full.user.name+`</p>`;
-                    } else {
-                        return `<p>`+full.user.name+` <i class="bold success icon-trophy"></i> </p>`;
-                    }
-                } 
+        columns: [{
+                data: 'serial'
             },
-            { data: 'created_at' },
-            { data: 'actions', render:function (data, type, full, meta) {
-                                var isWinner = 0;
-                                console.log(full)
-                                if(full.isWinner != "Winner"){
-                                    $('.winnerCard').prop('hidden' , false);
-                                    $('.winnerSpan').html(
-                                        `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
+            {
+                data: 'user.name',
+                render: function (data, type, full, meta) {
+                    if (full.showTrophy != "Winner") {
+                        return `<p>` + full.user.name + `</p>`;
+                    } else {
+                        return `<p>` + full.user.name +
+                            ` <i class="bold success icon-trophy"></i> </p>`;
+                    }
+                }
+            },
+            {
+                data: 'created_at'
+            },
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
+                    var isWinner = 0;
+                    console.log(full)
+                    if (full.isWinner != "Winner") {
+                        $('.winnerCard').prop('hidden', false);
+                        $('.winnerSpan').html(
+                            `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
                                             <i class="icon-trophy"></i> Mark as Winner ★
                                         </button>`
-                                    );
-                                } 
-                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
+                        );
+                    }
+                    return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
                                         data-keyboard="false" data-target="#editSubmitorDetail">
                                             <i class="ft-edit font-medium-3"></i>
                                         </a>`;
-                                }
+                }
             }
         ],
-        order: [0 , 'desc'],
-        columnDefs: [
-            { orderable: false, targets: [-1, -2] }
-        ],
+        order: [0, 'desc'],
+        columnDefs: [{
+            orderable: false,
+            targets: [-1, -2]
+        }],
     });
 
-    $('#editSubmitorDetail').on('show.bs.modal',function(event){
+    $('#editSubmitorDetail').on('show.bs.modal', function (event) {
 
         const button = $(event.relatedTarget);
         const id = button.data('id');
@@ -544,37 +599,40 @@
         var datas = null;
         $.ajax({
             url: '{{ route("challenges.getSubmitor", $challenge->id) }}',
-            data: {id:id},
+            data: {
+                id: id
+            },
             dataType: "json",
-            success: function(res){
+            success: function (res) {
                 let submit_files = res.data[0].submit_files;
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
-                if(res.data[0].submit_challenge.isWinner == true ){
-                    $('.winnerCard').prop('hidden' , false);
+                if (res.data[0].submit_challenge.isWinner == true) {
+                    $('.winnerCard').prop('hidden', false);
                     $('.winnerSpan').html(
-                        '<div><p>'+user.name+' is Winnner <i class="bold success icon-trophy"></i></p></div>'
+                        '<div><p>' + user.name +
+                        ' is Winnner <i class="bold success icon-trophy"></i></p></div>'
                     );
                 }
 
                 $('.carousel-inner').empty();
-                for(let i=0 ; i < submit_files.length ; i++){
+                for (let i = 0; i < submit_files.length; i++) {
                     $('.carousel-inner').append(
-                        `<div class="carousel-item">
-                            <iframe src="/`+submit_files[i].file+`" width="100%" height="300px"></iframe>
+                        `<div class="carousel-item" id="y-tube">
+                            <iframe src="/` + submit_files[i].file + `" width="100%" height="300px"></iframe>
                         </div>`
                     );
                 }
-                $(".carousel-inner").find( "div" ).eq( 0 ).addClass( "active" );
+                $(".carousel-inner").find("div").eq(0).addClass("active");
                 $('.submit_date').html(
-                    `<p>`+submitted_date+`</p>`
+                    `<p>` + submitted_date + `</p>`
                 );
                 $('.submitor').html(
                     `<div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <img src="/`+user.avatar+`" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
-                                <p style="margin:10px" >`+user.name+`</p>
+                                <img src="/` + user.avatar + `" style="margin-left: 12px" class="width-50 margin-50" alt="File not available.">
+                                <p style="margin:10px" >` + user.name + `</p>
                             </div>
                         </div>
                     </div>
@@ -587,7 +645,7 @@
         });
     });
 
-    $('#updateSubmitorDetail').submit(function(e){
+    $('#updateSubmitorDetail').submit(function (e) {
         e.preventDefault();
         swal({
             title: 'Are you sure?',
@@ -605,14 +663,15 @@
                     method: "POST",
                     dataType: 'json',
                     data: {
-                        id : $('#submitedChallengeID').val(),
-                        value : 'yes'
+                        id: $('#submitedChallengeID').val(),
+                        value: 'yes'
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success:function(data){
-                        swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
+                    success: function (data) {
+                        swal("Updated!", "Action has been performed successfully!",
+                            "success").catch(swal.noop);
                         $('#submitorsTable').DataTable().ajax.reload();
                         $('#editSubmitorDetail').modal('hide');
                         location.reload();
@@ -628,36 +687,47 @@
     $('#votersTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax:
-        {
+        ajax: {
             url: '{{ route("challenges.voters", $challenge->id) }}',
             type: 'GET',
             dataType: 'JSON',
-            data:function(data){
-                data.date_from= $('#date_from').val();
-                data.date_to= $('#date_to').val();
+            data: function (data) {
+                data.date_from = $('#date_from').val();
+                data.date_to = $('#date_to').val();
             },
             error: function (reason) {
                 return reason;
             }
         },
-        columns: [
-            { data: 'serial' },
-            { data: 'voter.user.name' },
-            { data: 'voter.vote_up' },
-            { data: 'voter.vote_down' },
-            { data: 'created_at' },
-            { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/votes/${full.voter.id}" class="info success" title="View">
+        columns: [{
+                data: 'serial'
+            },
+            {
+                data: 'voter.user.name'
+            },
+            {
+                data: 'voter.vote_up'
+            },
+            {
+                data: 'voter.vote_down'
+            },
+            {
+                data: 'created_at'
+            },
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
+                    return `<a href="/votes/${full.voter.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
-                                }
+                }
             }
         ],
-        order: [0 , 'desc'],
-        columnDefs: [
-            { orderable: false, targets: [-1, -2] }
-        ],
+        order: [0, 'desc'],
+        columnDefs: [{
+            orderable: false,
+            targets: [-1, -2]
+        }],
     });
 
     $('.delete').click(function () {
@@ -682,8 +752,9 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success:function(data){
-                        swal("Deleted!", "Challenge has been deleted successfully!", "success").catch(swal.noop);
+                    success: function (data) {
+                        swal("Deleted!", "Challenge has been deleted successfully!",
+                            "success").catch(swal.noop);
                         location.reload();
                         $('#editSubmitorDetail').modal('hide');
                     },
@@ -695,9 +766,9 @@
         }).catch(swal.noop);
     });
 
-
-
-
+    $('#editSubmitorDetail').on('hidden.bs.modal', function () {
+        callPlayer('y-tube', 'stopVideo');
+    });
 
 </script>
 @endsection
