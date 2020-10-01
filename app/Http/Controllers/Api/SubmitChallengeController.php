@@ -65,7 +65,7 @@ class SubmitChallengeController extends Controller
         try {
             $acceptedChallengeModel = new AcceptedChallenge;
             $this->model = new ChallengeRepository($acceptedChallengeModel);
-
+            
             $orderableCols = ['created_at'];
             $searchableCols = [];
             $whereChecks = ['challenge_id'];
@@ -79,9 +79,9 @@ class SubmitChallengeController extends Controller
             $addWithSums = [];
             $whereHas = 'submitChallenge';
             $withTrash = false;
-
+            
             $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
-                                        $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+            $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
             collect($data['data'])->map(function ($item) {
                 $item['isWinner'] = $item->submitChallenge->isWinner;
                 $item['voteUp'] =  $item->submitChallenge->votes()->where('vote_up' , true)->count();
@@ -91,12 +91,12 @@ class SubmitChallengeController extends Controller
                 if($challenge->allowVoter == 'donators'){
                     $message['message'] = config('global.TIMEOUT_MESSAGE');
                     if(now() >= $challenge->after_date){
-                        $data = $this->submitorList($challenge,$data);
+                        $this->submitorList($challenge,$data);
                     }
                 } else if($challenge->allowVoter == 'premiumUsers'){
                     $message['message'] = config('global.TIMEOUT_MESSAGE');
                     if(now() >= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
-                        $data = $this->submitorList($challenge,$data) ?? $data;
+                        $this->submitorList($challenge,$data);
                     }
                 }
             }
@@ -165,11 +165,25 @@ class SubmitChallengeController extends Controller
             }
         } else {
             $isNotification = Notification::where('notifiable_id', $data['data'][0]->submitChallenge->id )
-                ->where('notifiable_type', 'App\Models\SubmitChallenge' )
-                ->where('click_action', 'ASK_RESULT_DIALOG' )
-                ->exists();
+            ->where('notifiable_type', 'App\Models\SubmitChallenge' )
+            ->where('click_action', 'ASK_RESULT_DIALOG' )
+            ->exists();
+            // dd($isNotification);
             if(!$isNotification){
-                # Send notification to creator & Submitor
+                if($d->submitChallenge){
+                    # Send Notification to Submitor
+                    $notification = new Notification([
+                        'user_id' => $d->user->id,
+                        'title' => 'Result has been tied',
+                        'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask the App Admin to Evaluate or The Public?',
+                        'click_action' => 'ASK_RESULT_DIALOG',
+                        'data_id' => $d->id,
+                    ]);
+                    $notify_user = User::find($d->user->id);
+                    Notifications::send($notify_user, new AskCandidate($challenge->id));
+                    $d->submitChallenge->notifications()->save($notification);
+                }
+                # Send notification to creator 
                 $notification = new Notification([
                     'user_id' => $challenge->user->id,
                     'title' => 'Result Still Pending',
@@ -177,7 +191,6 @@ class SubmitChallengeController extends Controller
                     'click_action' => 'ASK_RESULT_DIALOG',
                     'data_id' => $challenge->id,
                 ]);
-                // $challenge->user->notify(new AskCandidate($challenger->id));
                 $notify_user = User::find($challenge->user->id);
                 Notifications::send($notify_user, new AskCandidate($challenge->id));
                 $challenge->notifications()->save($notification);
@@ -185,7 +198,6 @@ class SubmitChallengeController extends Controller
                 $adminNotification = new Notification([
                     'user_id' => 1,
                     'title' => 'Result Still Pending',
-                    'body' => 'Submitor will ask The App Admin to Evaluate or The Public?',
                     'body' => 'Result has been tied of the challenge '.$challenge->title,
                     'click_action' => 'CHALLENGE_DETAIL_SCREEN',
                     'data_id' => $challenge->id,
@@ -193,7 +205,7 @@ class SubmitChallengeController extends Controller
                 $challenge->acceptedChallenges[0]->submitChallenge->notifications()->save($adminNotification);
             }
         }
-        return $data;
+        return true;
     }
 
     public function getSubmitChallengeDetail(AcceptedChallenge $acceptedChallenge){

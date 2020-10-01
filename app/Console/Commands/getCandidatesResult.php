@@ -43,10 +43,10 @@ class getCandidatesResult extends Command
     public function handle()
     {
         $challenges = AskCandidate::where('updated_at' , '>=' , now())->latest()->get()->unique('challenge_id');
-        $all_chellenges = Challenge::get();
+        $all_chellenges = Challenge::latest()->get();
         foreach($all_chellenges as $item){
             if($item->status <> Expired() && $item->acceptedChallenges->first() == null && now() >= $item->after_date){
-                    $item->setStatus(Expired());
+                $item->setStatus(Expired());
             }else if($item->status == Approved() && now() >= $item->after_date) {
                 $isSubmited = false;
                 $acceptedChallenges = $item->acceptedChallenges;
@@ -54,12 +54,14 @@ class getCandidatesResult extends Command
                     $isSubmited = $acceptedChallenge->submitChallenge ? true : false;
                     if($isSubmited){
                         $item->setStatus(ResultPending());
+                        if($item->result_type == 'vote') {
+                            $SubmitChallengeController = new SubmitChallengeController(new SubmitChallenge);
+                            $SubmitChallengeController->getSubmitChallengerList($item,new Request);
+                        }
                         break;
                     }
                 }
             }
-            $SubmitChallengeController = new SubmitChallengeController(new SubmitChallenge);
-            $SubmitChallengeController->getSubmitChallengerList($item,new Request);
         }
         foreach ($challenges as $value) {
             $challenge = Challenge::findOrFail($value->challenge_id);
