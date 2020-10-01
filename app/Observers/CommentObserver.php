@@ -23,7 +23,7 @@ class CommentObserver
         $userNotification = new Notification([
             'user_id' => $comment->challenge->user_id,
             'title' => 'You got comments on your Challenge', 
-            'body' => $comment->user->name ?? $comment->user->username.' has been Commented on the Challenge '.$comment->challenge->title, 
+            'body' => ($comment->user->name ?? $comment->user->username).' has been Commented on the Challenge '.$comment->challenge->title, 
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $comment->challenge_id, 
         ]);
@@ -37,7 +37,7 @@ class CommentObserver
         $userNotification = new Notification([
             'user_id' => 1,
             'title' => 'Comment on Challenge', 
-            'body' => $comment->user->name ?? $comment->user->username.' has been Commented on the Challenge '.$comment->challenge->title, 
+            'body' => ($comment->user->name ?? $comment->user->username).' has been Commented on the Challenge '.$comment->challenge->title, 
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $comment->challenge_id, 
         ]);

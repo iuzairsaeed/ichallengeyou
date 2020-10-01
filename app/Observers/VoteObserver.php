@@ -29,7 +29,7 @@ class VoteObserver
             $notification = new Notification([
                 'user_id' => $user->id,
                 'title' => 'Check Your Votes', 
-                'body' => $voter->name ?? $voter->username.' has Vote You on the Submited Challenge '.$challenge->title, 
+                'body' => ($voter->name ?? $voter->username).' has Vote You on the Submited Challenge '.$challenge->title, 
                 'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
                 'data_id' => $vote->submitChallenges->accepted_challenge_id, 
             ]);
@@ -42,7 +42,7 @@ class VoteObserver
             $notification = new Notification([
                 'user_id' => 1,
                 'title' => 'Votes', 
-                'body' => $voter->name ?? $voter->username.' has Vote '.$user->name ?? $user->username.' on the Submited Challenge of '.$challenge->title, 
+                'body' => ($voter->name ?? $voter->username).' has Vote '.$user->name ?? $user->username.' on the Submited Challenge of '.$challenge->title, 
                 'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
                 'data_id' => $vote->submitChallenges->accepted_challenge_id, 
             ]);

@@ -87,15 +87,17 @@ class SubmitChallengeController extends Controller
                 $item['voteUp'] =  $item->submitChallenge->votes()->where('vote_up' , true)->count();
                 $item['voteDown'] =  $item->submitChallenge->votes()->where('vote_down' , true)->count();
             });
-            if($challenge->allowVoter == 'donators'){
-                $message['message'] = config('global.TIMEOUT_MESSAGE');
-                if(now() >= $challenge->after_date){
-                    $data = $this->submitorList($challenge,$data);
-                }
-            } else if($challenge->allowVoter == 'premiumUsers'){
-                $message['message'] = config('global.TIMEOUT_MESSAGE');
-                if(now() >= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
-                    $data = $this->submitorList($challenge,$data) ?? $data;
+            if($challenge->result_type == 'vote'){
+                if($challenge->allowVoter == 'donators'){
+                    $message['message'] = config('global.TIMEOUT_MESSAGE');
+                    if(now() >= $challenge->after_date){
+                        $data = $this->submitorList($challenge,$data);
+                    }
+                } else if($challenge->allowVoter == 'premiumUsers'){
+                    $message['message'] = config('global.TIMEOUT_MESSAGE');
+                    if(now() >= $challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
+                        $data = $this->submitorList($challenge,$data) ?? $data;
+                    }
                 }
             }
             $data['title'] = $challenge->title ?? '-';

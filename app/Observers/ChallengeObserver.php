@@ -23,7 +23,7 @@ class ChallengeObserver
         $notification = new Notification([
             'user_id' => $challenge->user_id, 
             'title' => 'New Challenge Created', 
-            'body' => 'You have Created The Challenge '.$challenge->name, 
+            'body' => 'You have Created The Challenge '.$challenge->title, 
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $challenge->id, 
         ]);
@@ -36,7 +36,7 @@ class ChallengeObserver
         $notification = new Notification([
             'user_id' => 1, 
             'title' => 'New Challenge Created', 
-            'body' => $challenge->user->name ?? $challenge->user->username.' have Created The Challenge '.$challenge->name, 
+            'body' => ($challenge->user->name ?? $challenge->user->username).' have Created The Challenge '.$challenge->title, 
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $challenge->id, 
         ]);
@@ -66,7 +66,7 @@ class ChallengeObserver
         $notification = new Notification([
             'user_id' => $challenge->user_id, 
             'title' => 'Challenge Rejected', 
-            'body' => 'Your Challenge '.$challenge->name.' has been rejected by admin', 
+            'body' => 'Your Challenge '.$challenge->title.' has been rejected by admin', 
             'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
             'data_id' => $challenge->id, 
         ]);

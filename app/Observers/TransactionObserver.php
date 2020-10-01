@@ -42,7 +42,7 @@ class TransactionObserver
                 $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Load Balance', 
-                    'body' => $transaction->user->name ?? $transaction->user->username.' has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
+                    'body' => ($transaction->user->name ?? $transaction->user->username).' has Loaded '.config('global.CURRENCY').' '.$transaction->amount.' Balance Successfully!', 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
@@ -90,7 +90,7 @@ class TransactionObserver
                 $transactionArray = new Notification([
                     'user_id' => 1,
                     'title' => 'Withdrawal Transaction',
-                    'body' => $transaction->user->name ?? $transaction->user->username.' has been debited '.config('global.CURRENCY').' '.$transaction->amount, 
+                    'body' => ($transaction->user->name ?? $transaction->user->username).' has been debited '.config('global.CURRENCY').' '.$transaction->amount, 
                     'click_action' =>'TRANSACTION_LIST', 
                     'data_id' => $transaction->user_id, 
                 ]);
