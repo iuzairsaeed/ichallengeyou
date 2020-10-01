@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SubmitChallengeCollection;
 use App\Http\Resources\SubmitedVideoCollection;
 use App\Http\Resources\SubmitChallengeDetailCollection;
+use App\Models\User;
 use App\Models\Vote;
 use App\Models\Amount;
 use App\Models\Challenge;
@@ -53,7 +54,7 @@ class SubmitChallengeController extends Controller
     public function saveWinner($submitedChallenge) {
         try {
             $submitedChallenge->isWinner = true;
-            $submitedChallenge->update();
+            // $submitedChallenge->update();
             return true;
         } catch (\Throwable $th) {
             return $th->getMessage();

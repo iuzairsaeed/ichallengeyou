@@ -586,7 +586,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success:function(data){
-                swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
+                swal("Winner Announced!", "Action has been performed successfully!", "success").catch(swal.noop);
                 $('#dTable').DataTable().ajax.reload();
                 $('#editSubmitorDetail').modal('hide');
             },

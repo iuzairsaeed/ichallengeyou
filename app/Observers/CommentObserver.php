@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Challenge;
+use App\Models\Notification;
+use App\Models\User;
 use App\Notifications\CommentNotification;
 use Notification as Notifications;
 
