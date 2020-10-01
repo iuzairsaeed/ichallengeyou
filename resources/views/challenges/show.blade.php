@@ -513,9 +513,7 @@
             },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
-                                var isWinner = 0;
-                                console.log(full)
-                                if(full.isWinner != "Winner"){
+                                if(full.isWinner != "Winner" && full.showWinBtn == true){
                                     $('.winnerCard').prop('hidden' , false);
                                     $('.winnerSpan').html(
                                         `<div><button type="submit" class="btn btn-raised btn-success updateBtn">

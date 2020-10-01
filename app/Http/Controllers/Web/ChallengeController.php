@@ -317,12 +317,17 @@ class ChallengeController extends Controller
         $serial = ($request->start ?? 0) + 1;
 
         $isWinner = 0;
+        $showWinBtn = ($data['data'][0]->challenge->result_type == 'vote') ? false : true;
+        // dd($showWinBtn);
+        // dd($data['data'][0]->challenge->result_type);
+
         foreach ($data['data'] as $d) {
             $d->submitChallenge->isWinner ? ++$isWinner : $isWinner;
         }
-        collect($data['data'])->map(function ($item) use (&$serial , $isWinner) {
+        collect($data['data'])->map(function ($item) use (&$serial , $isWinner, $showWinBtn) {
             $item['isWinner'] = ($isWinner > 0) ? 'Winner' : '-';
             $item['showTrophy'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
+            $item['showWinBtn'] = $showWinBtn;
             $item['serial'] = $serial++;
             return $item;
         });
