@@ -58,7 +58,7 @@ class Challenge extends Model
     }
 
     public function getAmountSumAttribute() {
-        return $this->amounts->withTrashed()->sum('amount');
+        return $this->amounts->sum('amount');
     }
 
     public function user()
