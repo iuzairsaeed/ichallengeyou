@@ -150,14 +150,13 @@ class SubmitChallengeController extends Controller
                             Notifications::send($notify_user, new AskCandidate($challenge->id));
                             $challenger->submitChallenge->notifications()->save($notification);
                         }
-                        $adminNotification = new Notification([
+                        Notification::create([
                             'user_id' => 1,
                             'title' => 'Result has been tied',
                             'body' => 'Result has been tied of the challenge '.$challenge->title,
                             'click_action' => 'CHALLENGE_DETAIL_SCREEN',
                             'data_id' => $challenge->id,
                         ]);
-                        $challenger->submitChallenge->notifications()->save($adminNotification);
                     }
                 }
             }
