@@ -763,7 +763,7 @@
     });
 
     $('#editSubmitorDetail').on('hidden.bs.modal', function () {
-        callPlayer('y-tube', 'stopVideo');
+        $('iframe').attr('src', '');
     });
 
 </script>
