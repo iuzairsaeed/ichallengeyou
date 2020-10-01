@@ -564,15 +564,12 @@
             {
                 data: 'created_at'
             },
-            {
-                data: 'actions',
-                render: function (data, type, full, meta) {
-                    var isWinner = 0;
-                    console.log(full)
-                    if (full.isWinner != "Winner") {
-                        $('.winnerCard').prop('hidden', false);
-                        $('.winnerSpan').html(
-                            `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
+            { data: 'created_at' },
+            { data: 'actions', render:function (data, type, full, meta) {
+                                if(full.isWinner != "Winner" && full.showWinBtn == true){
+                                    $('.winnerCard').prop('hidden' , false);
+                                    $('.winnerSpan').html(
+                                        `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
                                             <i class="icon-trophy"></i> Mark as Winner ★
                                         </button>`
                         );
