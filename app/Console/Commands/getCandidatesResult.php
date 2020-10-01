@@ -44,8 +44,15 @@ class getCandidatesResult extends Command
         foreach($all_chellenges as $item){
             if($item->status <> Expired() && $item->acceptedChallenges->first() == null && now() >= $item->after_date){
                     $item->setStatus(Expired());
-            }else if($item->status == Approved() && $item->acceptedChallenges->first() <> null && now() >= $item->after_date) {
+            }else if($item->status == Approved() && now() >= $item->after_date) {
+                $isSubmited = 0;
+                $acceptedChallenges = $item->acceptedChallenges;
+                foreach ($acceptedChallenges as $acceptedChallenge) {
+                    $isSubmited = $acceptedChallenge->submitChallenge ? ++$isSubmited : $isSubmited;
+                }
+                if($isSubmited > 0){
                     $item->setStatus(ResultPending());
+                }
             }
         }
         foreach ($challenges as $value) {

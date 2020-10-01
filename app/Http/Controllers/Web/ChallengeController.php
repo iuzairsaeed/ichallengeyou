@@ -315,8 +315,14 @@ class ChallengeController extends Controller
         $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
         $serial = ($request->start ?? 0) + 1;
-        collect($data['data'])->map(function ($item) use (&$serial) {
-            $item['isWinner'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
+
+        $isWinner = 0;
+        foreach ($data['data'] as $d) {
+            $d->submitChallenge->isWinner ? ++$isWinner : $isWinner;
+        }
+        collect($data['data'])->map(function ($item) use (&$serial , $isWinner) {
+            $item['isWinner'] = ($isWinner > 0) ? 'Winner' : '-';
+            $item['showTrophy'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
             $item['serial'] = $serial++;
             return $item;
         });

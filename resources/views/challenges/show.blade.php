@@ -178,11 +178,15 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-actions left">
-                                @if ($challenge->status != Deleted())
+                                @if (
+                                    $challenge->status == Pending() || 
+                                    $challenge->status == Approved() || 
+                                    $challenge->status == Denied()
+                                )
                                     <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
                                         <i class="icon-check"></i> Update
                                     </button>
-                                    <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
+                                    <button type="button" class="btn btn-raised btn-danger delete">
                                         <i class="icon-trash"></i> Delete
                                     </button>
                                 @endif
@@ -500,7 +504,7 @@
         columns: [
             { data: 'serial' },
             { data: 'user.name' , render:function (data, type, full, meta) {
-                    if(full.isWinner != "Winner"){
+                    if(full.showTrophy != "Winner"){
                         return `<p>`+full.user.name+`</p>`;
                     } else {
                         return `<p>`+full.user.name+` <i class="bold success icon-trophy"></i> </p>`;
@@ -509,6 +513,8 @@
             },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
+                                var isWinner = 0;
+                                console.log(full)
                                 if(full.isWinner != "Winner"){
                                     $('.winnerCard').prop('hidden' , false);
                                     $('.winnerSpan').html(
@@ -516,9 +522,7 @@
                                             <i class="icon-trophy"></i> Mark as Winner ★
                                         </button>`
                                     );
-                                } else {
-                                    $('.updateBtn').prop('hidden' , true);
-                                }
+                                } 
                                 return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
                                         data-keyboard="false" data-target="#editSubmitorDetail">
                                             <i class="ft-edit font-medium-3"></i>
@@ -547,7 +551,6 @@
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
                 if(res.data[0].submit_challenge.isWinner == true ){
-                    console.log(res.data[0].submit_challenge.isWinner);
                     $('.winnerCard').prop('hidden' , false);
                     $('.winnerSpan').html(
                         '<div><p>'+user.name+' is Winnner <i class="bold success icon-trophy"></i></p></div>'
@@ -610,9 +613,9 @@
                     },
                     success:function(data){
                         swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
-                        $('#dTable').DataTable().ajax.reload();
                         $('#submitorsTable').DataTable().ajax.reload();
                         $('#editSubmitorDetail').modal('hide');
+                        location.reload();
                     },
                     error: function (e) {
                         swal("Error!", "There has been some error!", "error");
@@ -655,6 +658,41 @@
         columnDefs: [
             { orderable: false, targets: [-1, -2] }
         ],
+    });
+
+    $('.delete').click(function () {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0CC27E',
+            cancelButtonColor: '#FF586B',
+            confirmButtonText: 'Yes, Delete it',
+            cancelButtonText: "No, Cancel"
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                var action = $('#deleteForm').attr('action');
+                $.ajax({
+                    type: "DELETE",
+                    url: action,
+                    data: {
+                        value: $('.modal-body #value').val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success:function(data){
+                        swal("Deleted!", "Challenge has been deleted successfully!", "success").catch(swal.noop);
+                        location.reload();
+                        $('#editSubmitorDetail').modal('hide');
+                    },
+                    error: function (e) {
+                        swal("Error!", "There has been some error!", "error");
+                    }
+                });
+            }
+        }).catch(swal.noop);
     });
 
 
