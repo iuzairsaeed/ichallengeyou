@@ -79,9 +79,12 @@ class AuthController extends Controller
                 'message' => config('global.EMAIL_VERIFY_MESSAGE')
             ], 202);
         }
-        $user->platform = $request->platform;
-        $user->device_token = $request->device_token;
-        $user->update();
+        if($request->device_token){
+
+            $user->platform = $request->platform;
+            $user->device_token = $request->device_token;
+            $user->update();
+        }
         return $this->response($user, 200, config('global.LOGIN_MESSAGE'));
     }
 
