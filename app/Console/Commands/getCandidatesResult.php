@@ -42,12 +42,12 @@ class getCandidatesResult extends Command
         $challenges = AskCandidate::where('updated_at' , '>=' , now())->latest()->get()->unique('challenge_id');
         $all_chellenges = Challenge::get();
         foreach($all_chellenges as $item){
-            if($item->status == Approved() && $item->acceptedChallenges->first() == null){
-                if(now() >= $item->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS'))){
+            if($item->status <> Expired() && $item->acceptedChallenges->first() == null && now() >= $item->after_date){
                     $item->setStatus(Expired());
-                }    
+            }else if($item->status == Approved() && $item->acceptedChallenges->first() <> null && now() >= $item->after_date) {
+                    $item->setStatus(ResultPending());
             }
-        }   
+        }
         foreach ($challenges as $value) {
             $challenge = Challenge::findOrFail($value->challenge_id);
             $res = $this->result($challenge);

@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Constant;
+use App\Notifications\VerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use SoftDeletes, HasApiTokens, Notifiable;
 
@@ -22,7 +23,6 @@ class User extends Authenticatable
     protected $casts = [
         'is_premium' => 'boolean',
         'is_active' => 'boolean',
-        'is_admin' => 'boolean',
         'is_dummy' => 'boolean',
         'email_verified_at' => 'datetime:'.Constant::DATE_FORMAT,
         'created_at' => 'datetime:'.Constant::DATE_FORMAT,
@@ -32,6 +32,11 @@ class User extends Authenticatable
     protected $with = [
 
     ];
+
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
+    }
 
     public function getAvatarAttribute($value)
     {

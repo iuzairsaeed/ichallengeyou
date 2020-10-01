@@ -16,7 +16,3 @@
 <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}" />
 
 <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
-<link rel="manifest" href="manifest.json">
-
-
-

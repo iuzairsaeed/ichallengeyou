@@ -25,7 +25,7 @@ class ChallengeNotification extends Notification implements ShouldQueue
         $this->challenge_id = $challenge_id;
         $this->challenge_name = $challenge_name;
     }
-
+    
     /**
      * Get the notification's delivery channels.
      *
@@ -36,7 +36,7 @@ class ChallengeNotification extends Notification implements ShouldQueue
     {
         return ['fcm'];
     }
-
+    
     /**
      * Get the mail representation of the notification.
      *
@@ -45,10 +45,10 @@ class ChallengeNotification extends Notification implements ShouldQueue
      */
     public function toFcm($notifiable)
     {
-        $message = new FcmMessage(); 
+        $message = new FcmMessage();
         $message->content([
             'title' => 'New Challenge Created',
-            'body' => 'You have Created The Challenge '.$this->challenge_name, 
+            'body' => 'You have Created The Challenge '.$this->challenge_name,
             'sound' => '', // Optional
             'icon' => 'favicon.ico', // Optional
             'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional

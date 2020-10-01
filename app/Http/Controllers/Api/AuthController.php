@@ -12,9 +12,24 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Setting;
 use Hash;
+use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Auth\Events\Verified;
 
 class AuthController extends Controller
 {
+    use VerifiesEmails;
+    public $successStatus = 200;
+
+    function verify(Request $request)
+    {
+        $userID = $request->id;
+        $user = User::findOrFail($userID);
+        $date = date('Y-m-d g:i:s');
+        $user->email_verified_at = $date;
+        $user->save();
+        return response()->json('You email has been verified. Now you can login through the I Challenge You app.');
+    }
+
     protected function response($user, $statusCode, $message)
     {
         // Revoke previous tokens...
@@ -32,7 +47,7 @@ class AuthController extends Controller
                 'currency' => config('global.CURRENCY') ?? '',
                 'avatar' => $user->avatar,
                 'is_premium' => $user->is_premium ?? false,
-                'is_admin' => $user->is_admin ?? false,
+                'is_admin' => $user->role ===  Admin() ? true : false,
                 'balance' => $user->balance ?? config('global.CURRENCY').' 0.00',
             ],
             'token' => $token,
@@ -57,8 +72,13 @@ class AuthController extends Controller
             return response([
                 'message' => config('global.LOGIN_DISABLE_MESSAGE')
             ], 400);
-        }
+        }elseif(!$user->hasVerifiedEmail()) {
+            $user->sendApiEmailVerificationNotification();
 
+            return response([
+                'message' => config('global.EMAIL_VERIFY_MESSAGE')
+            ], 202);
+        }
         $user->platform = $request->platform;
         $user->device_token = $request->device_token;
         $user->update();
@@ -82,6 +102,13 @@ class AuthController extends Controller
     function register(RegisterRequest $request, RegisterController $register)
     {
         $user = $register->create($request->all());
+
+        if(!$user->email_verified_at) {
+            $user->sendApiEmailVerificationNotification();
+            return response([
+                'message' => config('global.EMAIL_VERIFY_MESSAGE')
+            ], 202);
+        }
 
         return $this->response($user, 201, config('global.REGISTER_MESSAGE'));
     }

@@ -26,58 +26,58 @@ for (const el of inputs) {
 }
 
 // Declares function and call it directly
-var setEnabled;
-(setEnabled = function () {
-	var e = true;
-	for (const el of inputs) {
-		if (el.oldValue !== el.value + el.checked) {
-			e = false;
-			break;
-		}
-	}
-	if ($('button[type="submit"]').length) {
-		document.querySelector("button[type='submit']").disabled = e;
-	}
-	if ($('input[type="submit"]').length) {
-		document.querySelector("input[type='submit']").disabled = e;
-	}
-})();
+// var setEnabled;
+// (setEnabled = function () {
+// 	var e = true;
+// 	for (const el of inputs) {
+// 		if (el.oldValue !== el.value + el.checked) {
+// 			e = false;
+// 			break;
+// 		}
+// 	}
+// 	if ($('button[type="submit"]').length) {
+// 		document.querySelector("button[type='submit']").disabled = e;
+// 	}
+// 	if ($('input[type="submit"]').length) {
+// 		document.querySelector("input[type='submit']").disabled = e;
+// 	}
+// })();
 
-document.oninput = setEnabled;
-document.onchange = setEnabled;
+// document.oninput = setEnabled;
+// document.onchange = setEnabled;
 
-$('form').submit(function () {
-	$(this).find(':input[type=submit]').prop('disabled', true);
-});
+// $('form').submit(function () {
+// 	$(this).find(':input[type=submit]').prop('disabled', true);
+// });
 
-var elem = document.documentElement;
-$('#navbar-fullscreen').on('click', () => {
-	if (elem.requestFullscreen) {
-		elem.requestFullscreen();
-	} else if (elem.mozRequestFullScreen) {
-		/* Firefox */
-		elem.mozRequestFullScreen();
-	} else if (elem.webkitRequestFullscreen) {
-		/* Chrome, Safari & Opera */
-		elem.webkitRequestFullscreen();
-	} else if (elem.msRequestFullscreen) {
-		/* IE/Edge */
-		elem.msRequestFullscreen();
-	}
-	$('#navbar-fullscreen').attr('id', 'exit-fullscreen');
-	$('#navbar-fullscreen i').toggleClass('ft-maximize icon-size-actual');
-});
+// var elem = document.documentElement;
+// $('#navbar-fullscreen').on('click', () => {
+// 	if (elem.requestFullscreen) {
+// 		elem.requestFullscreen();
+// 	} else if (elem.mozRequestFullScreen) {
+// 		/* Firefox */
+// 		elem.mozRequestFullScreen();
+// 	} else if (elem.webkitRequestFullscreen) {
+// 		/* Chrome, Safari & Opera */
+// 		elem.webkitRequestFullscreen();
+// 	} else if (elem.msRequestFullscreen) {
+// 		/* IE/Edge */
+// 		elem.msRequestFullscreen();
+// 	}
+// 	$('#navbar-fullscreen').attr('id', 'exit-fullscreen');
+// 	$('#navbar-fullscreen i').toggleClass('ft-maximize icon-size-actual');
+// });
 
-$('.navbar-header').on('click', '#exit-fullscreen', () => {
-	if (document.exitFullscreen) {
-		document.exitFullscreen();
-	} else if (document.mozCancelFullScreen) {
-		document.mozCancelFullScreen();
-	} else if (document.webkitExitFullscreen) {
-		document.webkitExitFullscreen();
-	} else if (document.msExitFullscreen) {
-		document.msExitFullscreen();
-	}
-	$('#exit-fullscreen').attr('id', 'navbar-fullscreen');
-	$('#navbar-fullscreen i').toggleClass('ft-maximize icon-size-actual');
-});
+// $('.navbar-header').on('click', '#exit-fullscreen', () => {
+// 	if (document.exitFullscreen) {
+// 		document.exitFullscreen();
+// 	} else if (document.mozCancelFullScreen) {
+// 		document.mozCancelFullScreen();
+// 	} else if (document.webkitExitFullscreen) {
+// 		document.webkitExitFullscreen();
+// 	} else if (document.msExitFullscreen) {
+// 		document.msExitFullscreen();
+// 	}
+// 	$('#exit-fullscreen').attr('id', 'navbar-fullscreen');
+// 	$('#navbar-fullscreen i').toggleClass('ft-maximize icon-size-actual');
+// });

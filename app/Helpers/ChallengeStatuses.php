@@ -59,3 +59,8 @@ function Expired()
 {
     return 'Expired';
 }
+
+function ResultPending()
+{
+    return 'Result Pending';
+}

@@ -11,15 +11,16 @@ use Benwilkins\FCM\FcmMessage;
 class AskCandidate extends Notification implements ShouldQueue
 {
     use Queueable;
+    protected $challenge_id;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($challenge_id)
     {
-        //
+        $this->challenge_id = $challenge_id;
     }
 
     /**
@@ -41,7 +42,7 @@ class AskCandidate extends Notification implements ShouldQueue
      */
     public function toFcm($notifiable)
     {
-        $message = new FcmMessage(); 
+        $message = new FcmMessage();
         $message->content([
             'title'        => 'Challenge Result',
             'body'         => 'Result has been tied, Do you want to ask the App Admin to Evaluate or The Public?',
@@ -49,7 +50,7 @@ class AskCandidate extends Notification implements ShouldQueue
             'icon'         => 'favicon.ico', // Optional
             'click_action' => 'ASK_RESULT_DIALOG' // Optional
         ])->data([
-            'data_id' => $notifiable->id // Optional
+            'data_id' => $this->challenge_id // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
 
         return $message;

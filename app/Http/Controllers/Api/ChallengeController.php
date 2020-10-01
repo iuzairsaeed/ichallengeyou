@@ -57,7 +57,7 @@ class ChallengeController extends Controller
             'comments',
         );
         $withCount = [];
-        $currentStatus = [Approved()];
+        $currentStatus = [Approved(), Completed(), ResultPending()];
         $withSums = ['amounts'];
         $withSumsCol = ['amount'];
         $addWithSums = ['trend'];
@@ -108,7 +108,7 @@ class ChallengeController extends Controller
             $user->balance = $user->getAttributes()['balance'] - (float)$data['amount'];
             $user->update();
             $message['balance'] = $user->balance;
-            
+
             if($request->hasFile('file')){
                 $data['file'] = uploadFile($request->file, challengesPath(), null);
             }
@@ -200,7 +200,7 @@ class ChallengeController extends Controller
                 $data['data']['acceptBtn'] = false;
                 $data['data']['donateBtn'] = false;
                 $data['data']['bidBtn'] = false;
-                if(now() <= $challenge->start_time ){
+                if(now() <= $challenge->start_time && $challenge->status === Pending()){
                     $data['data']['editBtn'] =  true;
                 }
             }
@@ -220,6 +220,13 @@ class ChallengeController extends Controller
             if( $isCreator || $isDonator || $isSubmited > 0 ){
                 $data['data']['reviewBtn'] = true;
             }
+        }
+        if(in_array($data['data']->status, [Expired(), Completed(), Deleted(), ResultPending()])) {
+            $data['data']['acceptBtn'] = false;
+            $data['data']['editBtn'] = false;
+            $data['data']['submitBtn'] = false;
+            $data['data']['donateBtn'] = false;
+            $data['data']['bidBtn'] = false;
         }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
@@ -315,7 +322,7 @@ class ChallengeController extends Controller
                         $donation = $this->donating($challenge,$request);
                     }
                 }
-                
+
                 return response([
                     'message' => 'Your Donation of '.config('global.CURRENCY').' '.$donation->amount.' has been contributed to the '.$challenge->title,
                     'balance' => $user->balance ?? config('global.CURRENCY')." 0.00"
@@ -349,7 +356,7 @@ class ChallengeController extends Controller
         $challenge->transactions()->save($transaction);
         $user->balance = (double)$user->getAttributes()['balance'] -= (double)$request->amount;
         $user->update();
-        
+
         return $donation;
     }
 
@@ -446,7 +453,11 @@ class ChallengeController extends Controller
             ]);
             $reaction->like ? $challenge->increment('trend') : $challenge->decrement('trend');
         }
-        return response(['like' => $reaction->like], 200);
+        return response([
+            'like' => $reaction->like,
+            'like_count' => format_number_in_k_notation($challenge->likes->count()),
+            'unlike_count' => format_number_in_k_notation($challenge->unlikes->count()),
+        ], 200);
     }
 
     public function likeComment(Comment $comment)
@@ -492,9 +503,13 @@ class ChallengeController extends Controller
                 $challenge->decrement('trend');
             }
         }
-        return response(['unlike' => $reaction->unlike ], 200);
+        return response([
+            'unlike' => $reaction->unlike,
+            'like_count' => format_number_in_k_notation($challenge->likes->count()),
+            'unlike_count' => format_number_in_k_notation($challenge->unlikes->count()),
+        ], 200);
     }
-    
+
     public function unlikeComment(Comment $comment)
     {
         $reaction = $comment->userReaction ? $comment->userReaction->where('user_id', auth()->id())->first() : null;

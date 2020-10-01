@@ -41,19 +41,19 @@ class WithdrawalNotification extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return  Benwilkins\FCM\FcmMessage;
      */
-    public function toFcm($notifiable) 
+    public function toFcm($notifiable)
     {
         $message = new FcmMessage();
         $message->content([
             'title' => 'Withdrawal Transaction',
-            'body' => config('global.CURRENCY').' '.$this->amount.' has been debited', 
-            'sound'        => '', // Optional 
+            'body' => config('global.CURRENCY').' '.$this->amount.' has been debited',
+            'sound'        => '', // Optional
             'icon'         => 'favicon.ico', // Optional
             'click_action' => 'TRANSACTION_LIST', // Optional
         ])->data([
             'data_id' => auth()->id() // Optional
         ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
-        
+
         return $message;
     }
 

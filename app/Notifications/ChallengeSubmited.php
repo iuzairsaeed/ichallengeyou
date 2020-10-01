@@ -48,16 +48,16 @@ class ChallengeSubmited extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return  Benwilkins\FCM\FcmMessage;
      */
-    public function toFcm($notifiable) 
+    public function toFcm($notifiable)
     {
         if($this->action == 'onCreated'){
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challenge Submited', 
+                'title' => 'Challenge Submited',
                 'body' => ($this->winner->name ?? $this->winner->username) .' has been Submited the Challenge '.$this->challenge->title,
-                'sound'        => '', // Optional 
+                'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -65,24 +65,24 @@ class ChallengeSubmited extends Notification implements ShouldQueue
         if($this->action == 'onUser'){
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challenge Submited', 
+                'title' => 'Challenge Submited',
                 'body' => 'You has been Submited the Challenge '.$this->challenge->title,
-                'sound'        => '', // Optional 
+                'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
         }
-        
+
         if($this->action == 'toDonator&Creator'){
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Win Challenge', 
+                'title' => 'Win Challenge',
                 'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
-                'sound'        => '', // Optional 
+                'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -90,11 +90,11 @@ class ChallengeSubmited extends Notification implements ShouldQueue
         } elseif ($this->action == 'toSubmitor') {
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challenge Submited', 
+                'title' => 'Challenge Submited',
                 'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
-                'sound'        => '', // Optional 
+                'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -102,20 +102,20 @@ class ChallengeSubmited extends Notification implements ShouldQueue
         } elseif ($this->action == 'toWinner') {
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Congratulations!! You have Won The Challenge', 
+                'title' => 'Congratulations!! You have Won The Challenge',
                 'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
-                'sound'        => '', // Optional 
+                'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
-                'click_action' => 'CHALLENGE_DETAIL_SCREEN' // Optional
+                'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
             ])->data([
                 'data_id' => $this->data_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
         }
-        
+
         return $message;
     }
-    
-    
+
+
 
     /**
      * Get the array representation of the notification.

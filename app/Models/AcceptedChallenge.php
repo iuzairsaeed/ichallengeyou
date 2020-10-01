@@ -26,10 +26,10 @@ class AcceptedChallenge extends Model
         return $this->belongsTo(Challenge::class)->withTrashed()->select(['id','title','description','start_time','file','result_type','user_id','duration_days', 'duration_hours', 'duration_minutes', 'allowVoter']);
     }
 
-    function amounts()
-    {
-        return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');
-    }
+    // function amounts()
+    // {
+    //     return $this->hasManyThrough(Amount::class, Challenge::class, 'id', 'challenge_id');
+    // }
 
     public function getStatusAttribute()
     {
@@ -46,5 +46,5 @@ class AcceptedChallenge extends Model
         return $this->hasMany(SubmitFile::class);
     }
 
-    
+
 }

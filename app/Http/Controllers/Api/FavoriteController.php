@@ -41,13 +41,16 @@ class FavoriteController extends Controller
                 $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
 
         collect($data['data'])->map(function ($item) use (&$serial) {
-            $item['amounts_sum'] = config('global.CURRENCY').' '.$item->challenge->amount_sum;
+            if($item->challenge) {
+                $amount_sum = number_format($item->challenge->amount_sum, 2, '.', '') ?? '0.00';
+                $item['amounts_sum'] = config('global.CURRENCY').' '.$amount_sum;
+            }
         });
 
         $data['data'] = FavouriteCollection::collection($data['data']);
         return response($data, $data['response']);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *

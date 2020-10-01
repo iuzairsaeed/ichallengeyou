@@ -47,16 +47,16 @@ class DonateNotification extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return  Benwilkins\FCM\FcmMessage;
      */
-    public function toFcm($notifiable) 
+    public function toFcm($notifiable)
     {
         if($this->user_name == 'current_user'){
             $message = new FcmMessage();
             $message->content([
                 'title' => 'You have Donated Successfully!',
-                'body' => config('global.CURRENCY').$this->amount.' has been debited', 
-                'sound'        => '', // Optional 
-                'icon'         => 'favicon.ico', // Optional 
-                'click_action' =>'CHALLENGE_DETAIL_SCREEN', // Optional 
+                'body' => config('global.CURRENCY').$this->amount.' has been debited',
+                'sound'        => '', // Optional
+                'icon'         => 'favicon.ico', // Optional
+                'click_action' =>'CHALLENGE_DETAIL_SCREEN', // Optional
             ])->data([
                 'data_id' => $this->challenge_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
@@ -64,15 +64,15 @@ class DonateNotification extends Notification implements ShouldQueue
             $message = new FcmMessage();
             $message->content([
                 'title' => ($this->user_name ?? $this->user_name).' have Donated on Your Challenge '.$this->challenge_title,
-                'body' => config('global.CURRENCY').$this->amount.' has been donated', 
-                'sound'        => '', // Optional 
+                'body' => config('global.CURRENCY').$this->amount.' has been donated',
+                'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN', // Optional
             ])->data([
                 'data_id' => $this->challenge_id // Optional
             ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
         }
-        
+
         return $message;
     }
     /**

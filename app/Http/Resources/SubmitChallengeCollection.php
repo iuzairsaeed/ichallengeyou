@@ -17,7 +17,7 @@ class SubmitChallengeCollection extends JsonResource
         return  [
             'accepted_challenge_id' => $this->id,
             'user' => $this->user,
-            'submit_date' => $this->created_at->format('Y-m-d h:i A'),
+            'submit_date' => $this->submitChallenge->created_at->format('Y-m-d h:i A'),
             'voteUp' => $this->voteUp ?? 0,
             'voteDown' => $this->voteDown ?? 0,
             'isWinner' => $this->isWinner ?? false ,

@@ -24,7 +24,7 @@ class SubmitChallengeRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => ['required', 'mimes:mp4,webm', 'max:51200‬'],
+            'file' => ['required', 'mimes:mp4,webm,3gp', 'max:51200‬'],
         ];
     }
 }

@@ -12,8 +12,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $challenges = Challenge::all();
-        $totalChallenges = $challenges->count();
+        $totalChallenges = Challenge::count();
         $approvedChallenges = Challenge::currentStatus('approved')->count();
 
         return view('dashboard')->with([

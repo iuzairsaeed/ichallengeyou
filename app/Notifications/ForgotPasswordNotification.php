@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ForgotPasswordNotification extends Notification 
+class ForgotPasswordNotification extends Notification
 {
     use Queueable;
 
@@ -48,7 +48,7 @@ class ForgotPasswordNotification extends Notification
                     ->subject("$AppName | Forgot Password")
                     ->line("Greetings from $AppName!")
                     ->greeting("Hello $notifiable->name,")
-                    ->level('info')
+                    ->level('warning')
                     ->line('You are receiving this email because you (or someone else) has requested the reset of password.')
                     ->line('Now in order to access your account kindly use the following credentials:')
                     ->line("Username: $notifiable->username")

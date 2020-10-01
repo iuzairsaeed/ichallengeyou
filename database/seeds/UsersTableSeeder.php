@@ -23,8 +23,8 @@ class UsersTableSeeder extends Seeder
                 'username' => 'admin',
                 'email' => 'admin@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => true,
-                'created_at' => now()
+                'created_at' => now(),
+                'email_verified_at' => now()
             ], [
                 'role' => Normal(),
                 'balance' => 1000.00,
@@ -33,8 +33,8 @@ class UsersTableSeeder extends Seeder
                 'username' => 'user1',
                 'email' => 'user1@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => false,
-                'created_at' => now()
+                'created_at' => now(),
+                'email_verified_at' => now()
             ], [
                 'role' => Normal(),
                 'balance' => 0.00,
@@ -43,8 +43,8 @@ class UsersTableSeeder extends Seeder
                 'username' => 'user2',
                 'email' => 'user2@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => false,
-                'created_at' => now()
+                'created_at' => now(),
+                'email_verified_at' => now()
             ], [
                 'role' => Normal(),
                 'balance' => 50.00,
@@ -53,8 +53,8 @@ class UsersTableSeeder extends Seeder
                 'username' => 'user3',
                 'email' => 'user3@idu.com',
                 'password' => Hash::make('secret'),
-                'is_admin' => false,
-                'created_at' => now()
+                'created_at' => now(),
+                'email_verified_at' => now()
             ]
         ];
         User::insert($data);
@@ -394,7 +394,7 @@ class UsersTableSeeder extends Seeder
             'Mieko',
             'Toshie',
             'Junko');
-        for ($i=0; $i < 500; $i++) { 
+        for ($i=0; $i < 500; $i++) {
             $data1[] = [
                 'role' => Normal(),
                 'balance' => 5000.00,
@@ -405,7 +405,8 @@ class UsersTableSeeder extends Seeder
                 'contact_number' => 123456789,
                 'password' => Hash::make('secret'),
                 'is_dummy' => true,
-                'created_at' => now()
+                'created_at' => now(),
+                'email_verified_at' => now()
             ];
         }
         User::insert($data1);

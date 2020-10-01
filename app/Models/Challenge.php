@@ -26,7 +26,7 @@ class Challenge extends Model
     ];
 
     protected $appends = [
-        'status', 'file_mime'
+        'status', 'file_mime', 'amount_sum'
     ];
 
     protected $with = [
@@ -83,12 +83,12 @@ class Challenge extends Model
 
     public function likes()
     {
-        return $this->hasMany(Reaction::class)->where('like', true);
+        return $this->morphMany(Reaction::class, 'reactionable')->where('like', true);
     }
 
     public function unlikes()
     {
-        return $this->hasMany(Reaction::class)->where('unlike', true);
+        return $this->morphMany(Reaction::class, 'reactionable')->where('unlike', true);
     }
 
     public function favorites()
@@ -110,6 +110,7 @@ class Challenge extends Model
     {
         return $this->hasMany(Amount::class);
     }
+
     public function acceptedChallenges()
     {
         return $this->hasMany(AcceptedChallenge::class,'challenge_id');
@@ -129,5 +130,5 @@ class Challenge extends Model
     {
         return $this->hasMany(Bid::class);
     }
-    
+
 }
