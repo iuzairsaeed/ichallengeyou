@@ -342,7 +342,7 @@
                                 <div class="card winnerCard" hidden>
                                     <div class="card-header">
                                         <div class="card-title-wrap bar-success">
-                                            <h4 class="card-title">Marked As Winner</h4>
+                                            <h4 class="card-title">Winner</h4>
                                             <div class="winner">
                                                 <div class="col-md-4">
                                                     <div class="form-group winnerSpan">
@@ -362,7 +362,7 @@
                             <button type="reset" data-dismiss="modal" class="btn btn-raised btn-danger mr-1">
                                 <i class="icon-trash"></i> Cancel
                             </button>
-                            <button type="submit" class="btn btn-raised btn-success updateBtn">
+                            <button type="submit" class="btn btn-raised btn-success updateBtn" hidden>
                                 <i class="icon-note"></i> Update
                             </button>
                         </div>
@@ -497,11 +497,19 @@
         },
         columns: [
             { data: 'serial' },
-            { data: 'user.name' },
+            { data: 'user.name' , render:function (data, type, full, meta) {
+                    if(full.isWinner != "Winner"){
+                        return `<p>`+full.user.name+`</p>`;
+                    } else {
+                        return `<p>`+full.user.name+` <i class="bold success icon-trophy"></i> </p>`;
+                    }
+                } 
+            },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
                                 if(full.isWinner != "Winner"){
                                     $('.winnerCard').prop('hidden' , false);
+                                    $('.updateBtn').prop('hidden' , true);
                                     $('.winnerSpan').html(
                                         `<div class="input-group">
                                             <div class="custom-control custom-radio display-inline-block" style="margin:0px 10px">
@@ -516,7 +524,6 @@
                                     );
                                 } else {
                                     $('.updateBtn').prop('hidden' , true);
-                                    $('.winnerCard').prop('hidden' , true);
                                 }
                                 return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
                                         data-keyboard="false" data-target="#editSubmitorDetail">
@@ -546,6 +553,11 @@
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
                 if(res.data[0].submit_challenge.isWinner == true ){
+                    $('.winnerCard').show();
+                    $('.winnerSpan').html(
+                        '<div><p>'+user.name+' is Winnner <i class="bold success icon-trophy"></i></p></div>'
+                    );
+                } else {
                     $('.winnerCard').hide();
                 }
 
