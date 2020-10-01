@@ -66,15 +66,14 @@ class AmountController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::all();
-        (float)$debit = $transactions
-        ->where('type' , 'miscellaneous')
-        ->where('type' , 'load')
-        ->where('type' , 'create_challenge')
+        (float)$debit = Transaction::where('type' , 'miscellaneous')
+        ->orWhere('type' , 'load')
+        ->orWhere('type' , 'create_challenge')
         ->sum('amount');
-        (float)$credit = $transactions
-        ->where('type' , 'withdraw')
+
+        (float)$credit = Transaction::where('type' , 'withdraw')
         ->sum('amount');
+
         (float)$net_total = $debit - $credit;
         $net_total = number_format($net_total, 2, '.', '') ?? '0.00';
         return view('amounts.index', compact('net_total'));
