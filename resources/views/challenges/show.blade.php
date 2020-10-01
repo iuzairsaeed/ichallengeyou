@@ -564,7 +564,6 @@
             {
                 data: 'created_at'
             },
-            { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
                                 if(full.isWinner != "Winner" && full.showWinBtn == true){
                                     $('.winnerCard').prop('hidden' , false);
