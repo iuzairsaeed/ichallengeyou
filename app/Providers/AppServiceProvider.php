@@ -81,7 +81,7 @@ class AppServiceProvider extends ServiceProvider
 
         // View Notifications on Admin Web
         if (Schema::hasTable('notifications')) {
-            View::share('notifications', Notification::where('user_id' , 1)->latest()->limit(8)->get());
+            View::share('notifications', Notification::where('user_id' , auth()-id())->latest()->limit(8)->get());
         }
     }
 }

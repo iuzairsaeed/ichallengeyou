@@ -104,9 +104,9 @@ class SubmitChallengeObserver
             (float) $winner_amount = $amount_sum * ((int)config('global.WINNING_AMOUNT_IN_PERCENTAGE') / 100 );
             $winner_amount = round($winner_amount,2);
             $winner->balance = (float)$winner->getRawOriginal('balance') + $winner_amount;
-            $winner->update();
+            $winner->save();
             $creater->balance = (float)$creater->getRawOriginal('balance') + $creater_amount;
-            $creater->update();
+            $creater->save();
 
             # TRANSACTION FOR WINNER
             $transaction = new Transaction([
@@ -129,21 +129,23 @@ class SubmitChallengeObserver
             ]);
             $winner->transactions()->save($transaction);
             // TO DONATORS --
-            foreach ($donators as $donator) {
-                $notification[] = new Notification([
-                    'user_id' => $donator->user->id,
-                    'title' => 'Win Challenge',
-                    'body' => $winner->name.' WIN the Challenge '.$challenge->title,
-                    'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN',
-                    'data_id' => $challenge->id,
-                ]);
-                
-                // $donator->user->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
-                $notify_user = User::find($donator->user->id);
-                Notifications::send($notify_user, new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
-
+            if($donators){
+                foreach ($donators as $donator) {
+                    $notification[] = new Notification([
+                        'user_id' => $donator->user->id,
+                        'title' => 'Win Challenge',
+                        'body' => $winner->name.' WIN the Challenge '.$challenge->title,
+                        'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN',
+                        'data_id' => $challenge->id,
+                    ]);
+                    
+                    // $donator->user->notify(new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
+                    $notify_user = User::find($donator->user->id);
+                    Notifications::send($notify_user, new ChallengeSubmited('toDonator&Creator', $challenge->id, $winner, $creater, $challenge));
+    
+                }
+                $submitChallenge->notifications()->saveMany($notification);
             }
-            $submitChallenge->notifications()->saveMany($notification);
             // TO CREATER --
             $createrNotification = new Notification([
                 'user_id' => $creater->id,
