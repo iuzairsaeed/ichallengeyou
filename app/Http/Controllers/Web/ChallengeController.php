@@ -14,6 +14,7 @@ use App\Models\Challenge;
 use App\Models\Amount;
 use App\Models\Bid;
 use App\Models\Vote;
+use App\Models\User;
 use DB;
 use Notification as Notifications;
 

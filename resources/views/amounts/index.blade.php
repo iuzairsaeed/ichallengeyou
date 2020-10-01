@@ -35,10 +35,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>User</th>
-                                        <th>ChallengeTitle</th>
                                         <th>Amount</th>
                                         <th>Reason</th>
-                                        <th>Created By</th>
+                                        <th>Created Date</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -76,13 +75,12 @@
                 data: 'user.name'
             },
             {
-                data: 'challenge_title'
-            },
-            {
                 data: 'amount'
             },
             {
-                data: 'reason'
+                data: 'reason' , render: function (data, type, full, meta) {
+                    return `<p>${full.reason} ${full.challenge_title != "" ? '('+full.challenge_title+')' : "" }</p>`;
+                }
             },
             {
                 data: 'created_at'

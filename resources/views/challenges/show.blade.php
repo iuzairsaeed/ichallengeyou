@@ -137,7 +137,11 @@
                                     @endif
                                 @endif
                             </div>
-                            @if ($challenge->status != Deleted())
+                            @if (
+                                $challenge->status == Pending() || 
+                                $challenge->status == Approved() || 
+                                $challenge->status == Denied()
+                            )
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -155,18 +159,19 @@
                                                     <input type="radio" class="custom-control-input" name="is_active" id="is_active3" value='denied' {{($challenge->status == 'Denied') ? 'checked' :''}} {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
                                                     <label class="custom-control-label" for="is_active3">Reject</label>
                                                 </div>
-                                                <div class="custom-control custom-radio display-inline-block ml-2">
-                                                    <input type="radio" class="custom-control-input" name="is_active" id="is_active4" value='completed' {{($challenge->status == 'Completed') ? 'checked' :'' }}>
-                                                    <label class="custom-control-label" for="is_active4">Completed</label>
-                                                </div>
-                                                <div class="custom-control custom-radio display-inline-block ml-2">
-                                                    <input type="radio" class="custom-control-input" name="is_active" id="is_active5" value='expired' {{($challenge->status == 'Expired') ? 'checked' :'' }}>
-                                                    <label class="custom-control-label" for="is_active5">Expired</label>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            @else
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Status</label>
+                                        <p>{{ $challenge->status }}</p>
+                                    </div>
+                                </div>
+                            </div>
                             @endif
                         </div>
                     </form>
@@ -362,9 +367,6 @@
                             <button type="reset" data-dismiss="modal" class="btn btn-raised btn-danger mr-1">
                                 <i class="icon-trash"></i> Cancel
                             </button>
-                            <button type="submit" class="btn btn-raised btn-success updateBtn" hidden>
-                                <i class="icon-note"></i> Update
-                            </button>
                         </div>
                     </form>
                 </div>
@@ -509,18 +511,10 @@
             { data: 'actions', render:function (data, type, full, meta) {
                                 if(full.isWinner != "Winner"){
                                     $('.winnerCard').prop('hidden' , false);
-                                    $('.updateBtn').prop('hidden' , true);
                                     $('.winnerSpan').html(
-                                        `<div class="input-group">
-                                            <div class="custom-control custom-radio display-inline-block" style="margin:0px 10px">
-                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner2" value="no" checked>
-                                                <label class="custom-control-label" for="is_winner2"> No </label>
-                                            </div>
-                                            <div class="custom-control custom-radio display-inline-block pr-3" style="margin:0px 20px">
-                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner1" value="yes">
-                                                <label class="custom-control-label" for="is_winner1"> Yes </label>
-                                            </div>
-                                        </div>`
+                                        `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
+                                            <i class="icon-trophy"></i> Mark as Winner ★
+                                        </button>`
                                     );
                                 } else {
                                     $('.updateBtn').prop('hidden' , true);
@@ -553,12 +547,11 @@
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
                 if(res.data[0].submit_challenge.isWinner == true ){
-                    $('.winnerCard').show();
+                    console.log(res.data[0].submit_challenge.isWinner);
+                    $('.winnerCard').prop('hidden' , false);
                     $('.winnerSpan').html(
                         '<div><p>'+user.name+' is Winnner <i class="bold success icon-trophy"></i></p></div>'
                     );
-                } else {
-                    $('.winnerCard').hide();
                 }
 
                 $('.carousel-inner').empty();
@@ -610,7 +603,7 @@
                     dataType: 'json',
                     data: {
                         id : $('#submitedChallengeID').val(),
-                        value : $('input[name="is_winner"]:checked').val()
+                        value : 'yes'
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -618,6 +611,7 @@
                     success:function(data){
                         swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
                         $('#dTable').DataTable().ajax.reload();
+                        $('#submitorsTable').DataTable().ajax.reload();
                         $('#editSubmitorDetail').modal('hide');
                     },
                     error: function (e) {

@@ -7,6 +7,7 @@ use App\Notifications\LoadNotification;
 use App\Notifications\MiscellaneousNotification;
 use App\Notifications\WithdrawalNotification;
 use App\Notifications\DonateNotification;
+use App\Models\User;
 use Notification as Notifications;
 
 

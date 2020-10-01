@@ -12,19 +12,11 @@
                 </div>
                 <div class="card-body px-4">
 
-                    <form id="deleteForm" action="/amounts/{{$amount->id}}" method="POST">
-                        @method('Delete')
-                        @csrf
-                    </form>
-                    <form id="updateForm" action="/amounts/{{$amount->id}}" method="POST">
-                        @method('PUT')
-                        @csrf
-
                         <div class="form-body">
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label class="text-bold-700">Transaction Type</label><br>
+                                    <label class="text-bold-700">Reason</label><br>
                                     <p style="margin:10px" > {{$amount->reason}}</p>
                                 </div>
                                 <div class="col-md-4">
@@ -56,23 +48,9 @@
                                         <p style="margin:10px" > {{$amount->invoice_type}}</p>
                                     </div>
                                 @endif
-                            </div>
+                            </div><br>
                         </div>
                     </form>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-actions left">
-                                <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
-                                    <i class="icon-check"></i> Update Challenge
-                                </button>
-                                <button type="submit" form="deleteForm" class="btn btn-raised btn-danger">
-                                    <i class="icon-trash"></i> Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
                 </div>
             </div>
         </div>
