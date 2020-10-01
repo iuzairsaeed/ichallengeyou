@@ -105,6 +105,11 @@ class AcceptedChallengeController extends Controller
             $submitChallenge = $acceptedChallenge->submitChallenge;
             $submitChallenge->isWinner = true;
             $submitChallenge->update();
+        } elseif ($request->value == 'no'){
+            $acceptedChallenge = AcceptedChallenge::findOrFail($request->id);
+            $submitChallenge = $acceptedChallenge->submitChallenge;
+            $submitChallenge->isWinner = false;
+            $submitChallenge->update();
         }
         return true;
     }

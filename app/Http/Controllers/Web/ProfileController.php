@@ -8,8 +8,9 @@ use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\ProfileUpdateRequest;
 use App\Notifications\ChallengeNotification;
 use App\Models\Challenge;
+use App\Models\User;
 use Hash;
-use Notification;
+use Notification as Notifications;
 
 class ProfileController extends Controller
 {

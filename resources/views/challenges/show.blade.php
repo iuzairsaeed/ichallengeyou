@@ -339,23 +339,14 @@
                                     </div>
                                 </div>
 
-                                <div class="card">
+                                <div class="card winnerCard" hidden>
                                     <div class="card-header">
                                         <div class="card-title-wrap bar-success">
                                             <h4 class="card-title">Marked As Winner</h4>
                                             <div class="winner">
                                                 <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <div class="custom-control custom-radio display-inline-block" style="margin:0px 10px">
-                                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner2" value="no">
-                                                                <label class="custom-control-label" for="is_winner2"> No </label>
-                                                            </div>
-                                                            <div class="custom-control custom-radio display-inline-block pr-3" style="margin:0px 20px">
-                                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner1" value="yes">
-                                                                <label class="custom-control-label" for="is_winner1"> Yes </label>
-                                                            </div>
-                                                        </div>
+                                                    <div class="form-group winnerSpan">
+                                                        {{-- Winner Checked 1|0  --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -371,7 +362,7 @@
                             <button type="reset" data-dismiss="modal" class="btn btn-raised btn-danger mr-1">
                                 <i class="icon-trash"></i> Cancel
                             </button>
-                            <button type="submit" class="btn btn-raised btn-success">
+                            <button type="submit" class="btn btn-raised btn-success updateBtn">
                                 <i class="icon-note"></i> Update
                             </button>
                         </div>
@@ -385,7 +376,7 @@
 
 @section('afterScript')
 <script>
-
+    
     $('#donationsTable').DataTable({
         processing: true,
         serverSide: true,
@@ -509,6 +500,24 @@
             { data: 'user.name' },
             { data: 'created_at' },
             { data: 'actions', render:function (data, type, full, meta) {
+                                if(full.isWinner != "Winner"){
+                                    $('.winnerCard').prop('hidden' , false);
+                                    $('.winnerSpan').html(
+                                        `<div class="input-group">
+                                            <div class="custom-control custom-radio display-inline-block" style="margin:0px 10px">
+                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner2" value="no" checked>
+                                                <label class="custom-control-label" for="is_winner2"> No </label>
+                                            </div>
+                                            <div class="custom-control custom-radio display-inline-block pr-3" style="margin:0px 20px">
+                                                <input type="radio" class="custom-control-input" name="is_winner" id="is_winner1" value="yes">
+                                                <label class="custom-control-label" for="is_winner1"> Yes </label>
+                                            </div>
+                                        </div>`
+                                    );
+                                } else {
+                                    $('.updateBtn').prop('hidden' , true);
+                                    $('.winnerCard').prop('hidden' , true);
+                                }
                                 return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
                                         data-keyboard="false" data-target="#editSubmitorDetail">
                                             <i class="ft-edit font-medium-3"></i>
@@ -537,9 +546,7 @@
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
                 if(res.data[0].submit_challenge.isWinner == true ){
-                    $('#is_winner1')[0].checked= true;
-                } else {
-                    $('#is_winner2')[0].checked= true;
+                    $('.winnerCard').hide();
                 }
 
                 $('.carousel-inner').empty();
@@ -574,26 +581,39 @@
 
     $('#updateSubmitorDetail').submit(function(e){
         e.preventDefault();
-        $.ajax({
-            url: "{{ route('submitor.winner') }}",
-            method: "POST",
-            dataType: 'json',
-            data: {
-                id : $('#submitedChallengeID').val(),
-                value : $('input[name="is_winner"]:checked').val()
-            },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success:function(data){
-                swal("Winner Announced!", "Action has been performed successfully!", "success").catch(swal.noop);
-                $('#dTable').DataTable().ajax.reload();
-                $('#editSubmitorDetail').modal('hide');
-            },
-            error: function (e) {
-                swal("Error!", "There has been some error!", "error");
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0CC27E',
+            cancelButtonColor: '#FF586B',
+            confirmButtonText: 'Yes, Update',
+            cancelButtonText: "No, Cancel"
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "{{ route('submitor.winner') }}",
+                    method: "POST",
+                    dataType: 'json',
+                    data: {
+                        id : $('#submitedChallengeID').val(),
+                        value : $('input[name="is_winner"]:checked').val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success:function(data){
+                        swal("Updated!", "Action has been performed successfully!", "success").catch(swal.noop);
+                        $('#dTable').DataTable().ajax.reload();
+                        $('#editSubmitorDetail').modal('hide');
+                    },
+                    error: function (e) {
+                        swal("Error!", "There has been some error!", "error");
+                    }
+                });
             }
-        });
+        }).catch(swal.noop);
     });
 
     $('#votersTable').DataTable({
