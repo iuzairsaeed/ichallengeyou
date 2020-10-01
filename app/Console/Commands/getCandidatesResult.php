@@ -49,6 +49,7 @@ class getCandidatesResult extends Command
                 $acceptedChallenges = $item->acceptedChallenges;
                 foreach ($acceptedChallenges as $acceptedChallenge) {
                     $isSubmited = $acceptedChallenge->submitChallenge ? ++$isSubmited : $isSubmited;
+                    break;
                 }
                 if($isSubmited > 0){
                     $item->setStatus(ResultPending());
