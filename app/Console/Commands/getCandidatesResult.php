@@ -3,8 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 use App\Models\AskCandidate;
 use App\Models\Challenge;
+use App\Models\SubmitChallenge;
+use App\Http\Controllers\Api\SubmitChallengeController;
 
 class getCandidatesResult extends Command
 {
@@ -55,6 +58,8 @@ class getCandidatesResult extends Command
                     $item->setStatus(ResultPending());
                 }
             }
+            $SubmitChallengeController = new SubmitChallengeController(new SubmitChallenge);
+            $SubmitChallengeController->getSubmitChallengerList($item,new Request);
         }
         foreach ($challenges as $value) {
             $challenge = Challenge::findOrFail($value->challenge_id);
