@@ -112,17 +112,7 @@
                             </div>
 
                             <div class="row">
-                                @if (now() > $challenge->after_date )
-                                    @if ($winner)
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="text-bold-700">Winner </label>
-                                                <p class="font text-bold-500">
-                                                    {{ optional(optional($winner)->user)->username ?? ' ' }} <i
-                                                        class="icon-trophy"></i></p>
-                                            </div>
-                                        </div>
-                                    @elseif($challenge->result_type == 'vote')
+                                @if (now() > $challenge->after_date && $challenge->result_type == 'vote' )
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label class="text-bold-700">Voters on this challenge </label>
@@ -143,7 +133,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @endif
                                 @endif
                             </div>
                             @if (

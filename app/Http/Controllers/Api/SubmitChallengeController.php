@@ -54,7 +54,7 @@ class SubmitChallengeController extends Controller
     public function saveWinner($submitedChallenge) {
         try {
             $submitedChallenge->isWinner = true;
-            // $submitedChallenge->update();
+            $submitedChallenge->update();
             return true;
         } catch (\Throwable $th) {
             return $th->getMessage();

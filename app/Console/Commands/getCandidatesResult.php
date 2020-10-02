@@ -57,11 +57,11 @@ class getCandidatesResult extends Command
                 $item->setStatus(Expired());
             }else if($item->status == Approved() && now() >= $item->after_date) {
                 if($isSubmited){
+                    $item->setStatus(ResultPending());
                     if($item->result_type == 'vote') {
                         $SubmitChallengeController = new SubmitChallengeController(new SubmitChallenge);
                         $SubmitChallengeController->getSubmitChallengerList($item,new Request);
                     }
-                    $item->setStatus(ResultPending());
                 }
             }
         }
