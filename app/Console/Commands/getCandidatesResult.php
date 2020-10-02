@@ -42,6 +42,8 @@ class getCandidatesResult extends Command
      */
     public function handle()
     {
+        // DB::Ra
+        return 0;
         $challenges = AskCandidate::where('updated_at' , '>=' , now())->latest()->get()->unique('challenge_id');
         $all_chellenges = Challenge::latest()->get();
         foreach($all_chellenges as $item){
