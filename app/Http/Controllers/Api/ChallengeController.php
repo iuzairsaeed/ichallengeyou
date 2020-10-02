@@ -209,17 +209,12 @@ class ChallengeController extends Controller
             if($challenge->user->id == $id){
                 $isCreator = true;
             }
-            foreach($acceptedChallenges as $acceptedChallenge){
-                if($acceptedChallenge->user_id == $id){
-                    $isAccepted++;
-                }
-            }
             if($challenge->donations->where('user_id',  $id)->isNotEmpty()){
                 $isDonator = true;
             }
             $isSubmitted = optional($data['data']->acceptedChallenges()->where('user_id', $id)
             ->where('challenge_id', $challenge->id)->first())->SubmitChallenge ? true : false;
-            if( $isCreator || $isDonator || $isAccepted > 0 || $isSubmitted ){
+            if( $isCreator || $isDonator || $isSubmitted ){
                 $data['data']['reviewBtn'] = true;
             }
             if($challenge->allowVoter == "premiumUsers"  && $user->is_premium){
