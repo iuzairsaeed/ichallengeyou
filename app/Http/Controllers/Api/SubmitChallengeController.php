@@ -168,7 +168,6 @@ class SubmitChallengeController extends Controller
             ->where('notifiable_type', 'App\Models\SubmitChallenge' )
             ->where('click_action', 'ASK_RESULT_DIALOG' )
             ->exists();
-            // dd($isNotification);
             if(!$isNotification){
                 if($d->submitChallenge){
                     # Send Notification to Submitor
@@ -177,7 +176,7 @@ class SubmitChallengeController extends Controller
                         'title' => 'Result has been tied',
                         'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask the App Admin to Evaluate or The Public?',
                         'click_action' => 'ASK_RESULT_DIALOG',
-                        'data_id' => $d->id,
+                        'data_id' => $challenge->id,
                     ]);
                     $notify_user = User::find($d->user->id);
                     Notifications::send($notify_user, new AskCandidate($challenge->id));
