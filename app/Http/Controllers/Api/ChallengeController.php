@@ -223,8 +223,8 @@ class ChallengeController extends Controller
             if($challenge->allowVoter == "premiumUsers"  && $user->is_premium){
                 $data['data']['reviewBtn'] = true;
             }
-            $isSubmitted = $data['data']->acceptedChallenges()->where('user_id', $id)
-            ->where('challenge_id', $challenge->id)->first()->SubmitChallenge ? true : false;
+            $isSubmitted = optional($data['data']->acceptedChallenges()->where('user_id', $id)
+            ->where('challenge_id', $challenge->id)->first())->SubmitChallenge ? true : false;
         }
         if(in_array($data['data']->status, [Expired(), Completed(), Deleted(), ResultPending()])) {
             $data['data']['acceptBtn'] = false;
