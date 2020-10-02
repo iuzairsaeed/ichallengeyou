@@ -53,7 +53,7 @@ class getCandidatesResult extends Command
                     break;
                 }
             }
-            if($item->status <> Expired() && $isSubmited && now() >= $item->after_date){
+            if($item->status <> Expired() && !$isSubmited && now() >= $item->after_date){
                 $item->setStatus(Expired());
             }else if($item->status == Approved() && now() >= $item->after_date) {
                 if($isSubmited){
