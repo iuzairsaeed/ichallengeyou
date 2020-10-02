@@ -135,31 +135,61 @@ class SubmitChallengeController extends Controller
                         }
                     }
                 } else {
-                    $isNotification = Notification::where('notifiable_id', $data['data'][0]->submitChallenge->id )
-                        ->where('notifiable_type', 'App\Models\SubmitChallenge' )
-                        ->where('click_action', 'ASK_RESULT_DIALOG' )
-                        ->exists();
-                    if(!$isNotification){
-                        foreach ($data['data'] as $challenger) {
-                            $notification = new Notification([
-                                'user_id' => $challenger->user->id,
-                                'title' => 'Result has been tied',
-                                'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask the App Admin to Evaluate or The Public?',
-                                'click_action' => 'ASK_RESULT_DIALOG',
-                                'data_id' => $challenger->id,
-                            ]);
-                            // $challenger->user->notify(new AskCandidate($challenger->id));
-                            $notify_user = User::find($challenger->user->id);
-                            Notifications::send($notify_user, new AskCandidate($challenge->id));
-                            $challenger->submitChallenge->notifications()->save($notification);
+                    foreach ($data['data'] as $challenger) {
+                        if($challenger->submitChallenge){
+                            $isNotification = Notification::where('notifiable_id', $challenger->submitChallenge->id )
+                            ->where('notifiable_type', 'App\Models\SubmitChallenge' )
+                            ->where('click_action', 'ASK_RESULT_DIALOG' )
+                            ->exists();
+                            if(!$isNotification){
+                                // SEND NOTIFICATION TO SUBMITOR
+                                $notification = new Notification([
+                                    'user_id' => $challenger->user->id,
+                                    'title' => 'Result has been tied',
+                                    'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask the App Admin to Evaluate or The Public?',
+                                    'click_action' => 'ASK_RESULT_DIALOG',
+                                    'data_id' => $challenger->id,
+                                ]);
+                                $notify_user = User::find($challenger->user->id);
+                                Notifications::send($notify_user, new AskCandidate($challenge->id));
+                                $challenger->submitChallenge->notifications()->save($notification);
+                            }
                         }
-                        Notification::create([
+                    }   
+                    // SEND NOTIFICATION TO CREATOR
+                    $isNotification = Notification::where('notifiable_id', $challenge->id )
+                    ->where('notifiable_type', 'App\Models\Challenge' )
+                    ->where('click_action', 'CHALLENGE_DETAIL_SCREEN' )
+                    ->where('user_id', $challenge->user->id )
+                    ->exists();
+                    if(!$isNotification){
+                        # Send notification to creator 
+                        $notification = new Notification([
+                            'user_id' => $challenge->user->id,
+                            'title' => 'Result Still Pending',
+                            'body' => 'Result has been tied of challenge '.$challenge->title,
+                            'click_action' => 'CHALLENGE_DETAIL_SCREEN',
+                            'data_id' => $challenge->id,
+                        ]);
+                        $notify_user = User::find($challenge->user->id);
+                        Notifications::send($notify_user, new AskCandidate($challenge->id));
+                        $challenge->notifications()->save($notification);
+                    }
+                    $isNotification = Notification::where('notifiable_id', $challenge->id )
+                    ->where('notifiable_type', 'App\Models\Challenge' )
+                    ->where('click_action', 'CHALLENGE_DETAIL_SCREEN' )
+                    ->where('user_id', 1 )
+                    ->exists();
+                    // SEND NOTIFICATION TO ADMIN
+                    if(!$isNotification){
+                        $adminNotification = new Notification([
                             'user_id' => 1,
-                            'title' => 'Result has been tied',
+                            'title' => 'Result Still Pending',
                             'body' => 'Result has been tied of the challenge '.$challenge->title,
                             'click_action' => 'CHALLENGE_DETAIL_SCREEN',
                             'data_id' => $challenge->id,
                         ]);
+                        $challenge->notifications()->save($adminNotification);
                     }
                 }
             }
