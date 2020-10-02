@@ -176,8 +176,8 @@ class SubmitChallengeObserver
             // TO WINNER
             $winnerNotification = new Notification([
                 'user_id' => $winner->id,
-                'title' => 'Congratulations! You have Won The Challenge ★',
-                'body' => ($winner->name ?? $winner->username).' WIN the Challenge '.$challenge->title,
+                'title' => 'Yoy WIN the Challenge '.$challenge->title,
+                'body' => 'Congratulations! You have Won The Challenge ★',
                 'click_action' =>'SUBMITED_CHALLENGE_LIST_SCREEN',
                 'data_id' => $challenge->id,
             ]);
