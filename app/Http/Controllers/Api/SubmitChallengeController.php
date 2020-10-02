@@ -164,19 +164,13 @@ class SubmitChallengeController extends Controller
                 }
             }
         } else {
-            
-            foreach ($acceptedChallenges as $acceptedChallenge) {
-                $isNotification = Notification::where('notifiable_id', $acceptedChallenge->submitChallenge->id )
-                ->where('notifiable_type', 'App\Models\SubmitChallenge' )
-                ->where('click_action', 'ASK_RESULT_DIALOG' )
-                ->exists();
-                if($isNotification){
-                    break;
-                }
-            }
-            if(!$isNotification){
-                foreach ($data['data'] as $acceptedChallenge) {
-                    if($acceptedChallenge->submitChallenge){
+            foreach ($data['data'] as $acceptedChallenge) {
+                if($acceptedChallenge->submitChallenge){
+                    $isNotification = Notification::where('notifiable_id', $acceptedChallenge->submitChallenge->id )
+                    ->where('notifiable_type', 'App\Models\SubmitChallenge' )
+                    ->where('click_action', 'ASK_RESULT_DIALOG' )
+                    ->exists();
+                    if(!$isNotification){
                         # Send Notification to Submitor
                         $notification = new Notification([
                             'user_id' => $acceptedChallenge->user->id,
@@ -190,6 +184,13 @@ class SubmitChallengeController extends Controller
                         $acceptedChallenge->submitChallenge->notifications()->save($notification);
                     }
                 }
+            }
+            $isNotification = Notification::where('notifiable_id', $challenge->id )
+            ->where('notifiable_type', 'App\Models\Challenge' )
+            ->where('click_action', 'CHALLENGE_DETAIL_SCREEN' )
+            ->where('user_id', $challenge->user->id )
+            ->exists();
+            if(!$isNotification){
                 # Send notification to creator 
                 $notification = new Notification([
                     'user_id' => $challenge->user->id,
@@ -201,7 +202,13 @@ class SubmitChallengeController extends Controller
                 $notify_user = User::find($challenge->user->id);
                 Notifications::send($notify_user, new AskCandidate($challenge->id));
                 $challenge->notifications()->save($notification);
-                
+            }
+            $isNotification = Notification::where('notifiable_id', $challenge->id )
+            ->where('notifiable_type', 'App\Models\Challenge' )
+            ->where('click_action', 'CHALLENGE_DETAIL_SCREEN' )
+            ->where('user_id', 1 )
+            ->exists();
+            if(!$isNotification){
                 $adminNotification = new Notification([
                     'user_id' => 1,
                     'title' => 'Result Still Pending',
