@@ -45,20 +45,22 @@ class getCandidatesResult extends Command
         $challenges = AskCandidate::where('updated_at' , '>=' , now())->latest()->get()->unique('challenge_id');
         $all_chellenges = Challenge::latest()->get();
         foreach($all_chellenges as $item){
-            if($item->status <> Expired() && $item->acceptedChallenges->first() == null && now() >= $item->after_date){
+            $isSubmited = false;
+            $acceptedChallenges = $item->acceptedChallenges;
+            foreach ($acceptedChallenges as $acceptedChallenge) {
+                $isSubmited = $acceptedChallenge->submitChallenge ? true : false;
+                if($isSubmited){
+                    break;
+                }
+            }
+            if($item->status <> Expired() && $isSubmited && now() >= $item->after_date){
                 $item->setStatus(Expired());
             }else if($item->status == Approved() && now() >= $item->after_date) {
-                $isSubmited = false;
-                $acceptedChallenges = $item->acceptedChallenges;
-                foreach ($acceptedChallenges as $acceptedChallenge) {
-                    $isSubmited = $acceptedChallenge->submitChallenge ? true : false;
-                    if($isSubmited){
-                        $item->setStatus(ResultPending());
-                        if($item->result_type == 'vote') {
-                            $SubmitChallengeController = new SubmitChallengeController(new SubmitChallenge);
-                            $SubmitChallengeController->getSubmitChallengerList($item,new Request);
-                        }
-                        break;
+                if($isSubmited){
+                    $item->setStatus(ResultPending());
+                    if($item->result_type == 'vote') {
+                        $SubmitChallengeController = new SubmitChallengeController(new SubmitChallenge);
+                        $SubmitChallengeController->getSubmitChallengerList($item,new Request);
                     }
                 }
             }
