@@ -84,29 +84,8 @@ class ChallengeController extends Controller
     {
         try {
             $challenge = Challenge::withTrashed()->findOrFail($id);
-            $count = 0; $isWinner = 0;
             $data = $this->getSubmitors($challenge,$request)->original;
-            $results = $this->result($challenge)->original;
-            if($results){
-                foreach ($results as $result) {
-                    if(($result['result'] >= 40 && $result['result'] <= 60) || $result['result'] >= 51 ){
-                        $count++;   
-                    }
-                }
-            }
-            if($isWinner <> 1){
-                if($count == 1){
-                    foreach ($data['data'] as $value) {
-                        foreach ($results as $result) {
-                            if($value->user_id == $result['id'] && $result['result'] >= 51){
-                                $value['isWinner'] = true;
-                            }
-                        }
-                    }
-                }
-            }
-            $winner = optional($data['data'])->where('isWinner','Winner')->first();
-            return view('challenges.show', compact('challenge','winner'));
+            return view('challenges.show', compact('challenge'));
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -149,7 +128,6 @@ class ChallengeController extends Controller
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $challenge->id, 
                 ]);
-                // $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
                 $notify_user = User::find($challenge->user->id);
                 Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
                 $challenge->notifications()->save($notification);
@@ -165,7 +143,6 @@ class ChallengeController extends Controller
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
                     'data_id' => $challenge->id, 
                 ]);
-                // $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
                 $notify_user = User::find($challenge->user->id);
                 Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
                 $challenge->notifications()->save($notification);
@@ -189,7 +166,6 @@ class ChallengeController extends Controller
             $this->model->delete($challenge);
             // Notification
             $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
-            // $challenge->user->notify(new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
             $notify_user = User::find($challenge->user->id);
             Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
             DB::commit();
