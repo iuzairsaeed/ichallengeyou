@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
         $data = [
             [
                 'role' => Admin(),
-                'balance' => 1000.00,
+                'balance' => 1000000.00,
                 'is_premium' => 1,
                 'name' => 'Admin User',
                 'username' => 'admin',
@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => now()
             ], [
                 'role' => Normal(),
-                'balance' => 1000.00,
+                'balance' => 100000.00,
                 'is_premium' => 1,
                 'name' => 'Test User 1',
                 'username' => 'user1',
@@ -37,8 +37,8 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => now()
             ], [
                 'role' => Normal(),
-                'balance' => 0.00,
-                'is_premium' => 0,
+                'balance' => 10000.00,
+                'is_premium' => 1,
                 'name' => 'Test User 2',
                 'username' => 'user2',
                 'email' => 'user2@idu.com',
@@ -47,7 +47,7 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => now()
             ], [
                 'role' => Normal(),
-                'balance' => 50.00,
+                'balance' => 50000.00,
                 'is_premium' => 1,
                 'name' => 'Test User 3',
                 'username' => 'user3',

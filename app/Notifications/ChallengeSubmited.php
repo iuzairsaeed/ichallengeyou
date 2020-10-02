@@ -50,7 +50,7 @@ class ChallengeSubmited extends Notification
             $message = new FcmMessage();
             $message->content([
                 'title' => 'Challenge Submited',
-                'body' => ($this->winner->name ?? $this->winner->username) .' has been Submited the Challenge '.$this->challenge->title,
+                'body' => ($this->winner->name ?? $this->winner->username) .' have Submited the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
@@ -62,7 +62,7 @@ class ChallengeSubmited extends Notification
             $message = new FcmMessage();
             $message->content([
                 'title' => 'Challenge Submited',
-                'body' => 'You has been Submited the Challenge '.$this->challenge->title,
+                'body' => 'You have Submited the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional
                 'click_action' => 'SUBMITED_CHALLENGE_LIST_SCREEN' // Optional
@@ -86,7 +86,7 @@ class ChallengeSubmited extends Notification
         } elseif ($this->action == 'toSubmitor') {
             $message = new FcmMessage();
             $message->content([
-                'title' => 'Challenge Submited',
+                'title' => 'Win Challenge',
                 'body' => ($this->winner->name ?? $this->winner->username).' WIN the Challenge '.$this->challenge->title,
                 'sound'        => '', // Optional
                 'icon'         => 'favicon.ico', // Optional

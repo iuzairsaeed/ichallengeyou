@@ -156,13 +156,15 @@
                                     <div class="form-group">
                                         <label class="text-bold-700">Status</label>
                                         <div class="input-group">
-                                            <div class="custom-control custom-radio display-inline-block">
-                                                <input type="radio" class="custom-control-input" name="is_active"
-                                                    id="is_active2" value='pending'
-                                                    {{($challenge->status == 'Pending') ? 'checked' :''}}
-                                                    {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
-                                                <label class="custom-control-label" for="is_active2">Pending</label>
-                                            </div>
+                                            @if($challenge->status == Pending() || now() <= $challenge->start_time)
+                                                <div class="custom-control custom-radio display-inline-block">
+                                                    <input type="radio" class="custom-control-input" name="is_active"
+                                                        id="is_active2" value='pending'
+                                                        {{($challenge->status == 'Pending') ? 'checked' :''}}
+                                                        {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
+                                                    <label class="custom-control-label" for="is_active2">Pending</label>
+                                                </div>
+                                            @endif
                                             <div class="custom-control custom-radio display-inline-block ml-2">
                                                 <input type="radio" class="custom-control-input" name="is_active"
                                                     id="is_active1" value='approved'

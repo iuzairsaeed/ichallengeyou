@@ -157,7 +157,7 @@ class ChallengeController extends Controller
     public function show(Challenge $challenge, Request $request)
     {
         $id = (int)$request->user_id;
-        $user = User::where('id',$id)->first();
+        $user = User::find($id);
         $challenge_id = $challenge->id;
         $whereChecks = ['id'];
         $whereOps = ['='];
@@ -195,7 +195,7 @@ class ChallengeController extends Controller
             $data['data']['donateBtn'] = false;
             $data['data']['bidBtn'] = false;
         }
-        if($id){
+        if($user){
             if($data['data']->user_id == (int)$id){
                 $data['data']['acceptBtn'] = false;
                 $data['data']['donateBtn'] = false;
@@ -213,11 +213,14 @@ class ChallengeController extends Controller
                 if($acceptedChallenge->user_id == $id){
                     $isSubmited++;
                 }
-                if($challenge->donations->where('user_id',  $id)->first()){
-                    $isDonator = true;
-                }
             }
-            if( $isCreator || $isDonator || $isSubmited > 0 ){
+            if($challenge->donations->where('user_id',  $id)->isNotEmpty()){
+                $isDonator = true;
+            }
+            if( $isCreator || $isDonator || $isSubmited > 0  ){
+                $data['data']['reviewBtn'] = true;
+            }
+            if($challenge->allowVoter == "premiumUsers"  && $user->is_premium){
                 $data['data']['reviewBtn'] = true;
             }
         }
