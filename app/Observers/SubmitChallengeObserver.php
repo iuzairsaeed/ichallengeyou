@@ -124,7 +124,7 @@ class SubmitChallengeObserver
                 'invoice_id' => null,
                 'status' => 'paid',
             ]);
-            $winner->transactions()->save($transaction);
+            $creater->transactions()->save($transaction);
             // TO DONATORS --
             if($donators->isNotEmpty()){
                 foreach ($donators as $donator) {
