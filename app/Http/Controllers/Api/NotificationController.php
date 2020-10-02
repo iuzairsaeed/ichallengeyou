@@ -54,7 +54,7 @@ class NotificationController extends Controller
             }
             if($item['click_action'] == "ASK_RESULT_DIALOG"){
                 $item['file'] = $item->user->avatar;
-                $item['data_id'] = $item->notifiable->id;
+                $item['data_id'] = $item->data_id;
             }
         });
         $data['data'] = NotificationCollection::collection($data['data']);
