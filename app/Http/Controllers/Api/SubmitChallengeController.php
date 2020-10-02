@@ -186,8 +186,8 @@ class SubmitChallengeController extends Controller
                 $notification = new Notification([
                     'user_id' => $challenge->user->id,
                     'title' => 'Result Still Pending',
-                    'body' => 'Result has been tied of challenge '.$challenge->title.', Do you want to ask The App Admin to Evaluate or The Public?',
-                    'click_action' => 'ASK_RESULT_DIALOG',
+                    'body' => 'Result has been tied of challenge '.$challenge->title,
+                    'click_action' => 'CHALLENGE_DETAIL_SCREEN',
                     'data_id' => $challenge->id,
                 ]);
                 $notify_user = User::find($challenge->user->id);
