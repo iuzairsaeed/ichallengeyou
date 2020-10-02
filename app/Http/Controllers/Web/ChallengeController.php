@@ -321,8 +321,8 @@ class ChallengeController extends Controller
         foreach ($data['data'] as $d) {
             $d->challenge->isWinner ? ++$isWinner : $isWinner;
             $showWinBtn = (
-                ($d->challenge->result_type  == 'first_win' && $d->challenge->status == ResultPending()) ||
-                ($d->challenge->allowVoter  == 'admin')
+                ( $d->challenge->result_type  == 'first_win' && $d->challenge->status == ResultPending() ) ||
+                ( $d->challenge->allowVoter  == 'admin' && $d->challenge->status == ResultPending() )
             ) ? true : false;
         }
         collect($data['data'])->map(function ($item) use (&$serial , $isWinner, $showWinBtn) {
