@@ -205,24 +205,26 @@ class ChallengeController extends Controller
                 }
             }
             $acceptedChallenges = $data['data']->acceptedChallenges()->where('challenge_id', $challenge_id)->with('submitChallenge')->get();
-            $isSubmited = 0; $isDonator = false; $isCreator = false;
+            $isAccepted = 0; $isDonator = false; $isCreator = false; $isSubmitted = false;
             if($challenge->user->id == $id){
                 $isCreator = true;
             }
             foreach($acceptedChallenges as $acceptedChallenge){
                 if($acceptedChallenge->user_id == $id){
-                    $isSubmited++;
+                    $isAccepted++;
                 }
             }
             if($challenge->donations->where('user_id',  $id)->isNotEmpty()){
                 $isDonator = true;
             }
-            if( $isCreator || $isDonator || $isSubmited > 0  ){
+            if( $isCreator || $isDonator || $isAccepted > 0 || $isSubmitted ){
                 $data['data']['reviewBtn'] = true;
             }
             if($challenge->allowVoter == "premiumUsers"  && $user->is_premium){
                 $data['data']['reviewBtn'] = true;
             }
+            $isSubmitted = $data['data']->acceptedChallenges()->where('user_id', $id)
+            ->where('challenge_id', $challenge->id)->first()->SubmitChallenge ? true : false;
         }
         if(in_array($data['data']->status, [Expired(), Completed(), Deleted(), ResultPending()])) {
             $data['data']['acceptBtn'] = false;
