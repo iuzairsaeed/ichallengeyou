@@ -320,7 +320,10 @@ class ChallengeController extends Controller
         $showWinBtn = false;
         foreach ($data['data'] as $d) {
             $d->challenge->isWinner ? ++$isWinner : $isWinner;
-            $showWinBtn = ($d->challenge->result_type  == 'first_win' && $d->challenge->status == ResultPending() ) ? true : false;
+            $showWinBtn = (
+                ($d->challenge->result_type  == 'first_win' && $d->challenge->status == ResultPending()) ||
+                ($d->challenge->allowVoter  == 'admin')
+            ) ? true : false;
         }
         collect($data['data'])->map(function ($item) use (&$serial , $isWinner, $showWinBtn) {
             $item['isWinner'] = ($isWinner > 0) ? 'Winner' : '-';
