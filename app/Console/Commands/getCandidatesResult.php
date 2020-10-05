@@ -74,6 +74,7 @@ class getCandidatesResult extends Command
             SELECT max(id) FROM `statuses` WHERE model_type = "App\\\Models\\\Challenge"
         GROUP by model_id)
         and s.name = "Approved"
+        and c.deleted_at == null
         GROUP by c.id)'
         );
         if($expired_challenges){
