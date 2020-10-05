@@ -60,7 +60,8 @@ class getCandidatesResult extends Command
 
         $expired_challenges = DB::select('SELECT id from challenges
         where 
-        date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
+        deleted_at = null
+        and date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
         and id not in (
         SELECT 
         c.id
@@ -74,7 +75,6 @@ class getCandidatesResult extends Command
             SELECT max(id) FROM `statuses` WHERE model_type = "App\\\Models\\\Challenge"
         GROUP by model_id)
         and s.name = "Approved"
-        and c.deleted_at == null
         GROUP by c.id)'
         );
         if($expired_challenges){
