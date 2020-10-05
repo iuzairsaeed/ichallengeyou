@@ -98,11 +98,9 @@ class Repository implements RepositoryInterface
         $recordsTotal = $records->count();
 
         if($from){
-            $from = Carbon::createFromFormat("m/d/Y", $from)->format("Y-m-d");
             $records->whereDate('created_at' ,'>=', $from);
         }
         if($to){
-            $to = Carbon::createFromFormat("m/d/Y", $to)->format("Y-m-d");
             $records->whereDate('created_at' ,'<=', $to);
         }
 
