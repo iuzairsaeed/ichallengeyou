@@ -51,45 +51,45 @@ class getCandidatesResult extends Command
         INNER JOIN statuses s ON s.model_id = c.id 
         WHERE
         date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
-        -- AND s.id IN (
-        --     SELECT max(id) FROM `statuses` WHERE model_type = "App\\Models\\Challenge"
-        -- GROUP BY model_id)
+        AND s.id IN (
+            SELECT max(id) FROM `statuses` WHERE model_type = "App\\\Models\\\Challenge"
+        GROUP BY model_id)
         AND s.name = "Approved" 
         GROUP BY c.id'
         );
 
-        // $expired_challenges = DB::select('SELECT 
-        // id FROM challenges
-        // WHERE 
-        // date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
-        // AND id NOT IN (
-        // SELECT 
-        // c.id
-        // from challenges c
-        // INNER JOIN accepted_challenges AS ac ON ac.challenge_id = c.id
-        // INNER JOIN submit_challenges AS sc ON ac.id = sc.accepted_challenge_id
-        // INNER JOIN statuses s ON s.model_id = c.id 
-        // WHERE
-        // date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
-        // -- AND s.id IN (
-        // --     SELECT max(id) FROM `statuses` WHERE model_type = "App\\Models\\Challenge"
-        // -- GROUP BY model_id) -- Because it gives Completed Challenges || ResulTPending Challenge as well
-        // AND s.name = "Approved"
-        // GROUP BY c.id)'
-        // );
-        // if($expired_challenges){
-        //     foreach ($expired_challenges as $expired_challenge) {
-        //         $challenge = Challenge::find($expired_challenge->id);
-        //         $challenge->setStatus(Expired());
-        //     }
-        // }
-        // dd($challenges);
+        $expired_challenges = DB::select('SELECT id from challenges
+        where 
+        date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
+        and id not in (
+        SELECT 
+        c.id
+        from challenges c
+        INNER JOIN accepted_challenges as ac on ac.challenge_id = c.id
+        INNER JOIN submit_challenges as sc on ac.id = sc.accepted_challenge_id
+        INNER JOIN statuses s on s.model_id = c.id 
+        WHERE
+        date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
+        and s.id in (
+            SELECT max(id) FROM `statuses` WHERE model_type = "App\\\Models\\\Challenge"
+        GROUP by model_id)
+        and s.name = "Approved"
+        GROUP by c.id)'
+        );
+        if($expired_challenges){
+            foreach ($expired_challenges as $expired_challenge) {
+                $challenge = Challenge::find($expired_challenge->id);
+                if($challenge->status <> Expired() ){
+                    $challenge->setStatus(Expired());
+                }
+            }
+        }
         foreach ($challenges as $challenge) {
             $result = DB::select('SELECT 
             submited_challenge_id, sum(vote_up) - sum(vote_down) votescount from votes v 
             inner JOIN submit_challenges sc on sc.id = v.submited_challenge_id 
             inner JOIN accepted_challenges ac on ac.id = sc.accepted_challenge_id 
-            where ac.challenge_id = 5
+            where ac.challenge_id = '.$challenge->id.'
             group by submited_challenge_id ORDER by votescount DESC LIMIT 2');
             if(!$result){
                 $challenge = Challenge::find($challenge->id);
@@ -99,12 +99,10 @@ class getCandidatesResult extends Command
                 $sub_challenge = SubmitChallenge::find($result[0]->submited_challenge_id);
                 $sub_challenge->isWinner = true;
                 $sub_challenge->save();
-                // DB::update('UPDATE submit_challenges SET isWinner = true where id = ?', [$result[0]->submited_challenge_id]);
             } elseif ($result[0]->votescount > $result[1]->votescount){
                 $sub_challenge = SubmitChallenge::find($result[0]->submited_challenge_id);
                 $sub_challenge->isWinner = true;
                 $sub_challenge->save();
-                // DB::update('UPDATE submit_challenges SET isWinner = true where id = ?', [$result[0]->submited_challenge_id]);
             } elseif ($result[0]->votescount == $result[1]->votescount) {
                 $challenge = Challenge::find($challenge->id);
                 $challenge->setStatus(ResultPending());
@@ -116,31 +114,6 @@ class getCandidatesResult extends Command
             }
         }
 
-        $all_chellenges = Challenge::latest()->get();
-        foreach($all_chellenges as $item){
-            $isSubmited = false;
-            $acceptedChallenges = $item->acceptedChallenges;
-            foreach ($acceptedChallenges as $acceptedChallenge) {
-                $isSubmited = $acceptedChallenge->submitChallenge ? true : false;
-                if($isSubmited){
-                    break;
-                }
-            }
-            if($item->status <> Expired() && !$isSubmited && now() >= $item->after_date){
-                $item->setStatus(Expired());
-            }
-            if($item->status == Approved() && now() >= $item->after_date) {
-                if($isSubmited){
-                    $item->setStatus(ResultPending());
-                }
-            }
-        }
-
-        // foreach ($challenges as $value) {
-        //     $challenge = Challenge::findOrFail($value->challenge_id);
-        //     $res = $this->result($challenge);
-        //     $this->info($res['message']);
-        // }
     }
 
     public function result(Challenge $challenge) {

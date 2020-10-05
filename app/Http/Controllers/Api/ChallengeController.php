@@ -184,11 +184,16 @@ class ChallengeController extends Controller
         $data['data']->initialAmount->amount = config('global.CURRENCY').' '.$data['data']->initialAmount->amount;
         $data['data']['status'] = $data['data']->status;
 
-        if($data['data']->acceptedChallenges()->where('user_id', $id)->first()){
+        // if accepted challenge
+        if($data['data']->acceptedChallenges()->where('user_id', $id)->first() ){
             $data['data']['acceptBtn'] = false;
-            $data['data']['submitBtn'] = true;
             $data['data']['donateBtn'] = false;
         }
+        // if accepted challenge & start time has arrived
+        if($data['data']->acceptedChallenges()->where('user_id', $id)->first() && now() > $data['data']->start_time ){
+            $data['data']['submitBtn'] = true;
+        }
+        // if submitted challenge
         if(optional($data['data']->acceptedChallenges()->where('user_id', $id)->first())->submitChallenge){
             $data['data']['acceptBtn'] = false;
             $data['data']['submitBtn'] = false;
