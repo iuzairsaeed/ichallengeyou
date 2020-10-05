@@ -21,38 +21,38 @@ class VoteObserver
      */
     public function created(Vote $vote)
     {
-        try {
-            $voter = $vote->user;
-            $user = $vote->submitChallenges->acceptedChallenge->user;
-            $challenge = $vote->submitChallenges->acceptedChallenge->challenge;
-            // Challenger
-            $notification = new Notification([
-                'user_id' => $user->id,
-                'title' => 'Check Your Votes', 
-                'body' => ($voter->name ?? $voter->username).' has Vote You on the Submited Challenge '.$challenge->title, 
-                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
-                'data_id' => $vote->submitChallenges->accepted_challenge_id, 
-            ]);
-            // $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
-            $notify_user = User::find($user->id);
-            Notifications::send($notify_user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+        // try {
+        //     $voter = $vote->user;
+        //     $user = $vote->submitChallenges->acceptedChallenge->user;
+        //     $challenge = $vote->submitChallenges->acceptedChallenge->challenge;
+        //     // Challenger
+        //     $notification = new Notification([
+        //         'user_id' => $user->id,
+        //         'title' => 'Check Your Votes',
+        //         'body' => ($voter->name ?? $voter->username).' has Vote You on the Submited Challenge '.$challenge->title,
+        //         'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
+        //         'data_id' => $vote->submitChallenges->accepted_challenge_id,
+        //     ]);
+        //     // $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+        //     $notify_user = User::find($user->id);
+        //     Notifications::send($notify_user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
 
-            $vote->notifications()->save($notification);
-            // Admin
-            $notification = new Notification([
-                'user_id' => 1,
-                'title' => 'Votes', 
-                'body' => ($voter->name ?? $voter->username).' has Vote '.$user->name ?? $user->username.' on the Submited Challenge of '.$challenge->title, 
-                'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
-                'data_id' => $vote->submitChallenges->accepted_challenge_id, 
-            ]);
-            // $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
-            // Notifications::send($user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+        //     $vote->notifications()->save($notification);
+        //     // Admin
+        //     $notification = new Notification([
+        //         'user_id' => 1,
+        //         'title' => 'Votes',
+        //         'body' => ($voter->name ?? $voter->username).' has Vote '.$user->name ?? $user->username.' on the Submited Challenge of '.$challenge->title,
+        //         'click_action' => 'SUBMITED_CHALLENGE_DETAIL_SCREEN',
+        //         'data_id' => $vote->submitChallenges->accepted_challenge_id,
+        //     ]);
+        //     // $user->notify(new VoteNotification($vote->submitChallenges->accepted_challenge_id));
+        //     // Notifications::send($user, new VoteNotification($vote->submitChallenges->accepted_challenge_id));
 
-            $vote->notifications()->save($notification);
-        } catch (\Throwable $th) {
-            return response('No Votes Found' , 404);
-        }
+        //     $vote->notifications()->save($notification);
+        // } catch (\Throwable $th) {
+        //     return response('No Votes Found' , 404);
+        // }
     }
 
     /**
