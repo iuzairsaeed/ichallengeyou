@@ -61,11 +61,11 @@ class VoteController extends Controller
                                     $data = $this->votingUp($submitedChallenge);$res = 200;
                                 }
                             }
-                        } else if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'premiumUsers'){
-                            $data['message'] = 'You\'re out of time.';
-                            if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
-                                $data = $this->votingUp($submitedChallenge);$res = 200;
-                            }
+                        // } else if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'premiumUsers'){
+                        //     $data['message'] = 'You\'re out of time.';
+                        //     if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
+                        //         $data = $this->votingUp($submitedChallenge);$res = 200;
+                        //     }
                         } else {
                             $data['message'] = config('global.ADMIN_DECIDE_WINNER_MESSAGE');
                         }
@@ -138,15 +138,15 @@ class VoteController extends Controller
                             if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date){
                                 $data = $this->votingDown($submitedChallenge);$res = 200;
                             }
-                        } else if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'premiumUsers'){
-                            $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
-                            $data['message'] = config('global.DONATOR_CAN_VOTE_MESSAGE');
-                            if($donator){
-                                $data['message'] = 'You\'re out of time.';
-                                if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
-                                    $data = $this->votingDown($submitedChallenge);$res = 200;
-                                }
-                            }
+                        // } else if($submitedChallenge->acceptedChallenge->challenge->allowVoter == 'premiumUsers'){
+                        //     $donator = Amount::where('user_id',auth()->id())->where('challenge_id',$challenge->id)->first();
+                        //     $data['message'] = config('global.DONATOR_CAN_VOTE_MESSAGE');
+                        //     if($donator){
+                        //         $data['message'] = 'You\'re out of time.';
+                        //         if(now() <= $submitedChallenge->acceptedChallenge->challenge->after_date->addDays(config('global.SECOND_VOTE_DURATION_IN_DAYS')) ){
+                        //             $data = $this->votingDown($submitedChallenge);$res = 200;
+                        //         }
+                        //     }
                         } else {
                             $data['message'] = config('global.ADMIN_DECIDE_WINNER_MESSAGE');
                         }
