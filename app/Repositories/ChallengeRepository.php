@@ -7,6 +7,7 @@ use App\Models\Challenge;
 use App\Models\SubmitChallenge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 use DB;
 
 class ChallengeRepository implements RepositoryInterface
@@ -130,11 +131,9 @@ class ChallengeRepository implements RepositoryInterface
         $recordsTotal = $records->count();
 
         if($from){
-            $from = Carbon::createFromFormat("m/d/Y", $from)->format("Y-m-d");
             $records->whereDate('created_at' ,'>=', $from);
         }
         if($to){
-            $to = Carbon::createFromFormat("m/d/Y", $to)->format("Y-m-d");
             $records->whereDate('created_at' ,'<=', $to);
         }
 

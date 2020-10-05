@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Challenge;
 use App\Models\SubmitChallenge;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use DB;
 
 class VoteRepository implements RepositoryInterface
@@ -104,5 +105,5 @@ class VoteRepository implements RepositoryInterface
         return $data;
     }
 
-    
+
 }
