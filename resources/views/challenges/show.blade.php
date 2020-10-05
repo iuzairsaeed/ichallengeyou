@@ -580,18 +580,10 @@
                 data: 'created_at'
             },
             { data: 'actions', render:function (data, type, full, meta) {
-                                if(full.isWinner != "Winner" && full.showWinBtn == true){
-                                    $('.winnerCard').prop('hidden' , false);
-                                    $('.winnerBtn').html(
-                                        `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
-                                            <i class="icon-trophy"></i> Mark as Winner ★
-                                        </button>`
-                                    );
-                                } 
-                            return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
-                                        data-keyboard="false" data-target="#editSubmitorDetail">
-                                            <i class="ft-edit font-medium-3"></i>
-                                    </a>`;
+                    return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
+                                data-keyboard="false" data-target="#editSubmitorDetail">
+                                    <i class="ft-edit font-medium-3"></i>
+                            </a>`;
                 }
             }
         ],
@@ -618,14 +610,25 @@
                 let submit_files = res.data[0].submit_files;
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
-                if (res.data[0].submit_challenge.isWinner == true) {
+                if (res.data[0].isWinner == "Winner") {
                     $('.winnerCard').prop('hidden', false);
                     $('.winnerSpan').html(
                         '<div><p>' + user.name +
                         ' is Winnner <i class="bold success icon-trophy"></i></p></div>'
                     );
+                } else {
+                    $('.winnerCard').prop('hidden', true);
                 }
-                
+
+                if(res.data[0].showWinBtn){
+                    $('.winnerCard').prop('hidden' , false);
+                    $('.winnerBtn').html(
+                        `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
+                            <i class="icon-trophy"></i> Mark as Winner ★
+                        </button>`
+                    );
+                }
+
                 $('.carousel-inner').empty();
                 for (let i = 0; i < submit_files.length; i++) {
                     $('.carousel-inner').append(
