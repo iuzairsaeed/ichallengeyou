@@ -56,18 +56,18 @@ class SettingsTableSeeder extends Seeder
                 'type' => 'text',
                 'setting_type' => 'setting'
             ],
-            [
-                'name' => 'ASK_CANDIDATES_DURATION_IN_HOURS',
-                'value' => 24,
-                'type' => 'number',
-                'setting_type' => 'setting'
-            ],
-            [
-                'name' => 'SECOND_VOTE_DURATION_IN_DAYS',
-                'value' => 2,
-                'type' => 'number',
-                'setting_type' => 'setting'
-            ],
+            // [
+            //     'name' => 'ASK_CANDIDATES_DURATION_IN_HOURS',
+            //     'value' => 24,
+            //     'type' => 'number',
+            //     'setting_type' => 'setting'
+            // ],
+            // [
+            //     'name' => 'SECOND_VOTE_DURATION_IN_DAYS',
+            //     'value' => 2,
+            //     'type' => 'number',
+            //     'setting_type' => 'setting'
+            // ],
             [
                 'name' => 'WINNING_AMOUNT_IN_PERCENTAGE',
                 'value' => 75,
