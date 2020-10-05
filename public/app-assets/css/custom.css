@@ -67,7 +67,7 @@
         width: 100%;
         max-width: 100%;
     }
-    #navbarSupportedContent .navbar-nav > li:first-child  .show>.dropdown-menu.notification-dropdown .arrow_box_right:after{
+    #navbarSupportedContent .navbar-nav > li:first-child  .arrow_box_right:after{
         right: 4rem;
     }
 }
@@ -77,5 +77,18 @@
     }
     div.table-responsive>div.dataTables_wrapper>div.row>div[class^=col-]:last-child{
         padding-left:0;
+    }
+}
+@media (max-width: 320px){
+    .navbar-right {
+        float: right;
+        display: block;
+    }
+    .navbar-nav > li {
+        float: left;
+        margin-right: 0.5rem;
+    }
+    .dropdown-menu{
+        font-size: 0.9rem;
     }
 }
