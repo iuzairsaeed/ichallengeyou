@@ -114,8 +114,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700">Voters on this challenge </label>
-                                        <p class="" >{{$challenge->allowVoter}}</p>
+                                        <label class="text-bold-700">Result Announce By </label>
+                                        <p>{{
+                                            ($challenge->allowVoter == 'admin') ?  'Admin' : 
+                                            ($challenge->allowVoter == 'donators' ?  'Donors' : 'Premium Users') 
+                                        }}</p>
                                     </div>
                                 </div>
                             
