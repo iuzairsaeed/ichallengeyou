@@ -10,15 +10,15 @@
                         <h4 class="card-title">Challenge Detail</h4>
                     </div>
                 </div>
-                <div class="card-body px-4">
+                <div class="card-body px-4 px-md-2">
                     <div class="border-bottom mb-4">
                         <div class="align-self-center halfway-fab text-center mb-4">
                             @if(strstr($challenge->file_mime, "video/"))
-                            <video class="width-400" controls>
+                            <video class="width-400 mw-100" controls>
                                 <source src="{{ asset($challenge->file) }}" type="{{$challenge->file_mime}}">
                             </video>
                             @elseif(strstr($challenge->file_mime, "image/"))
-                            <img src="{{ asset($challenge->file) }}" class="width-400" alt="File not available.">
+                            <img src="{{ asset($challenge->file) }}" class="width-400 mw-100" alt="File not available.">
                             @endif
                         </div>
                     </div>
