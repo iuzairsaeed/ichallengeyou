@@ -48,6 +48,7 @@ class TransactionController extends Controller
                                 'challenge_id' => null,
                                 'amount' => $amount,
                                 'type' => 'withdraw',
+                                'status' => "paid",
                                 'invoice_id' => $pay_id,
                             ];
                             $this->model->create($transaction);
@@ -65,7 +66,7 @@ class TransactionController extends Controller
         return response($data, $res);
     }
 
-    public function history(Transaction $request)
+    public function history(Request $request)
     {
         try {
             $orderableCols = ['created_at'];

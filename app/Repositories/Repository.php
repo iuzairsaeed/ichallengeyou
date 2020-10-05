@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use DB;
 
 class Repository implements RepositoryInterface

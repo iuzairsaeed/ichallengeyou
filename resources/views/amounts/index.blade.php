@@ -94,14 +94,14 @@
                 }
             }
         ],
-        order: [0, 'desc'],
+        order: [4, 'desc'],
         columnDefs: [{
                 width: "6%",
                 "targets": [-1, 0]
             },
             {
                 orderable: false,
-                targets: [-1, -5, -6]
+                // targets: [-1, -5, -6]
             }
         ],
     });

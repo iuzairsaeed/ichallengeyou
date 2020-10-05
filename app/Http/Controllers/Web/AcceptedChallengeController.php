@@ -90,9 +90,25 @@ class AcceptedChallengeController extends Controller
 
         $data = $this->model->getData($request, $with, $withTrash, $withCount, $whereHas, $withSums, $withSumsCol, $addWithSums, $whereChecks,
                                         $whereOps, $whereVals, $searchableCols, $orderableCols, $currentStatus);
+
+        $isWinner = 0;
+        $showWinBtn = false;
+        foreach ($data['data'] as $d) {
+            $d->submitChallenge->isWinner ? ++$isWinner : $isWinner;
+            $showWinBtn = (
+                ( $d->challenge->result_type  == 'first_win' && $d->challenge->status == ResultPending() ) ||
+                ( $d->challenge->allowVoter  == 'admin' && $d->challenge->status == ResultPending() )
+            ) ? true : false;
+        }
+
         $serial = ($request->start ?? 0) + 1;
-        collect($data['data'])->map(function ($item) use (&$serial) {
-            $item['isWinner'] = $item->submitChallenge->first()->isWinner ? 'Winner' : '-';
+        collect($data['data'])->map(function ($item) use (&$serial , $showWinBtn) {
+            $item['isWinner'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
+            $item['vote_up'] = $item->submitChallenge->votes->where('vote_up', true)->count();
+            $item['vote_down'] = $item->submitChallenge->votes->where('vote_down', true)->count();
+            $item['total_votes'] = ($item->submitChallenge->votes->where('vote_up', true)->count() - 
+                                    $item->submitChallenge->votes->where('vote_down', true)->count());
+            $item['showWinBtn'] = $showWinBtn;
             $item['serial'] = $serial++;
             return $item;
         });

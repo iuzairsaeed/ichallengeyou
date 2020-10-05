@@ -114,8 +114,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700">Voters on this challenge </label>
-                                        <p class="" >{{$challenge->allowVoter}}</p>
+                                        <label class="text-bold-700">Result Announce By </label>
+                                        <p>{{
+                                            ($challenge->allowVoter == 'admin') ?  'Admin' : 
+                                            ($challenge->allowVoter == 'donators' ?  'Donors' : 'Premium Users') 
+                                        }}</p>
                                     </div>
                                 </div>
                             
@@ -370,6 +373,9 @@
                                                     <div class="form-group winnerSpan">
                                                         {{-- Winner Checked 1|0  --}}
                                                     </div>
+                                                    <div class="form-group winnerBtn">
+                                                        {{-- Winner Checked 1|0  --}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -574,18 +580,10 @@
                 data: 'created_at'
             },
             { data: 'actions', render:function (data, type, full, meta) {
-                                if(full.isWinner != "Winner" && full.showWinBtn == true){
-                                    $('.winnerCard').prop('hidden' , false);
-                                    $('.winnerSpan').html(
-                                        `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
-                                            <i class="icon-trophy"></i> Mark as Winner ★
-                                        </button>`
-                                    );
-                                } 
-                            return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
-                                        data-keyboard="false" data-target="#editSubmitorDetail">
-                                            <i class="ft-edit font-medium-3"></i>
-                                    </a>`;
+                    return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
+                                data-keyboard="false" data-target="#editSubmitorDetail">
+                                    <i class="ft-edit font-medium-3"></i>
+                            </a>`;
                 }
             }
         ],
@@ -612,7 +610,7 @@
                 let submit_files = res.data[0].submit_files;
                 let submitted_date = res.data[0].submit_challenge.created_at;
                 let user = res.data[0].user;
-                if (res.data[0].submit_challenge.isWinner == true) {
+                if (res.data[0].isWinner == "Winner") {
                     $('.winnerCard').prop('hidden', false);
                     $('.winnerSpan').html(
                         '<div><p>' + user.name +
@@ -620,6 +618,15 @@
                     );
                 } else {
                     $('.winnerCard').prop('hidden', true);
+                }
+
+                if(res.data[0].showWinBtn){
+                    $('.winnerCard').prop('hidden' , false);
+                    $('.winnerBtn').html(
+                        `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
+                            <i class="icon-trophy"></i> Mark as Winner ★
+                        </button>`
+                    );
                 }
 
                 $('.carousel-inner').empty();

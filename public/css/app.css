@@ -58339,7 +58339,11 @@ input[type='radio'].switch {
         width: 100%;
         max-width: 100%;
     }
+<<<<<<< HEAD
     #navbarSupportedContent .navbar-nav > li:first-child  .arrow_box_right:after{
+=======
+    #navbarSupportedContent .navbar-nav > li:first-child  .show>.dropdown-menu.notification-dropdown .arrow_box_right:after{
+>>>>>>> c08b012f2c8c569756f697a09871262a928897b1
         right: 4rem;
     }
 }
