@@ -65,7 +65,7 @@ class TransactionController extends Controller
         return response($data, $res);
     }
 
-    public function history(Transaction $request)
+    public function history(Request $request)
     {
         try {
             $orderableCols = ['created_at'];

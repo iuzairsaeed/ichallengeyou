@@ -7,6 +7,7 @@ use App\Models\Challenge;
 use App\Models\SubmitChallenge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 use DB;
 
 class ChallengeRepository implements RepositoryInterface
