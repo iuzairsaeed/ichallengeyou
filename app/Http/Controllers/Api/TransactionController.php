@@ -48,6 +48,7 @@ class TransactionController extends Controller
                                 'challenge_id' => null,
                                 'amount' => $amount,
                                 'type' => 'withdraw',
+                                'status' => "paid",
                                 'invoice_id' => $pay_id,
                             ];
                             $this->model->create($transaction);
