@@ -50,7 +50,7 @@ class getCandidatesResult extends Command
         INNER JOIN submit_challenges AS sc ON ac.id = sc.accepted_challenge_id
         INNER JOIN statuses s ON s.model_id = c.id 
         WHERE
-        date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
+        date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < UTC_TIMESTAMP()
         AND s.id IN (
             SELECT max(id) FROM `statuses` WHERE model_type = "App\\\Models\\\Challenge"
         GROUP BY model_id)
@@ -61,7 +61,7 @@ class getCandidatesResult extends Command
         $expired_challenges = DB::select('SELECT id from challenges
         where 
         deleted_at = null
-        and date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
+        and date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < UTC_TIMESTAMP()
         and id not in (
         SELECT 
         c.id
@@ -70,7 +70,7 @@ class getCandidatesResult extends Command
         INNER JOIN submit_challenges as sc on ac.id = sc.accepted_challenge_id
         INNER JOIN statuses s on s.model_id = c.id 
         WHERE
-        date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < CURRENT_TIMESTAMP()
+        date_add(date_add(DATE_ADD(start_time, INTERVAL duration_minutes MINUTE), INTERVAL duration_hours HOUR), INTERVAL duration_days DAY) < UTC_TIMESTAMP()
         and s.id in (
             SELECT max(id) FROM `statuses` WHERE model_type = "App\\\Models\\\Challenge"
         GROUP by model_id)
