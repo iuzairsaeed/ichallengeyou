@@ -112,29 +112,25 @@
                             </div>
 
                             <div class="row">
-                                @if (now() > $challenge->after_date && $challenge->result_type == 'vote' )
-                                    <div class="col-md-8">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Voters on this challenge </label>
+                                        <p class="" >{{$challenge->allowVoter}}</p>
+                                    </div>
+                                </div>
+                            
+                                @if ($challenge->status == Completed() )
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="text-bold-700">Voters on this challenge </label>
-                                            <div class="input-group">
-                                                <div class="custom-control custom-radio display-inline-block pr-3">
-                                                    <input type="radio" class="custom-control-input" name="is_voter"
-                                                        id="is_voter1" value='donators'
-                                                        {{($challenge->allowVoter == 'donators') ? 'checked' : '' }}>
-                                                    <label class="custom-control-label" for="is_voter1">Donators</label>
-                                                </div>
-                                                <div class="custom-control custom-radio display-inline-block">
-                                                    <input type="radio" class="custom-control-input" name="is_voter"
-                                                        id="is_voter2" value='premiumUsers'
-                                                        {{($challenge->allowVoter == 'premiumUsers') ? 'checked' :'' }}>
-                                                    <label class="custom-control-label" for="is_voter2">Premium
-                                                        Users</label>
-                                                </div>
-                                            </div>
+                                            <label class="text-bold-700">Winner </label>
+                                            <p class="font text-bold-500">
+                                                {{ (optional(optional($winner)->user)->name)?? ' ' }} <i
+                                                    class="icon-trophy success"></i></p>
                                         </div>
                                     </div>
                                 @endif
                             </div>
+
                             @if (
                             $challenge->status == Pending() ||
                             $challenge->status == Approved() ||
@@ -284,6 +280,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>User</th>
+                                        <th>Vote Up</th>
+                                        <th>Vote Down</th>
+                                        <th>Total Votes</th>
                                         <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
@@ -538,7 +537,8 @@
                 return reason;
             }
         },
-        columns: [{
+        columns: [
+            {
                 data: 'serial'
             },
             {
@@ -553,6 +553,24 @@
                 }
             },
             {
+                data: 'vote_up',
+                render: function (data, type, full, meta) {
+                    return `<p>` + full.vote_up + ` <i class="ft-thumbs-up"></i></p> `;
+                }
+            },
+            {
+                data: 'vote_down',
+                render: function (data, type, full, meta) {
+                    return `<p>` + full.vote_down + ` <i class="ft-thumbs-down"></i></p>`;
+                }
+            },
+            {
+                data: 'total_votes',
+                render: function (data, type, full, meta) {
+                    return `<p>` + full.total_votes + ` <i class="ft-thumbs-up"></i></p> `;
+                }
+            },
+            {
                 data: 'created_at'
             },
             { data: 'actions', render:function (data, type, full, meta) {
@@ -562,12 +580,12 @@
                                         `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
                                             <i class="icon-trophy"></i> Mark as Winner ★
                                         </button>`
-                        );
-                    }
-                    return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
+                                    );
+                                } 
+                            return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
                                         data-keyboard="false" data-target="#editSubmitorDetail">
                                             <i class="ft-edit font-medium-3"></i>
-                                        </a>`;
+                                    </a>`;
                 }
             }
         ],
@@ -600,6 +618,8 @@
                         '<div><p>' + user.name +
                         ' is Winnner <i class="bold success icon-trophy"></i></p></div>'
                     );
+                } else {
+                    $('.winnerCard').prop('hidden', true);
                 }
 
                 $('.carousel-inner').empty();
@@ -690,7 +710,7 @@
                 data: 'serial'
             },
             {
-                data: 'voter.user.name'
+                data: 'voter.user.username'
             },
             {
                 data: 'voter.vote_up'

@@ -85,7 +85,9 @@ class ChallengeController extends Controller
         try {
             $challenge = Challenge::withTrashed()->findOrFail($id);
             $data = $this->getSubmitors($challenge,$request)->original;
-            return view('challenges.show', compact('challenge'));
+            
+            $winner = optional($data['data'])->where('isWinner','Winner')->first();
+            return view('challenges.show', compact('challenge','winner'));
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -295,7 +297,7 @@ class ChallengeController extends Controller
         $isWinner = 0;
         $showWinBtn = false;
         foreach ($data['data'] as $d) {
-            $d->challenge->isWinner ? ++$isWinner : $isWinner;
+            $d->submitChallenge->isWinner ? ++$isWinner : $isWinner;
             $showWinBtn = (
                 ( $d->challenge->result_type  == 'first_win' && $d->challenge->status == ResultPending() ) ||
                 ( $d->challenge->allowVoter  == 'admin' && $d->challenge->status == ResultPending() )
@@ -304,6 +306,10 @@ class ChallengeController extends Controller
         collect($data['data'])->map(function ($item) use (&$serial , $isWinner, $showWinBtn) {
             $item['isWinner'] = ($isWinner > 0) ? 'Winner' : '-';
             $item['showTrophy'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
+            $item['vote_up'] = $item->submitChallenge->votes->where('vote_up', true)->count();
+            $item['vote_down'] = $item->submitChallenge->votes->where('vote_down', true)->count();
+            $item['total_votes'] = ($item->submitChallenge->votes->where('vote_up', true)->count() - 
+                                    $item->submitChallenge->votes->where('vote_down', true)->count());
             $item['showWinBtn'] = $showWinBtn;
             $item['serial'] = $serial++;
             return $item;
