@@ -304,7 +304,7 @@ class ChallengeController extends Controller
             ) ? true : false;
         }
         collect($data['data'])->map(function ($item) use (&$serial , $isWinner, $showWinBtn) {
-            $item['isWinner'] = ($isWinner > 0) ? 'Winner' : '-';
+            $item['isWinner'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
             $item['showTrophy'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
             $item['vote_up'] = $item->submitChallenge->votes->where('vote_up', true)->count();
             $item['vote_down'] = $item->submitChallenge->votes->where('vote_down', true)->count();

@@ -373,6 +373,9 @@
                                                     <div class="form-group winnerSpan">
                                                         {{-- Winner Checked 1|0  --}}
                                                     </div>
+                                                    <div class="form-group winnerBtn">
+                                                        {{-- Winner Checked 1|0  --}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -579,7 +582,7 @@
             { data: 'actions', render:function (data, type, full, meta) {
                                 if(full.isWinner != "Winner" && full.showWinBtn == true){
                                     $('.winnerCard').prop('hidden' , false);
-                                    $('.winnerSpan').html(
+                                    $('.winnerBtn').html(
                                         `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
                                             <i class="icon-trophy"></i> Mark as Winner ★
                                         </button>`
@@ -621,10 +624,8 @@
                         '<div><p>' + user.name +
                         ' is Winnner <i class="bold success icon-trophy"></i></p></div>'
                     );
-                } else {
-                    $('.winnerCard').prop('hidden', true);
                 }
-
+                
                 $('.carousel-inner').empty();
                 for (let i = 0; i < submit_files.length; i++) {
                     $('.carousel-inner').append(

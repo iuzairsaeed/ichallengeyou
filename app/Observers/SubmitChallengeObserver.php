@@ -94,7 +94,7 @@ class SubmitChallengeObserver
             $challenge = $submitChallenge->acceptedChallenge->challenge;
             $submitors =  $submitChallenge->acceptedChallenge->challenge->acceptedChallenges;
 
-            $a= $challenge->setStatus(Completed());
+            $challenge->setStatus(Completed());
             // Give Winner Amount of doing challenge
             (float) $amount_sum = $challenge->amount_sum;
             (float) $creater_amount = $amount_sum * ((int)config('global.CREATER_AMOUNT_IN_PERCENTAGE') / 100 );
@@ -184,15 +184,16 @@ class SubmitChallengeObserver
             $submitChallenge->notifications()->save($winnerNotification);
             $notify_user = User::find($winner->id);
             Notifications::send($notify_user, new ChallengeSubmited('toWinner', $challenge->id, $winner, $creater, $challenge));
-
+            
             // TO ADMIN
-            Notification::create([
+            $adminNotification = new Notification([
                 'user_id' => 1,
                 'title' => ($winner->name ?? $winner->username).' - THE WINNER ★',
                 'body' => ($winner->name ?? $winner->username).' WIN the Challenge '.$challenge->title,
                 'click_action' =>'CHALLENGE_DETAIL_SCREEN',
                 'data_id' =>  $challenge->id,
             ]);
+            $challenge->notifications()->save($adminNotification);
         }
     }
 
