@@ -56,6 +56,9 @@
     var table = $('#dTable').DataTable({
         processing: true,
         serverSide: true,
+        oLanguage: {
+            sSearch: "Search by amount"
+        },
         ajax: {
             url: '{{ route("amounts.getList") }}',
             type: 'GET',

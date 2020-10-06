@@ -116,6 +116,9 @@
     var table = $('#dTable').DataTable({
         processing: true,
         serverSide: true,
+        oLanguage: {
+            sSearch: "Search by category"
+        },
         ajax: {
             url: '{{ route("category.getList") }}',
             type: 'GET',

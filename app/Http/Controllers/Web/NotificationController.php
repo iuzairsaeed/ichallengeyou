@@ -20,7 +20,7 @@ class NotificationController extends Controller
     public function getNotifications(Request $request)
     {
         $orderableCols = ['created_at'];
-        $searchableCols = ['title'];
+        $searchableCols = ['title', 'body'];
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];
@@ -28,18 +28,18 @@ class NotificationController extends Controller
         $withCount = [];
 
         $data = $this->model->getData($request, $with, $withCount, $whereChecks, $whereOps, $whereVals, $searchableCols, $orderableCols);
-       
+
         $serial = ($request->start ?? 0) +1 ;
         collect($data['data'])->map(function ($item) use (&$serial) {
             $item['serial'] = $serial++;
             if($item->notifiable_type == ''){
                 $item['file'] = $item->user->avatar;
                 $item['data_id'] = $item->user_id;
-            } else if(optional(optional($item->notifiable)->acceptedChallenge)->challenge){ 
+            } else if(optional(optional($item->notifiable)->acceptedChallenge)->challenge){
                 #ModelType = SubmitedChallenge
                 $item['file'] = $item->notifiable->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->accepted_challenge_id;
-            } else if(optional(optional($item->notifiable)->submitChallenges)->challenge) { 
+            } else if(optional(optional($item->notifiable)->submitChallenges)->challenge) {
                 $item['file'] = $item->notifiable->submitChallenges->acceptedChallenge->challenge->file;
                 $item['data_id'] = $item->notifiable->submitChallenges->accepted_challenge_id;
             }

@@ -19,7 +19,7 @@ class MessageController extends Controller
     public function getList(Request $request)
     {
         $orderableCols = ['created_at', 'name', 'value'];
-        $searchableCols = ['name'];
+        $searchableCols = ['name', 'value'];
         $whereChecks = ['setting_type'];
         $whereOps = ['='];
         $whereVals = ['dialog'];
