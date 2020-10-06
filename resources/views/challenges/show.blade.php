@@ -110,11 +110,11 @@
                                     </div>
                                 </div>
                             </div>
-
+                            @if ($challenge->status == Completed() )
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="text-bold-700">Result Announce By </label>
+                                        <label class="text-bold-700">Result Announced By </label>
                                         <p>{{
                                             ($challenge->allowVoter == 'admin') ?  'Admin' :
                                             ($challenge->allowVoter == 'donators' ?  'Donors' : 'Premium Users')
@@ -122,7 +122,6 @@
                                     </div>
                                 </div>
 
-                                @if ($challenge->status == Completed() )
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="text-bold-700">Winner </label>
@@ -131,8 +130,8 @@
                                                 class="icon-trophy success"></i></p>
                                     </div>
                                 </div>
-                                @endif
                             </div>
+                            @endif
 
                             @if (
                             $challenge->status == Pending() ||
