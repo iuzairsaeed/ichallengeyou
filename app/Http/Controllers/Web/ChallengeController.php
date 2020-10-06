@@ -142,6 +142,12 @@ class ChallengeController extends Controller
                 $creator->balance = $creator->getAttributes()['balance'] + $amount;
                 $creator->update();
 
+                $donations = $challenge->amounts->where('type' , 'donation');
+
+                foreach ($donations as $key => $donation) {
+                    # code...
+                }
+
                 $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
                 // TO CHALLENGE OWNER
                 $notification = new Notification([
