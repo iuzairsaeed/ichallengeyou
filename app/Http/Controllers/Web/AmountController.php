@@ -20,8 +20,8 @@ class AmountController extends Controller
     public function getList(Request $request)
     {
         // dd($request->all());
-        $orderableCols = ['user_id','challenge_id','amount','type','created_at'];
-        $searchableCols = ['type','amount'];
+        $orderableCols = ['user_id','challenge_id','amount','reason','created_at'];
+        $searchableCols = ['reason','amount'];
         $whereChecks = [];
         $whereOps = [];
         $whereVals = [];

@@ -54,6 +54,9 @@
     var table = $('#dTable').DataTable({
         processing: true,
         serverSide: true,
+        oLanguage: {
+            sSearch: "Search by title"
+        },
         ajax: {
             url: '{{ route("challenges.getList") }}',
             type: 'GET',
@@ -105,8 +108,6 @@
     $('#date_from').change(function () {
         $('#date_to').attr('min', $(this).val());
     });
-    var today = new Date().toISOString().split('T')[0];
-    $('#date_from, #date_to').attr('max', today);
 
     $('#date_from, #date_to').change(function () {
         $('#dTable').DataTable().ajax.reload();
