@@ -15,7 +15,7 @@ class AddRefundTypeToTransactionsTable extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             DB::statement('ALTER TABLE transactions MODIFY type
-            ENUM("miscellaneous", "load", "'.bioFile().'", "withdraw", "donate", "create_challenge", "won_challenge", "refund")');
+            ENUM("miscellaneous", "load", "withdraw", "donate", "create_challenge", "won_challenge", "refund")');
         });
     }
 
