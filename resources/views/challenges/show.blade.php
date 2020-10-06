@@ -135,8 +135,7 @@
 
                             @if (
                             $challenge->status == Pending() ||
-                            $challenge->status == Approved() ||
-                            $challenge->status == Denied()
+                            $challenge->status == Approved()
                             )
                             <div class="row">
                                 <div class="col-md-12">
