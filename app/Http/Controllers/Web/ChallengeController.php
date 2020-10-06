@@ -60,7 +60,7 @@ class ChallengeController extends Controller
         return response($data, 200);
     }
 
-    
+
 
     public function index()
     {
@@ -85,7 +85,7 @@ class ChallengeController extends Controller
         try {
             $challenge = Challenge::withTrashed()->findOrFail($id);
             $data = $this->getSubmitors($challenge,$request)->original;
-            
+
             $winner = optional($data['data'])->where('isWinner','Winner')->first();
             return view('challenges.show', compact('challenge','winner'));
         } catch (\Throwable $th) {
@@ -124,11 +124,11 @@ class ChallengeController extends Controller
                 $body = 'Congratulation! Your Challenge '.$challenge->title.' has been Approved';
                 // TO CHALLENGE OWNER
                 $notification = new Notification([
-                    'user_id' => $challenge->user_id, 
-                    'title' => 'Challenge Approved', 
-                    'body' => $body, 
-                    'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
-                    'data_id' => $challenge->id, 
+                    'user_id' => $challenge->user_id,
+                    'title' => 'Challenge Approved',
+                    'body' => $body,
+                    'click_action' =>'CHALLENGE_DETAIL_SCREEN',
+                    'data_id' => $challenge->id,
                 ]);
                 $notify_user = User::find($challenge->user->id);
                 Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
@@ -139,11 +139,11 @@ class ChallengeController extends Controller
                 $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
                 // TO CHALLENGE OWNER
                 $notification = new Notification([
-                    'user_id' => $challenge->user_id, 
-                    'title' => 'Challenge Rejected', 
-                    'body' => $body, 
-                    'click_action' =>'CHALLENGE_DETAIL_SCREEN', 
-                    'data_id' => $challenge->id, 
+                    'user_id' => $challenge->user_id,
+                    'title' => 'Challenge Rejected',
+                    'body' => $body,
+                    'click_action' =>'CHALLENGE_DETAIL_SCREEN',
+                    'data_id' => $challenge->id,
                 ]);
                 $notify_user = User::find($challenge->user->id);
                 Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
@@ -153,7 +153,7 @@ class ChallengeController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
-        
+
     }
 
     public function destroy(Challenge $challenge)
@@ -176,7 +176,7 @@ class ChallengeController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             throw $th;
-        } 
+        }
 
     }
 
@@ -189,7 +189,7 @@ class ChallengeController extends Controller
             return redirect()->back()->with('success', 'Challenge Restore Successfully');
         } catch (\Throwable $th) {
             throw $th;
-        } 
+        }
 
     }
 
@@ -263,7 +263,7 @@ class ChallengeController extends Controller
                 $total_votes += Vote::where('submited_challenge_id', $submitedChallenge->id)
                 ->where('vote_up', true)
                 ->count();
-            }   
+            }
             $data = $this->model->getResult($challenge,$total_votes);
             return response($data,200);
         } catch (\Throwable $th) {
@@ -298,12 +298,12 @@ class ChallengeController extends Controller
             $item['showTrophy'] = $item->submitChallenge->isWinner ? 'Winner' : '-';
             $item['vote_up'] = $item->submitChallenge->votes->where('vote_up', true)->count();
             $item['vote_down'] = $item->submitChallenge->votes->where('vote_down', true)->count();
-            $item['total_votes'] = ($item->submitChallenge->votes->where('vote_up', true)->count() - 
+            $item['total_votes'] = ($item->submitChallenge->votes->where('vote_up', true)->count() -
                                     $item->submitChallenge->votes->where('vote_down', true)->count());
             $item['serial'] = $serial++;
             return $item;
         });
         return response($data, 200);
     }
-    
+
 }

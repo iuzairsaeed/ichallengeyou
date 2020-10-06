@@ -154,8 +154,9 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function show(Challenge $challenge, Request $request)
+    public function show($id, Request $request)
     {
+            $challenge = Challenge::withTrashed()->findOrFail($id);
         $id = (int)$request->user_id;
         $user = User::find($id);
         $challenge_id = $challenge->id;
@@ -225,7 +226,7 @@ class ChallengeController extends Controller
             if($challenge->allowVoter == "premiumUsers"  && $user->is_premium){
                 $data['data']['reviewBtn'] = true;
             }
-            
+
         }
         if(in_array($data['data']->status, [Expired(), Completed(), Deleted(), ResultPending()])) {
             $data['data']['acceptBtn'] = false;
