@@ -154,9 +154,8 @@ class ChallengeController extends Controller
      * @param  \App\Models\Challenge $challenge
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show(Challenge $challenge, Request $request)
     {
-            $challenge = Challenge::withTrashed()->findOrFail($id);
         $id = (int)$request->user_id;
         $user = User::find($id);
         $challenge_id = $challenge->id;
