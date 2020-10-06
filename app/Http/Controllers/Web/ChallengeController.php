@@ -15,6 +15,7 @@ use App\Models\Amount;
 use App\Models\Bid;
 use App\Models\Vote;
 use App\Models\User;
+use App\Models\Transaction;
 use DB;
 use Notification as Notifications;
 
