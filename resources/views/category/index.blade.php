@@ -12,19 +12,20 @@
                     </div>
                 </div>
                 <div class="card-body">
-					<div class="px-3">
-						<form action="/categories" class="" method="POST">
+                    <div class="px-3">
+                        <form action="/categories" class="" method="POST">
                             @csrf
-							<div class="form-body">
-								<h4 class="form-section"> Add Category</h4>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label for="projectinput1">Category Name</label>
-											<input type="text" id="name" class="form-control" name="name" placeholder="Category" />
-										</div>
-									</div>
-								</div>
+                            <div class="form-body">
+                                <h4 class="form-section"> Add Category</h4>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="projectinput1">Category Name</label>
+                                            <input type="text" id="name" class="form-control" name="name"
+                                                placeholder="Category" required />
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-actions">
                                     <button type="reset" class="btn btn-danger mr-1">
                                         <i class="icon-trash"></i> Cancel
@@ -33,11 +34,11 @@
                                         <i class="icon-note"></i> Save
                                     </button>
                                 </div>
-							</div>
-						</form>
-					</div>
-				</div>
-                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="col-md-8 col-sm-12">
@@ -65,7 +66,8 @@
         </div>
     </div>
 </section>
-<div class="modal fade text-left" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+<div class="modal fade text-left" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-success">
@@ -74,16 +76,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            
+
             <div class="modal-body">
                 <form method="POST" name="updateCategory" id="updateCategory">
                     @csrf
                     <div class="row">
-                        <div class="col-md-12" >
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="value">Category</label>
                                 <div id="valueDiv">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -97,15 +99,15 @@
                             </button>
                         </div>
                 </form>
-                        <div class="col-4">
-                            <button type="button" class="delete btn btn-raised btn-danger">
-                                <i class="icon-note"></i> Delete
-                            </button>
-                        </div>
-                    </div>
+                <div class="col-4">
+                    <button type="button" class="delete btn btn-raised btn-danger">
+                        <i class="icon-note"></i> Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 
@@ -114,8 +116,7 @@
     var table = $('#dTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax:
-        {
+        ajax: {
             url: '{{ route("category.getList") }}',
             type: 'GET',
             dataType: "JSON",
@@ -123,45 +124,59 @@
                 return true;
             }
         },
-        columns: [
-            { data: 'serial'},
-            { data: 'name' },
-            { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-toggle="modal" data-keyboard="false" data-target="#editCategory">
+        columns: [{
+                data: 'serial'
+            },
+            {
+                data: 'name'
+            },
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
+                    return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-name="${full.name}" data-toggle="modal" data-keyboard="false" data-target="#editCategory">
                                             <i class="ft-edit font-medium-3"></i>
-                                        </a>`;  }
+                                        </a>`;
+                }
             }
         ],
-        order: [0 , 'desc'],
-        columnDefs: [
-            { width: "20%", "targets": [-1, 0] },
-            { orderable: false, targets: [-1] }
+        order: [0, 'desc'],
+        columnDefs: [{
+                width: "20%",
+                "targets": [-1, 0]
+            },
+            {
+                orderable: false,
+                targets: [-1]
+            }
         ],
     });
 
-    $('#editCategory').on('show.bs.modal',function(event){
+    $('#editCategory').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget);
         const name = button.data('name');
-        $("#valueDiv").html('<input type="text" class="form-control border-primary" id="value" name="name" value="'+name+'" novalidate required>');
+        $("#valueDiv").html(
+            '<input type="text" class="form-control border-primary" id="value" name="name" value="' + name +
+            '" novalidate required>');
         const id = button.data('id');
         const modal = $(this);
         $(this).find('.modal-body #name').val(name);
         $(this).find('.modal-body #id').val(id);
     });
 
-    $('#updateCategory').submit(function(e){
+    $('#updateCategory').submit(function (e) {
         e.preventDefault();
         $.ajax({
             type: "PUT",
-            url: "/categories/"+$('.modal-body #id').val(),
+            url: "/categories/" + $('.modal-body #id').val(),
             data: {
                 value: $('.modal-body #value').val()
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success:function(data){
-                swal("Updated!", "Category has been updated successfully!", "success").catch(swal.noop);
+            success: function (data) {
+                swal("Updated!", "Category has been updated successfully!", "success").catch(swal
+                    .noop);
                 $('#dTable').DataTable().ajax.reload();
                 $('#editCategory').modal('hide');
             },
@@ -171,19 +186,20 @@
         });
     });
 
-    $('#deleteCategory').submit(function(e){
+    $('#deleteCategory').submit(function (e) {
         e.preventDefault();
         $.ajax({
             type: "DELETE",
-            url: "/categories/"+$('.modal-body #id').val(),
+            url: "/categories/" + $('.modal-body #id').val(),
             data: {
                 value: $('.modal-body #value').val()
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success:function(data){
-                swal("Deleted!", "Category has been deleted successfully!", "success").catch(swal.noop);
+            success: function (data) {
+                swal("Deleted!", "Category has been deleted successfully!", "success").catch(swal
+                    .noop);
                 $('#dTable').DataTable().ajax.reload();
                 $('#editCategory').modal('hide');
             },
@@ -206,15 +222,16 @@
             if (isConfirm) {
                 $.ajax({
                     type: "DELETE",
-                    url: "/categories/"+$('.modal-body #id').val(),
+                    url: "/categories/" + $('.modal-body #id').val(),
                     data: {
                         value: $('.modal-body #value').val()
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success:function(data){
-                        swal("Deleted!", "Category has been deleted successfully!", "success").catch(swal.noop);
+                    success: function (data) {
+                        swal("Deleted!", "Category has been deleted successfully!",
+                            "success").catch(swal.noop);
                         $('#dTable').DataTable().ajax.reload();
                         $('#editCategory').modal('hide');
                     },
@@ -225,5 +242,6 @@
             }
         }).catch(swal.noop);
     });
+
 </script>
 @endsection
