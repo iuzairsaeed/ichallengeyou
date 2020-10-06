@@ -78,7 +78,8 @@
                 data: 'amount'
             },
             {
-                data: 'reason' , render: function (data, type, full, meta) {
+                data: 'reason',
+                render: function (data, type, full, meta) {
                     return `<p>${full.reason} ${full.challenge_title != "" ? '('+full.challenge_title+')' : "" }</p>`;
                 }
             },
@@ -105,6 +106,13 @@
             }
         ],
     });
+
+    $('#date_from').change(function () {
+        $('#date_to').attr('min', $(this).val());
+    });
+    var today = new Date().toISOString().split('T')[0];
+    $('#date_from, #date_to').attr('max', today);
+
     $('#date_from, #date_to').change(function () {
         $('#dTable').DataTable().ajax.reload();
     })

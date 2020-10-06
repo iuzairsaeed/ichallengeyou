@@ -23,7 +23,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="date_to" class="label-control">To Date</label>
-                                    <input type="date"  class="form-control" id='date_to' value="">
+                                    <input type="date" class="form-control" id='date_to' value="">
                                 </div>
                             </div>
                         </div>
@@ -54,40 +54,63 @@
     var table = $('#dTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax:
-        {
+        ajax: {
             url: '{{ route("challenges.getList") }}',
             type: 'GET',
             dataType: 'JSON',
-            data:function(data){
-                data.date_from= $('#date_from').val();
-                data.date_to= $('#date_to').val();
+            data: function (data) {
+                data.date_from = $('#date_from').val();
+                data.date_to = $('#date_to').val();
             },
             error: function (reason) {
                 return true;
             }
         },
-        columns: [
-            { data: 'serial'},
-            { data: 'title' },
-            { data: 'start_time' },
-            { data: 'user.name' },
-            { data: 'status' },
-            { data: 'actions', render:function (data, type, full, meta) {
-                                return `<a href="/challenges/${full.id}" class="info success" title="View">
+        columns: [{
+                data: 'serial'
+            },
+            {
+                data: 'title'
+            },
+            {
+                data: 'start_time'
+            },
+            {
+                data: 'user.name'
+            },
+            {
+                data: 'status'
+            },
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
+                    return `<a href="/challenges/${full.id}" class="info success" title="View">
                                             <i class="ft-eye font-medium-3"></i>
                                         </a>`;
-                                }
+                }
             }
         ],
-        order: [0 , 'desc'],
-        columnDefs: [
-            { width: "10%", "targets": [-1, 0] },
-            { orderable: false, targets: [-2, -1] }
+        order: [0, 'desc'],
+        columnDefs: [{
+                width: "10%",
+                "targets": [-1, 0]
+            },
+            {
+                orderable: false,
+                targets: [-2, -1]
+            }
         ],
     });
-    $('#date_from, #date_to').change(function(){
+
+    $('#date_from').change(function () {
+        $('#date_to').attr('min', $(this).val());
+    });
+    var today = new Date().toISOString().split('T')[0];
+    $('#date_from, #date_to').attr('max', today);
+
+    $('#date_from, #date_to').change(function () {
         $('#dTable').DataTable().ajax.reload();
     })
+
 </script>
 @endsection
