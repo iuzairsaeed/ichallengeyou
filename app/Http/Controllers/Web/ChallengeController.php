@@ -136,6 +136,11 @@ class ChallengeController extends Controller
             }
             # DENIED CHALLENGE
             if ($challenge->status == 'Denied') {
+                $creator = $challenge->user;
+                (float)$amount = $challenge->amounts->where('type' , 'initial')->first()->amount;
+                $creator->balance = $creator->getAttributes()['balance'] + $amount;
+                $creator->update();
+
                 $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
                 // TO CHALLENGE OWNER
                 $notification = new Notification([
@@ -145,9 +150,18 @@ class ChallengeController extends Controller
                     'click_action' =>'CHALLENGE_DETAIL_SCREEN',
                     'data_id' => $challenge->id,
                 ]);
-                $notify_user = User::find($challenge->user->id);
+                $notify_user = $challenge->user;
                 Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
                 $challenge->notifications()->save($notification);
+
+                $transaction = [
+                    'user_id' => $challenge->user->id,
+                    'challenge_id' => $challenge->id,
+                    'amount' => $amount,
+                    'type' => 'refund',
+                    'status' => "paid",
+                ];
+                Transaction::create($transaction);
             }
             return redirect()->back()->with('success', 'Challenge Updated Successfully!');
         } catch (\Throwable $th) {
@@ -168,8 +182,17 @@ class ChallengeController extends Controller
             $this->model->delete($challenge);
             // Notification
             $body = 'Your Challenge '.$challenge->title.' has been Rejected by admin';
-            $notify_user = User::find($challenge->user->id);
+            $notify_user = $challenge->user;
             Notifications::send($notify_user, new ChallengeUpdateNotification($challenge->id,$challenge->title,$body));
+
+            $transaction = [
+                'user_id' => $challenge->user->id,
+                'challenge_id' => $challenge->id,
+                'amount' => $amount,
+                'type' => 'refund',
+                'status' => "paid",
+            ];
+            Transaction::create($transaction);
             DB::commit();
 
             return redirect()->back()->with('success', 'Challenge Deleted Successfully');

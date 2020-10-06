@@ -38,6 +38,9 @@ class AmountController extends Controller
                 case 'load':
                     $item['reason'] = 'Load Balance';
                     break;
+                case 'refund':
+                    $item['reason'] = 'Refund Balance';
+                    break;
                 case 'won_challenge':
                     $item['reason'] = 'Won Challange';
                     break;
@@ -54,7 +57,7 @@ class AmountController extends Controller
                     $item['reason'] = 'Premium Cost';
                     break;
             }
-            $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
+            $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge' || $item->type == 'refund') ? 1 : 0;
         });
         return response($data, 200);
     }

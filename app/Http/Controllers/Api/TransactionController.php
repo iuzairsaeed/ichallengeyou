@@ -90,6 +90,10 @@ class TransactionController extends Controller
                 $item['month'] = strtoupper($item->created_at->format('M'));
                 $item['day'] = $item->created_at->day;
                 switch ($item->type) {
+                    case 'refund':
+                        $item['reason'] = 'Refund Balance';
+                        $item['amount'] = config('global.CURRENCY').' '.$item['amount'];
+                        break;
                     case 'load':
                         $item['reason'] = 'Load Balance';
                         $item['amount'] = config('global.CURRENCY').' '.$item['amount'];
@@ -115,7 +119,7 @@ class TransactionController extends Controller
                         $item['amount'] = config('global.CURRENCY').' -'.$item['amount'];
                         break;
                 }
-                $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge') ? 1 : 0;
+                $item['type'] = ($item->type == 'load' || $item->type == 'won_challenge' || $item->type == 'refund') ? 1 : 0;
             });
             $data['data'] = TransactionCollection::collection($data['data']);
             return response($data, 200);
