@@ -116,21 +116,21 @@
                                     <div class="form-group">
                                         <label class="text-bold-700">Result Announce By </label>
                                         <p>{{
-                                            ($challenge->allowVoter == 'admin') ?  'Admin' : 
-                                            ($challenge->allowVoter == 'donators' ?  'Donors' : 'Premium Users') 
+                                            ($challenge->allowVoter == 'admin') ?  'Admin' :
+                                            ($challenge->allowVoter == 'donators' ?  'Donors' : 'Premium Users')
                                         }}</p>
                                     </div>
                                 </div>
-                            
+
                                 @if ($challenge->status == Completed() )
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="text-bold-700">Winner </label>
-                                            <p class="font text-bold-500">
-                                                {{ (optional(optional($winner)->user)->name)?? ' ' }} <i
-                                                    class="icon-trophy success"></i></p>
-                                        </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="text-bold-700">Winner </label>
+                                        <p class="font text-bold-500">
+                                            {{ (optional(optional($winner)->user)->name)?? ' ' }} <i
+                                                class="icon-trophy success"></i></p>
                                     </div>
+                                </div>
                                 @endif
                             </div>
 
@@ -152,21 +152,22 @@
                                                         {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
                                                     <label class="custom-control-label" for="is_active2">Pending</label>
                                                 </div>
-                                            @endif
-                                            <div class="custom-control custom-radio display-inline-block ml-2">
-                                                <input type="radio" class="custom-control-input" name="is_active"
-                                                    id="is_active1" value='approved'
-                                                    {{($challenge->status == 'Approved') ? 'checked' : ''}}
-                                                    {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
-                                                <label class="custom-control-label" for="is_active1">Approved</label>
-                                            </div>
-                                            <div class="custom-control custom-radio display-inline-block ml-2">
-                                                <input type="radio" class="custom-control-input" name="is_active"
-                                                    id="is_active3" value='denied'
-                                                    {{($challenge->status == 'Denied') ? 'checked' :''}}
-                                                    {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
-                                                <label class="custom-control-label" for="is_active3">Reject</label>
-                                            </div>
+                                                @endif
+                                                <div class="custom-control custom-radio display-inline-block ml-2">
+                                                    <input type="radio" class="custom-control-input" name="is_active"
+                                                        id="is_active1" value='approved'
+                                                        {{($challenge->status == 'Approved') ? 'checked' : ''}}
+                                                        {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
+                                                    <label class="custom-control-label"
+                                                        for="is_active1">Approved</label>
+                                                </div>
+                                                <div class="custom-control custom-radio display-inline-block ml-2">
+                                                    <input type="radio" class="custom-control-input" name="is_active"
+                                                        id="is_active3" value='denied'
+                                                        {{($challenge->status == 'Denied') ? 'checked' :''}}
+                                                        {{  ($challenge->status == 'Completed') ? 'disabled' :''  }}>
+                                                    <label class="custom-control-label" for="is_active3">Reject</label>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -194,9 +195,9 @@
                                 <button type="submit" form="updateForm" disable class="btn btn-raised btn-success">
                                     <i class="icon-check"></i> Update
                                 </button>
-                                <button type="button" class="btn btn-raised btn-danger delete">
+                                {{-- <button type="button" class="btn btn-raised btn-danger delete">
                                     <i class="icon-trash"></i> Delete
-                                </button>
+                                </button> --}}
                                 @endif
                             </div>
                         </div>
@@ -543,8 +544,7 @@
                 return reason;
             }
         },
-        columns: [
-            {
+        columns: [{
                 data: 'serial'
             },
             {
@@ -579,7 +579,9 @@
             {
                 data: 'created_at'
             },
-            { data: 'actions', render:function (data, type, full, meta) {
+            {
+                data: 'actions',
+                render: function (data, type, full, meta) {
                     return `<a class="success p-0 mr-2" title="Edit" data-id="${full.id}" data-toggle="modal"
                                 data-keyboard="false" data-target="#editSubmitorDetail">
                                     <i class="ft-edit font-medium-3"></i>
@@ -620,8 +622,8 @@
                     $('.winnerCard').prop('hidden', true);
                 }
 
-                if(res.data[0].showWinBtn){
-                    $('.winnerCard').prop('hidden' , false);
+                if (res.data[0].showWinBtn) {
+                    $('.winnerCard').prop('hidden', false);
                     $('.winnerBtn').html(
                         `<div><button type="submit" class="btn btn-raised btn-success updateBtn">
                             <i class="icon-trophy"></i> Mark as Winner ★

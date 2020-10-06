@@ -227,12 +227,15 @@ class ChallengeController extends Controller
             }
 
         }
-        if(in_array($data['data']->status, [Expired(), Completed(), Deleted(), ResultPending()])) {
+        if(in_array($data['data']->status, [Expired(), Completed(), Deleted(), Denied(), ResultPending()])) {
             $data['data']['acceptBtn'] = false;
             $data['data']['editBtn'] = false;
             $data['data']['submitBtn'] = false;
             $data['data']['donateBtn'] = false;
             $data['data']['bidBtn'] = false;
+        }
+        if(in_array($data['data']->status, [Denied()])) {
+            $data['data']['reviewBtn'] = false;
         }
         $data = ChallengeDetailCollection::collection($data);
         return response($data,200);
